@@ -117,6 +117,7 @@ export const DataProvider = ({ children }) => {
     //--● 책장 관련
     getBookshelf: (bookshelfId = null) => {
       const bid = bookshelfId || uiState.currentBookshelfId;
+
       if (!bid) return null;
       return bookshelves?.[bid];
     },
