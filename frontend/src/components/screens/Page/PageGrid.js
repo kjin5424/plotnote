@@ -1,6 +1,15 @@
 import { useNavigate } from "react-router-dom";
 
+<<<<<<< HEAD
+export default function PageGrid({
+  pages,
+  onAddPage,
+  onDeletePage,
+  onUpdateMemo,
+}) {
+=======
 export default function PageGrid({ pages }) {
+>>>>>>> 679aa2a191b485ac4096a2254ed6129bb0143f90
   const navigate = useNavigate();
 
   return (

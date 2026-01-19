@@ -1,28 +1,21 @@
-// pageId, cutId 생성 로직
+import { nanoid } from "nanoid";
 
-// utils/helpers/idGenerator.js
-export const generatePageId = (index) => {
-  return `page-${String(index).padStart(4, "0")}`;
+export const generatePageId = () => {
+  return `pg-${nanoid(8)}`; // pg-A3bC9xY2
 };
 
-export const generateCutId = (pageId, index) => {
-  return `${pageId}-cut-${String(index).padStart(4, "0")}`;
+export const generateCutId = (pageId) => {
+  return `${pageId}-${nanoid(6)}`; // pg-A3bC9xY2-ct-X7mN2k
 };
 
-export const generateEpisodeId = (index) => {
-  return `ep-${String(index).padStart(4, "0")}`;
+export const generateEpisodeId = () => {
+  return `ep-${nanoid(8)}`;
 };
 
-// // PageManagement/index.jsx
-// import { generatePageId } from '../../../utils/helpers/idGenerator';
-// import { addToOrder } from '../../../utils/helpers/orderManager';
-// import { DEFAULT_PAGE_COUNT } from '../../../utils/constants/defaults';
+export const generateProjectId = () => {
+  return `pr-${nanoid(8)}`;
+};
 
-// function PageManagement() {
-//   const handleAddPage = () => {
-//     const newPageId = generatePageId(pages.length + 1);
-//     const newPageOrder = addToOrder(currentPageOrder, newPageId);
-
-//     // ...
-//   };
-// }
+export const generateUserId = () => {
+  return `usr-${nanoid(10)}`;
+};
