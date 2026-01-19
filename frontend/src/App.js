@@ -5,7 +5,7 @@ import "assets/css/common/button.css"; // 공통 컴포넌트
 import { AuthProvider } from "./contexts/AuthContext";
 import { DataProvider } from "./contexts/DataContext";
 import { Navigate, Route, Routes } from "react-router-dom";
-import CollectionManagement from "./components/screens/Collection";
+import BookshelfManagement from "./components/screens/Bookshelf";
 import ProjectManagement from "./components/screens/Project";
 import EpisodeManagement from "./components/screens/Episode";
 import PageManagement from "./components/screens/Page";
@@ -20,7 +20,7 @@ function App() {
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Navigate to="/pages" />} />
             {/* 페이지 관리로 이동, 차후 대시보드..프로젝트선텍화면..어디든... */}
-            <Route path="dashboard" element={<CollectionManagement />} />
+            <Route path="dashboard" element={<BookshelfManagement />} />
             <Route path="project" element={<ProjectManagement />} />
             <Route
               path="project/:projectId/episode"

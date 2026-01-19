@@ -1,8 +1,10 @@
 // 재사용 가능한 썸네일 컴포넌트
-export default function PageThumbnail() {
+export default function PageThumbnail({ page, isSelected }) {
   return (
-    <div className="page-thumbnail">
-      <p>pageThumbnail</p>
-    </div>
+    <div
+      key={page.pageId}
+      className={`page-thumbnail ${isSelected ? "selected" : ""}`}
+      onClick={() => useNavigate(`/${page.pageId}`)}
+    ></div>
   );
 }

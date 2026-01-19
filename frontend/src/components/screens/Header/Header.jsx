@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import HamburgerButton from "./HamburgerButton";
+import ImageButton from "components/common/Button/ImageButton";
 import BreadCrumb from "./BreadCrumb";
 import HeaderRight from "./HeaderRight";
 
@@ -9,7 +9,11 @@ export default function Header({ onClickHandle }) {
   return (
     <div className="header">
       <div className="header-left">
-        <HamburgerButton onClick={onClickHandle} />
+        <ImageButton
+          image="img-menu"
+          text="메뉴"
+          onClickHandle={onClickHandle}
+        />
         <BreadCrumb />
       </div>
       <div className="header-right">

@@ -29,7 +29,7 @@
   left: 0;
   right: 0;
   height: var(--header-height);
-  background: red;
+  background: white;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -71,18 +71,19 @@
   width: var(--sidebar-width);
   height: calc(100vh - (var(--header-height)));
   margin-top: var(--header-height);
+  gap: 4px;
+  padding: 12px;
   position: relative;
   top: 0;
   left: 0;
   display: flex;
   flex-direction: column;
-  background: blue;
+  background: white;
   transform: translateX(-100%);
   transition:
     transform 0.3s ease,
     margin-left 0.3s ease;
   z-index: 50;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
 }
 .sidebar.open {
   transform: translateX(0);
