@@ -1,4 +1,4 @@
-import { useData } from "../../contexts/DataContext";
+import { useData } from "contexts/DataContext";
 
 // 페이지 CRUD
 export function usePage() {

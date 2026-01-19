@@ -1,29 +1,24 @@
-// LocalStorage 로직
-// 데이터 구조: 컬렉션 중심 구조 (한 사용자가 여러 컬렉션 소유 가능, 여러 사용자가 하나의 컬렉션 공유 가능)
-
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // ● manhwaData : 작품 정보 데이터 (컬렉션 중심)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 구조: { collections: { [collectionId]: { id, ownerId, name, permissions, projects, ... } } }
 export const manhwaData = {
-  collections: {
-    "collection-001": {
-      id: "collection-001",
+  bookshelves: {
+    "bookshelf-001": {
+      bookshelfId: "bookshelf-001",
       ownerId: "user-001", // 생성자
-      name: "나의 첫 번째 컬렉션",
-      permissions: {
-        "user-001": "owner", // 소유자
-        "user-002": "editor", // 편집 가능
-        "user-003": "commentonly", // 코멘트만
-        "user-004": "readonly", // 읽기전용
-      },
+      title: "나의 첫 번째 컬렉션",
       //--● 프로젝트 목록
       projectOrder: ["initial-project"],
       projects: {
         "initial-project": {
-          id: "initial-project",
-          name: "Initial Project",
-          permissions: {},
+          projectId: "initial-project",
+          title: "Initial Project",
+          permissions: {
+            "user-001": "owner", // 소유자
+            "user-002": "editor", // 편집 가능
+            "user-003": "commentonly", // 코멘트만
+            "user-004": "readonly", // 읽기전용
+          },
           settings: {
             defaultPageCount: 24,
             startPageType: "odd", // 'odd' | 'even'
@@ -33,8 +28,8 @@ export const manhwaData = {
           episodeOrder: ["episode-0001"],
           episodes: {
             "episode-0001": {
-              id: "episode-0001",
-              name: "Initial Episode",
+              episodeId: "episode-0001",
+              title: "Initial Episode",
               permissions: {},
               memo: "",
               settings: {
@@ -64,31 +59,24 @@ export const manhwaData = {
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// ● userCollections : 사용자별 접근 가능한 컬렉션 목록
+// ● userBookshelves : 사용자별 접근 가능한 컬렉션 목록
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 구조: { [userId]: { owned: [collectionId], shared: [{ collectionId, permission }] } }
-export const userCollections = {
+export const userBookshelves = {
   "user-001": {
-    owned: ["collection-001"], // 본인이 소유한 컬렉션
+    owned: ["bookshelf-001"], // 본인이 소유한 컬렉션
     shared: [], // 다른 사람이 공유한 컬렉션
   },
   "user-002": {
     owned: [],
-    shared: [
-      { collectionId: "collection-001", permission: "editor" },
-    ],
+    shared: [{ collectionId: "bookshelf-001", permission: "editor" }],
   },
   "user-003": {
     owned: [],
-    shared: [
-      { collectionId: "collection-001", permission: "commentonly" },
-    ],
+    shared: [{ collectionId: "bookshelf-001", permission: "commentonly" }],
   },
   "user-004": {
     owned: [],
-    shared: [
-      { collectionId: "collection-001", permission: "readonly" },
-    ],
+    shared: [{ collectionId: "bookshelf-001", permission: "readonly" }],
   },
 };
 
@@ -103,7 +91,9 @@ export const userData = {
   },
 };
 
-// 초기 데이터 설정 (localStorage에 없을 경우에만)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ● 초기 데이터 설정 (localStorage에 없을 경우에만)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 export const initializeStorage = () => {
   if (!localStorage.getItem("user")) {
     localStorage.setItem("user", JSON.stringify(userData));
@@ -111,10 +101,7 @@ export const initializeStorage = () => {
   if (!localStorage.getItem("manhwaData")) {
     localStorage.setItem("manhwaData", JSON.stringify(manhwaData));
   }
-  if (!localStorage.getItem("userCollections")) {
-    localStorage.setItem("userCollections", JSON.stringify(userCollections));
+  if (!localStorage.getItem("userBookshelves")) {
+    localStorage.setItem("userBookshelves", JSON.stringify(userBookshelves));
   }
 };
-
-// 하위 호환성을 위한 export (기존 코드와의 호환)
-export const collections = manhwaData.collections;

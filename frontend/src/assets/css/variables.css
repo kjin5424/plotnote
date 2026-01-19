@@ -1,21 +1,19 @@
 /* CSS 변수(색상, 간격,사이즈) */
 :root {
-  /* Light and dark variants */
-
   /* Primary 브랜드 컬러 */
-  /* 프라이머리 컬러는 가장 많이 쓰여야한다 */
-  /* or 사용자의 시선이 많이 머무르는 곳에 쓰이게끔 한다 */
+  --color-primary-ligt: #4c5ab8;
   --color-primary: #798fb6;
-  /* 주요색상을 더 확실히 전달할 수 있게 보조 */
-  /* primary의 유사색 또는 보조색 */
-  /* 주요:보조 == 8:2 or 7:3 */
-  --color-secondary: #afc5ee;
-  --color-tertiary: #dba11c;
-
-  --color-primary-dark: #4c5ab8;
-  --color-primary-light: #7c8ad4;
+  --color-primary-darker: #7c8ad4;
 
   /* Secondary 컬러 */
+  --color-secondary-light: #afc5ee;
+  --color-secondary: #afc5ee;
+  --color-secondary-darker: #afc5ee;
+
+  /* Tertiary 컬러 */
+  --color-tertiary-light: #dba11c;
+  --color-tertiary: #dba11c;
+  --color-tertiary-darker: #dba11c;
 
   /* Grayscale */
   --color-gray-50: #f9fafb;
@@ -32,18 +30,17 @@
   --color-warning: #f59e0b;
   --color-info: #3b82f6;
 
-  /* 용도별 컬러 (실제 사용처) */
+  /* 용도별 컬러 */
+  /* 폰트 */
   --color-text-primary: var(--color-gray-900);
   --color-text-secondary: var(--color-gray-500);
+  /* 배경 */
   --color-bg-primary: #ffffff;
   --color-bg-secondary: var(--color-gray-50);
+  /* 테두리 */
   --color-border: var(--color-gray-200);
   --color-button-primary: var(--color-primary);
   --color-button-hover: var(--color-primary-dark);
-
-  /* 테두리 컬러 */
-
-  /* 텍스트 색상*/
 
   /* 간격 */
   --spacing-xs: 4px;
@@ -56,6 +53,12 @@
   --font-size-sm: 12px;
   --font-size-md: 14px;
   --font-size-lg: 16px;
+
+  /* radius 사이즈 */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
 
   /* 레이아웃 크기 변수 */
   --sidebar-width: 200px;
@@ -97,4 +100,11 @@
   --base-white: #e0e0e0;
   --notice: ;
   --alert: ;
+}
+/* 이미지 */
+.img-menu {
+  background-image: url("assets/images/menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg");
+}
+.img-home {
+  background-image: url("assets/images/home_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg");
 }
