@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import PageCard from "./PageCard";
 
 export default function PageGrid({
   pages,
@@ -6,16 +7,13 @@ export default function PageGrid({
   onDeletePage,
   onUpdateMemo,
 }) {
+  console.log(pages);
   const navigate = useNavigate();
 
   return (
     <div className="page-grid">
       {pages.map((page) => (
-        <div
-          key={page.pageId}
-          className="page-card"
-          onClick={() => navigate(`/${page.pageId}`)}
-        ></div>
+        <PageCard key={page.pageId} page={page} />
       ))}
     </div>
   );

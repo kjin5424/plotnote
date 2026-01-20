@@ -1,169 +1,117 @@
 import useData from "contexts/DataContext";
 import { useCallback } from "react";
 import { generatePageId } from "utils/helpers/idGenerator";
+import {
+  addToOrder,
+  removeFromOrder,
+  reorder,
+} from "utils/helpers/orderManager";
 
 // 페이지 관련 CRUD 로직(도메인 로직 캡슐화)
 export function usePage() {
-  const {
-    bookshelves,
-    setBookshelves,
-    uiState,
-    getPages,
-    getCurrentEpisode,
-    canEdit,
-  } = useData();
+  const { uiState, canEdit, episodes, setEpisodes, pages, setPages, getPages } =
+    useData();
+  const { currentProjectId, currentEpisodeId } = uiState;
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // ● 페이지 추가
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   const addPage = useCallback(
     (pageData = {}) => {
-      if (!canEdit()) {
+      if (!canEdit(currentProjectId)) {
         console.error("usePage : 수정 권한이 없습니다");
         return null;
       }
-
-      const { currentBookshelfId, currentProjectId, currentEpisodeId } =
-        uiState;
-
-      if (!currentBookshelfId || !currentEpisodeId || !currentProjectId) {
-        console.error("usePage : 현재 선택된 에피소드가 없습니다.");
+      if (!currentEpisodeId) {
+        console.error("usePage : 선택된 에피소드 없음");
         return null;
       }
 
       const newPageId = generatePageId();
-      const currentEpisode = getCurrentEpisode();
+      const currentEpisode = episodes[currentEpisodeId];
 
       const newPage = {
+        episodeId: currentEpisode.episodeId,
         pageId: newPageId,
-        pageNumber: Object.keys(currentEpisode?.pages || {}).length + 1,
-        memo: pageData.memo || "",
+        pageMemo: pageData.memo || "",
         cutOrder: [],
-        cuts: {},
         ...pageData,
       };
 
-      setBookshelves((prev) => ({
+      setPages((prev) => ({
         ...prev,
-        [currentBookshelfId]: {
-          ...prev[currentBookshelfId],
-          projects: {
-            ...prev[currentBookshelfId].projects,
-            [currentProjectId]: {
-              ...prev[currentBookshelfId].projects[currentProjectId],
-              episodes: {
-                ...prev[currentBookshelfId].projects[currentProjectId].episodes,
-                [currentEpisodeId]: {
-                  ...prev[currentBookshelfId].projects[currentProjectId]
-                    .episodes[currentEpisodeId],
-                  pageOrder: [
-                    ...(prev[currentBookshelfId].projects[currentProjectId]
-                      .episodes[currentEpisodeId].pageOrder || []),
-                    newPageId,
-                  ],
-                  pages: {
-                    ...prev[currentBookshelfId].projects[currentProjectId]
-                      .episodes[currentEpisodeId].pages,
-                    [newPageId]: newPage,
-                  },
-                },
-              },
-            },
-          },
+        [newPageId]: newPage,
+      }));
+      setEpisodes((prev) => ({
+        ...prev,
+        [currentEpisodeId]: {
+          ...prev[currentEpisodeId],
+          pageOrder: addToOrder(
+            prev[currentEpisodeId]?.pageOrder || [],
+            newPageId,
+          ),
         },
       }));
-
       return newPageId;
     },
-    [bookshelves, setBookshelves, uiState, getCurrentEpisode, canEdit],
+    [
+      currentEpisodeId,
+      episodes,
+      setPages,
+      setEpisodes,
+      canEdit,
+      uiState.currentProjectId,
+    ],
   );
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // ● 페이지 삭제
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   const deletePage = useCallback(
     (pageId) => {
-      if (!canEdit()) {
+      if (!canEdit(currentProjectId)) {
         console.error("usePage : 수정 권한이 없습니다.");
         return;
       }
-      const { currentBookshelfId, currentProjectId, currentEpisodeId } =
-        uiState;
 
-      setBookshelves((prev) => {
-        const episode =
-          prev[currentBookshelfId].projects[currentProjectId].episodes[
-            currentEpisodeId
-          ];
-        const { [pageId]: removed, ...remainingPages } = episode.pages;
-        const newPageOrder = episode.pageOrder.filter((id) => id !== pageId);
-        return {
-          ...prev,
-          [currentBookshelfId]: {
-            ...prev[currentBookshelfId],
-            projects: {
-              ...prev[currentBookshelfId].projects,
-              [currentProjectId]: {
-                ...prev[currentBookshelfId].projects[currentProjectId],
-                episodes: {
-                  ...prev[currentBookshelfId].projects[currentProjectId]
-                    .episodes,
-                  [currentEpisodeId]: {
-                    ...episode,
-                    pageOrder: newPageOrder,
-                    pages: remainingPages,
-                  },
-                },
-              },
-            },
-          },
-        };
+      setPages((prev) => {
+        const { [pageId]: _, ...rest } = prev;
+        return rest;
       });
+      setEpisodes((prev) => ({
+        ...prev,
+        [currentEpisodeId]: {
+          ...prev[currentEpisodeId],
+          pageOrder: removeFromOrder(prev[currentEpisodeId].pageOrder, pageId),
+        },
+      }));
     },
-    [bookshelves, setBookshelves, uiState, canEdit],
+    [
+      currentEpisodeId,
+      setPages,
+      setEpisodes,
+      canEdit,
+      uiState.currentProjectId,
+    ],
   );
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // ● 페이지 메모 수정
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   const updatePageMemo = useCallback(
     (pageId, memo) => {
-      if (!canEdit()) {
-        alert("수정 권한이 없습니다");
+      if (!canEdit(currentProjectId)) {
+        console.error("usePage : 수정 권한이 없습니다.");
         return;
       }
 
-      const { currentBookshelfId, currentProjectId, currentEpisodeId } =
-        uiState;
-
-      setBookshelves((prev) => ({
+      setPages((prev) => ({
         ...prev,
-        [currentBookshelfId]: {
-          ...prev[currentBookshelfId],
-          projects: {
-            ...prev[currentBookshelfId].projects,
-            [currentProjectId]: {
-              ...prev[currentBookshelfId].projects[currentProjectId],
-              episodes: {
-                ...prev[currentBookshelfId].projects[currentProjectId].episodes,
-                [currentEpisodeId]: {
-                  ...prev[currentBookshelfId].projects[currentProjectId]
-                    .episodes[currentEpisodeId],
-                  pages: {
-                    ...prev[currentBookshelfId].projects[currentProjectId]
-                      .episodes[currentEpisodeId].pages,
-                    [pageId]: {
-                      ...prev[currentBookshelfId].projects[currentProjectId]
-                        .episodes[currentEpisodeId].pages[pageId],
-                      memo,
-                    },
-                  },
-                },
-              },
-            },
-          },
+        [pageId]: {
+          ...prev[pageId],
+          pageMemo: memo,
         },
       }));
     },
-    [bookshelves, setBookshelves, uiState, canEdit],
+    [setPages, canEdit, uiState.currentProjectId],
   );
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -171,63 +119,38 @@ export function usePage() {
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   const reorderPages = useCallback(
     (startIndex, endIndex) => {
-      if (!canEdit()) {
-        alert("수정 권한이 없습니다");
+      if (!canEdit(currentProjectId)) {
+        console.error("usePage : 수정 권한이 없습니다.");
         return;
       }
 
-      const { currentBookshelfId, currentProjectId, currentEpisodeId } =
-        uiState;
-
-      setBookshelves((prev) => {
-        const episode =
-          prev[currentBookshelfId].projects[currentProjectId].episodes[
-            currentEpisodeId
-          ];
-        const newPageOrder = Array.from(episode.pageOrder);
-        const [removed] = newPageOrder.splice(startIndex, 1);
-        newPageOrder.splice(endIndex, 0, removed);
-
-        return {
-          ...prev,
-          [currentBookshelfId]: {
-            ...prev[currentBookshelfId],
-            projects: {
-              ...prev[currentBookshelfId].projects,
-              [currentProjectId]: {
-                ...prev[currentBookshelfId].projects[currentProjectId],
-                episodes: {
-                  ...prev[currentBookshelfId].projects[currentProjectId]
-                    .episodes,
-                  [currentEpisodeId]: {
-                    ...episode,
-                    pageOrder: newPageOrder,
-                  },
-                },
-              },
-            },
-          },
-        };
-      });
+      setEpisodes((prev) => ({
+        ...prev,
+        [currentEpisodeId]: {
+          ...prev[currentEpisodeId],
+          pageOrder: reorder(
+            prev[currentEpisodeId].pageOrder,
+            startIndex,
+            endIndex,
+          ),
+        },
+      }));
     },
-    [bookshelves, setBookshelves, uiState, canEdit],
+    [currentEpisodeId, setEpisodes, canEdit, currentProjectId],
   );
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // ● 현재 에피소드의 페이지 목록 가져오기
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  const getCurrentPages = useCallback(() => {
-    return getPages() || {};
-  }, [getPages]);
+  const currentPageList = useCallback(() => {
+    return getPages(currentEpisodeId) || [];
+  }, [getPages, currentEpisodeId]);
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // ● 반환값
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   return {
-    // 조회
-    pages: getCurrentPages(),
-
-    // CRUD
+    pages: currentPageList(),
     addPage,
     deletePage,
     updatePageMemo,

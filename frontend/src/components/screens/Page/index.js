@@ -10,14 +10,10 @@ export default function PageManagement() {
   const { pages, addPage, deletePage, updatePageMemo, reorderPages } =
     usePage();
   const currentEpisode = getCurrentEpisode();
+
   if (!currentEpisode) {
     return <div>선택된 에피소드가 없습니다.</div>;
   }
-  const sortedPages =
-    currentEpisode.pageOrder?.map((pageId) => ({
-      ...pages[pageId],
-      pageId,
-    })) || [];
 
   return (
     <div className="management-container">
@@ -25,7 +21,7 @@ export default function PageManagement() {
         header={<PageHeader episode={currentEpisode} />}
         body={
           <PageGrid
-            pages={sortedPages}
+            pages={pages}
             onAddPage={addPage}
             onDeletePage={deletePage}
             onUpdateMemo={updatePageMemo}

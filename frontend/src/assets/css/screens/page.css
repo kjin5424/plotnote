@@ -1,7 +1,11 @@
-/* 페이지 썸네일 특화 */
-.page-thumbnail {
-  aspect-ratio: 210 / 297; /* B4 비율 */
+.page-item {
+  aspect-ratio: 238 / 324; /* B4 비율 */
   position: relative;
+  border: 1px solid var(--color-border);
+  padding: 8.3% 12.15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .page-number {
