@@ -7,7 +7,6 @@ export default function PageGrid({
   onDeletePage,
   onUpdateMemo,
 }) {
-  console.log(pages);
   const navigate = useNavigate();
 
   return (
