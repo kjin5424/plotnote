@@ -16,53 +16,49 @@ export function usePage() {
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // ● 페이지 추가
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  const addPage = useCallback(
-    (pageData = {}) => {
-      if (!canEdit(currentProjectId)) {
-        console.error("usePage : 수정 권한이 없습니다");
-        return null;
-      }
-      if (!currentEpisodeId) {
-        console.error("usePage : 선택된 에피소드 없음");
-        return null;
-      }
+  const addPage = useCallback(() => {
+    if (!canEdit(currentProjectId)) {
+      console.error("usePage : 수정 권한이 없습니다");
+      return null;
+    }
+    if (!currentEpisodeId) {
+      console.error("usePage : 선택된 에피소드 없음");
+      return null;
+    }
 
-      const newPageId = generatePageId();
-      const currentEpisode = episodes[currentEpisodeId];
+    const newPageId = generatePageId();
+    const currentEpisode = episodes[currentEpisodeId];
 
-      const newPage = {
-        episodeId: currentEpisode.episodeId,
-        pageId: newPageId,
-        pageMemo: pageData.memo || "",
-        cutOrder: [],
-        ...pageData,
-      };
+    const newPage = {
+      episodeId: currentEpisode.episodeId,
+      pageId: newPageId,
+      pageMemo: "",
+      cutOrder: [],
+    };
 
-      setPages((prev) => ({
-        ...prev,
-        [newPageId]: newPage,
-      }));
-      setEpisodes((prev) => ({
-        ...prev,
-        [currentEpisodeId]: {
-          ...prev[currentEpisodeId],
-          pageOrder: addToOrder(
-            prev[currentEpisodeId]?.pageOrder || [],
-            newPageId,
-          ),
-        },
-      }));
-      return newPageId;
-    },
-    [
-      currentEpisodeId,
-      episodes,
-      setPages,
-      setEpisodes,
-      canEdit,
-      uiState.currentProjectId,
-    ],
-  );
+    setPages((prev) => ({
+      ...prev,
+      [newPageId]: newPage,
+    }));
+    setEpisodes((prev) => ({
+      ...prev,
+      [currentEpisodeId]: {
+        ...prev[currentEpisodeId],
+        pageOrder: addToOrder(
+          prev[currentEpisodeId]?.pageOrder || [],
+          newPageId,
+        ),
+      },
+    }));
+    return newPageId;
+  }, [
+    currentEpisodeId,
+    episodes,
+    setPages,
+    setEpisodes,
+    canEdit,
+    uiState.currentProjectId,
+  ]);
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // ● 페이지 삭제
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

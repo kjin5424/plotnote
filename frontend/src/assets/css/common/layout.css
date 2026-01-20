@@ -89,6 +89,9 @@
 /* ============================================
    Workspace 공통 스타일
    ============================================ */
+main {
+  flex: 1;
+}
 .management-container {
   flex: 1;
   display: flex;
@@ -107,17 +110,17 @@
   overflow: hidden;
   position: relative;
   transition: width 0.3s ease;
-  margin: 0 auto;
-  padding: 12px;
+  padding: 0 12px;
 }
 
 .workspace-header {
-  /* 고정 영역 */
   flex-shrink: 0;
   width: 100%;
   background: var(--bg-white);
   border-bottom: 1px solid var(--border-color);
   padding: var(--spacing-md);
+  justify-content: space-around;
+  background-color: white;
 }
 
 .workspace-body {
@@ -132,16 +135,16 @@
 /* ============================================
    Grid 공통 스타일
    ============================================ */
-.l-grid-container {
+.grid-container {
   display: grid;
   gap: var(--spacing-md);
 }
 
-.l-grid-single {
+.grid-single {
   grid-template-columns: 1fr;
 }
 
-.l-grid-double {
+.grid-double {
   grid-template-columns: repeat(2, 1fr);
 }
 
