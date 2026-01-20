@@ -1,10 +1,6 @@
-<<<<<<< HEAD
-import { useData } from "contexts/DataContext";
-=======
 import useData from "contexts/DataContext";
 import { useCallback } from "react";
 import { generatePageId } from "utils/helpers/idGenerator";
->>>>>>> 5cd361e0e338b60f3f52a00c30037b0e2480e884
 
 // 페이지 관련 CRUD 로직(도메인 로직 캡슐화)
 export function usePage() {

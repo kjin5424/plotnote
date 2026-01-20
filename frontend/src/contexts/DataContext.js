@@ -17,10 +17,11 @@ export const DataProvider = ({ children }) => {
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // ● 상태 초기화
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  const [bookshelves, setBookshelves] = useState(null); // manhwaData.bookshelves
-  const [userBookshelves, setUserBookshelves] = useState(null); // userBookshelves
+  const [bookshelves, setBookshelves] = useState(null);
+  const [userBookshelves, setUserBookshelves] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [currentPermission, setCurrentPermission] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [uiState, setUiState] = useState({
     currentBookshelfId: null, // 선택된 책장
     currentProjectId: null, // 선택된 프로젝트
@@ -38,9 +39,9 @@ export const DataProvider = ({ children }) => {
 
     // localStorage에서 유저 정보 로드
     const savedUser = localStorage.getItem("user");
-    const user = savedUser ? JSON.parse(savedUser) : userData["user-001"];
+    const userObj = savedUser ? JSON.parse(savedUser) : userData["user-001"];
+    const user = userObj.userId ? userObj : Object.values(userObj)[0];
     setCurrentUserId(user.userId);
-
     // localStorage에서 책장 데이터 읽기
     const savedManhwaData = localStorage.getItem("manhwaData");
     const data = savedManhwaData ? JSON.parse(savedManhwaData) : manhwaData;
@@ -92,6 +93,7 @@ export const DataProvider = ({ children }) => {
         setCurrentPermission(bookshelf.permissions[user.userId] || "readonly");
       }
     }
+    setIsLoading(false);
   }, []);
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -116,16 +118,11 @@ export const DataProvider = ({ children }) => {
   const helpers = {
     //--● 책장 관련
     getBookshelf: (bookshelfId = null) => {
-<<<<<<< HEAD
-      const bid =
-        bookshelfId || uiState.currentBookshelfId || currentBookshelfId;
-=======
       const bid = bookshelfId || uiState.currentBookshelfId;
-
->>>>>>> 5cd361e0e338b60f3f52a00c30037b0e2480e884
       if (!bid) return null;
       return bookshelves?.[bid];
     },
+    // 현재 선택된 책장 반환
     getCurrentBookshlef: () => {
       return helpers.getBookshelf();
     },
@@ -167,26 +164,31 @@ export const DataProvider = ({ children }) => {
     },
 
     //--● 프로젝트 관련
+    // 특정 책장의 모든 프로젝트
     getProjects: (bookshelfId = null) => {
       const bookshelf = helpers.getBookshelf(bookshelfId);
       return bookshelf?.projects;
     },
+    // 특정 프로젝트 반환
     getProject: (projectId = null, bookshelfId = null) => {
       const pid = projectId || uiState.currentProjectId;
       if (!pid) return null;
       const bookshelf = helpers.getBookshelf(bookshelfId);
       return bookshelf?.projects?.[pid];
     },
+    // 현재 선택된 프로젝트 반환
     getCurrentProject: () => {
       if (!uiState.currentProjectId) return null;
       return helpers.getProject(uiState.currentProjectId);
     },
 
     //--● 에피소드 관련
+    // 특정 책장의 특정 프로젝트의 모든 에피소드
     getEpisodes: (projectId = null, bookshelfId = null) => {
       const project = helpers.getProject(projectId, bookshelfId);
       return project?.episodes;
     },
+    // 특정 에피소드 반환
     getEpisode: (projectId = null, episodeId = null, bookshelfId = null) => {
       const eid = episodeId || uiState.currentEpisodeId;
       if (!eid) return null;
@@ -194,6 +196,7 @@ export const DataProvider = ({ children }) => {
       const project = helpers.getProject(pid, bookshelfId);
       return project?.episodes?.[eid];
     },
+    // 현재 선택된 에피소드 반환
     getCurrentEpisode: () => {
       if (!uiState.currentProjectId || !uiState.currentEpisodeId) return null;
       return helpers.getEpisode(
@@ -203,10 +206,12 @@ export const DataProvider = ({ children }) => {
     },
 
     //--● 페이지 관련
+    // 특정 책장의 특정 프로젝트의 특정 에피소드의 모든 페이지
     getPages: (projectId = null, episodeId = null, bookshelfId = null) => {
       const episode = helpers.getEpisode(projectId, episodeId, bookshelfId);
       return episode?.pages;
     },
+    // 특정 페이지 반환
     getPage: (
       projectId = null,
       episodeId = null,
@@ -224,6 +229,7 @@ export const DataProvider = ({ children }) => {
       const episode = helpers.getEpisode(pid, eid, bookshelfId);
       return episode?.pages?.[pageIdToUse];
     },
+    // 현재 선택된 페이지 반환
     getCurrentPage: () => {
       if (
         !uiState.currentProjectId ||
@@ -240,6 +246,7 @@ export const DataProvider = ({ children }) => {
     },
 
     //--● 컷 관련
+    // 페이지의 모든 컷
     getCuts: (
       projectId = null,
       episodeId = null,
@@ -249,6 +256,7 @@ export const DataProvider = ({ children }) => {
       const page = helpers.getPage(projectId, episodeId, pageId, bookshelfId);
       return page?.cuts;
     },
+    // 특정 컷 반환
     getCut: (
       projectId = null,
       episodeId = null,
@@ -269,6 +277,7 @@ export const DataProvider = ({ children }) => {
       const page = helpers.getPage(pid, eid, pageIdToUse, bookshelfId);
       return page?.cuts?.[cutIdToUse];
     },
+    // 현재 선택된 컷 반환
     getCurrentCut: () => {
       const {
         currentProjectId,
@@ -293,15 +302,18 @@ export const DataProvider = ({ children }) => {
     },
 
     // 권한 관련
+    // 유저의 권한 조회
     getPermission: (bookshelfId = null, userId = currentUserId) => {
       const bookshelf = helpers.getBookshelf(bookshelfId);
       if (!bookshelf || !userId) return null;
       return bookshelf.permissions?.[userId] || null;
     },
+    // 편집 가능 여부
     canEdit: (bookshelfId = null, userId = currentUserId) => {
       const permission = helpers.getPermission(bookshelfId, userId);
       return permission === "owner" || permission === "editor";
     },
+    // 읽기 전용 여부
     isReadonly: (bookshelfId = null, userId = currentUserId) => {
       const permission = helpers.getPermission(bookshelfId, userId);
       return permission === "readonly";
@@ -321,6 +333,7 @@ export const DataProvider = ({ children }) => {
     setCurrentUserId,
     currentPermission,
     setCurrentPermission,
+    isLoading,
     uiState,
     setUiState,
 
