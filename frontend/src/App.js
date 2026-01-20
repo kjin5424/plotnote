@@ -19,7 +19,7 @@ function App() {
       <DataProvider>
         <Routes>
           <Route path="/" element={<MainLayout />}>
-            <Route index element={<Navigate to="/dashboard" />} />
+            <Route index element={<Navigate to="/pages" />} />
             <Route path="dashboard" element={<DashboardManagement />} />
             <Route path="project" element={<ProjectManagement />} />
             <Route
