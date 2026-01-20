@@ -116,8 +116,13 @@ export const DataProvider = ({ children }) => {
   const helpers = {
     //--● 책장 관련
     getBookshelf: (bookshelfId = null) => {
+<<<<<<< HEAD
       const bid =
         bookshelfId || uiState.currentBookshelfId || currentBookshelfId;
+=======
+      const bid = bookshelfId || uiState.currentBookshelfId;
+
+>>>>>>> 5cd361e0e338b60f3f52a00c30037b0e2480e884
       if (!bid) return null;
       return bookshelves?.[bid];
     },
