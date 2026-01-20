@@ -86,13 +86,6 @@ export const DataProvider = ({ children }) => {
       }
     }
 
-    // 현재 책장 아이디 설정
-    if (firstBookshelfId && data.bookshelves[firstBookshelfId]) {
-      setUiState((prev) => ({
-        ...prev,
-        currentBookshelfId: firstBookshelfId,
-      }));
-    }
     setIsLoading(false);
   }, []);
 
@@ -104,11 +97,11 @@ export const DataProvider = ({ children }) => {
       localStorage.setItem(
         "manhwaData",
         JSON.stringify({
-          bookshelves,
-          projects,
-          episodes,
-          pages,
-          cuts,
+          bookshelves: bookshelves,
+          projects: projects,
+          episodes: episodes,
+          pages: pages,
+          cuts: cuts,
         }),
       );
     }
@@ -124,7 +117,6 @@ export const DataProvider = ({ children }) => {
   // ● 헬퍼 함수: id 기반으로 접근
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   const helpers = {
-<<<<<<< HEAD
     // Id로 특정 데이터 가져오기
     getBookshelf: (bookshelfId) => bookshelves[bookshelfId] ?? null,
     getProject: (projectId) => projects[projectId] ?? null,
@@ -137,14 +129,6 @@ export const DataProvider = ({ children }) => {
       const shelf = bookshelves[bookshelfId];
       if (!shelf) return [];
       return shelf.projectOrder.map((id) => projects[id]);
-=======
-    //--● 책장 관련
-    getBookshelf: (bookshelfId = null) => {
-      const bid = bookshelfId || uiState.currentBookshelfId;
-
-      if (!bid) return null;
-      return bookshelves?.[bid];
->>>>>>> 1d516b80943861e6eff3d027568ada90d0e0c62e
     },
     getEpisodes: (projectId) => {
       const project = projects[projectId];
