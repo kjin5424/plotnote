@@ -1,12 +1,37 @@
+.cut-body-content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px;
+  background-color: #f5f5f5;
+}
+/* CutGrid: 단면/양면 대응 */
+.cut-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--page-count, 1), 1fr); /* 단면 1, 양면 2 */
+  gap: 10px;
+}
+/* CutItem들이 담기는 실제 캔버스 영역 */
+.cut-card {
+  aspect-ratio: 238 / 324;
+  width: 600px; /* 작업창 기준 적정 너비 */
+  background: white;
+  border: 1px solid #ccc;
+  display: grid; /* 내부 컷들을 그리드로 배치 */
+  /* 컷이 나뉠 때를 대비해 기본적으로 세로로 쌓이거나 커스텀 배치 */
+  grid-template-rows: auto;
+}
 .cut-canvas {
   width: 100%;
   height: 100%;
-  border: 1px solid green; /* 초록색 내곽선 가이드 */
+  border: 1px solid skyblue; /* 초록색 내곽선 가이드 */
   position: relative;
   overflow: hidden;
 }
 
 .cut-item {
+  position: relative;
+  overflow: hidden;
   border: 2px solid transparent;
   transition: border-color 0.2s;
   cursor: pointer;
