@@ -32,10 +32,7 @@ function App() {
             />
             {/* 임시 */}
             <Route path="/pages" element={<PageManagement />} />
-            <Route
-              path="project/:projectId/episode/:episodeId/page/:pageId/cut"
-              element={<CutManagement />}
-            />
+            <Route path="/pages/:pageId" element={<CutManagement />} />
           </Route>
         </Routes>
       </DataProvider>

@@ -40,6 +40,8 @@ export const DataProvider = ({ children }) => {
     currentEpisodeId: "episode-0001", // 선택된 에피소드
     currentPageId: null, // 선택된 페이지
     currentCutId: null, // 선택된 컷
+    pageView: "spread",
+    spreadStart: "odd",
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
