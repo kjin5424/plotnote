@@ -11,6 +11,7 @@ export default function PageBody({
 }) {
   // pageView에 따른 렌더 함수
   const renderPages = () => {
+    // pageView = "single";
     // 단면뷰(single)일 때
     if (pageView === "single") {
       return pages.map((page) => (
@@ -30,15 +31,15 @@ export default function PageBody({
       let i = 0;
       // 홀수시작 짝수시작 설정
       if (spreadStart === "odd" && pages.length > 0) {
-        spread.push([pages[0]]);
+        spread.push([[[], pages[0]]]);
         i = 1;
       }
-      for (; i < pages.length; i += 2) {
-        spread.push(pages.slice(i, i + 2));
-      }
+      for (; i < pages.length; i += 2) spread.push(pages.slice(i, i + 2));
+
       return spread.map((pages, index) => (
-        <div className="spread-group">
-          <div className={`page-grid ${pageView}`} key={index}>
+        <div className="spread-group" key={index}>
+          <div className={`page-grid ${pageView}`}>
+            {/* {index === 0 && spreadStart === "odd" && <PageCard />} */}
             {pages.map((page) => {
               return (
                 <PageCard
