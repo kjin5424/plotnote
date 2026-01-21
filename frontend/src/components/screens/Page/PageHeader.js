@@ -1,11 +1,14 @@
-import { usePage } from "hooks/data/usePage";
-
-export default function PageHeader({ episode }) {
+export default function PageHeader({ episode, addPage }) {
   return (
     <div className="page-header">
-      <h1 className="page-header-title">화</h1>
+      <div className="page-header-info">
+        <div className="page-header-title">
+          <h1>{episode.title}</h1>
+        </div>
+        <div className="page-header-memo">메모</div>
+      </div>
       <div className="page-header-action">
-        <button onClick={() => addPage(episode.episodeId)}>페이지 추가</button>
+        <button onClick={addPage}>페이지 추가</button>
       </div>
     </div>
   );

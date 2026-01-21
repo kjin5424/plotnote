@@ -2,12 +2,15 @@ import Header from "components/screens/Header/Header";
 import Sidebar from "components/screens/Sidebar/Sidebar";
 import { useEffect, useState } from "react";
 import { useResizeHandle, resizeEnd } from "hooks/ui/useResizeHandle";
+import { Outlet } from "react-router-dom";
+import useData from "contexts/DataContext";
 
 // Sidebar + Workspace 레이아웃
-export default function AppLayout({ children }) {
+export default function AppLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isResizing, setIsResizing] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(200);
+  const { isLoading } = useData();
 
   useEffect(() => {
     if (isResizing) {
@@ -24,6 +27,10 @@ export default function AppLayout({ children }) {
     }
   }, [isResizing]);
 
+  if (isLoading) {
+    return <div>데이터를 불러오는 중입니다</div>;
+  }
+
   return (
     <div className="app-layout">
       <Header onClickHandle={() => setIsSidebarOpen(!isSidebarOpen)} />
@@ -34,7 +41,9 @@ export default function AppLayout({ children }) {
           isResizing={isResizing}
           useResizeHandle={useResizeHandle}
         />
-        <main>{children}</main>
+        <main>
+          <Outlet />
+        </main>
       </div>
     </div>
   );

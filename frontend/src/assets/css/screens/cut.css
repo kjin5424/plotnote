@@ -1,9 +1,9 @@
 .cut-canvas {
-  display: grid;
+  width: 100%;
+  height: 100%;
+  border: 1px solid green; /* 초록색 내곽선 가이드 */
   position: relative;
-  min-height: 500px;
-  background: #fff;
-  border: 1px solid var(--border-color);
+  overflow: hidden;
 }
 
 .cut-item {

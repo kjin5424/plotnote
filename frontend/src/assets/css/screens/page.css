@@ -1,7 +1,22 @@
-/* 페이지 썸네일 특화 */
-.page-thumbnail {
-  aspect-ratio: 210 / 297; /* B4 비율 */
+.page-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.page-header-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.page-item {
+  aspect-ratio: 238 / 324; /* B4 비율 */
   position: relative;
+  border: 1px solid var(--color-border);
+  padding: 8.3% 12.15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .page-number {
@@ -16,18 +31,17 @@
   font-weight: 600;
 }
 
-/* 5+5+5+5+4 레이아웃 (PageGrid 전용) */
-.page-grid-pattern {
+.page-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: var(--spacing-md);
 }
 
-.page-grid-pattern > div:nth-child(10n + 1),
-.page-grid-pattern > div:nth-child(10n + 2),
-.page-grid-pattern > div:nth-child(10n + 3),
-.page-grid-pattern > div:nth-child(10n + 4),
-.page-grid-pattern > div:nth-child(10n + 5) {
+.page-grid > div:nth-child(10n + 1),
+.page-grid > div:nth-child(10n + 2),
+.page-grid > div:nth-child(10n + 3),
+.page-grid > div:nth-child(10n + 4),
+.page-grid > div:nth-child(10n + 5) {
   /* 첫 5개 행 스타일 */
   font-size: var(--font-size-sm);
   /* 빈 행 방지 설정, 차후 지우기 */
