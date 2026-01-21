@@ -14,7 +14,7 @@ export default function PageCard({
     <div
       key={page.pageId}
       className="page-card"
-      onClick={() => navigate(`/${page.pageId}`)}
+      onClick={() => navigate(`/pages/${page.pageId}`)}
     >
       <PageItem page={page} showCutMemo={true} />
       <div className="page-card-info">
