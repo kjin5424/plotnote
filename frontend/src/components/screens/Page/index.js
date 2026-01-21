@@ -11,6 +11,7 @@ export default function PageManagement() {
     usePage();
   const currentEpisode = getCurrentEpisode();
   const pageView = uiState.pageView;
+  const spreadStart = uiState.spreadStart;
   if (!currentEpisode) {
     return <div>선택된 에피소드가 없습니다.</div>;
   }
@@ -27,6 +28,7 @@ export default function PageManagement() {
             onUpdateMemo={updatePageMemo}
             reorderPages={reorderPages}
             pageView={pageView}
+            spreadStart={spreadStart}
           />
         }
       />
