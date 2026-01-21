@@ -54,7 +54,6 @@ export default function PageBody({
       ));
     }
   };
-  console.log(renderPages());
   // 드래그앤드롭으로 페이지 정렬바꾸기 로직
   return (
     <div className="page-body">

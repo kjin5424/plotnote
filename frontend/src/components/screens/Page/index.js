@@ -1,7 +1,6 @@
 import "assets/css/screens/page.css";
 import WorkspaceLayout from "components/layout/WorkspaceLayout";
 import PageHeader from "./PageHeader";
-import PageGrid from "./PageGrid";
 import useData from "contexts/DataContext";
 import { usePage } from "hooks/data/usePage";
 import PageBody from "./PageBody";
