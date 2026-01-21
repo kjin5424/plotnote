@@ -4,12 +4,14 @@ import PageHeader from "./PageHeader";
 import PageGrid from "./PageGrid";
 import useData from "contexts/DataContext";
 import { usePage } from "hooks/data/usePage";
+import PageBody from "./PageBody";
 
 export default function PageManagement() {
   const { getCurrentEpisode, uiState } = useData();
   const { pages, addPage, deletePage, updatePageMemo, reorderPages } =
     usePage();
   const currentEpisode = getCurrentEpisode();
+  const pageView = uiState.pageView;
   if (!currentEpisode) {
     return <div>선택된 에피소드가 없습니다.</div>;
   }
@@ -17,13 +19,15 @@ export default function PageManagement() {
   return (
     <div className="management-container">
       <WorkspaceLayout
-        header={<PageHeader episode={currentEpisode} addPage={addPage} />}
+        header={<PageHeader episode={currentEpisode} />}
         body={
-          <PageGrid
+          <PageBody
             pages={pages}
             onAddPage={addPage}
             onDeletePage={deletePage}
             onUpdateMemo={updatePageMemo}
+            reorderPages={reorderPages}
+            pageView={pageView}
           />
         }
       />
