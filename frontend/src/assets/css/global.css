@@ -30,15 +30,8 @@ button:hover {
   border: none;
   background: gray;
 }
-.image-btn {
-  font-size: 0;
-  text-indent: -9999px;
-  overflow: hidden;
-  display: inline-block;
-  background-size: transparent;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  width: 24px;
-  height: 24px;
+
+/* 폰트 */
+h1 {
+  font-size: var(--font-size-md);
 }

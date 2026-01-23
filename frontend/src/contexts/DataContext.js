@@ -5,6 +5,7 @@ import {
   manhwaData,
   userBookshelves,
   userData,
+  uiState,
   initializeStorage,
 } from "services/storage/localStorage";
 import { errorMsg } from "components/common/errorMessage";
@@ -45,7 +46,7 @@ export const DataProvider = ({ children }) => {
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // ● 컴포넌트 마운트 시 localStorage에서 데이터 로드
+  // ● 컴포넌트 마운트 시 localStorage 및 sessionStroage에서 데이터 로드
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   useEffect(() => {
     // 초기 데이터 설정
@@ -172,6 +173,40 @@ export const DataProvider = ({ children }) => {
       const permission = helpers.getPermission(projectId, userId);
       if (!permission) return null;
       return permission === "readonly";
+    },
+
+    // settings 가져오기
+    getEffectiveSettings: (projectId, episodeId, userId) => {
+      const project = helpers.getProject(projectId);
+      const episode = helpers.getEpisode(episodeId);
+      const savedUser = localStorage.getItem("user") || userData;
+      const userObj = savedUser ? JSON.parse(savedUser) : userData["user-001"];
+      const user = userObj.userId ? userObj : Object.values(userObj)[0];
+      const globalSettings = user.globalSettings;
+
+      // 우선순위: 에피소드 설정 > 프로젝트 설정 > 사용자 설정 > 기본값
+      return {
+        defaultPageCount:
+          episode.settings?.readingDirection ||
+          project.settings.readingDirection ||
+          24,
+        readingDirection:
+          episode.settings?.readingDirection ||
+          project.settings.readingDirection ||
+          "rtl",
+
+        spreadStart:
+          episode.settings?.spreadStart ||
+          project.settings.spreadStart ||
+          "odd",
+
+        pageView:
+          globalSettings.projectSettings?.[projectId]?.pageView ||
+          globalSettings.globalSettings.pageView ||
+          "spread",
+
+        SidebarOpen: globalSettings.SidebarOpen || "true",
+      };
     },
   };
 

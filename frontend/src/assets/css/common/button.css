@@ -1,1 +1,13 @@
 /* 버튼 공통 스타일 */
+.image-btn {
+  font-size: 0;
+  text-indent: -9999px;
+  overflow: hidden;
+  display: inline-block;
+  background-size: transparent;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 24px;
+  height: 24px;
+}

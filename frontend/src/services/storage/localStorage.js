@@ -1,5 +1,8 @@
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // ● manhwaData : 작품 정보 데이터 (컬렉션 중심)
+
+import Sidebar from "components/screens/Sidebar/Sidebar";
+
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 export const manhwaData = {
   bookshelves: {
@@ -26,6 +29,7 @@ export const manhwaData = {
         defaultPageCount: 24,
         startPageType: "odd", // 'odd' | 'even'
         readingDirection: "rtl", // 'rtl' | 'ltr'
+        cutGridUnit: 8,
       },
       projectMemo: "",
       episodeOrder: ["episode-0001"],
@@ -40,6 +44,11 @@ export const manhwaData = {
       memo: "",
       settings: {
         /* 프로젝트 설정 상속 또는 override */
+        // 값이 있으면 이 에피소드만 다르게 설정
+        defaultPageCount: null,
+        readingDirection: null, // 프로젝트 설정 상속
+        spreadStart: null, // 프로젝트 설정 상속
+        pageView: null,
       },
       episodeMemo: "",
       pageOrder: ["page-0001"],
@@ -93,7 +102,30 @@ export const userData = {
     userId: "user-001",
     displayName: "베베",
     email: "kjin5424@gmail.com",
+    globalSettings: {
+      readingDirection: "rtl",
+      spreadStart: "odd",
+      pageView: "spread",
+      SidebarOpen: true,
+      // theme: "light",
+      // gridColumns: 5,
+    },
   },
+};
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ● uiState : 유저 정보 데이터
+//             서버 저장 Ⅹ
+//             새로고침 시 복원 용 등
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+export const uiState = {
+  currentBookshelfId: "bookshelf-001", // 선택된 책장
+  currentProjectId: "initial-project", // 선택된 프로젝트
+  currentEpisodeId: "episode-0001", // 선택된 에피소드
+  currentPageId: null, // 선택된 페이지
+  currentCutId: null, // 선택된 컷
+  pageView: "spread",
+  spreadStart: "odd",
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -108,5 +140,8 @@ export const initializeStorage = () => {
   }
   if (!localStorage.getItem("userBookshelves")) {
     localStorage.setItem("userBookshelves", JSON.stringify(userBookshelves));
+  }
+  if (!sessionStorage.getItem("uiState")) {
+    sessionStorage.setItem("uiState", JSON.stringify(uiState));
   }
 };
