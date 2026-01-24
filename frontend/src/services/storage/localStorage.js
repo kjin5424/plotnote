@@ -1,3 +1,4 @@
+import DEFAULT_SETTINGS from "../../Setting";
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // ● manhwaData : 작품 정보 데이터 (컬렉션 중심)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -23,10 +24,10 @@ export const manhwaData = {
         "user-004": "readonly", // 읽기전용
       },
       settings: {
-        defaultPageCount: 24,
-        spreadStart: "odd", // 'odd' | 'even'
-        readingDirection: "rtl", // 'rtl' | 'ltr'
-        pageView: "spread",
+        defaultPageCount: DEFAULT_SETTINGS.defaultPageCount,
+        spreadStart: DEFAULT_SETTINGS.spreadStart,
+        readingDirection: DEFAULT_SETTINGS.readingDirection,
+        pageView: DEFAULT_SETTINGS.pageView,
         cutGridUnit: 8,
       },
       projectMemo: "",

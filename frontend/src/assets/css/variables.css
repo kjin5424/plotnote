@@ -41,7 +41,7 @@
   --color-bg-primary: #ffffff;
   --color-bg-secondary: var(--color-gray-50);
   /* 테두리 */
-  --color-border: var(--color-gray-200);
+  --color-border: var(--gray-200);
   --color-button-primary: var(--color-primary);
   --color-button-hover: var(--color-primary-dark);
 

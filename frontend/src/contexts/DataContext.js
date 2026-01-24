@@ -8,6 +8,11 @@ import {
   uiState,
   initializeStorage,
 } from "services/storage/localStorage";
+import {
+  getEffectiveSettings,
+  getEffectiveSetting,
+} from "utils/helpers/settingsHelper";
+import DEFAULT_SETTINGS from "Setting";
 import { errorMsg } from "components/common/errorMessage";
 
 // context 생성
@@ -41,8 +46,6 @@ export const DataProvider = ({ children }) => {
     currentEpisodeId: "episode-0001", // 선택된 에피소드
     currentPageId: null, // 선택된 페이지
     currentCutId: null, // 선택된 컷
-    pageView: "spread",
-    spreadStart: "odd",
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -111,23 +114,6 @@ export const DataProvider = ({ children }) => {
   }, [bookshelves, projects, episodes, pages, cuts, isLoading]);
 
   useEffect(() => {
-    if (!isLoading && uiState.currentProjectId && uiState.currentEpisodeId) {
-      const settings = helpers.getSetSettings(
-        uiState.currentProjectId,
-        uiState.currentEpisodeId,
-        currentUserId,
-      );
-
-      setUiState((prev) => ({
-        ...prev,
-        readingDirection: settings.readingDirection,
-        spreadStart: settings.spreadStart,
-        pageView: settings.pageView,
-      }));
-    }
-  }, [uiState.currentProjectId, uiState.currentEpisodeId, isLoading]);
-
-  useEffect(() => {
     if (userBookshelvesList) {
       localStorage.setItem("userBookshelves", JSON.stringify(userBookshelves));
     }
@@ -192,40 +178,31 @@ export const DataProvider = ({ children }) => {
       return permission === "readonly";
     },
 
-    // settings 가져오기
-    getSetSettings: (projectId, episodeId, userId) => {
-      const project = helpers.getCurrentProject();
+    // 설정 가져오기
+    getCurrentSettings: () => {
       const episode = helpers.getCurrentEpisode();
-      const savedUser = localStorage.getItem("user") || userData;
-      const userObj = savedUser ? JSON.parse(savedUser) : userData["user-001"];
-      const user = userObj.userId ? userObj : Object.values(userObj)[0];
-      const globalSettings = user.globalSettings;
+      const project = helpers.getCurrentProject();
+      const user = userData[currentUserId];
+      return getEffectiveSettings({
+        episode,
+        project,
+        user,
+        defaultSettings: DEFAULT_SETTINGS,
+      });
+    },
+    // 특정 설정값 가져오기
+    getSetting: (settingKey) => {
+      const episode = helpers.getCurrentEpisode();
+      const project = helpers.getCurrentProject();
+      const user = userData[currentUserId];
 
-      // 우선순위: 에피소드 설정 > 프로젝트 설정 > 사용자 설정 > 기본값
-      return {
-        defaultPageCount:
-          episode.settings?.defaultPageCount ||
-          project.settings?.defaultPageCount ||
-          24,
-
-        readingDirection:
-          episode.settings?.readingDirection ||
-          project.settings?.readingDirection ||
-          "rtl",
-
-        spreadStart:
-          episode.settings?.spreadStart ||
-          project.settings?.spreadStart ||
-          "odd",
-
-        pageView:
-          episode.settings?.pageView ||
-          project.settings?.pageView ||
-          globalSettings.pageView ||
-          "spread",
-
-        SidebarOpen: globalSettings.SidebarOpen || "true",
-      };
+      return getEffectiveSetting({
+        settingKey,
+        episode,
+        project,
+        user,
+        defaultSettings: DEFAULT_SETTINGS,
+      });
     },
   };
 
