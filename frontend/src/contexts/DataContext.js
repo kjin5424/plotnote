@@ -111,6 +111,23 @@ export const DataProvider = ({ children }) => {
   }, [bookshelves, projects, episodes, pages, cuts, isLoading]);
 
   useEffect(() => {
+    if (!isLoading && uiState.currentProjectId && uiState.currentEpisodeId) {
+      const settings = helpers.getSetSettings(
+        uiState.currentProjectId,
+        uiState.currentEpisodeId,
+        currentUserId,
+      );
+
+      setUiState((prev) => ({
+        ...prev,
+        readingDirection: settings.readingDirection,
+        spreadStart: settings.spreadStart,
+        pageView: settings.pageView,
+      }));
+    }
+  }, [uiState.currentProjectId, uiState.currentEpisodeId, isLoading]);
+
+  useEffect(() => {
     if (userBookshelvesList) {
       localStorage.setItem("userBookshelves", JSON.stringify(userBookshelves));
     }
@@ -176,9 +193,9 @@ export const DataProvider = ({ children }) => {
     },
 
     // settings 가져오기
-    getEffectiveSettings: (projectId, episodeId, userId) => {
-      const project = helpers.getProject(projectId);
-      const episode = helpers.getEpisode(episodeId);
+    getSetSettings: (projectId, episodeId, userId) => {
+      const project = helpers.getCurrentProject();
+      const episode = helpers.getCurrentEpisode();
       const savedUser = localStorage.getItem("user") || userData;
       const userObj = savedUser ? JSON.parse(savedUser) : userData["user-001"];
       const user = userObj.userId ? userObj : Object.values(userObj)[0];
@@ -187,22 +204,24 @@ export const DataProvider = ({ children }) => {
       // 우선순위: 에피소드 설정 > 프로젝트 설정 > 사용자 설정 > 기본값
       return {
         defaultPageCount:
-          episode.settings?.readingDirection ||
-          project.settings.readingDirection ||
+          episode.settings?.defaultPageCount ||
+          project.settings?.defaultPageCount ||
           24,
+
         readingDirection:
           episode.settings?.readingDirection ||
-          project.settings.readingDirection ||
+          project.settings?.readingDirection ||
           "rtl",
 
         spreadStart:
           episode.settings?.spreadStart ||
-          project.settings.spreadStart ||
+          project.settings?.spreadStart ||
           "odd",
 
         pageView:
-          globalSettings.projectSettings?.[projectId]?.pageView ||
-          globalSettings.globalSettings.pageView ||
+          episode.settings?.pageView ||
+          project.settings?.pageView ||
+          globalSettings.pageView ||
           "spread",
 
         SidebarOpen: globalSettings.SidebarOpen || "true",
