@@ -19,7 +19,7 @@ export default function PageBody({
   // 단면뷰(single)일 때
   const renderSingleView = () => {
     return pages.map((page) => (
-      <div className="page-grid">
+      <div className="page-grid" key={page.pageId}>
         <PageCard
           key={page.pageId}
           page={page}

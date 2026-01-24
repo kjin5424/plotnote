@@ -1,13 +1,16 @@
-const uiSettings = {
-  layout: {
-    sidebarPosition: "left" | "top",
-  },
-  pageView: {
-    mode: "single" | "spread",
-    spreadStart: "odd" | "even",
-  },
-  scale: {
-    zoom: 1.0,
-  },
+import {
+  PAGE_VIEW,
+  READING_DIRECTION,
+  SPREAD_START,
+} from "utils/constants/layout";
+
+export const DEFAULT_SETTINGS = {
+  defaultPageCount: 24,
+  readingDirection: READING_DIRECTION.RTL,
+  spreadStart: SPREAD_START.ODD,
+  pageView: PAGE_VIEW.SPREAD,
+  sidebarOpen: true,
+  zoom: 1.0,
 };
-export default uiSettings;
+
+export default DEFAULT_SETTINGS;
