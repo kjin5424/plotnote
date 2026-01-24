@@ -6,12 +6,12 @@ import { usePage } from "hooks/data/usePage";
 import PageBody from "./PageBody";
 
 export default function PageManagement() {
-  const { getCurrentEpisode, uiState } = useData();
+  const { getCurrentEpisode, getSetSettings } = useData();
   const { pages, addPage, deletePage, updatePageMemo, reorderPages } =
     usePage();
   const currentEpisode = getCurrentEpisode();
-  const pageView = uiState.pageView;
-  const spreadStart = uiState.spreadStart;
+  const { pageView, readingDirection, spreadStart } = getSetSettings();
+
   if (!currentEpisode) {
     return <div>선택된 에피소드가 없습니다.</div>;
   }
@@ -29,6 +29,7 @@ export default function PageManagement() {
             reorderPages={reorderPages}
             pageView={pageView}
             spreadStart={spreadStart}
+            readingDirection={readingDirection}
           />
         }
       />

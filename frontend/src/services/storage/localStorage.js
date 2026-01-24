@@ -1,8 +1,5 @@
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // ● manhwaData : 작품 정보 데이터 (컬렉션 중심)
-
-import Sidebar from "components/screens/Sidebar/Sidebar";
-
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 export const manhwaData = {
   bookshelves: {
@@ -27,8 +24,9 @@ export const manhwaData = {
       },
       settings: {
         defaultPageCount: 24,
-        startPageType: "odd", // 'odd' | 'even'
+        spreadStart: "odd", // 'odd' | 'even'
         readingDirection: "rtl", // 'rtl' | 'ltr'
+        pageView: "spread",
         cutGridUnit: 8,
       },
       projectMemo: "",
@@ -46,8 +44,8 @@ export const manhwaData = {
         /* 프로젝트 설정 상속 또는 override */
         // 값이 있으면 이 에피소드만 다르게 설정
         defaultPageCount: null,
-        readingDirection: null, // 프로젝트 설정 상속
-        spreadStart: null, // 프로젝트 설정 상속
+        spreadStart: null,
+        readingDirection: null,
         pageView: null,
       },
       episodeMemo: "",
@@ -124,8 +122,6 @@ export const uiState = {
   currentEpisodeId: "episode-0001", // 선택된 에피소드
   currentPageId: null, // 선택된 페이지
   currentCutId: null, // 선택된 컷
-  pageView: "spread",
-  spreadStart: "odd",
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

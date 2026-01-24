@@ -46,13 +46,23 @@
 /* page-grid */
 .spread-group {
   grid-column: span 2;
-  direction: ltr;
+  direction: inherit;
 }
 .page-grid.spread {
   display: flex;
   justify-content: center;
   gap: 0;
   width: 100%;
+}
+.page-grid.spread[data-reading-direction="rtl"]
+  .page-card:first-child
+  .page-item {
+  border-left: none;
+}
+.page-grid.spread[data-reading-direction="ltr"]
+  .page-card:first-child
+  .page-item {
+  border-right: none;
 }
 .empty-page-placeholder {
   aspect-ratio: 238 / 324;
@@ -65,30 +75,6 @@
   color: var(--color-text-secondary);
   font-size: 12px;
   box-sizing: border-box;
-}
-/* 양면 페이지 테두리 겹침 방지 */
-.page-grid.spread[data-reading-direction="rtl"]
-  .page-card:first-child
-  .page-item {
-  border-left: none;
-}
-.page-grid.spread[data-reading-direction="rtl"]
-  .page-card:last-child
-  .page-item {
-  border-right: none;
-}
-.page-grid.spread[data-reading-direction="ltr"]
-  .page-card:first-child
-  .page-item {
-  border-right: none;
-}
-.page-grid.spread[data-reading-direction="ltr"]
-  .page-card:last-child
-  .page-item {
-  border-left: none;
-}
-.page-grid.spread .page-card:only-child .page-item {
-  border: 1px solid var(--color-border);
 }
 
 /* page-card */

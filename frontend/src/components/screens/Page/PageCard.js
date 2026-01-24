@@ -2,12 +2,7 @@ import { useNavigate } from "react-router-dom";
 import PageItem from "./PageItem";
 
 // 개별 페이지 카드
-export default function PageCard({
-  page,
-  onAddPage,
-  onDeletePage,
-  onUpdateMemo,
-}) {
+export default function PageCard({ page, deletePage, updatePageMemo }) {
   const navigate = useNavigate();
   return (
     <div
