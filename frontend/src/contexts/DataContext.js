@@ -5,7 +5,7 @@ import {
   manhwaData,
   userBookshelves,
   userData,
-  uiState,
+  uiState as defaultUiState,
   initializeStorage,
 } from "services/storage/localStorage";
 import {
@@ -35,17 +35,18 @@ export const DataProvider = ({ children }) => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const [uiState, setUiState] = useState({
-    // currentBookshelfId: null, // 선택된 책장
-    // currentProjectId: null, // 선택된 프로젝트
-    // currentEpisodeId: null, // 선택된 에피소드
-    // currentPageId: null, // 선택된 페이지
-    // currentCutId: null, // 선택된 컷
-    currentBookshelfId: "bookshelf-001", // 선택된 책장
-    currentProjectId: "initial-project", // 선택된 프로젝트
-    currentEpisodeId: "episode-0001", // 선택된 에피소드
-    currentPageId: null, // 선택된 페이지
-    currentCutId: null, // 선택된 컷
+  const [uiState, setUiState] = useState(() => {
+    // sessionStorage에서 uiState 로드 (새로고침 시 복원)
+    const savedUiState = sessionStorage.getItem("uiState");
+    console.log(savedUiState);
+    if (savedUiState) {
+      try {
+        return JSON.parse(savedUiState);
+      } catch (e) {
+        console.error("uiState 파싱 실패:", e);
+      }
+    }
+    return defaultUiState;
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -96,8 +97,9 @@ export const DataProvider = ({ children }) => {
   }, []);
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // ● 데이터 변경 시 localStorage에 저장
+  // ● 데이터 변경 시 저장
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // manhwaData 변경 시 localStorage에 저장
   useEffect(() => {
     if (!isLoading) {
       localStorage.setItem(
@@ -113,11 +115,22 @@ export const DataProvider = ({ children }) => {
     }
   }, [bookshelves, projects, episodes, pages, cuts, isLoading]);
 
+  // userBookshelves 변경 시 localStorage에 저장
   useEffect(() => {
-    if (userBookshelvesList) {
-      localStorage.setItem("userBookshelves", JSON.stringify(userBookshelves));
+    if (!isLoading && userBookshelvesList) {
+      localStorage.setItem(
+        "userBookshelves",
+        JSON.stringify(userBookshelvesList),
+      );
     }
-  }, [userBookshelvesList]);
+  }, [userBookshelvesList, isLoading]);
+
+  // uiState 변경 시 sessionStorage에 저장
+  useEffect(() => {
+    if (!isLoading) {
+      sessionStorage.setItem("uiState", JSON.stringify(uiState));
+    }
+  }, [uiState, isLoading]);
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // ● 헬퍼 함수: id 기반으로 접근
@@ -207,6 +220,62 @@ export const DataProvider = ({ children }) => {
   };
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // ● uiState 변경 헬퍼 함수
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  const uiStateHelpers = {
+    // 개별 uiState 항목 변경
+    setCurrentBookshelfId: (bookshelfId) => {
+      setUiState((prev) => ({ ...prev, currentBookshelfId: bookshelfId }));
+    },
+    setCurrentProjectId: (projectId) => {
+      setUiState((prev) => ({ ...prev, currentProjectId: projectId }));
+    },
+    setCurrentEpisodeId: (episodeId) => {
+      setUiState((prev) => ({ ...prev, currentEpisodeId: episodeId }));
+    },
+    setCurrentPageId: (pageId) => {
+      setUiState((prev) => ({ ...prev, currentPageId: pageId }));
+    },
+    setCurrentCutId: (cutId) => {
+      setUiState((prev) => ({ ...prev, currentCutId: cutId }));
+    },
+    toggleSidebar: () => {
+      setUiState((prev) => ({ ...prev, isSidebarOpen: !prev.isSidebarOpen }));
+    },
+    setSidebarOpen: (isOpen) => {
+      setUiState((prev) => ({ ...prev, isSidebarOpen: isOpen }));
+    },
+
+    // 네비게이션: 프로젝트 선택 시 하위 항목 초기화
+    navigateToProject: (projectId) => {
+      setUiState((prev) => ({
+        ...prev,
+        currentProjectId: projectId,
+        currentEpisodeId: null,
+        currentPageId: null,
+        currentCutId: null,
+      }));
+    },
+    // 네비게이션: 에피소드 선택 시 하위 항목 초기화
+    navigateToEpisode: (episodeId) => {
+      setUiState((prev) => ({
+        ...prev,
+        currentEpisodeId: episodeId,
+        currentPageId: null,
+        currentCutId: null,
+      }));
+    },
+    // 네비게이션: 페이지 선택 시 컷 초기화
+    navigateToPage: (pageId) => {
+      setUiState((prev) => ({
+        ...prev,
+        currentPageId: pageId,
+        currentCutId: null,
+      }));
+    },
+  };
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // ● 반환 변수 value 선언
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   const value = {
@@ -230,6 +299,7 @@ export const DataProvider = ({ children }) => {
     uiState,
     setUiState,
     ...helpers,
+    ...uiStateHelpers,
   };
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 };

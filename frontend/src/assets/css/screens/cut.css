@@ -1,3 +1,7 @@
+.cut-body {
+  width: 100%;
+}
+
 .cut-body-content {
   display: flex;
   justify-content: center;
@@ -10,10 +14,9 @@
   grid-template-columns: repeat(var(--page-count, 1), 1fr); /* 단면 1, 양면 2 */
   gap: 10px;
 }
-/* CutItem들이 담기는 실제 캔버스 영역 */
 .cut-card {
   aspect-ratio: 238 / 324;
-  width: 600px; /* 작업창 기준 적정 너비 */
+  flex: 0 1 600px;
   background: white;
   border: 1px solid #ccc;
   display: grid; /* 내부 컷들을 그리드로 배치 */

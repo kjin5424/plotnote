@@ -11,13 +11,7 @@
   height: 100vh;
   overflow: hidden;
   display: flex;
-  flex-direction: column;
-}
-.main-content {
-  flex: 1;
-  display: flex;
-  overflow: hidden;
-  position: relative;
+  flex-direction: row;
 }
 /* ============================================
    Header 공통 스타일
@@ -64,26 +58,65 @@
    Sidebar 공통 스타일
    ============================================ */
 .sidebar {
-  width: var(--sidebar-width);
-  height: 100%;
-  gap: 4px;
-  padding: 12px;
+  height: 100vh;
+  overflow: hidden; /* 영역 밖으로 밀려 나가는 아이콘 숨김 */
   position: relative;
-  top: 0;
-  left: 0;
+  background: white;
+  transition: width 0.3s ease; /* 너비 변화 부드럽게 */
+  z-index: 50;
   display: flex;
   flex-direction: column;
-  background: white;
-  margin-left: calc(var(--sidebar-width) * -1);
-  transition: margin-left 0.3s ease;
-  z-index: 50;
 }
-.sidebar.open {
-  margin-left: 0;
+.sidebar-header {
+  height: 50px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
 }
-.sidebar-body {
-  flex: 1;
-  overflow-y: auto;
+/* 프로필 정보: 기본적으로 투명했다가 열릴 때 나타남 */
+.sidebar-profile {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+}
+.sidebar.open .sidebar-profile {
+  opacity: 1;
+}
+.sidebar-menu {
+  position: absolute;
+  left: 12px; /* 닫혔을 때 위치 */
+  transition: left 0.3s ease;
+}
+.sidebar.open .sidebar-menu {
+  left: calc(100% - 40px); /* 열렸을 때 우측 상단으로 이동 */
+}
+/* --- 바디 영역 애니메이션 --- */
+
+/* 밀려 나갈 회색 동그라미들 */
+.nav-icons-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px 0;
+  transition:
+    transform 0.3s ease,
+    opacity 0.2s ease;
+}
+/* 사이드바가 열리면 아이콘들을 오른쪽으로 밀어서 숨김 */
+.sidebar.open .nav-icons-wrapper {
+  transform: translateX(100px); /* 오른쪽으로 밀기 */
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 실제 메뉴 내용: 처음엔 숨겼다가 열리면 나타남 */
+.sidebar-content {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.sidebar.open .sidebar-content {
+  opacity: 1;
 }
 
 /* ============================================
