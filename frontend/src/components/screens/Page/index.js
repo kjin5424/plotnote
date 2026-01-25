@@ -11,7 +11,7 @@ export default function PageManagement() {
     usePage();
   const currentEpisode = getCurrentEpisode();
   const { pageView, readingDirection, spreadStart } = getCurrentSettings();
-  console.log(getCurrentSettings());
+
   if (!currentEpisode) {
     return <div>선택된 에피소드가 없습니다.</div>;
   }

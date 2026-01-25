@@ -13,7 +13,9 @@ export default function CutBody({ pages, pageView }) {
       <div className="cut-body-content">
         <div className={`page-grid ${pageView}`}>
           {pages.map((page) => (
-            <CutCard page={page} />
+            <div className="page-item">
+              <CutCard key={page.pageId} page={page} />
+            </div>
           ))}
         </div>
       </div>

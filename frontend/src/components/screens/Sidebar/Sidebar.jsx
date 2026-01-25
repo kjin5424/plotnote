@@ -1,3 +1,4 @@
+import ImageButton from "components/common/Button/ImageButton";
 import { ResizeHandle } from "./ResizeHandle";
 
 export default function Sidebar({
@@ -5,14 +6,26 @@ export default function Sidebar({
   sidebarWidth,
   isResizing,
   useResizeHandle,
+  toggleSidebar,
 }) {
+  isOpen = true;
   return (
     <>
       <div
-        className={isOpen ? "sidebar open" : "sidebar"}
-        style={{ width: `${sidebarWidth}px` }}
+        className={`sidebar ${isOpen ? "open" : "closed"}`}
+        style={{ width: isOpen ? `${sidebarWidth}px` : "60px" }}
       >
-        <div className="sidebar-header">아이콘 / 베베</div>
+        <div className="sidebar-header">
+          <span className="profile-icon">😊</span>
+          <span className="profile-text">베베</span>
+          <div className="sidebar-menu">
+            <ImageButton
+              image="img-menu"
+              text="메뉴"
+              onClickHandle={toggleSidebar}
+            />
+          </div>
+        </div>
         <div className="sidebar-body">
           <span>트리뷰</span>
           <div className="sidebar-menu-group">

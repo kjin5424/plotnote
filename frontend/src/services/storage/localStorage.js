@@ -105,7 +105,7 @@ export const userData = {
       readingDirection: "rtl",
       spreadStart: "odd",
       pageView: "spread",
-      SidebarOpen: true,
+      SidebarOpen: false,
       // theme: "light",
       // gridColumns: 5,
     },
@@ -123,6 +123,7 @@ export const uiState = {
   currentEpisodeId: "episode-0001", // 선택된 에피소드
   currentPageId: null, // 선택된 페이지
   currentCutId: null, // 선택된 컷
+  isSidebarOpen: false, // 사이드바 열림 여부
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
