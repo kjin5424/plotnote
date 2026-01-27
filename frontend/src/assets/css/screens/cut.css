@@ -1,12 +1,14 @@
 .cut-body {
   width: 100%;
+  overflow: auto;
+  background: var(--bg-white);
 }
 
 .cut-body-content {
   display: flex;
+  width: 100%;
   justify-content: center;
   align-items: center;
-  padding: 40px;
 }
 /* CutGrid: 단면/양면 대응 */
 .cut-grid {
@@ -15,8 +17,9 @@
   gap: 10px;
 }
 .cut-card {
-  aspect-ratio: 238 / 324;
-  flex: 0 1 600px;
+  display: flex;
+  width: 100%;
+  height: 100%;
   background: white;
   border: 1px solid #ccc;
   display: grid; /* 내부 컷들을 그리드로 배치 */

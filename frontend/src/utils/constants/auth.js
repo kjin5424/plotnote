@@ -2,8 +2,8 @@
 
 // utils/constants/auth.js
 export const AUTH_LEVELS = {
-  READONLY: "readonly",
-  COMMENT_ONLY: "commentonly",
+  READONLY: "readOnly",
+  COMMENT_ONLY: "commentOnly",
   EDITOR: "editor",
   OWNER: "owner",
 };
