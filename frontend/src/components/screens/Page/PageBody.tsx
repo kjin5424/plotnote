@@ -43,7 +43,9 @@ export default function PageBody({
             className="page-grid spread"
             data-reading-direction={readingDirection}
           >
-            <div className="empty-page-placeholder" />
+            <div className="page-card">
+              <div className="page-item page-item--empty" />
+            </div>
             <PageCard
               key={firstPage.pageId}
               page={firstPage}
@@ -79,7 +81,9 @@ export default function PageBody({
                 updatePageMemo={updatePageMemo}
               />
             ) : (
-              <div className="empty-page-placeholder" />
+              <div className="page-card">
+                <div className="page-item page-item--empty" />
+              </div>
             )}
           </div>
         </div>,

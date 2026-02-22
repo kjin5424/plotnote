@@ -1,8 +1,15 @@
 import DEFAULT_SETTINGS from "../../Setting";
+import type {
+  ManhwaData,
+  UserBookshelves,
+  User,
+  UiState,
+} from "types/models";
+
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // ● manhwaData : 작품 정보 데이터 (컬렉션 중심)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-export const manhwaData = {
+export const manhwaData: ManhwaData = {
   bookshelves: {
     "bookshelf-001": {
       bookshelfId: "bookshelf-001",
@@ -40,7 +47,6 @@ export const manhwaData = {
       episodeId: "episode-0001",
       title: "Initial Episode",
       permissions: {},
-      memo: "",
       settings: {
         /* 프로젝트 설정 상속 또는 override */
         // 값이 있으면 이 에피소드만 다르게 설정
@@ -58,23 +64,16 @@ export const manhwaData = {
       episodeId: "episode-0001",
       pageId: "page-0001",
       pageMemo: "",
-      cutOrder: ["cut-0001"],
+      cutOrder: [],
     },
   },
-  cuts: {
-    "cut-0001": {
-      pageId: "page-0001",
-      cutId: "cut-0001",
-      cutMemo: "",
-      layout: null,
-    },
-  },
+  cuts: {},
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // ● userBookshelves : 사용자별 접근 가능한 컬렉션 목록
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-export const userBookshelves = {
+export const userBookshelves: Record<string, UserBookshelves> = {
   "user-001": {
     owned: ["bookshelf-001"], // 본인이 소유한 컬렉션
     shared: [], // 다른 사람이 공유한 컬렉션
@@ -96,7 +95,7 @@ export const userBookshelves = {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // ● userData : 유저 정보 데이터
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-export const userData = {
+export const userData: Record<string, User> = {
   "user-001": {
     userId: "user-001",
     displayName: "베베",
@@ -106,8 +105,6 @@ export const userData = {
       spreadStart: "odd",
       pageView: "spread",
       SidebarOpen: false,
-      // theme: "light",
-      // gridColumns: 5,
     },
   },
 };
@@ -117,7 +114,7 @@ export const userData = {
 //             서버 저장 Ⅹ
 //             새로고침 시 복원 용 등
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-export const uiState = {
+export const uiState: UiState = {
   currentBookshelfId: "bookshelf-001", // 선택된 책장
   currentProjectId: "initial-project", // 선택된 프로젝트
   currentEpisodeId: "episode-0001", // 선택된 에피소드
@@ -129,7 +126,7 @@ export const uiState = {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // ● 초기 데이터 설정 (localStorage에 없을 경우에만)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-export const initializeStorage = () => {
+export const initializeStorage = (): void => {
   if (!localStorage.getItem("user")) {
     localStorage.setItem("user", JSON.stringify(userData));
   }

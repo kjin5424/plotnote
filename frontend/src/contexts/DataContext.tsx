@@ -14,34 +14,46 @@ import {
 } from "utils/helpers/settingsHelper";
 import DEFAULT_SETTINGS from "Setting";
 import { errorMsg } from "components/common/errorMessage";
+import type {
+  Bookshelf,
+  Project,
+  Episode,
+  Page,
+  Cut,
+  UserBookshelves,
+  Permission,
+  UiState,
+  Settings,
+  DataContextValue,
+} from "types/models";
 
 // context 생성
-export const DataContext = createContext();
+export const DataContext = createContext<DataContextValue | null>(null);
 
 // provider 컴포넌트
-export const DataProvider = ({ children }) => {
+export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // ● 상태 초기화
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  const [bookshelves, setBookshelves] = useState({});
-  const [projects, setProjects] = useState({});
-  const [episodes, setEpisodes] = useState({});
-  const [pages, setPages] = useState({});
-  const [cuts, setCuts] = useState({});
+  const [bookshelves, setBookshelves] = useState<Record<string, Bookshelf>>({});
+  const [projects, setProjects] = useState<Record<string, Project>>({});
+  const [episodes, setEpisodes] = useState<Record<string, Episode>>({});
+  const [pages, setPages] = useState<Record<string, Page>>({});
+  const [cuts, setCuts] = useState<Record<string, Cut>>({});
 
-  const [userBookshelvesList, setUserBookshelvesList] = useState({});
-  const [currentUserId, setCurrentUserId] = useState(null);
-  const [currentPermission, setCurrentPermission] = useState(null);
+  const [userBookshelvesList, setUserBookshelvesList] = useState<Record<string, UserBookshelves>>({});
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [currentPermission, setCurrentPermission] = useState<Permission | null>(null);
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const [uiState, setUiState] = useState(() => {
+  const [uiState, setUiState] = useState<UiState>(() => {
     // sessionStorage에서 uiState 로드 (새로고침 시 복원)
     const savedUiState = sessionStorage.getItem("uiState");
     console.log(savedUiState);
     if (savedUiState) {
       try {
-        return JSON.parse(savedUiState);
+        return JSON.parse(savedUiState) as UiState;
       } catch (e) {
         console.error("uiState 파싱 실패:", e);
       }
@@ -57,9 +69,9 @@ export const DataProvider = ({ children }) => {
     initializeStorage();
 
     // localStorage에서 유저 정보 로드
-    const savedUser = localStorage.getItem("user") || userData;
-    const userObj = savedUser ? JSON.parse(savedUser) : userData["user-001"];
-    const user = userObj.userId ? userObj : Object.values(userObj)[0];
+    const savedUser = localStorage.getItem("user") || JSON.stringify(userData);
+    const userObj = JSON.parse(savedUser);
+    const user = userObj.userId ? userObj : Object.values(userObj)[0] as typeof userData[string];
     setCurrentUserId(user.userId);
 
     // localStorage에서 만화 데이터 읽기
@@ -137,65 +149,65 @@ export const DataProvider = ({ children }) => {
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   const helpers = {
     // Id로 특정 데이터 가져오기
-    getBookshelf: (bookshelfId) => bookshelves[bookshelfId] ?? null,
-    getProject: (projectId) => projects[projectId] ?? null,
-    getEpisode: (episodeId) => episodes[episodeId] ?? null,
-    getPage: (pageId) => pages[pageId] ?? null,
-    getCut: (cutId) => cuts[cutId] ?? null,
+    getBookshelf: (bookshelfId: string) => bookshelves[bookshelfId] ?? null,
+    getProject: (projectId: string) => projects[projectId] ?? null,
+    getEpisode: (episodeId: string) => episodes[episodeId] ?? null,
+    getPage: (pageId: string) => pages[pageId] ?? null,
+    getCut: (cutId: string) => cuts[cutId] ?? null,
 
     // 아이디로 특정 데이터 리스트 가져오기
-    getProjects: (bookshelfId) => {
+    getProjects: (bookshelfId: string) => {
       const shelf = bookshelves[bookshelfId];
       if (!shelf) return [];
       return shelf.projectOrder.map((id) => projects[id]);
     },
-    getEpisodes: (projectId) => {
+    getEpisodes: (projectId: string) => {
       const project = projects[projectId];
       if (!project) return [];
       return project.episodeOrder.map((id) => episodes[id]);
     },
-    getPages: (episodeId) => {
+    getPages: (episodeId: string) => {
       const episode = episodes[episodeId];
       if (!episode) return [];
       return episode.pageOrder.map((id) => pages[id]);
     },
-    getCuts: (pageId) => {
+    getCuts: (pageId: string) => {
       const page = pages[pageId];
       if (!page) return [];
       return page.cutOrder.map((id) => cuts[id]);
     },
 
-    // 현제 선택된 데이터 가져오기
-    getCurrentBookshelf: () => helpers.getBookshelf(uiState.currentBookshelfId),
-    getCurrentProject: () => helpers.getProject(uiState.currentProjectId),
-    getCurrentEpisode: () => helpers.getEpisode(uiState.currentEpisodeId),
-    getCurrentPage: () => helpers.getPage(uiState.currentPageId),
-    getCurrentCut: () => helpers.getCut(uiState.currentCutId),
+    // 현재 선택된 데이터 가져오기
+    getCurrentBookshelf: () => helpers.getBookshelf(uiState.currentBookshelfId ?? ""),
+    getCurrentProject: () => helpers.getProject(uiState.currentProjectId ?? ""),
+    getCurrentEpisode: () => helpers.getEpisode(uiState.currentEpisodeId ?? ""),
+    getCurrentPage: () => helpers.getPage(uiState.currentPageId ?? ""),
+    getCurrentCut: () => helpers.getCut(uiState.currentCutId ?? ""),
 
     // 권한 가져오기
-    getPermission: (projectId, userId = currentUserId) => {
+    getPermission: (projectId: string, userId: string = currentUserId ?? ""): Permission | null => {
       const project = helpers.getProject(projectId);
       if (!project || !userId) return null;
       return project.permissions?.[userId] || null;
     },
     // 편집 가능 여부
-    canEdit: (projectId = null, userId = currentUserId) => {
-      const permission = helpers.getPermission(projectId, userId);
+    canEdit: (projectId: string | null = null, userId: string = currentUserId ?? ""): boolean | null => {
+      const permission = helpers.getPermission(projectId ?? "", userId);
       if (!permission) return null;
       return permission === "owner" || permission === "editor";
     },
     // 읽기 전용 여부
-    isReadonly: (projectId = null, userId = currentUserId) => {
-      const permission = helpers.getPermission(projectId, userId);
+    isReadonly: (projectId: string | null = null, userId: string = currentUserId ?? ""): boolean | null => {
+      const permission = helpers.getPermission(projectId ?? "", userId);
       if (!permission) return null;
       return permission === "readonly";
     },
 
     // 설정 가져오기
-    getCurrentSettings: () => {
+    getCurrentSettings: (): Settings => {
       const episode = helpers.getCurrentEpisode();
       const project = helpers.getCurrentProject();
-      const user = userData[currentUserId];
+      const user = userData[currentUserId ?? ""];
       return getEffectiveSettings({
         episode,
         project,
@@ -204,11 +216,10 @@ export const DataProvider = ({ children }) => {
       });
     },
     // 특정 설정값 가져오기
-    getSetting: (settingKey) => {
+    getSetting: (settingKey: keyof Settings): Settings[keyof Settings] => {
       const episode = helpers.getCurrentEpisode();
       const project = helpers.getCurrentProject();
-      const user = userData[currentUserId];
-
+      const user = userData[currentUserId ?? ""];
       return getEffectiveSetting({
         settingKey,
         episode,
@@ -224,30 +235,30 @@ export const DataProvider = ({ children }) => {
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   const uiStateHelpers = {
     // 개별 uiState 항목 변경
-    setCurrentBookshelfId: (bookshelfId) => {
+    setCurrentBookshelfId: (bookshelfId: string) => {
       setUiState((prev) => ({ ...prev, currentBookshelfId: bookshelfId }));
     },
-    setCurrentProjectId: (projectId) => {
+    setCurrentProjectId: (projectId: string) => {
       setUiState((prev) => ({ ...prev, currentProjectId: projectId }));
     },
-    setCurrentEpisodeId: (episodeId) => {
+    setCurrentEpisodeId: (episodeId: string) => {
       setUiState((prev) => ({ ...prev, currentEpisodeId: episodeId }));
     },
-    setCurrentPageId: (pageId) => {
+    setCurrentPageId: (pageId: string) => {
       setUiState((prev) => ({ ...prev, currentPageId: pageId }));
     },
-    setCurrentCutId: (cutId) => {
+    setCurrentCutId: (cutId: string | null) => {
       setUiState((prev) => ({ ...prev, currentCutId: cutId }));
     },
     toggleSidebar: () => {
       setUiState((prev) => ({ ...prev, isSidebarOpen: !prev.isSidebarOpen }));
     },
-    setSidebarOpen: (isOpen) => {
+    setSidebarOpen: (isOpen: boolean) => {
       setUiState((prev) => ({ ...prev, isSidebarOpen: isOpen }));
     },
 
     // 네비게이션: 프로젝트 선택 시 하위 항목 초기화
-    navigateToProject: (projectId) => {
+    navigateToProject: (projectId: string) => {
       setUiState((prev) => ({
         ...prev,
         currentProjectId: projectId,
@@ -257,7 +268,7 @@ export const DataProvider = ({ children }) => {
       }));
     },
     // 네비게이션: 에피소드 선택 시 하위 항목 초기화
-    navigateToEpisode: (episodeId) => {
+    navigateToEpisode: (episodeId: string) => {
       setUiState((prev) => ({
         ...prev,
         currentEpisodeId: episodeId,
@@ -266,7 +277,7 @@ export const DataProvider = ({ children }) => {
       }));
     },
     // 네비게이션: 페이지 선택 시 컷 초기화
-    navigateToPage: (pageId) => {
+    navigateToPage: (pageId: string) => {
       setUiState((prev) => ({
         ...prev,
         currentPageId: pageId,
@@ -278,7 +289,7 @@ export const DataProvider = ({ children }) => {
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // ● 반환 변수 value 선언
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  const value = {
+  const value: DataContextValue = {
     bookshelves,
     setBookshelves,
     projects,
@@ -305,7 +316,7 @@ export const DataProvider = ({ children }) => {
 };
 
 // useData 커스텀 훅
-export default function useData() {
+export default function useData(): DataContextValue {
   const context = useContext(DataContext);
   // Context 밖에서 사용하면 에러
   if (!context) {

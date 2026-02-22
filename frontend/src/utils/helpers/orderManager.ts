@@ -1,11 +1,11 @@
-export const reorder = (list, startIndex, endIndex) => {
+export const reorder = (list: string[], startIndex: number, endIndex: number): string[] => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
   return result;
 };
 
-export const addToOrder = (list, newId, position = -1) => {
+export const addToOrder = (list: string[], newId: string, position: number = -1): string[] => {
   if (position === -1) {
     return [...list, newId];
   }
@@ -14,10 +14,10 @@ export const addToOrder = (list, newId, position = -1) => {
   return result;
 };
 
-export const removeFromOrder = (list, targetId) => {
+export const removeFromOrder = (list: string[], targetId: string): string[] => {
   return list.filter((id) => id !== targetId);
 };
 
-export const reverseOrder = (list) => {
+export const reverseOrder = (list: string[]): string[] => {
   return list.reverse();
 };

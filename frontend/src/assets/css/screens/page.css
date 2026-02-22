@@ -64,17 +64,17 @@
   .page-item {
   border-right: none;
 }
-.empty-page-placeholder {
-  aspect-ratio: 238 / 324;
-  width: 100%;
-  background: transparent;
-  border: 1px dashed var(--color-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text-secondary);
-  font-size: 12px;
-  box-sizing: border-box;
+/* spread 내 page-card: 동일한 flex 비율로 너비 통일 */
+.page-grid.spread > .page-card {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 페이지가 있어야 하는 자리인데 없을 때 (양면뷰 빈 슬롯) */
+/* page-card 안의 page-item에만 점선 적용, page-card-info 없음 */
+.page-item--empty {
+  border-style: dashed;
+  cursor: default;
 }
 
 /* page-card */
@@ -127,6 +127,3 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.cut-canvas {
-  width: 100%;
-}
