@@ -1,7 +1,14 @@
-export default function BookshelfHeaderHeader() {
+import useData from "contexts/DataContext";
+
+export default function BookshelfHeader() {
+  const { getCurrentBookshelf } = useData();
+  const bookshelf = getCurrentBookshelf();
+
   return (
     <div className="bookshelf-header">
-      <h1>책장헤더</h1>
+      <h2 className="bookshelf-header-title">
+        {bookshelf?.title ?? "책장"}
+      </h2>
     </div>
   );
 }

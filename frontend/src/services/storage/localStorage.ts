@@ -13,7 +13,7 @@ export const manhwaData: ManhwaData = {
   bookshelves: {
     "bookshelf-001": {
       bookshelfId: "bookshelf-001",
-      ownerId: "user-001", // 생성자
+      ownerId: "user-001",
       title: "나의 첫 번째 컬렉션",
       projectOrder: ["initial-project"],
     },
@@ -24,11 +24,15 @@ export const manhwaData: ManhwaData = {
       bookshelfId: "bookshelf-001",
       projectId: "initial-project",
       title: "Initial Project",
+      thumbnailUrl: null,
+      isFavorited: false,
+      createdAt: "2025-01-01T00:00:00.000Z",
+      updatedAt: "2025-01-01T00:00:00.000Z",
       permissions: {
-        "user-001": "owner", // 소유자
-        "user-002": "editor", // 편집 가능
-        "user-003": "commentonly", // 코멘트만
-        "user-004": "readonly", // 읽기전용
+        "user-001": "owner",
+        "user-002": "editor",
+        "user-003": "commentonly",
+        "user-004": "readonly",
       },
       settings: {
         defaultPageCount: DEFAULT_SETTINGS.defaultPageCount,
@@ -38,36 +42,51 @@ export const manhwaData: ManhwaData = {
         cutGridUnit: 8,
       },
       projectMemo: "",
+      projectDetailMemos: {},
+      projectDetailMemoOrder: [],
       episodeOrder: ["episode-0001"],
     },
   },
+
   episodes: {
     "episode-0001": {
       projectId: "initial-project",
       episodeId: "episode-0001",
       title: "Initial Episode",
+      thumbnailUrl: null,
+      createdAt: "2025-01-01T00:00:00.000Z",
+      updatedAt: "2025-01-01T00:00:00.000Z",
       permissions: {},
       settings: {
-        /* 프로젝트 설정 상속 또는 override */
-        // 값이 있으면 이 에피소드만 다르게 설정
+        // 값이 있으면 이 에피소드만 다르게 설정 (null = 프로젝트 설정 상속)
         defaultPageCount: null,
         spreadStart: null,
         readingDirection: null,
         pageView: null,
       },
       episodeMemo: "",
+      episodeDetailMemos: {},
+      episodeDetailMemoOrder: [],
       pageOrder: ["page-0001"],
     },
   },
+
   pages: {
     "page-0001": {
       episodeId: "episode-0001",
       pageId: "page-0001",
+      createdAt: "2025-01-01T00:00:00.000Z",
+      updatedAt: "2025-01-01T00:00:00.000Z",
       pageMemo: "",
+      pageDetailMemos: {},
+      pageDetailMemoOrder: [],
+      cutNoteOrder: [],
       cutOrder: [],
     },
   },
+
   cuts: {},
+  cutNotes: {},
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -75,20 +94,20 @@ export const manhwaData: ManhwaData = {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 export const userBookshelves: Record<string, UserBookshelves> = {
   "user-001": {
-    owned: ["bookshelf-001"], // 본인이 소유한 컬렉션
-    shared: [], // 다른 사람이 공유한 컬렉션
+    owned: ["bookshelf-001"],
+    shared: [],
   },
   "user-002": {
     owned: [],
-    shared: [{ collectionId: "bookshelf-001", permission: "editor" }],
+    shared: [{ bookshelfId: "bookshelf-001", permission: "editor" }],
   },
   "user-003": {
     owned: [],
-    shared: [{ collectionId: "bookshelf-001", permission: "commentonly" }],
+    shared: [{ bookshelfId: "bookshelf-001", permission: "commentonly" }],
   },
   "user-004": {
     owned: [],
-    shared: [{ collectionId: "bookshelf-001", permission: "readonly" }],
+    shared: [{ bookshelfId: "bookshelf-001", permission: "readonly" }],
   },
 };
 
@@ -106,21 +125,20 @@ export const userData: Record<string, User> = {
       pageView: "spread",
       SidebarOpen: false,
     },
+    favoritedProjectIds: [],
   },
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// ● uiState : 유저 정보 데이터
-//             서버 저장 Ⅹ
-//             새로고침 시 복원 용 등
+// ● uiState : 클라이언트 전용 UI 상태 (서버 저장 X)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 export const uiState: UiState = {
-  currentBookshelfId: "bookshelf-001", // 선택된 책장
-  currentProjectId: "initial-project", // 선택된 프로젝트
-  currentEpisodeId: "episode-0001", // 선택된 에피소드
-  currentPageId: null, // 선택된 페이지
-  currentCutId: null, // 선택된 컷
-  isSidebarOpen: false, // 사이드바 열림 여부
+  currentBookshelfId: "bookshelf-001",
+  currentProjectId: null,
+  currentEpisodeId: null,
+  currentPageId: null,
+  currentCutId: null,
+  isSidebarOpen: true,
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

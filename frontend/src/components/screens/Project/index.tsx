@@ -1,17 +1,18 @@
 import "assets/css/screens/project.css";
-import { useState } from "react";
 import WorkspaceLayout from "components/layout/WorkspaceLayout";
-import ProjectSidebar from "./ProjectSidebar";
 import ProjectHeader from "./ProjectHeader";
 import ProjectGrid from "./ProjectGrid";
+import useData from "contexts/DataContext";
 
 export default function ProjectManagement() {
-  return (
-    <div className="l-management-container">
-      {/* 사이드바 : 프로젝트 썸네일 리스트? */}
-      <ProjectSidebar />
+  const { getCurrentProject } = useData();
 
-      {/* Header + Grid */}
+  if (!getCurrentProject()) {
+    return <div className="project-no-selection">선택된 프로젝트가 없습니다.</div>;
+  }
+
+  return (
+    <div className="management-container">
       <WorkspaceLayout header={<ProjectHeader />} body={<ProjectGrid />} />
     </div>
   );

@@ -1,6 +1,3 @@
-// 권한 상수 (OWNER, EDITOR, ...)
-
-// utils/constants/auth.js
 export const AUTH_LEVELS = {
   READONLY: "readonly",
   COMMENT_ONLY: "commentonly",
@@ -19,5 +16,4 @@ export const PERMISSIONS = {
     canComment: true,
     canDelete: false,
   },
-  // ...
 };

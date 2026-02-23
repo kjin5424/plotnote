@@ -1,0 +1,320 @@
+// ========================================
+//   레이아웃 구조
+// ========================================
+
+// 전체 레이아웃 컨테이너
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: $color-bg-light;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+// ========================================
+//   사이드바
+// ========================================
+
+.sidebar {
+  width: $sidebar-width;
+  background-color: $color-primary;
+  color: $color-text-white;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  box-shadow: $shadow-md;
+  z-index: 100;
+  transition: transform 0.3s ease;
+}
+
+// ========================================
+//   메인 컨텐츠 영역
+// ========================================
+
+.main-content {
+  flex: 1;
+  margin-left: $sidebar-width;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px;
+}
+
+// ========================================
+//   페이지 헤더
+// ========================================
+
+.page-header {
+  background-color: $color-bg-white;
+  padding: 0 $spacing-xl $spacing-md $spacing-xl;
+}
+
+// 헤더 타이틀 영역
+.header-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-title-section {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.refresh-btn {
+  padding: $spacing-sm;
+  background-color: transparent;
+  border: $border-width solid $color-border;
+  border-radius: $radius-md;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-base;
+  color: $color-text-secondary;
+}
+
+.refresh-btn:hover {
+  background-color: $color-bg-gray;
+  border-color: $color-primary;
+  color: $color-primary;
+}
+
+.page-title {
+  font-size: $font-size-2xl;
+  font-weight: 700;
+  color: $color-text-primary;
+  margin: 0;
+}
+
+.header-divider {
+  margin-top: $spacing-lg;
+  border: none;
+  border-top: $border-width solid $color-border;
+}
+
+// ========================================
+//   컨텐츠 영역
+// ========================================
+
+.content-body {
+  flex: 1;
+  width: 100%;
+  overflow: auto;
+}
+
+// 컨텐츠 카드
+.content-card {
+  width: 100%;
+  max-width: $container;
+  min-width: 400px;
+  height: 90vh;
+  margin: 0 auto;
+  background-color: $color-bg-white;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-sm;
+  padding: $spacing-3xl;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.content-card-header {
+  margin-bottom: $spacing-lg;
+  padding-bottom: $spacing-md;
+  border-bottom: $border-width solid $color-border;
+}
+
+.content-card-title {
+  font-size: $font-size-xl;
+  font-weight: 600;
+  color: $color-text-primary;
+  margin: 0;
+}
+
+.content-card .align-left {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.content-card .align-center {
+  display: flex;
+  justify-content: center;
+}
+
+.content-card .align-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.footer {
+  width: 100%;
+  height: fit-content;
+  background-color: $color-bg-white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow: hidden;
+  margin: 0;
+  .footer-right {
+    justify-content: flex-end;
+  }
+  .footer-left {
+    justify-content: flex-start;
+  }
+}
+
+// ========================================
+//   검색/필터 영역
+// ========================================
+
+.search-section {
+  background-color: $color-bg-white;
+  padding: $spacing-md;
+  border-radius: $radius-lg;
+  margin-bottom: $spacing-sm;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.search-row {
+  gap: $spacing-md;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 420px;
+}
+
+.search-group {
+  display: flex;
+  gap: $spacing-xs;
+  align-items: center;
+  width: 100%;
+  align-items: stretch;
+}
+
+// ========================================
+//   그리드 레이아웃
+// ========================================
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 calc($spacing-md * -1);
+}
+
+.col {
+  padding: 0 $spacing-md;
+  margin-bottom: $spacing-lg;
+}
+
+.col-12 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+.col-11 {
+  flex: 0 0 91.666667%;
+  max-width: 91.666667%;
+}
+.col-10 {
+  flex: 0 0 83.333333%;
+  max-width: 83.333333%;
+}
+.col-9 {
+  flex: 0 0 75%;
+  max-width: 75%;
+}
+.col-8 {
+  flex: 0 0 66.666667%;
+  max-width: 66.666667%;
+}
+.col-7 {
+  flex: 0 0 58.333333%;
+  max-width: 58.333333%;
+}
+.col-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+.col-5 {
+  flex: 0 0 41.666667%;
+  max-width: 41.666667%;
+}
+.col-4 {
+  flex: 0 0 33.333333%;
+  max-width: 33.333333%;
+}
+.col-3 {
+  flex: 0 0 25%;
+  max-width: 25%;
+}
+.col-2 {
+  flex: 0 0 16.666667%;
+  max-width: 16.666667%;
+}
+.col-1 {
+  flex: 0 0 8.333333%;
+  max-width: 8.333333%;
+}
+
+// ========================================
+//   반응형
+// ========================================
+
+@media (max-width: 1024px) {
+  .sidebar {
+    width: $sidebar-width;
+  }
+}
+
+// sidebar(320) + main-content padding(80) + content-card min-width(400) = 800px
+@media (max-width: 900px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-content,
+  .footer {
+    margin-left: 0;
+  }
+
+  .main-content {
+    padding: $spacing-md;
+  }
+
+  .content-wrapper {
+    padding: $spacing-md;
+  }
+
+  .page-header {
+    padding: $spacing-md;
+  }
+
+  .search-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .col {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}

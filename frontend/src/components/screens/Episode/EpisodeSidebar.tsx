@@ -1,16 +1,23 @@
-import EpisodeList from "./EpisodeList";
+import { useEpisode } from "hooks/data/useEpisode";
 
 export default function EpisodeSidebar() {
-  return (
-    <div className="l-sidebar">
-      {/* 사이드바 헤더 */}
-      <div className="l-sidebar-header">
-        <h3>프로젝트명??</h3>
-      </div>
+  const { episodes, currentEpisodeId, selectEpisode } = useEpisode();
 
-      {/* 사이드바 바디 */}
-      <div className="l-sidebar-content">
-        <EpisodeList />
+  return (
+    <div className="episode-sidebar">
+      <div className="episode-sidebar-header">
+        <h3>에피소드</h3>
+      </div>
+      <div className="episode-sidebar-list">
+        {episodes.map((episode) => (
+          <div
+            key={episode.episodeId}
+            className={`episode-sidebar-item${episode.episodeId === currentEpisodeId ? " episode-sidebar-item--active" : ""}`}
+            onClick={() => selectEpisode(episode.episodeId)}
+          >
+            {episode.title}
+          </div>
+        ))}
       </div>
     </div>
   );

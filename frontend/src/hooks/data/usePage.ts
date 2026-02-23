@@ -29,10 +29,16 @@ export function usePage() {
     const newPageId = generatePageId();
     const currentEpisode = episodes[currentEpisodeId];
 
+    const now = new Date().toISOString();
     const newPage = {
       episodeId: currentEpisode.episodeId,
       pageId: newPageId,
+      createdAt: now,
+      updatedAt: now,
       pageMemo: "",
+      pageDetailMemos: {},
+      pageDetailMemoOrder: [],
+      cutNoteOrder: [],
       cutOrder: [],
     };
 

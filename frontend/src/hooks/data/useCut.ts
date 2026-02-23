@@ -106,8 +106,9 @@ export function useCut(pageId: string) {
       // 새 컷 ID 생성 및 데이터 구성
       const newId1 = generateCutId(pageId);
       const newId2 = generateCutId(pageId);
-      const newCut1: Cut = { pageId, cutId: newId1, cutMemo: "", vertices: poly1 };
-      const newCut2: Cut = { pageId, cutId: newId2, cutMemo: "", vertices: poly2 };
+      const now = new Date().toISOString();
+      const newCut1: Cut = { pageId, cutId: newId1, createdAt: now, updatedAt: now, cutMemo: "", cutDetailMemos: {}, cutDetailMemoOrder: [], vertices: poly1 };
+      const newCut2: Cut = { pageId, cutId: newId2, createdAt: now, updatedAt: now, cutMemo: "", cutDetailMemos: {}, cutDetailMemoOrder: [], vertices: poly2 };
 
       // cuts: 기존 컷 제거 + 새 컷 2개 추가
       setCuts((prev) => {
