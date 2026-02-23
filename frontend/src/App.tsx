@@ -19,7 +19,8 @@ function App() {
       <DataProvider>
         <Routes>
           <Route path="/" element={<MainLayout />}>
-            <Route index element={<Navigate to="/pages" />} />
+            <Route index element={<Navigate to="/bookshelf" />} />
+            <Route path="bookshelf" element={<BookshelfManagement />} />
             <Route path="dashboard" element={<DashboardManagement />} />
             <Route path="project" element={<ProjectManagement />} />
             <Route
@@ -30,7 +31,6 @@ function App() {
               path="project/:projectId/episode/:episodeId/page"
               element={<PageManagement />}
             />
-            {/* 임시 */}
             <Route path="/pages" element={<PageManagement />} />
             <Route path="/pages/:pageId" element={<CutManagement />} />
           </Route>

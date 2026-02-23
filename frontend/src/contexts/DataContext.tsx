@@ -20,6 +20,7 @@ import type {
   Episode,
   Page,
   Cut,
+  CutNote,
   UserBookshelves,
   Permission,
   UiState,
@@ -40,6 +41,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const [episodes, setEpisodes] = useState<Record<string, Episode>>({});
   const [pages, setPages] = useState<Record<string, Page>>({});
   const [cuts, setCuts] = useState<Record<string, Cut>>({});
+  const [cutNotes, setCutNotes] = useState<Record<string, CutNote>>({});
 
   const [userBookshelvesList, setUserBookshelvesList] = useState<Record<string, UserBookshelves>>({});
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
@@ -82,6 +84,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     setEpisodes(data.episodes || {});
     setPages(data.pages || {});
     setCuts(data.cuts || {});
+    setCutNotes(data.cutNotes || {});
 
     // localStorage에서 사용자별 책장 목록 읽기
     const savedUserBookshelves = localStorage.getItem("userBookshelves");
@@ -122,10 +125,11 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
           episodes: episodes,
           pages: pages,
           cuts: cuts,
+          cutNotes: cutNotes,
         }),
       );
     }
-  }, [bookshelves, projects, episodes, pages, cuts, isLoading]);
+  }, [bookshelves, projects, episodes, pages, cuts, cutNotes, isLoading]);
 
   // userBookshelves 변경 시 localStorage에 저장
   useEffect(() => {
@@ -154,6 +158,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     getEpisode: (episodeId: string) => episodes[episodeId] ?? null,
     getPage: (pageId: string) => pages[pageId] ?? null,
     getCut: (cutId: string) => cuts[cutId] ?? null,
+    getCutNote: (noteId: string) => cutNotes[noteId] ?? null,
 
     // 아이디로 특정 데이터 리스트 가져오기
     getProjects: (bookshelfId: string) => {
@@ -175,6 +180,11 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
       const page = pages[pageId];
       if (!page) return [];
       return page.cutOrder.map((id) => cuts[id]);
+    },
+    getCutNotes: (pageId: string) => {
+      const page = pages[pageId];
+      if (!page) return [];
+      return page.cutNoteOrder.map((id) => cutNotes[id]).filter(Boolean);
     },
 
     // 현재 선택된 데이터 가져오기
@@ -300,6 +310,8 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     setPages,
     cuts,
     setCuts,
+    cutNotes,
+    setCutNotes,
     userBookshelvesList,
     setUserBookshelvesList,
     currentUserId,

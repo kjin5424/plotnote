@@ -1,0 +1,363 @@
+// ===================================================
+//   Table Styles
+// ===================================================
+
+// ===== Base Table Styles =====
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: $color-bg-white;
+  color: $color-text-primary;
+  line-height: $line-height-normal;
+}
+
+// ===== Table with thead + tbody (Grid Type) =====
+.table-grid {
+  border: 1px solid $table-border-color;
+  border-radius: $radius-md;
+  overflow: hidden;
+  text-align: center;
+}
+
+.table-grid thead {
+  background-color: $table-header-bg;
+  border-bottom: 1px solid $table-border-color;
+}
+
+.table-grid thead th {
+  text-align: center;
+  padding: $table-cell-padding;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  border-right: 1px solid $table-border-color;
+  white-space: nowrap;
+}
+
+.table-grid thead th:last-child {
+  border-right: none;
+}
+
+.table-grid tbody tr {
+  border-bottom: 1px solid $table-border-color;
+  transition: background-color $transition-fast;
+  text-align: center;
+}
+
+.table-grid tbody tr:hover {
+  background-color: $table-hover-bg;
+}
+
+.table-grid tbody tr.selected {
+  background-color: $table-selected-bg;
+}
+
+.table-grid tbody tr.disabled {
+  background-color: $color-bg-gray;
+  color: $color-disabled-text;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.table-grid tbody td {
+  padding: $table-cell-padding;
+  color: $color-text-primary;
+  border-right: 1px solid $table-border-color;
+}
+
+.table-grid tbody td:last-child {
+  border-right: none;
+}
+
+// ===== Column Alignment =====
+.table th.text-align-left,
+.table td.text-align-left {
+  text-align: left;
+}
+
+.table th.text-align-center,
+.table td.text-align-center {
+  text-align: center;
+}
+
+.table th.text-align-right,
+.table td.text-align-right {
+  text-align: right;
+}
+
+// ===== Fixed Width Columns =====
+.table th.fixed-width,
+.table td.fixed-width {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.table th.col-xs,
+.table td.col-xs {
+  width: 60px;
+}
+
+.table th.col-sm,
+.table td.col-sm {
+  width: 100px;
+}
+
+.table th.col-md,
+.table td.col-md {
+  width: 150px;
+}
+
+.table th.col-lg,
+.table td.col-lg {
+  width: 200px;
+}
+
+.table th.col-xl,
+.table td.col-xl {
+  width: 250px;
+}
+
+// ===== Small Table (Compact) =====
+.table-sm thead th,
+.table-sm tbody td {
+  padding: $table-cell-padding-sm;
+}
+
+// ===== Table with tbody only (Form Type) =====
+.table-form {
+  border: 1px solid $table-border-color;
+  border-radius: $radius-md;
+}
+
+.table-form tbody tr {
+  border-bottom: 1px solid $table-border-color;
+}
+
+.table-form tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table-form tbody th {
+  padding: $table-cell-padding;
+  background-color: $table-header-bg;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+  text-align: left;
+  vertical-align: middle;
+  border-right: 1px solid $table-border-color;
+  white-space: nowrap;
+}
+
+.table-form tbody th label {
+  display: inline-block;
+  padding-right: 20px;
+}
+
+.table-form tbody td {
+  padding: $table-cell-padding;
+  background-color: $color-bg-white;
+  color: $color-text-primary;
+  vertical-align: middle;
+}
+
+// ===== Readonly & Disabled States =====
+.table-form tbody tr.readonly th,
+.table-form tbody tr.readonly td {
+  background-color: $color-bg-light;
+  color: $color-text-secondary;
+}
+
+.table-form tbody tr.disabled th,
+.table-form tbody tr.disabled td {
+  background-color: $input-disabled-bg;
+  color: $color-disabled-text;
+  cursor: not-allowed;
+}
+
+// ===== Table Cell Content Helpers =====
+.table td.no-data {
+  padding: $spacing-3xl $spacing-xl;
+  text-align: center;
+  color: $color-text-light;
+}
+
+.table td .badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+}
+
+.table td .badge.badge-primary {
+  background-color: $color-primary;
+  color: $color-text-white;
+}
+
+.table td .badge.badge-success {
+  background-color: $color-success;
+  color: $color-text-white;
+}
+
+.table td .badge.badge-danger {
+  background-color: $color-danger;
+  color: $color-text-white;
+}
+
+.table td .badge.badge-gray {
+  background-color: $color-gray-400;
+  color: $color-text-white;
+}
+
+// ===== Responsive Table =====
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+// ===== Table Actions (Button groups in cells) =====
+.table-actions {
+  display: flex;
+  gap: $spacing-xs;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-actions button {
+  min-width: 60px;
+}
+
+// ===== Sticky Header =====
+.table-sticky-header {
+  position: relative;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.table-sticky-header thead th {
+  position: sticky;
+  top: 0;
+  z-index: $z-sticky;
+  background-color: $table-header-bg;
+}
+
+// ===== Striped Table =====
+.table-striped tbody tr:nth-child(even) {
+  background-color: $color-bg-light;
+}
+
+.table-striped tbody tr:nth-child(even):hover {
+  background-color: $table-hover-bg;
+}
+
+// ===== Bordered Table =====
+.table-bordered {
+  border: 1px solid $table-border-color;
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid $table-border-color;
+}
+
+// ===== Sortable Column Headers =====
+.table thead th.sortable {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.table thead th.sortable:hover {
+  background-color: $color-bg-gray;
+}
+
+.table thead th.sortable::after {
+  content: "⇅";
+  position: absolute;
+  right: 8px;
+  opacity: 0.3;
+  font-size: $font-size-xs;
+}
+
+.table thead th.sortable.sort-asc::after {
+  content: "↑";
+  opacity: 1;
+  color: $color-primary;
+  font-size: $font-size-sm;
+}
+
+.table thead th.sortable.sort-desc::after {
+  content: "↓";
+  opacity: 1;
+  font-size: $font-size-sm;
+  color: $color-primary;
+}
+
+// ===== Checkbox/Radio in Table =====
+.table td input[type="checkbox"],
+.table td input[type="radio"],
+.table th input[type="checkbox"],
+.table th input[type="radio"] {
+  margin: 0;
+  cursor: pointer;
+}
+
+.table td input[type="checkbox"]:disabled,
+.table td input[type="radio"]:disabled {
+  cursor: not-allowed;
+}
+
+// ===== Table Loading State =====
+.table-loading {
+  position: relative;
+}
+
+.table-loading::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba($color-bg-white, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $z-dropdown;
+}
+
+// ===== Mobile Responsive =====
+@media (max-width: $breakpoint-md) {
+  .table-responsive-mobile {
+    border: 0;
+  }
+
+  .table-responsive-mobile thead {
+    display: none;
+  }
+
+  .table-responsive-mobile tbody tr {
+    display: block;
+    margin-bottom: $spacing-lg;
+    border: 1px solid $table-border-color;
+    border-radius: $radius-md;
+  }
+
+  .table-responsive-mobile tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: $spacing-sm $spacing-md;
+    border: none;
+    border-bottom: 1px solid $table-border-color;
+  }
+
+  .table-responsive-mobile tbody td:last-child {
+    border-bottom: none;
+  }
+
+  .table-responsive-mobile tbody td::before {
+    content: attr(data-label);
+    font-weight: $font-weight-semibold;
+    color: $color-text-secondary;
+  }
+}

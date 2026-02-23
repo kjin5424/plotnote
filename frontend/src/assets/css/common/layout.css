@@ -57,66 +57,295 @@
 /* ============================================
    Sidebar 공통 스타일
    ============================================ */
+/* ─ 글로벌 사이드바 */
 .sidebar {
   height: 100vh;
-  overflow: hidden; /* 영역 밖으로 밀려 나가는 아이콘 숨김 */
-  position: relative;
-  background: white;
-  transition: width 0.3s ease; /* 너비 변화 부드럽게 */
+  overflow: hidden;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-light);
+  transition: width 0.25s ease;
   z-index: 50;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 }
+
 .sidebar-header {
-  height: 50px;
-  position: relative;
+  height: 52px;
   display: flex;
   align-items: center;
-  padding: 0 12px;
+  gap: var(--spacing-sm);
+  padding: 0 var(--spacing-sm);
+  border-bottom: 1px solid var(--border-light);
+  flex-shrink: 0;
 }
-/* 프로필 정보: 기본적으로 투명했다가 열릴 때 나타남 */
-.sidebar-profile {
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  white-space: nowrap;
-}
-.sidebar.open .sidebar-profile {
-  opacity: 1;
-}
-.sidebar-menu {
-  position: absolute;
-  left: 12px; /* 닫혔을 때 위치 */
-  transition: left 0.3s ease;
-}
-.sidebar.open .sidebar-menu {
-  left: calc(100% - 40px); /* 열렸을 때 우측 상단으로 이동 */
-}
-/* --- 바디 영역 애니메이션 --- */
 
-/* 밀려 나갈 회색 동그라미들 */
-.nav-icons-wrapper {
+.sidebar-avatar {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.sidebar-username {
+  flex: 1;
+  font-size: var(--font-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sidebar-toggle {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-toggle:hover {
+  background: var(--bg-tertiary);
+}
+
+/* ─ 네비게이션 */
+.sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  padding: 20px 0;
-  transition:
-    transform 0.3s ease,
-    opacity 0.2s ease;
-}
-/* 사이드바가 열리면 아이콘들을 오른쪽으로 밀어서 숨김 */
-.sidebar.open .nav-icons-wrapper {
-  transform: translateX(100px); /* 오른쪽으로 밀기 */
-  opacity: 0;
-  pointer-events: none;
+  padding: var(--spacing-sm) var(--spacing-xs);
+  gap: 2px;
+  flex: 1;
+  overflow-y: auto;
 }
 
-/* 실제 메뉴 내용: 처음엔 숨겼다가 열리면 나타남 */
-.sidebar-content {
-  opacity: 0;
-  transition: opacity 0.3s ease;
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  transition: background 0.15s;
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+  white-space: nowrap;
+  overflow: hidden;
 }
-.sidebar.open .sidebar-content {
+
+.sidebar-nav-item:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.sidebar-nav-item--active {
+  background: var(--color-primary-lighter);
+  color: var(--color-primary-darker);
+  font-weight: var(--font-medium);
+}
+
+.sidebar-nav-item--disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.sidebar-nav-item--disabled:hover {
+  background: none;
+}
+
+.sidebar-nav-symbol {
+  font-size: 16px;
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+}
+
+.sidebar-nav-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─ 현재 위치 컨텍스트 */
+.sidebar-context {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-context-item {
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-context-dim {
+  color: var(--text-disabled);
+}
+
+/* ─ 하단 푸터 */
+.sidebar-footer {
+  padding: var(--spacing-xs);
+  border-top: 1px solid var(--border-light);
+  flex-shrink: 0;
+}
+
+/* ─ 트리 사이드바 (열렸을 때) */
+.sidebar-tree {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-xs) 0;
+}
+
+.sidebar-tree-section {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--spacing-xs);
+}
+
+.sidebar-tree-section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-xs);
+  font-weight: var(--font-semibold);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  user-select: none;
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+}
+
+.sidebar-tree-section-title:hover {
+  color: var(--text-secondary);
+}
+
+/* ─ 트리 노드 행 (프로젝트, 에피소드) / 페이지 아이템 — 공통 버튼 */
+.sidebar-tree-row,
+.sidebar-tree-page {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  width: 100%;
+  border-radius: var(--radius-sm);
+  transition: background 0.15s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  text-align: left;
+}
+
+.sidebar-tree-row:hover,
+.sidebar-tree-page:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.sidebar-tree-row--active {
+  background: var(--color-primary-lighter);
+  color: var(--color-primary-darker);
+  font-weight: var(--font-medium);
+}
+
+.sidebar-tree-page--active {
+  background: var(--color-primary-lighter);
+  color: var(--color-primary-darker);
+  font-weight: var(--font-medium);
+}
+
+/* ─ 공용 */
+.sidebar-tree-item-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.sidebar-tree-item-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ─ 닫힌 사이드바 breadcrumb */
+.sidebar-breadcrumb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--spacing-xs) 0;
+  flex: 1;
+}
+
+.sidebar-breadcrumb-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: background 0.15s;
+  opacity: 0.6;
+}
+
+.sidebar-breadcrumb-btn:hover {
+  background: var(--bg-tertiary);
   opacity: 1;
+}
+
+.sidebar-breadcrumb-btn--active {
+  background: var(--color-primary-lighter);
+  opacity: 1;
+}
+
+.sidebar-breadcrumb-btn--disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.sidebar-breadcrumb-btn--disabled:hover {
+  background: none;
+}
+
+.sidebar-breadcrumb-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* ─ 리사이즈 핸들 */
+.resize-handle {
+  width: 4px;
+  cursor: col-resize;
+  background: transparent;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.resize-handle:hover,
+.resize-handle.dragging {
+  background: var(--color-primary-light);
 }
 
 /* ============================================
