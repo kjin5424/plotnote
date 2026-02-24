@@ -1,5 +1,3 @@
-import "assets/css/screens/page.css";
-import "assets/css/screens/cut.css";
 import WorkspaceLayout from "components/layout/WorkspaceLayout";
 import CutHeader from "./CutHeader";
 import CutBody from "./CutBody";

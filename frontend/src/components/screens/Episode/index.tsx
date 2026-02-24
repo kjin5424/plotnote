@@ -1,4 +1,3 @@
-import "assets/css/screens/episode.css";
 import WorkspaceLayout from "components/layout/WorkspaceLayout";
 import EpisodeHeader from "./EpisodeHeader";
 import EpisodeList from "./EpisodeList";

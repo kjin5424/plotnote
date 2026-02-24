@@ -1,0 +1,117 @@
+// ============================================================
+//  animations.scss
+//  앱 전체에서 사용하는 @keyframes 정의 + 유틸 클래스.
+//  variables.scss의 mixin은 컴포넌트에 @include로 삽입하고,
+//  여기서는 독립적으로 클래스로도 쓸 수 있도록 keyframe을 분리.
+// ============================================================
+
+@use './variables' as *;
+
+
+// ─────────────────────────────────────────────
+// [1] @keyframes 정의
+// ─────────────────────────────────────────────
+
+// 아래에서 위로 fade-in (페이지 카드, 리스트 등에 사용)
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// 왼쪽에서 slide-in (에피소드 리스트, 사이드바 트리 등)
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+// 오른쪽에서 slide-in (우측 패널, 드로어)
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+// 단순 fade-in (모달 오버레이, 툴팁 등)
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+// 스케일 팝업 (모달 컨텐츠, 드롭다운)
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+// 로딩 중 고양이 bounce (cut.css Loading preview용)
+@keyframes catBounce {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%       { transform: translateY(-6px) rotate(2deg); }
+}
+
+// dot loader (저장 중 / 로딩 표시)
+@keyframes dotPulse {
+  0%, 60%, 100% { transform: scale(1); opacity: 0.3; }
+  30%           { transform: scale(1.4); opacity: 1; }
+}
+
+// 사이드바 열림 (마진 슬라이드)
+@keyframes sidebarOpen {
+  from { margin-left: calc(var(--sidebar-width) * -1); }
+  to   { margin-left: 0; }
+}
+
+// 스피너 회전 (loading.scss에서 사용)
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// amber 포인트 pulse (저장됨 dot, 중요 알림 등 5% 포인트 컬러 활용)
+@keyframes amberPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(251, 198, 98, 0); }
+  50%       { box-shadow: 0 0 0 6px rgba(251, 198, 98, 0.25); }
+}
+
+// 트리 자식 노드 펼침
+@keyframes treeExpand {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+// ─────────────────────────────────────────────
+// [2] 유틸 애니메이션 클래스
+//     className으로 바로 적용 가능
+// ─────────────────────────────────────────────
+
+// 기본 fade-up (stagger는 --anim-delay 커스텀 프로퍼티로 제어)
+.anim-fade-up {
+  animation: fadeUp var(--transition-slow) ease both;
+  animation-delay: var(--anim-delay, 0s);
+}
+
+// 순차적 stagger용 (부모에 적용, 자식 :nth-child에서 delay)
+.anim-stagger {
+  > *:nth-child(1)  { animation-delay: 0.03s; }
+  > *:nth-child(2)  { animation-delay: 0.06s; }
+  > *:nth-child(3)  { animation-delay: 0.09s; }
+  > *:nth-child(4)  { animation-delay: 0.12s; }
+  > *:nth-child(5)  { animation-delay: 0.15s; }
+  > *:nth-child(6)  { animation-delay: 0.18s; }
+  > *:nth-child(7)  { animation-delay: 0.21s; }
+  > *:nth-child(8)  { animation-delay: 0.24s; }
+  > *:nth-child(9)  { animation-delay: 0.27s; }
+  > *:nth-child(10) { animation-delay: 0.30s; }
+}
+
+.anim-slide-left {
+  animation: slideInLeft var(--transition-slow) ease both;
+}
+
+.anim-scale-in {
+  animation: scaleIn var(--transition-base) ease both;
+}
+
+// 트리 노드 펼칠 때 자식에게 적용
+.anim-tree-expand {
+  animation: treeExpand var(--transition-fast) ease both;
+}

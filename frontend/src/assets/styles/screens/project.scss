@@ -1,0 +1,80 @@
+// ============================================================
+//  screens/project.scss
+//  프로젝트 화면 (ProjectManagement, ProjectHeader, ProjectGrid)
+//  + 에피소드 화면 (EpisodeManagement, EpisodeHeader, EpisodeList)
+//  기존 project.css, episode.css 모두 여기에 통합.
+//  두 화면 모두 같은 파일을 import하므로 함께 관리.
+// ============================================================
+
+@use "../common/variables" as *;
+@use "../common/animations";
+
+// ═══════════════════════════════════════════
+//  PROJECT
+// ═══════════════════════════════════════════
+
+// ─────────────────────────────────────────────
+// [1] 프로젝트 헤더 (ProjectHeader.js)
+// ─────────────────────────────────────────────
+
+// 기존 .project-header 유지
+.project-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+// ─────────────────────────────────────────────
+// [2] 프로젝트 그리드 (ProjectGrid.js)
+//     에피소드 카드들을 그리드로 나열
+// ─────────────────────────────────────────────
+
+// 기존 .project-grid 유지
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--spacing-lg);
+  animation: fadeUp var(--transition-slow) ease both;
+}
+
+// ─────────────────────────────────────────────
+// [3] 프로젝트 사이드바 (ProjectSidebar.js)
+//     l-sidebar 기반 (layout.scss)
+// ─────────────────────────────────────────────
+
+// 기존 .project-detail 유지 (ProjectDetail.js)
+.project-detail {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+
+  &__cover {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: linear-gradient(
+      135deg,
+      var(--color-primary) 0%,
+      var(--color-primary-light) 100%
+    );
+    border-radius: var(--radius-lg);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: var(--spacing-md);
+  }
+
+  &__title {
+    font-family: var(--font-family-serif);
+    font-size: var(--font-xl);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+  }
+
+  &__meta {
+    font-size: var(--font-xs);
+    color: var(--text-tertiary);
+    font-family: var(--font-family-mono);
+    margin-top: var(--spacing-xs);
+  }
+}

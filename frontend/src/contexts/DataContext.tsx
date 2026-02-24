@@ -13,7 +13,7 @@ import {
   getEffectiveSetting,
 } from "utils/helpers/settingsHelper";
 import DEFAULT_SETTINGS from "Setting";
-import { errorMsg } from "components/common/errorMessage";
+import { errorMsg } from "utils/constants/errorMessage";
 import type {
   Bookshelf,
   Project,
@@ -43,9 +43,13 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const [cuts, setCuts] = useState<Record<string, Cut>>({});
   const [cutNotes, setCutNotes] = useState<Record<string, CutNote>>({});
 
-  const [userBookshelvesList, setUserBookshelvesList] = useState<Record<string, UserBookshelves>>({});
+  const [userBookshelvesList, setUserBookshelvesList] = useState<
+    Record<string, UserBookshelves>
+  >({});
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-  const [currentPermission, setCurrentPermission] = useState<Permission | null>(null);
+  const [currentPermission, setCurrentPermission] = useState<Permission | null>(
+    null,
+  );
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -73,7 +77,9 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     // localStorage에서 유저 정보 로드
     const savedUser = localStorage.getItem("user") || JSON.stringify(userData);
     const userObj = JSON.parse(savedUser);
-    const user = userObj.userId ? userObj : Object.values(userObj)[0] as typeof userData[string];
+    const user = userObj.userId
+      ? userObj
+      : (Object.values(userObj)[0] as (typeof userData)[string]);
     setCurrentUserId(user.userId);
 
     // localStorage에서 만화 데이터 읽기
@@ -188,26 +194,36 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     },
 
     // 현재 선택된 데이터 가져오기
-    getCurrentBookshelf: () => helpers.getBookshelf(uiState.currentBookshelfId ?? ""),
+    getCurrentBookshelf: () =>
+      helpers.getBookshelf(uiState.currentBookshelfId ?? ""),
     getCurrentProject: () => helpers.getProject(uiState.currentProjectId ?? ""),
     getCurrentEpisode: () => helpers.getEpisode(uiState.currentEpisodeId ?? ""),
     getCurrentPage: () => helpers.getPage(uiState.currentPageId ?? ""),
     getCurrentCut: () => helpers.getCut(uiState.currentCutId ?? ""),
 
     // 권한 가져오기
-    getPermission: (projectId: string, userId: string = currentUserId ?? ""): Permission | null => {
+    getPermission: (
+      projectId: string,
+      userId: string = currentUserId ?? "",
+    ): Permission | null => {
       const project = helpers.getProject(projectId);
       if (!project || !userId) return null;
       return project.permissions?.[userId] || null;
     },
     // 편집 가능 여부
-    canEdit: (projectId: string | null = null, userId: string = currentUserId ?? ""): boolean | null => {
+    canEdit: (
+      projectId: string | null = null,
+      userId: string = currentUserId ?? "",
+    ): boolean | null => {
       const permission = helpers.getPermission(projectId ?? "", userId);
       if (!permission) return null;
       return permission === "owner" || permission === "editor";
     },
     // 읽기 전용 여부
-    isReadonly: (projectId: string | null = null, userId: string = currentUserId ?? ""): boolean | null => {
+    isReadonly: (
+      projectId: string | null = null,
+      userId: string = currentUserId ?? "",
+    ): boolean | null => {
       const permission = helpers.getPermission(projectId ?? "", userId);
       if (!permission) return null;
       return permission === "readonly";

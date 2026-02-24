@@ -1,4 +1,3 @@
-import "assets/css/screens/project.css";
 import WorkspaceLayout from "components/layout/WorkspaceLayout";
 import ProjectHeader from "./ProjectHeader";
 import ProjectGrid from "./ProjectGrid";

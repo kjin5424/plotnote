@@ -1,0 +1,776 @@
+// ============================================================
+//  screens/episode.scss
+//  에피소드 관리 화면 스타일.
+//  Design 2 "Ocean" 참고 — 왼쪽 프로젝트 정보 패널 + 오른쪽 에피소드 리스트.
+//
+//  컴포넌트 대응:
+//    EpisodeManagement (index.js)
+//    ├─ EpisodeSidebar.js  →  .episode-sidebar (좌측 패널)
+//    ├─ EpisodeHeader.js   →  .episode-header
+//    └─ EpisodeList.js     →  .episode-list
+//        └─ EpisodeItem.js →  .episode-item
+//            └─ EpisodeDetail.js  →  .episode-detail (클릭 시 확장 패널)
+//
+//  기존 project.scss의 .episode-* 클래스들을 여기로 이동/확장.
+//  project.scss에는 프로젝트 카드/그리드만 남김.
+// ============================================================
+
+@use '../common/variables' as *;
+@use '../common/animations';
+
+
+// ─────────────────────────────────────────────
+// [1] 에피소드 화면 최상위 레이아웃
+//     EpisodeManagement(index.js)의 .l-management-container 기반
+//     좌측 패널 + 우측 워크스페이스 수평 분할
+// ─────────────────────────────────────────────
+
+// 에피소드 전용 래퍼 (l-management-container 위에 덮어씌움)
+.episode-management {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+
+// ─────────────────────────────────────────────
+// [2] 좌측 프로젝트 정보 패널 (EpisodeSidebar.js)
+//     Design 2 Ocean의 왼쪽 패널 — 프로젝트 커버 + 메타 + 설정
+// ─────────────────────────────────────────────
+
+// 기존 .l-sidebar 확장
+.episode-sidebar {
+  width: 240px;
+  min-width: 240px;
+  height: 100%;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+  @include custom-scrollbar;
+}
+
+// 프로젝트 커버 영역 (상단 그라디언트 카드)
+.episode-sidebar-cover {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(
+    140deg,
+    var(--color-primary) 0%,
+    var(--color-primary-light) 60%,
+    var(--color-primary-muted) 100%
+  );
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  // 종이 패턴 오버레이 (Ocean 시안 질감)
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px,
+      transparent 1px, transparent 18px
+    );
+  }
+
+  // 프로젝트 제목 (커버 위에 오버레이)
+  &__text {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: var(--spacing-md);
+    background: linear-gradient(transparent, rgba(20, 30, 50, 0.65));
+  }
+
+  &__title {
+    font-family: var(--font-family-serif);
+    font-size: var(--font-base);
+    font-weight: var(--font-semibold);
+    color: white;
+    line-height: var(--leading-tight);
+    @include text-ellipsis(2);
+  }
+
+  &__sub {
+    font-size: 10px;
+    color: rgba(255,255,255,0.65);
+    font-family: var(--font-family-mono);
+    margin-top: 3px;
+  }
+}
+
+// 사이드바 스크롤 바디
+.episode-sidebar-body {
+  flex: 1;
+  overflow-y: auto;
+  @include custom-scrollbar;
+}
+
+// 메타 섹션 (에피소드 수, 총 페이지 등)
+.episode-sidebar-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border-light);    // gap 색 = 테두리처럼 보임
+  border-bottom: 1px solid var(--border-light);
+
+  &__item {
+    background: var(--bg-secondary);
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__val {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-base);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+  }
+
+  &__key {
+    font-size: 9px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+}
+
+// 프로젝트 설정 섹션 (기본 페이지수, 읽기방향 등)
+.episode-sidebar-settings {
+  padding: var(--spacing-md) var(--spacing-md) var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+
+  &__title {
+    font-size: 9px;
+    font-weight: var(--font-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: var(--spacing-xs);
+    padding-bottom: var(--spacing-xs);
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 0;
+  }
+
+  &__label {
+    font-size: var(--font-xs);
+    color: var(--text-secondary);
+  }
+
+  // 설정값 배지 (RTL, 24p, odd 등)
+  &__val {
+    font-size: 10px;
+    font-family: var(--font-family-mono);
+    background: #eef1f7;
+    color: var(--color-primary);
+    padding: 2px var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(42, 77, 136, 0.12);
+  }
+}
+
+// 사이드바 하단 고정 액션
+.episode-sidebar-footer {
+  flex-shrink: 0;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+
+// ─────────────────────────────────────────────
+// [3] 우측 메인 영역 — 헤더 + 리스트
+// ─────────────────────────────────────────────
+
+// 에피소드 워크스페이스 래퍼
+.episode-workspace {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+// 에피소드 헤더 (기존 .episode-header 확장)
+.episode-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: var(--spacing-md);
+
+  &__left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &__title {
+    font-family: var(--font-family-serif);
+    font-size: var(--font-xl);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    @include text-ellipsis;
+  }
+
+  &__meta {
+    font-family: var(--font-family-mono);
+    font-size: 10px;
+    color: var(--text-tertiary);
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-shrink: 0;
+  }
+
+  // 정렬 기준 토글 (최신순 / 오래된순)
+  &__sort {
+    font-size: var(--font-xs);
+    color: var(--text-tertiary);
+    cursor: pointer;
+    padding: 3px var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+    transition: all var(--transition-fast);
+
+    &:hover {
+      color: var(--text-secondary);
+      border-color: var(--border-medium);
+    }
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// [4] 에피소드 리스트 (EpisodeList.js)
+//     세로 스크롤 리스트 — Design 2 Ocean 기준
+// ─────────────────────────────────────────────
+
+// 기존 .episode-list 확장
+.episode-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;              // 아이템 간 구분선 느낌 (gap=1 + bg=border)
+  background: var(--border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  animation: fadeUp var(--transition-slow) ease both;
+}
+
+// 리스트 상단 컨트롤 바 (총 n개, 필터 등)
+.episode-list-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-sm);
+  flex-shrink: 0;
+
+  &__count {
+    font-family: var(--font-family-mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.02em;
+  }
+
+  &__filter {
+    display: flex;
+    gap: var(--spacing-xs);
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// [5] 에피소드 아이템 (EpisodeItem.js)
+//     리스트 한 행 — 확장된 디자인
+// ─────────────────────────────────────────────
+
+// 기존 .episode-item 확장
+.episode-item {
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: stretch;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition:
+    background var(--transition-fast),
+    box-shadow var(--transition-fast);
+
+  // 왼쪽 포인트 바 (hover/active 표시)
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: background var(--transition-fast);
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background: #f8f9fc;
+
+    &::before { background: var(--color-primary-muted); }
+
+    .episode-item__actions { opacity: 1; }
+    .episode-item__drag-handle { opacity: 1; }
+  }
+
+  &.active {
+    background: #eef1f7;
+
+    &::before { background: var(--color-primary); }
+
+    .episode-item__number { color: var(--color-primary); }
+    .episode-item__title  { color: var(--color-primary); font-weight: var(--font-semibold); }
+  }
+
+  // 드래그 중
+  &.dragging {
+    opacity: 0.5;
+    box-shadow: var(--shadow-lg);
+    z-index: 10;
+  }
+
+  // 드롭 대상
+  &.drop-over {
+    background: #f0f4ff;
+    &::before { background: var(--color-primary-light); }
+  }
+
+
+  // ── 썸네일 (B4 비율 미니)
+  &__thumb {
+    width: 52px;
+    min-width: 52px;
+    aspect-ratio: 238 / 324;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    // 기본 배경 (이미지 없을 때)
+    background: linear-gradient(
+      150deg,
+      var(--color-primary-muted) 0%,
+      var(--color-primary-light) 100%
+    );
+
+    // 썸네일 이미지가 있을 때
+    img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    // 에피소드 번호 오버레이
+    &-num {
+      font-family: var(--font-family-mono);
+      font-size: var(--font-lg);
+      font-weight: var(--font-bold);
+      color: rgba(255,255,255,0.85);
+      line-height: 1;
+    }
+  }
+
+
+  // ── 본문 (제목 + 메모)
+  &__body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  // 에피소드 번호 (작은 레이블)
+  &__number {
+    font-size: 10px;
+    font-family: var(--font-family-mono);
+    color: var(--text-tertiary);
+    letter-spacing: 0.03em;
+    transition: color var(--transition-fast);
+  }
+
+  // 에피소드 제목
+  &__title {
+    font-size: var(--font-sm);
+    font-weight: var(--font-medium);
+    color: var(--text-primary);
+    @include text-ellipsis;
+    transition: color var(--transition-fast);
+  }
+
+  // 에피소드 메모 (기존 pageMemo와 연동)
+  &__memo {
+    font-size: var(--font-xs);
+    color: var(--text-secondary);
+    line-height: var(--leading-normal);
+    @include text-ellipsis(2);
+
+    &.empty {
+      color: var(--text-tertiary);
+      font-style: italic;
+    }
+  }
+
+  // 메타 하단 행 (페이지수 + 태그)
+  &__footer {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin-top: 2px;
+    flex-wrap: wrap;
+  }
+
+  // 페이지수 표시
+  &__page-count {
+    font-family: var(--font-family-mono);
+    font-size: 10px;
+    color: var(--text-tertiary);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+
+    // 아이콘 자리
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 10px; height: 10px;
+      background-image: var(--img-docs);
+      background-repeat: no-repeat;
+      background-size: contain;
+      opacity: 0.4;
+    }
+  }
+
+  // 상태 태그 칩
+  &__tag {
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: var(--radius-full);
+    font-family: var(--font-family-mono);
+    border: 1px solid transparent;
+
+    &.todo {
+      background: var(--bg-tertiary);
+      color: var(--text-tertiary);
+      border-color: var(--border-light);
+    }
+
+    // 작업중 — amber 포인트 (5% 내 사용)
+    &.in-progress {
+      background: #fff8e6;
+      color: #8a6200;
+      border-color: var(--color-accent-light);
+    }
+
+    &.done {
+      background: #e8f5ee;
+      color: #2a7a50;
+      border-color: #b6dfc8;
+    }
+  }
+
+
+  // ── 우측 액션 영역
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-shrink: 0;
+    gap: var(--spacing-xs);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+  }
+
+  // 더보기 버튼 (…)
+  &__more-btn {
+    width: 20px; height: 20px;
+    border-radius: 4px;
+    background-image: var(--img-more);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+
+    &:hover {
+      background-color: var(--bg-tertiary);
+      opacity: 1;
+    }
+  }
+
+  // 드래그 핸들 (순서 변경)
+  &__drag-handle {
+    width: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5px;
+    cursor: grab;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+    padding: 4px 2px;
+
+    span {
+      display: block;
+      width: 10px; height: 1.5px;
+      background: var(--glacial);
+      border-radius: 1px;
+    }
+
+    &:active { cursor: grabbing; }
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// [6] 에피소드 추가 행 (리스트 하단)
+// ─────────────────────────────────────────────
+
+.episode-item--add {
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  cursor: pointer;
+  color: var(--text-tertiary);
+  font-size: var(--font-xs);
+  border: 2px dashed var(--border-medium);
+  border-top: none;          // 리스트 마지막에 붙으므로 상단 테두리 제거
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+
+  &:hover {
+    background: #f5f8ff;
+    color: var(--color-primary);
+    border-color: var(--color-primary-muted);
+
+    .episode-item__add-icon { background: var(--color-primary); }
+  }
+
+  // + 아이콘
+  &__icon {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--border-medium);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    color: white;
+    transition: background var(--transition-fast);
+    flex-shrink: 0;
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// [7] 에피소드 디테일 패널 (EpisodeDetail.js)
+//     에피소드 클릭 시 리스트 아이템 아래에 인라인으로 펼쳐지는 패널
+//     또는 우측 drawer로 표시 가능
+// ─────────────────────────────────────────────
+
+// 인라인 확장 패널 (accordion 방식)
+.episode-detail {
+  background: #f8f9fc;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-lg) calc(52px + var(--spacing-md) * 2);
+  animation: fadeUp var(--transition-base) ease both;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+
+  // 섹션 제목
+  &__section-title {
+    font-size: 9px;
+    font-weight: var(--font-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  // 에피소드 메모 텍스트에어리어
+  &__memo-area {
+    width: 100%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-family: var(--font-family-base);
+    font-size: var(--font-xs);
+    color: var(--text-primary);
+    line-height: var(--leading-relaxed);
+    resize: none;
+    min-height: 80px;
+    outline: none;
+    transition: border-color var(--transition-fast);
+
+    &:focus {
+      border-color: var(--border-focus);
+      box-shadow: var(--shadow-focus);
+    }
+
+    &::placeholder { color: var(--text-tertiary); }
+  }
+
+  // 개별 설정 오버라이드 영역 (프로젝트 설정과 다를 때)
+  &__settings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  &__setting-chip {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: 4px var(--spacing-sm);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+
+    &:hover {
+      border-color: var(--color-primary-muted);
+      background: #eef1f7;
+    }
+
+    // 기본값과 다를 때 amber 강조 (설정 override 중)
+    &.overridden {
+      border-color: var(--color-accent-light);
+      background: #fff8e6;
+      color: #8a6200;
+    }
+
+    &__label { color: var(--text-tertiary); font-size: 10px; }
+    &__val { color: var(--text-primary); font-weight: var(--font-medium); font-family: var(--font-family-mono); font-size: 10px; }
+  }
+
+  // 페이지 메모 목록 (episode > page 메모 연동)
+  &__page-memos {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__page-memo-row {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    padding: 4px var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    transition: background var(--transition-fast);
+
+    &:hover { background: var(--bg-tertiary); }
+
+    // 페이지 번호
+    &__num {
+      font-family: var(--font-family-mono);
+      font-size: 10px;
+      color: var(--text-tertiary);
+      min-width: 28px;
+      flex-shrink: 0;
+      padding-top: 1px;
+    }
+
+    // 메모 텍스트
+    &__text {
+      font-size: var(--font-xs);
+      color: var(--text-secondary);
+      line-height: var(--leading-normal);
+      @include text-ellipsis(1);
+
+      &.empty {
+        color: var(--text-tertiary);
+        font-style: italic;
+      }
+    }
+  }
+
+  // 디테일 푸터 버튼 행
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid var(--border-light);
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// [8] 빈 상태 (에피소드 없을 때)
+// ─────────────────────────────────────────────
+
+.episode-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  color: var(--text-tertiary);
+  padding: var(--spacing-2xl);
+  animation: fadeIn var(--transition-slow) ease;
+
+  &__icon {
+    width: 48px; height: 48px;
+    background-image: var(--img-docs);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    opacity: 0.2;
+  }
+
+  &__title {
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+    font-weight: var(--font-medium);
+  }
+
+  &__desc {
+    font-size: var(--font-xs);
+    color: var(--text-tertiary);
+    text-align: center;
+    line-height: var(--leading-relaxed);
+    max-width: 240px;
+  }
+}

@@ -1,4 +1,3 @@
-import "assets/css/screens/bookshelf.css";
 import WorkspaceLayout from "components/layout/WorkspaceLayout";
 import BookshelfHeader from "./BookshelfHeader";
 import BookshelfList from "./BookshelfList";

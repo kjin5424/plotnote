@@ -1,0 +1,517 @@
+// ============================================================
+//  screens/cut.scss
+//  컷 편집 화면 스타일.
+//  CutManagement → CutHeader + CutBody → CutCanvas → CutItem
+//  ⚠️  기능과 직접 연결된 스타일 주의:
+//      .cut-card  → aspect-ratio, width 변경 시 캔버스 비율 깨짐
+//      .cut-grid  → CSS Grid 변수(--page-count)는 JS에서 주입
+//      .cut-item  → grid-area 위치 지정과 연결 (useCut.js)
+//      .cut-canvas → 컷 분할 드래그 기준 영역
+//  변경 필요 시 ⚠️ 주석 표시.
+// ============================================================
+
+@use '../common/variables' as *;
+@use '../common/animations';
+
+
+// ─────────────────────────────────────────────
+// [1] 헤더 (CutHeader.js)
+// ─────────────────────────────────────────────
+
+// 기존 .cut-header 유지
+.cut-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: var(--spacing-md);
+}
+
+.cut-title {
+  font-family: var(--font-family-serif);
+  font-size: var(--font-xl);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+
+// ─────────────────────────────────────────────
+// [2] 툴바 (CutToolbar.js)
+//     분할 모드 토글, 줌 컨트롤, 저장 버튼
+// ─────────────────────────────────────────────
+
+// 기존 .cut-toolbar 유지
+.cut-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-bottom: 1px solid var(--border-light);
+  background: var(--bg-secondary);
+  min-height: 36px;
+  flex-shrink: 0;
+
+  // 구분자
+  .toolbar-sep {
+    width: 1px;
+    height: 16px;
+    background: var(--border-light);
+    margin: 0 var(--spacing-xs);
+  }
+
+  // 툴바 정보 텍스트
+  .toolbar-info {
+    font-family: var(--font-family-mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+  }
+
+  // 줌 컨트롤 그룹
+  .toolbar-zoom {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-family: var(--font-family-mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+
+    .zoom-btn {
+      width: 20px; height: 20px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-light);
+      background: none;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition:
+        background var(--transition-fast),
+        color var(--transition-fast);
+
+      &:hover {
+        background: var(--bg-tertiary);
+        color: var(--text-primary);
+      }
+    }
+  }
+
+  // 분할 모드 토글 (button.scss의 .btn-toggle-mode와 함께 사용)
+  .cut-mode-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  // 토글 스위치 (on/off)
+  .toggle-switch {
+    width: 30px; height: 16px;
+    background: var(--border-medium);
+    border-radius: var(--radius-full);
+    position: relative;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 2px; top: 2px;
+      width: 12px; height: 12px;
+      background: white;
+      border-radius: 50%;
+      transition: transform var(--transition-fast);
+      box-shadow: var(--shadow-xs);
+    }
+
+    // 활성 상태 — Deep Blue
+    &.active {
+      background: var(--color-primary);
+      &::after { transform: translateX(14px); }
+    }
+  }
+
+  .toggle-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-family: var(--font-family-mono);
+
+    &.active { color: var(--color-primary); font-weight: var(--font-medium); }
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// [3] 바디 (CutBody.jsx)
+//     캔버스 뷰포트 + 메모 패널(옵션)
+// ─────────────────────────────────────────────
+
+// 기존 .cut-body 유지
+.cut-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.cut-body-header {
+  flex-shrink: 0;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-bottom: 1px solid var(--border-light);
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+// 기존 .cut-body-content 유지
+// ⚠️  padding/background 유지 필요 — 캔버스 뷰포트 기준
+.cut-body-content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px;
+  background-color: var(--bg-primary);    // ⚠️ 변경: #f5f5f5 → var(--bg-primary)로 통일
+                                           //    기능 영향 없음 (배경색만 변경)
+  flex: 1;
+  overflow: auto;
+  @include custom-scrollbar;
+
+  // 점선 그리드 배경 (캔버스 작업 공간임을 시각화)
+  background-image: radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+
+// ─────────────────────────────────────────────
+// [4] 컷 그리드 (CutCanvas.js 내부)
+//     ⚠️  --page-count 변수는 단면(1) / 양면(2)
+//          JS에서 style="--page-count:2"로 주입
+// ─────────────────────────────────────────────
+
+// 기존 .cut-grid 유지
+.cut-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--page-count, 1), 1fr);  // ⚠️ 기능 변수 — 변경 금지
+  gap: 10px;                                                   // ⚠️ 양면 간격 — 변경 금지
+}
+
+// ─────────────────────────────────────────────
+// [5] 컷 카드 (CutCard — 페이지 단위 캔버스)
+//     ⚠️  aspect-ratio, width — 변경 시 모든 컷 비율 깨짐
+// ─────────────────────────────────────────────
+
+// 기존 .cut-card 유지
+.cut-card {
+  aspect-ratio: 238 / 324;               // ⚠️ B4 비율 — 변경 금지
+  width: 600px;                           // ⚠️ 기준 너비 — 줌 기능과 연동
+  background: var(--bg-secondary);        // ⚠️ 변경: white → var(--bg-secondary) (동일 색상)
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  display: grid;                          // ⚠️ 내부 컷 배치를 위한 grid — 변경 금지
+  grid-template-rows: auto;              // ⚠️ 기능 연결 — 변경 금지
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+
+// 양면 스프레드일 때 안쪽 여백 처리
+.cut-card.page-left  { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
+.cut-card.page-right { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; border-left: none; }
+
+
+// ─────────────────────────────────────────────
+// [6] 컷 캔버스 (CutCanvas.js)
+//     ⚠️  position:relative, overflow:hidden — 컷 분할 기준
+// ─────────────────────────────────────────────
+
+// 기존 .cut-canvas 유지
+.cut-canvas {
+  width: 100%;           // ⚠️ 분할 비율 계산 기준 — 변경 금지
+  height: 100%;          // ⚠️ 분할 비율 계산 기준 — 변경 금지
+  border: 1px solid var(--border-light);   // ⚠️ 변경: skyblue → border-light (가이드선 색만 변경, 기능 무관)
+  position: relative;    // ⚠️ 컷 절대 위치 기준 — 변경 금지
+  overflow: hidden;      // ⚠️ 컷이 캔버스 밖으로 나가지 않도록 — 변경 금지
+}
+
+
+// ─────────────────────────────────────────────
+// [7] 컷 아이템 (CutItem.js)
+//     ⚠️  position:relative — grid-area와 함께 CSS Grid 위치 지정
+//     grid-column/grid-row은 JS에서 인라인 스타일로 주입
+// ─────────────────────────────────────────────
+
+// 기존 .cut-item 유지
+.cut-item {
+  position: relative;    // ⚠️ 컷 내 메모/번호 배지의 기준점 — 변경 금지
+  overflow: hidden;      // ⚠️ 컷 경계 외 내용 숨김 — 변경 금지
+  border: 2px solid transparent;
+  transition: border-color var(--transition-fast);
+  cursor: pointer;
+  background: var(--bg-secondary);
+
+  // hover 시 Deep Blue 테두리 (기존 --primary-blue 대체)
+  &:hover {
+    border-color: var(--color-primary);        // ⚠️ 변경: --primary-blue → var(--color-primary) (동일 색상값)
+  }
+
+  // 선택 상태
+  // ⚠️  변경: --accent-pink → amber 포인트 컬러 (#fbc662)로 교체
+  //     근거: 디자인 시스템 통일 (accent-pink가 정의되지 않은 변수였음)
+  &.selected {
+    border-color: var(--color-accent);         // ⚠️ 변경됨: --accent-pink → --color-accent(#fbc662)
+    background: rgba(251, 198, 98, 0.05);     // ⚠️ 변경됨: rgba(255,107,157,0.05) → amber tint
+  }
+}
+
+// 컷 내용 (텍스트 메모 표시)
+.cut-content {
+  font-size: 9px;
+  color: var(--text-tertiary);
+  font-family: var(--font-family-mono);
+  padding: var(--spacing-xs);
+  line-height: var(--leading-normal);
+  @include text-ellipsis(2);
+}
+
+// 컷 번호 배지
+.cut-num-badge {
+  position: absolute;
+  top: 4px; left: 4px;
+  background: var(--color-primary);
+  color: var(--text-on-primary);
+  font-size: 7px;
+  font-family: var(--font-family-mono);
+  padding: 1px 4px;
+  border-radius: 2px;
+  opacity: 0.7;
+  z-index: 1;
+}
+
+// 컷 하단 메모 바 (selected 상태에서 표시)
+.cut-memo-bar {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(42, 77, 136, 0.85);
+  padding: 3px var(--spacing-xs);
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: var(--leading-normal);
+  @include text-ellipsis(2);
+}
+
+// 컷 분할 안내 오버레이 (분할 모드 active 시)
+.cut-split-guide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(42, 77, 136, 0.04);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  pointer-events: none;
+
+  &.visible { opacity: 1; }
+
+  // 중심 크로스 가이드
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    background: rgba(42, 77, 136, 0.15);
+  }
+  &::before { width: 1px; height: 100%; left: 50%; }
+  &::after  { width: 100%; height: 1px; top: 50%; }
+}
+
+
+// ─────────────────────────────────────────────
+// [8] 메모 패널 (오른쪽 사이드 — Design 2 Ocean 참고)
+//     CutManagement에서 오른쪽에 붙는 메모 관리 패널
+// ─────────────────────────────────────────────
+
+.cut-memo-panel {
+  width: 260px;
+  min-width: 260px;
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cut-memo-panel-header {
+  padding: var(--spacing-md) var(--spacing-md) var(--spacing-sm);
+  border-bottom: 1px solid var(--border-light);
+  flex-shrink: 0;
+
+  &__title {
+    font-size: var(--font-xs);
+    font-weight: var(--font-medium);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    font-family: var(--font-family-mono);
+    margin-bottom: var(--spacing-sm);
+  }
+}
+
+// 컷 선택 칩 (L-1, L-2, R-1 등)
+.cut-chip-group {
+  display: flex;
+  gap: var(--spacing-xs);
+  flex-wrap: wrap;
+}
+
+.cut-chip {
+  padding: 2px var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-family: var(--font-family-mono);
+  cursor: pointer;
+  border: 1px solid var(--border-light);
+  color: var(--text-tertiary);
+  background: none;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    background var(--transition-fast);
+
+  &:hover {
+    border-color: var(--border-dark);
+    color: var(--text-secondary);
+  }
+
+  &.active {
+    background: #eef1f7;
+    border-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+}
+
+// 메모 패널 바디
+.cut-memo-panel-body {
+  flex: 1;
+  padding: var(--spacing-md);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  @include custom-scrollbar;
+}
+
+// 메모 섹션 레이블
+.cut-memo-section-label {
+  font-size: 10px;
+  font-family: var(--font-family-mono);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--spacing-sm);
+}
+
+// 메모 텍스트에어리어
+.cut-memo-textarea {
+  width: 100%;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+  color: var(--text-primary);
+  font-size: var(--font-xs);
+  font-family: var(--font-family-base);
+  line-height: var(--leading-relaxed);
+  resize: none;
+  height: 80px;
+  outline: none;
+  transition: border-color var(--transition-fast);
+
+  &:focus {
+    border-color: var(--border-focus);
+    box-shadow: var(--shadow-focus);
+  }
+
+  &::placeholder { color: var(--text-tertiary); }
+}
+
+// 메모 풀 아이템 (드래그 앤 드롭)
+.cut-memo-pool-item {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+  cursor: grab;
+  position: relative;
+  transition:
+    border-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+
+  &:hover {
+    border-color: var(--border-medium);
+    transform: translateX(-2px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  &:active { cursor: grabbing; }
+
+  &__text {
+    font-size: 11px;
+    color: var(--text-primary);
+    line-height: var(--leading-normal);
+    padding-right: var(--spacing-lg);   // 드래그 핸들 공간
+  }
+
+  &__meta {
+    font-size: 9px;
+    font-family: var(--font-family-mono);
+    color: var(--text-tertiary);
+    margin-top: 3px;
+  }
+
+  &__drag-icon {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    color: var(--text-tertiary);
+    font-size: 12px;
+    opacity: 0.4;
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// [9] 인라인 저장 로딩 (캔버스 하단)
+// ─────────────────────────────────────────────
+
+.cut-save-indicator {
+  position: absolute;
+  bottom: var(--spacing-lg);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-md);
+  animation: fadeIn var(--transition-base) ease;
+  z-index: 10;
+
+  // 고양이 애니메이션 (Design 3 잉크 로딩 cat 아이디어)
+  .saving-cat {
+    width: 28px; height: 28px;
+    animation: catBounce 2s ease-in-out infinite;
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+}

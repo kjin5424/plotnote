@@ -1,4 +1,3 @@
-import "assets/css/screens/page.css";
 import WorkspaceLayout from "components/layout/WorkspaceLayout";
 import PageHeader from "./PageHeader";
 import useData from "contexts/DataContext";

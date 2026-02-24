@@ -1,0 +1,221 @@
+// ============================================================
+//  common/modal.scss
+//  모달 컴포넌트 스타일.
+//  Modal.js (기본 wrapper), ConfirmModal.js, ProjectInfoModal.js 대응.
+//  PageMemoModal.js (page.css에서 import함) 도 여기서 관리.
+// ============================================================
+
+@use './variables' as *;
+@use './animations';
+
+
+// ─────────────────────────────────────────────
+// [1] 오버레이
+//     기존 modal.css의 .modal-overlay 유지 + 스타일 추가
+// ─────────────────────────────────────────────
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 26, 26, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  padding: var(--spacing-lg);
+  animation: fadeIn var(--transition-base) ease;
+  // 클릭 가능하도록 (backdrop 클릭으로 닫기)
+  cursor: pointer;
+}
+
+
+// ─────────────────────────────────────────────
+// [2] 모달 컨텐츠 박스
+//     기존 modal.css의 .modal-content 유지 + 스타일 추가
+// ─────────────────────────────────────────────
+
+.modal-content {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2xl, 0 20px 40px rgba(26,26,26,0.18));
+  max-width: var(--container-sm);
+  width: 100%;
+  max-height: calc(100vh - var(--spacing-2xl));
+  overflow-y: auto;
+  cursor: default;   // overlay 클릭과 구분
+  animation: scaleIn var(--transition-base) ease both;
+
+  @include custom-scrollbar;
+}
+
+// ── 모달 헤더
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
+  border-bottom: 1px solid var(--border-light);
+}
+
+// ── 모달 닫기 버튼 (X)
+.modal-close {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  font-size: 14px;
+  flex-shrink: 0;
+  transition: background var(--transition-fast), color var(--transition-fast);
+
+  &:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+}
+
+.modal-title {
+  font-size: var(--font-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  font-family: var(--font-family-serif);
+}
+
+// ── 모달 바디
+.modal-body {
+  padding: var(--spacing-lg);
+}
+
+// ── 모달 푸터
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-top: 1px solid var(--border-light);
+}
+
+
+// ─────────────────────────────────────────────
+// [3] 확인 모달 (ConfirmModal.js)
+//     삭제 확인 등 단순 yes/no
+// ─────────────────────────────────────────────
+
+.confirm-modal {
+  .modal-content {
+    max-width: 400px;
+  }
+
+  // 아이콘 영역 (경고, 정보 등)
+  &__icon {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--spacing-md);
+
+    &.warning {
+      background: #fff8e6;
+      color: var(--color-accent);   // amber 포인트 활용
+    }
+
+    &.danger {
+      background: #fef2f2;
+      color: var(--color-error);
+    }
+  }
+
+  &__message {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--spacing-lg);
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// [4] 메모 모달 (PageMemoModal, CutMemoModal 등)
+//     기존 page.css에서 import했던 modal.css 대체
+// ─────────────────────────────────────────────
+
+.memo-modal {
+  .modal-content {
+    max-width: 520px;
+  }
+
+  // 메모 텍스트에어리어
+  &__textarea {
+    width: 100%;
+    min-height: 160px;
+    padding: var(--spacing-md);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    font-family: var(--font-family-base);
+    font-size: var(--font-sm);
+    color: var(--text-primary);
+    line-height: var(--leading-relaxed);
+    resize: vertical;
+    outline: none;
+    transition: border-color var(--transition-fast);
+
+    &:focus {
+      border-color: var(--border-focus);
+      box-shadow: var(--shadow-focus);
+    }
+
+    &::placeholder { color: var(--text-tertiary); }
+  }
+
+  // 메모 섹션 레이블
+  &__label {
+    font-size: var(--font-xs);
+    font-weight: var(--font-medium);
+    color: var(--text-tertiary);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-sm);
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// [5] 프로젝트 정보 모달 (ProjectInfoModal.js)
+// ─────────────────────────────────────────────
+
+.project-info-modal {
+  .modal-content {
+    max-width: 640px;
+  }
+
+  // 설정 행 (키-값)
+  &__setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--border-light);
+
+    &:last-child { border-bottom: none; }
+  }
+
+  &__setting-key {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+  }
+
+  &__setting-val {
+    font-size: var(--font-xs);
+    font-family: var(--font-family-mono);
+    background: #eef1f7;
+    color: var(--color-primary);
+    padding: 2px var(--spacing-sm);
+    border-radius: var(--radius-sm);
+  }
+}
