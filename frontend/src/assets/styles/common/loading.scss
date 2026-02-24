@@ -1,0 +1,130 @@
+// ============================================================
+//  common/loading.scss
+//  로딩 상태 스타일.
+//  Spinner.js 컴포넌트 + 인라인 로딩 표시 + 고양이 bounce 로딩.
+// ============================================================
+
+@use './variables' as *;
+@use './animations';
+
+
+// ─────────────────────────────────────────────
+// [1] 전체 화면 로딩 (DataContext isLoading 시)
+// ─────────────────────────────────────────────
+
+// MainLayout.jsx의 "데이터를 불러오는 중입니다" 대체
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  z-index: 9999;
+  animation: fadeIn var(--transition-slow) ease;
+}
+
+// 고양이 bounce 아이콘 (Design 3 잉크 참고, Paper 버전)
+.loading-cat {
+  width: 56px;
+  height: 56px;
+  animation: catBounce 2s ease-in-out infinite;
+  opacity: 0.6;
+}
+
+// 로딩 텍스트
+.loading-text {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  font-family: var(--font-family-mono);
+  letter-spacing: 0.04em;
+}
+
+
+// ─────────────────────────────────────────────
+// [2] 스피너 (작은 인라인 로딩)
+// ─────────────────────────────────────────────
+
+.spinner {
+  display: inline-block;
+  width: 20px; height: 20px;
+  border: 2px solid var(--border-medium);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+
+  &--sm { width: 14px; height: 14px; border-width: 1.5px; }
+  &--lg { width: 28px; height: 28px; border-width: 3px; }
+
+  // amber 포인트: 저장중 스피너
+  &--saving {
+    border-top-color: var(--color-accent);
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// [3] Dot loader (저장 중 상태바)
+//     status-bar 내부에서 사용
+// ─────────────────────────────────────────────
+
+.dot-loader {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+
+  span {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--color-primary-muted);
+    animation: dotPulse 1.4s ease-in-out infinite;
+    display: inline-block;
+
+    &:nth-child(2) { animation-delay: 0.2s; }
+    &:nth-child(3) { animation-delay: 0.4s; }
+  }
+
+  // amber: 저장 완료 직전 dot
+  &--saving span { background: var(--color-accent); }
+}
+
+
+// ─────────────────────────────────────────────
+// [4] 스켈레톤 로딩 (페이지 그리드 로딩 시)
+// ─────────────────────────────────────────────
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-tertiary) 0%,
+    var(--border-light) 50%,
+    var(--bg-tertiary) 100%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.6s infinite;
+  border-radius: var(--radius-sm);
+
+  &--page-card {
+    aspect-ratio: 238 / 324;
+    width: 100%;
+    border-radius: var(--radius-sm);
+  }
+
+  &--text {
+    height: 12px;
+    width: 80%;
+    margin-top: var(--spacing-xs);
+  }
+
+  &--text-sm {
+    height: 10px;
+    width: 60%;
+  }
+}

@@ -1,7 +1,4 @@
-import "assets/css/variables.css"; // 전역 변수 로드
-import "assets/css/global.css"; // 전역 스타일 로드
-import "assets/css/common/layout.css"; // 공통 레이아웃
-import "assets/css/common/button.css"; // 공통 컴포넌트
+import "assets/styles/index.scss";
 import { AuthProvider } from "./contexts/AuthContext";
 import { DataProvider } from "./contexts/DataContext";
 import { Navigate, Route, Routes } from "react-router-dom";

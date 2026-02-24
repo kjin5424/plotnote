@@ -1,6 +1,6 @@
 // 권한 관리 (readonly/commentonly/editor/owner)
 import { createContext, useContext, useState } from "react";
-import { errorMsg } from "../components/common/errorMessage";
+import { errorMsg } from "../utils/constants/errorMessage";
 
 // 관리자 권한 관련 컨텍스트
 export const AuthContext = createContext();

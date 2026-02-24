@@ -1,0 +1,270 @@
+// ============================================================
+//  common/button.scss
+//  버튼 컴포넌트 스타일 모음.
+//  variables.scss의 mixin을 활용해 hover 효과 적용.
+//  ActionButton.js, AddButton.js, ExpandButton.js, ImageButton.js 대응.
+// ============================================================
+
+@use './variables' as *;
+
+
+// ─────────────────────────────────────────────
+// [1] 버튼 공통 베이스
+//     global.scss의 button 리셋 위에 추가 스타일
+// ─────────────────────────────────────────────
+
+%btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  padding: 5px var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-xs);
+  font-weight: var(--font-medium);
+  font-family: var(--font-family-base);
+  white-space: nowrap;
+  cursor: pointer;
+  border: none;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+  @include focus-ring;
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// [2] 버튼 변형 (variants)
+// ─────────────────────────────────────────────
+
+// ── 기본 (ghost) — 배경 없이 hover 시 bg
+.btn {
+  @extend %btn-base;
+  background: none;
+  color: var(--text-secondary);
+
+  &:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+}
+
+// ── 주 액션 (Primary) — Deep Blue 배경
+.btn--primary {
+  @extend %btn-base;
+  background: var(--color-primary);
+  color: var(--text-on-primary);
+
+  &:hover {
+    background: #1e3a6e;
+    box-shadow: var(--shadow-md);
+  }
+
+  &:active { transform: translateY(1px); }
+}
+
+// ── 포인트 액션 (Accent/Amber) — 약 5% 사용
+//    중요 CTA: 에피소드 추가, 저장 등
+.btn--accent {
+  @extend %btn-base;
+  background: var(--color-accent);
+  color: var(--text-on-accent);
+  font-weight: var(--font-semibold);
+  box-shadow: var(--shadow-amber);
+
+  &:hover {
+    background: var(--color-accent-dark);
+    box-shadow: 0 4px 14px rgba(251, 198, 98, 0.45);
+  }
+
+  &:active { transform: translateY(1px); }
+}
+
+// ── 아웃라인 버튼
+.btn--outline {
+  @extend %btn-base;
+  background: none;
+  border: 1px solid var(--border-medium);
+  color: var(--text-secondary);
+
+  &:hover {
+    border-color: var(--color-primary-muted);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+}
+
+// ── 위험 액션 (삭제 등)
+.btn--danger {
+  @extend %btn-base;
+  background: none;
+  color: var(--color-error);
+  border: 1px solid transparent;
+
+  &:hover {
+    background: #fef2f2;
+    border-color: var(--color-error);
+  }
+}
+
+// ── 작은 버튼 (헤더 아이콘 옆 등)
+.btn--sm {
+  padding: 3px var(--spacing-sm);
+  font-size: 11px;
+  border-radius: var(--radius-sm);
+}
+
+// ── 아이콘만 있는 버튼
+.btn--icon {
+  @extend %btn-base;
+  width: 28px; height: 28px;
+  padding: 0;
+  background: none;
+  color: var(--text-tertiary);
+  border: 1px solid transparent;
+
+  &:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--border-light);
+    color: var(--text-primary);
+  }
+}
+
+// ── 뷰 토글 그룹 (단면 / 양면)
+.view-toggle {
+  display: flex;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--bg-primary);
+
+  .view-btn {
+    @extend %btn-base;
+    border-radius: 0;
+    border: none;
+    background: none;
+    padding: 4px var(--spacing-sm);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    gap: 4px;
+
+    &.active {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-weight: var(--font-medium);
+    }
+
+    &:hover:not(.active) {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+    }
+  }
+}
+
+// ── 칩 버튼 (필터: 전체 / 미작업 / 완료)
+.btn-chip {
+  @extend %btn-base;
+  padding: 3px var(--spacing-sm);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-light);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 11px;
+
+  &:hover {
+    border-color: var(--color-primary-muted);
+  }
+
+  &.active {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: #eef1f7;
+    font-weight: var(--font-medium);
+  }
+}
+
+// ── 확장 버튼 (ExpandButton.js)
+//    트리에서 섹션 접기/펼치기에 사용
+.btn-expand {
+  @extend %btn-base;
+  width: 20px; height: 20px;
+  padding: 0;
+  background: none;
+  border-radius: 3px;
+  color: var(--text-tertiary);
+  font-size: 10px;
+
+  &:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+  }
+}
+
+// ── 추가 버튼 (AddButton.js)
+//    리스트 하단 "+ 추가" 스타일
+.btn-add {
+  @extend %btn-base;
+  width: 100%;
+  padding: var(--spacing-sm);
+  background: none;
+  border: 1px dashed var(--border-medium);
+  border-radius: var(--radius-md);
+  color: var(--text-tertiary);
+  font-size: var(--font-xs);
+  justify-content: center;
+  gap: var(--spacing-xs);
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    background var(--transition-fast);
+
+  &:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: #f5f8ff;
+  }
+
+  // amber 포인트: 중요한 추가 액션(에피소드 추가)에 한정 사용
+  &.btn-add--accent {
+    border-color: var(--color-accent-light);
+    &:hover {
+      border-color: var(--color-accent);
+      color: var(--text-on-accent);
+      background: var(--color-accent-light);
+    }
+  }
+}
+
+// ── 컷 분할 모드 토글 (Design 3 잉크에서 가져온 개념)
+//    CutToolbar에서 사용. active 시 Deep Blue 강조.
+.btn-toggle-mode {
+  @extend %btn-base;
+  padding: 4px var(--spacing-md);
+  border: 1px solid var(--border-medium);
+  background: none;
+  color: var(--text-tertiary);
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  border-radius: var(--radius-sm);
+
+  &.active {
+    background: #eef1f7;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    font-weight: var(--font-medium);
+  }
+
+  &:hover:not(.active) {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+  }
+}

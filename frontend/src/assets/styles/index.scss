@@ -1,0 +1,37 @@
+// ============================================================
+//  index.scss  (or main.scss)
+//  모든 SCSS 파일을 올바른 순서로 import하는 진입점.
+//
+//  사용법 (App.tsx):
+//    import 'assets/styles/index.scss';  // 이 파일 하나만 import
+//
+//  순서:
+//    1. variables (토큰, mixin — 다른 파일들이 @use로 참조)
+//    2. animations (keyframes)
+//    3. global (reset, base)
+//    4. common/* (공통 컴포넌트)
+//    5. screens/* (화면별 스타일)
+// ============================================================
+
+// ── 1. 토큰 & 믹스인 (가장 먼저 로드)
+@use "./common/variables";
+
+// ── 2. 애니메이션 keyframes
+@use "./common/animations";
+
+// ── 3. 전역 리셋 & 기본 스타일
+@use "./common/global";
+
+// ── 4. 공통 컴포넌트
+@use "./common/layout";
+@use "./common/button";
+@use "./common/tooltip";
+@use "./common/loading";
+@use "./common/modal";
+
+// ── 5. 화면별 스타일
+@use "./screens/bookshelf";
+@use "./screens/project";
+@use "./screens/episode";
+@use "./screens/page";
+@use "./screens/cut";

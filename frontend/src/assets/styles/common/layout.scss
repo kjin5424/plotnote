@@ -1,0 +1,794 @@
+// ============================================================
+//  common/layout.scss
+//  앱 전체 레이아웃 뼈대.
+//  기존 layout.css 완전 호환 유지 + 사이드바 트리 추가
+//  클래스명 변경 없음: .app-layout, .main-content,
+//    .header, .sidebar, .workspace-layout 등 모두 유지.
+// ============================================================
+
+@use './variables' as *;
+@use './animations';
+
+// ─────────────────────────────────────────────
+// [1] 앱 최상위 래퍼 — 기존 유지
+// ─────────────────────────────────────────────
+
+// 브라우저 전체를 채우는 고정 컨테이너
+.outer-wrapper {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+// 앱 전체 세로 flex 컨테이너
+.app-layout {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+// 헤더 아래 가로 flex 영역 (사이드바 + main)
+.main-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+
+// ─────────────────────────────────────────────
+// [2] 헤더 — 기존 유지 + Paper 디자인 적용
+// ─────────────────────────────────────────────
+
+.header {
+  height: var(--header-height);
+  flex-shrink: 0;
+  background: var(--bg-secondary);      // white
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 var(--spacing-md);
+  gap: var(--spacing-xs);
+  justify-content: space-between;
+
+  // 미묘한 그림자로 깊이감 (Paper 시안)
+  box-shadow: var(--shadow-xs);
+  position: relative;
+  z-index: 20;
+}
+
+// 헤더 좌측 (메뉴버튼 + 브레드크럼)
+.header-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-xs);
+  min-width: 0;
+}
+
+// 브레드크럼 (BreadCrumb.jsx)
+.breadcrumb {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-xs);
+  min-width: 0;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 3px var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  color: var(--text-tertiary);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
+
+  &:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+  }
+
+  // 마지막(현재) 경로 강조
+  &:last-child {
+    color: var(--text-primary);
+    font-weight: var(--font-medium);
+  }
+
+  // 구분자 화살표
+  &::before {
+    content: '›';
+    color: var(--color-primary-dim);
+    margin-right: var(--spacing-xs);
+  }
+  &:first-child::before { content: none; }
+}
+
+// 헤더 우측 (HeaderRight.jsx — 설정/더보기 등)
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+
+// ─────────────────────────────────────────────
+// [3] 사이드바 — 기존 구조 유지 + 트리 내비 추가
+// ─────────────────────────────────────────────
+
+// 사이드바 컨테이너 (Sidebar.tsx)
+// width 인라인 스타일로 제어: isOpen ? sidebarWidth : 56px
+.sidebar {
+  flex-shrink: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-light);
+  overflow: hidden;
+  transition: width var(--transition-panel);
+  z-index: 50;
+}
+
+// 사이드바 내부 헤더 (로고/유저명 등)
+.sidebar-header {
+  flex-shrink: 0;
+  padding: var(--spacing-md) var(--spacing-md) var(--spacing-sm);
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+
+  // 로고 텍스트
+  .sidebar-logo-text {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-sm);
+    font-weight: var(--font-normal);
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+  }
+
+  // 로고 마크 (Deep Blue 박스)
+  .sidebar-logo-mark {
+    width: 26px;
+    height: 26px;
+    background: var(--color-primary);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+}
+
+// 사이드바 스크롤 영역 (기존 .sidebar-body 유지)
+.sidebar-body {
+  flex: 1;
+  overflow-y: auto;
+  @include custom-scrollbar;
+  padding: var(--spacing-xs) 0;
+}
+
+// 사이드바 하단 (설정/로그아웃)
+.sidebar-footer {
+  flex-shrink: 0;
+  padding: var(--spacing-sm) var(--spacing-sm);
+  border-top: 1px solid var(--border-light);
+
+  // 유저 행
+  .sidebar-user-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background var(--transition-fast);
+
+    &:hover { background: var(--bg-tertiary); }
+  }
+
+  // 유저 아바타
+  .sidebar-user-avatar {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--text-on-primary);
+    font-weight: var(--font-semibold);
+    flex-shrink: 0;
+  }
+
+  .sidebar-user-name {
+    font-size: var(--font-xs);
+    color: var(--text-secondary);
+    @include text-ellipsis;
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// [4] 사이드바 트리 내비 (새로 추가)
+//     이미지에서 보이는 구조:
+//     즐겨찾기 > 내 책장 > Initial Project > Initial Episode > 페이지들
+// ─────────────────────────────────────────────
+
+// 섹션 레이블 (즐겨찾기, 내 책장, 공유된 책장)
+.sidebar-section-label {
+  font-size: 10px;
+  font-weight: var(--font-medium);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+}
+
+// 트리 루트 컨테이너
+.sidebar-tree {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+// ── 트리 노드 공통 (모든 depth에 적용)
+.tree-node {
+  // 자식 노드들
+  &__children {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+
+    // 펼칠 때 애니메이션
+    &.expanded > .tree-node__item {
+      animation: treeExpand var(--transition-fast) ease both;
+    }
+  }
+
+  // 노드 행 자체 (클릭 영역)
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: 4px var(--spacing-sm);
+    padding-left: calc(var(--tree-depth, 0) * 16px + var(--spacing-sm));
+    border-radius: 0;
+    cursor: pointer;
+    font-size: var(--font-xs);         // 12px — 노션처럼 작게
+    color: var(--text-secondary);
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+    transition: background var(--transition-fast);
+
+    &:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    // ── 활성 상태 (isActive)
+    //    Paper 시안처럼 Deep Blue 라이트 배경 + 텍스트 강조
+    &.active {
+      background: #eef1f7;            // Deep Blue 10% 배경
+      color: var(--color-primary);
+      font-weight: var(--font-medium);
+
+      // 왼쪽 포인트 바
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 0; bottom: 0;
+        width: 2px;
+        background: var(--color-primary);
+        border-radius: 0 2px 2px 0;
+      }
+    }
+  }
+
+  // 펼침/접힘 화살표 버튼
+  &__toggle {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    background-image: var(--img-arrow-right);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px 14px;
+    opacity: 0.5;
+    transition: transform var(--transition-fast), opacity var(--transition-fast);
+
+    &:hover { opacity: 1; }
+
+    // 펼쳐진 상태 → 아래 화살표
+    &.expanded {
+      background-image: var(--img-arrow-down);
+    }
+
+    // 리프 노드(자식 없음) → 자리만 차지 (화살표 없음)
+    &.leaf {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  // 타입 아이콘 (폴더, 에피소드, 페이지 등)
+  &__icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px 14px;
+    opacity: 0.6;
+
+    // 타입별 아이콘
+    &.icon-bookshelf  { background-image: var(--img-folder-open); }
+    &.icon-project    { background-image: var(--img-folder); }
+    &.icon-episode    { background-image: var(--img-docs); }
+    &.icon-page       { background-image: var(--img-docs); opacity: 0.45; }
+    &.icon-favorite   { background-image: var(--img-favorite); }
+  }
+
+  // 노드 텍스트 라벨
+  &__label {
+    flex: 1;
+    @include text-ellipsis;
+    line-height: var(--leading-normal);
+  }
+
+  // 노드 오른쪽 액션 버튼 (+ 추가, ⋯ 더보기) — hover 시 노출
+  &__actions {
+    display: none;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+
+  &__item:hover &__actions {
+    display: flex;
+  }
+
+  &__action-btn {
+    width: 18px; height: 18px;
+    border-radius: 3px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px 14px;
+    opacity: 0.5;
+    transition: all var(--transition-fast);
+
+    &:hover {
+      background-color: var(--border-light);
+      opacity: 1;
+    }
+  }
+}
+
+// ── 들여쓰기 depth 변수
+//    React에서 style={{ '--tree-depth': depth }}로 주입
+//    depth 0~3 기본 정의도 제공
+.tree-depth-0 { --tree-depth: 0; }
+.tree-depth-1 { --tree-depth: 1; }
+.tree-depth-2 { --tree-depth: 2; }
+.tree-depth-3 { --tree-depth: 3; }
+.tree-depth-4 { --tree-depth: 4; }
+
+
+// ─────────────────────────────────────────────
+// [4b] 사이드바 컴포넌트 실제 클래스 (Sidebar.tsx)
+//      tree-node__* BEM과 별도로 컴포넌트가 사용하는 flat 클래스명
+// ─────────────────────────────────────────────
+
+// ── 헤더 로고 아이콘 (TS import: 상태에 따라 happy/calm으로 변경됨)
+.sidebar-logo-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+// ── 헤더 토글 닫기 아이콘
+.sidebar-toggle-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.sidebar-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  color: var(--text-tertiary);
+  transition: background var(--transition-fast);
+
+  &:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+}
+
+// ── 네비게이션 스크롤 영역
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  @include custom-scrollbar;
+  padding: var(--spacing-xs) 0;
+}
+
+// ── 섹션 (즐겨찾기 / 내 책장 / 공유책장)
+.sidebar-tree-section {
+  margin-bottom: 2px;
+}
+
+.sidebar-tree-section-title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 5px var(--spacing-sm);
+  font-size: var(--font-xs);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  transition: background var(--transition-fast), color var(--transition-fast);
+
+  &:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+}
+
+// ── 트리 행 (프로젝트 / 에피소드)
+.sidebar-tree-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 4px var(--spacing-sm);
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  position: relative;
+  transition: background var(--transition-fast), color var(--transition-fast);
+
+  &:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+
+  &--active {
+    background: #eef1f7;
+    color: var(--color-primary);
+    font-weight: var(--font-medium);
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--color-primary);
+    }
+  }
+}
+
+// ── 페이지 행 (리프)
+.sidebar-tree-page {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 3px var(--spacing-sm);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  position: relative;
+  transition: background var(--transition-fast), color var(--transition-fast);
+
+  &:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+  }
+
+  &--active {
+    background: #eef1f7;
+    color: var(--color-primary);
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--color-primary);
+    }
+  }
+}
+
+// ── 아이콘 / 레이블
+.sidebar-tree-item-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  opacity: 0.55;
+}
+
+.sidebar-tree-item-label {
+  flex: 1;
+  @include text-ellipsis;
+  line-height: var(--leading-normal);
+}
+
+// ── 하단 nav 아이템 (설정 등)
+.sidebar-nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  transition: background var(--transition-fast), color var(--transition-fast);
+
+  &:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+}
+
+.sidebar-nav-label {
+  @include text-ellipsis;
+}
+
+// ── 닫힌 상태 (56px 레일) breadcrumb nav
+.sidebar-breadcrumb {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  gap: 2px;
+}
+
+.sidebar-breadcrumb-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast);
+
+  &:hover {
+    background: var(--bg-tertiary);
+  }
+
+  &--active {
+    background: #eef1f7;
+
+    .sidebar-breadcrumb-icon {
+      opacity: 1;
+    }
+  }
+
+  &--disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.sidebar-breadcrumb-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.5;
+}
+
+
+// ─────────────────────────────────────────────
+// [5] Resize Handle (사이드바 너비 조절)
+// ─────────────────────────────────────────────
+
+.resize-handle {
+  width: 4px;
+  height: 100%;
+  cursor: col-resize;
+  flex-shrink: 0;
+  position: relative;
+  transition: background var(--transition-fast);
+
+  &:hover,
+  &.dragging {
+    background: var(--color-primary-muted);
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// [6] Workspace 레이아웃 — 기존 유지
+// ─────────────────────────────────────────────
+
+// management-container: 각 화면(Page, Cut 등)의 최상위
+.management-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transition: all var(--transition-slow);
+}
+
+// WorkspaceLayout.jsx — header + body 세로 구조
+.workspace-layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+// workspace 상단 헤더 영역
+.workspace-header {
+  flex-shrink: 0;
+  width: 100%;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-light);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  min-height: 52px;
+}
+
+// workspace 스크롤 가능 바디
+.workspace-body {
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+  padding: var(--spacing-lg);
+  background: var(--bg-primary);
+  @include custom-scrollbar;
+}
+
+// main 태그 (Outlet 감싸는)
+main {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+
+// ─────────────────────────────────────────────
+// [7] 공통 그리드 — 기존 유지
+// ─────────────────────────────────────────────
+
+.grid-container {
+  display: grid;
+  gap: var(--spacing-md);
+}
+
+.grid-single  { grid-template-columns: 1fr; }
+.grid-double  { grid-template-columns: repeat(2, 1fr); }
+.grid-triple  { grid-template-columns: repeat(3, 1fr); }
+
+
+// ─────────────────────────────────────────────
+// [8] 공통 카드 — 기존 유지 + hover 업그레이드
+// ─────────────────────────────────────────────
+
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  transition:
+    box-shadow var(--transition-base),
+    border-color var(--transition-base),
+    transform var(--transition-base);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--border-medium);
+  }
+
+  &.selected {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-focus);
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// [9] 상태 바 (앱 하단 / 각 화면 하단)
+// ─────────────────────────────────────────────
+
+.status-bar {
+  height: 26px;
+  flex-shrink: 0;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--spacing-lg);
+  gap: var(--spacing-lg);
+}
+
+.status-item {
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+
+  // 저장됨 dot (amber 포인트 5% 활용 — 저장 완료 시 초록, 저장중 amber)
+  &__dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--color-success);
+
+    &.saving {
+      background: var(--color-accent);
+      animation: amberPulse 1.5s ease-in-out infinite;
+    }
+  }
+
+  &.ml-auto { margin-left: auto; }
+}
+
+
+// ─────────────────────────────────────────────
+// [10] 구형 레이아웃 호환 (기존 l- prefix 클래스)
+//      EpisodeSidebar.js, ProjectSidebar.js에서 사용
+// ─────────────────────────────────────────────
+
+.l-management-container {
+  flex: 1;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.l-sidebar {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  height: 100%;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.l-sidebar-header {
+  flex-shrink: 0;
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--border-light);
+  font-size: var(--font-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+}
+
+.l-sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  @include custom-scrollbar;
+}

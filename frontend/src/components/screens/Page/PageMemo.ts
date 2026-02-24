@@ -1,5 +1,3 @@
-import "assets/css/common/modal.css";
-
 // 페이지 메모 수정
 function PageMemoModal({ page, onSave }) {
   const handleSave = (newMemo) => {

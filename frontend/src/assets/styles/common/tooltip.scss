@@ -1,0 +1,419 @@
+// ============================================================
+//  common/tooltip.scss
+//  툴팁 스타일 통합.
+//  세 가지 방법으로 사용 가능:
+//    (A) data-tooltip="내용" — 순수 CSS (HTML 단순 텍스트)
+//    (B) .tooltip + .tooltip__trigger + .tooltip__content — React wrapper
+//        HTML 내용 지원, 클릭 트리거 등 복잡한 사용에 적합
+//    (C) .tooltip-portal — Portal 기반 (Tooltip.jsx)
+//        fixed 위치 + 색상 변형 지원
+// ============================================================
+
+@use './variables' as *;
+@use './animations';
+
+
+// ─────────────────────────────────────────────
+// [0] 공통 토큰 변수
+// ─────────────────────────────────────────────
+
+$tooltip-bg:         #{$ink};
+$tooltip-color:      #{$white};
+$tooltip-radius:     8px;           // --radius-md 값과 동일
+$tooltip-font-size:  11px;
+$tooltip-padding:    5px 9px;
+$tooltip-max-width:  220px;
+$tooltip-offset:     8px;           // 트리거와의 간격
+$tooltip-z:          1000;
+$tooltip-transition: var(--transition-base);
+
+
+// ─────────────────────────────────────────────
+// [1] (A) data-tooltip 속성 기반 — 순수 CSS
+//     사용: <button data-tooltip="저장하기">
+//     위치: data-tooltip-pos="top|bottom|left|right" (기본 top)
+// ─────────────────────────────────────────────
+
+[data-tooltip] {
+  position: relative;
+
+  // 툴팁 말풍선
+  &::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    z-index: $tooltip-z;
+    padding: $tooltip-padding;
+    background: $tooltip-bg;
+    color: $tooltip-color;
+    font-size: $tooltip-font-size;
+    font-family: var(--font-family-base);
+    font-weight: var(--font-normal);
+    line-height: var(--leading-normal);
+    border-radius: $tooltip-radius;
+    max-width: $tooltip-max-width;
+    white-space: normal;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity $tooltip-transition, transform $tooltip-transition;
+
+    // 기본 위치: top
+    bottom: calc(100% + #{$tooltip-offset});
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+  }
+
+  // 화살표
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: $tooltip-z;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity $tooltip-transition, transform $tooltip-transition;
+    border: 5px solid transparent;
+
+    // 기본: top — 아래를 향하는 삼각형
+    bottom: calc(100% + #{$tooltip-offset} - 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    border-top-color: $tooltip-bg;
+    border-bottom: none;
+  }
+
+  // 표시
+  &:hover::after,
+  &:hover::before {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  // ── 위치 변형: bottom
+  &[data-tooltip-pos="bottom"] {
+    &::after {
+      top: calc(100% + #{$tooltip-offset});
+      bottom: auto;
+      transform: translateX(-50%) translateY(-4px);
+    }
+    &::before {
+      top: calc(100% + #{$tooltip-offset} - 10px);
+      bottom: auto;
+      transform: translateX(-50%) translateY(-4px);
+      border-bottom: 5px solid $tooltip-bg;
+      border-top-color: transparent;
+      border-top: none;
+    }
+    &:hover::after  { transform: translateX(-50%) translateY(0); }
+    &:hover::before { transform: translateX(-50%) translateY(0); }
+  }
+
+  // ── 위치 변형: right
+  &[data-tooltip-pos="right"] {
+    &::after {
+      left: calc(100% + #{$tooltip-offset});
+      top: 50%;
+      bottom: auto;
+      transform: translateY(-50%) translateX(-4px);
+    }
+    &::before {
+      left: calc(100% + #{$tooltip-offset} - 10px);
+      top: 50%;
+      bottom: auto;
+      transform: translateY(-50%) translateX(-4px);
+      border-right-color: $tooltip-bg;
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+    }
+    &:hover::after  { transform: translateY(-50%) translateX(0); }
+    &:hover::before { transform: translateY(-50%) translateX(0); }
+  }
+
+  // ── 위치 변형: left
+  &[data-tooltip-pos="left"] {
+    &::after {
+      right: calc(100% + #{$tooltip-offset});
+      left: auto;
+      top: 50%;
+      bottom: auto;
+      transform: translateY(-50%) translateX(4px);
+    }
+    &::before {
+      right: calc(100% + #{$tooltip-offset} - 10px);
+      left: auto;
+      top: 50%;
+      bottom: auto;
+      transform: translateY(-50%) translateX(4px);
+      border-left-color: $tooltip-bg;
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+    }
+    &:hover::after  { transform: translateY(-50%) translateX(0); }
+    &:hover::before { transform: translateY(-50%) translateX(0); }
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// [2] (B) .tooltip 컴포넌트 래퍼 — HTML 내용 지원
+//     사용:
+//       <div class="tooltip tooltip--top">
+//         <button class="tooltip__trigger">버튼</button>
+//         <div class="tooltip__content">
+//           <strong>제목</strong><br>설명...
+//         </div>
+//       </div>
+// ─────────────────────────────────────────────
+
+.tooltip {
+  position: relative;
+  display: inline-flex;
+
+  &__trigger {
+    cursor: default;
+  }
+
+  // 내용 패널 (HTML 지원, Paper 스타일)
+  &__content {
+    position: absolute;
+    z-index: $tooltip-z;
+    min-width: 140px;
+    max-width: $tooltip-max-width;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    font-size: $tooltip-font-size;
+    color: var(--text-primary);
+    line-height: var(--leading-relaxed);
+    white-space: normal;
+
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(4px);
+    transition:
+      opacity $tooltip-transition,
+      transform $tooltip-transition;
+
+    &.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    // 내부 구조 스타일
+    &-title {
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    &-desc {
+      color: var(--text-secondary);
+      font-size: 10px;
+    }
+
+    // 키보드 단축키 배지
+    &-kbd {
+      display: inline-block;
+      padding: 1px 5px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-medium);
+      border-radius: 3px;
+      font-family: var(--font-family-mono);
+      font-size: 10px;
+      color: var(--text-secondary);
+    }
+  }
+
+  // ── 위치 변형
+  &--top &__content {
+    bottom: calc(100% + #{$tooltip-offset});
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    &.is-visible { transform: translateX(-50%) translateY(0); }
+  }
+
+  &--bottom &__content {
+    top: calc(100% + #{$tooltip-offset});
+    left: 50%;
+    transform: translateX(-50%) translateY(-4px);
+    &.is-visible { transform: translateX(-50%) translateY(0); }
+  }
+
+  &--right &__content {
+    left: calc(100% + #{$tooltip-offset});
+    top: 50%;
+    transform: translateY(-50%) translateX(-4px);
+    &.is-visible { transform: translateY(-50%) translateX(0); }
+  }
+
+  &--left &__content {
+    right: calc(100% + #{$tooltip-offset});
+    top: 50%;
+    transform: translateY(-50%) translateX(4px);
+    &.is-visible { transform: translateY(-50%) translateX(0); }
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// [3] (C) .tooltip-portal — Portal 기반 (Tooltip.jsx)
+//     위치는 Tooltip.jsx에서 inline style로 주입 (fixed + top/left)
+//     색상 변형: .tooltip-primary / .tooltip-danger / .tooltip-success
+// ─────────────────────────────────────────────
+
+.tooltip-portal {
+  max-width: 220px;
+  padding: $tooltip-padding;
+  border-radius: $tooltip-radius;
+  font-size: $tooltip-font-size;
+  font-family: var(--font-family-base);
+  line-height: var(--leading-normal);
+  pointer-events: none;
+  white-space: normal;
+  word-break: keep-all;
+  position: relative;   // 화살표 absolute 기준
+
+  background: $tooltip-bg;
+  color: $tooltip-color;
+
+  animation: fadeIn var(--transition-base) ease,
+             scaleIn var(--transition-fast) ease;
+
+  // 내부 래퍼
+  &__inner {
+    strong { font-weight: var(--font-semibold); }
+    br { display: block; margin: 2px 0; }
+
+    kbd {
+      display: inline-block;
+      padding: 1px 4px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+      font-family: var(--font-family-mono);
+      font-size: 10px;
+    }
+  }
+
+  // ── 화살표 (position별)
+  &::before {
+    content: '';
+    position: absolute;
+    border: 5px solid transparent;
+    pointer-events: none;
+  }
+
+  &--top::before {
+    top: 100%; left: 50%;
+    transform: translateX(-50%);
+    border-top-color: $tooltip-bg;
+  }
+
+  &--bottom::before {
+    bottom: 100%; left: 50%;
+    transform: translateX(-50%);
+    border-bottom-color: $tooltip-bg;
+  }
+
+  &--left::before {
+    left: 100%; top: 50%;
+    transform: translateY(-50%);
+    border-left-color: $tooltip-bg;
+  }
+
+  &--right::before {
+    right: 100%; top: 50%;
+    transform: translateY(-50%);
+    border-right-color: $tooltip-bg;
+  }
+}
+
+// ── 색상 변형
+
+// primary — 흰 배경 / Deep Blue 테두리
+.tooltip-portal.tooltip-primary {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+  box-shadow: var(--shadow-lg);
+
+  &.tooltip-portal--top::before    { border-top-color: var(--bg-secondary); }
+  &.tooltip-portal--bottom::before { border-bottom-color: var(--bg-secondary); }
+  &.tooltip-portal--left::before   { border-left-color: var(--bg-secondary); }
+  &.tooltip-portal--right::before  { border-right-color: var(--bg-secondary); }
+}
+
+// danger — 에러 빨강
+.tooltip-portal.tooltip-danger {
+  background: var(--color-error);
+  color: white;
+
+  &.tooltip-portal--top::before    { border-top-color: var(--color-error); }
+  &.tooltip-portal--bottom::before { border-bottom-color: var(--color-error); }
+  &.tooltip-portal--left::before   { border-left-color: var(--color-error); }
+  &.tooltip-portal--right::before  { border-right-color: var(--color-error); }
+}
+
+// success — 초록
+.tooltip-portal.tooltip-success {
+  background: var(--color-success);
+  color: white;
+
+  &.tooltip-portal--top::before    { border-top-color: var(--color-success); }
+  &.tooltip-portal--bottom::before { border-bottom-color: var(--color-success); }
+  &.tooltip-portal--left::before   { border-left-color: var(--color-success); }
+  &.tooltip-portal--right::before  { border-right-color: var(--color-success); }
+}
+
+
+// ─────────────────────────────────────────────
+// [4] 컨텍스트 메뉴 / 드롭다운
+//     CutToolbar, PageCard 더보기 등에서 사용
+// ─────────────────────────────────────────────
+
+.context-menu {
+  position: absolute;
+  z-index: calc(#{$tooltip-z} + 1);
+  min-width: 160px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--spacing-xs) 0;
+  animation: scaleIn var(--transition-base) ease both;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: 6px var(--spacing-md);
+    font-size: var(--font-xs);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background var(--transition-fast);
+
+    &:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    &.danger {
+      color: var(--color-error);
+      &:hover { background: #fef2f2; }
+    }
+
+    &__icon {
+      width: 14px; height: 14px;
+      opacity: 0.6;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+    }
+  }
+
+  &__divider {
+    height: 1px;
+    background: var(--border-light);
+    margin: var(--spacing-xs) 0;
+  }
+}

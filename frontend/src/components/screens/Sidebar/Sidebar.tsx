@@ -4,20 +4,25 @@ import { ResizeHandle } from "./ResizeHandle";
 import useData from "contexts/DataContext";
 import type { Project, Episode, Page } from "types/models";
 
-import libraryBooksIcon from "assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
-import folderIcon from "assets/images/folder_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
-import articleIcon from "assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
-import noteStackIcon from "assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
+import LibraryIcon_house from "assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
+import ProjectIcon_bookClose from "assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
+import ProjectIcon_bookOpen from "assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
+import EpisodeIcon_folder from "assets/images/folder_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
+import EpisodeIcon_folderOpen from "assets/images/folder_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
+import PageIcon_article from "assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
+import SidebarCloseIcon_doubleArrow from "assets/images/keyboard_double_arrow_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
 import settingsIcon from "assets/images/settings_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
 import favoriteIcon from "assets/images/favorite_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
 import arrowDownIcon from "assets/images/keyboard_arrow_down_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
 import arrowRightIcon from "assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
+import SidebarLogoIconClose_calm from "assets/images/sentiment_calm_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
+import SidebarLogoIconOpen_happy from "assets/images/sentiment_very_satisfied_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
 
 interface SidebarProps {
   isOpen: boolean;
   sidebarWidth: number;
   isResizing: boolean;
-  useResizeHandle: (e: React.MouseEvent) => void;
+  onResizeMouseDown: (e: React.MouseEvent) => void;
   toggleSidebar: () => void;
 }
 
@@ -27,7 +32,7 @@ export default function Sidebar({
   isOpen,
   sidebarWidth,
   isResizing,
-  useResizeHandle,
+  onResizeMouseDown,
   toggleSidebar,
 }: SidebarProps) {
   const navigate = useNavigate();
@@ -64,7 +69,9 @@ export default function Sidebar({
   useEffect(() => {
     if (!currentProjectId) return;
     setExpandedProjects((prev) => new Set([...prev, currentProjectId]));
-    if (ownedProjectsRef.current.some((p) => p.projectId === currentProjectId)) {
+    if (
+      ownedProjectsRef.current.some((p) => p.projectId === currentProjectId)
+    ) {
       setExpandedSections((prev) => ({ ...prev, myBookshelves: true }));
     } else if (
       sharedProjectsRef.current.some((p) => p.projectId === currentProjectId)
@@ -188,7 +195,11 @@ export default function Sidebar({
             className="sidebar-tree-item-icon"
             alt=""
           />
-          <img src={articleIcon} className="sidebar-tree-item-icon" alt="" />
+          <img
+            src={isExpanded ? EpisodeIcon_folderOpen : EpisodeIcon_folder}
+            className="sidebar-tree-item-icon"
+            alt=""
+          />
           <span className="sidebar-tree-item-label">{episode.title}</span>
         </button>
         {isExpanded &&
@@ -200,11 +211,13 @@ export default function Sidebar({
               onClick={() => handlePageClick(page.pageId)}
             >
               <img
-                src={noteStackIcon}
+                src={PageIcon_article}
                 className="sidebar-tree-item-icon"
                 alt=""
               />
-              <span className="sidebar-tree-item-label">페이지 {index + 1}</span>
+              <span className="sidebar-tree-item-label">
+                페이지 {index + 1}
+              </span>
             </button>
           ))}
       </div>
@@ -230,7 +243,11 @@ export default function Sidebar({
             className="sidebar-tree-item-icon"
             alt=""
           />
-          <img src={folderIcon} className="sidebar-tree-item-icon" alt="" />
+          <img
+            src={isExpanded ? ProjectIcon_bookOpen : ProjectIcon_bookClose}
+            className="sidebar-tree-item-icon"
+            alt=""
+          />
           <span className="sidebar-tree-item-label">{project.title}</span>
         </button>
         {isExpanded &&
@@ -244,32 +261,33 @@ export default function Sidebar({
   // ── 닫힌 사이드바 breadcrumb
   const breadcrumbs = [
     {
-      icon: libraryBooksIcon,
+      icon: LibraryIcon_house,
       label: "책장",
       isActive: location.pathname.startsWith("/bookshelf"),
       enabled: true,
       onClick: () => navigate("/bookshelf"),
     },
     {
-      icon: folderIcon,
+      icon: ProjectIcon_bookClose,
+      iconActive: ProjectIcon_bookOpen,
       label: "프로젝트",
       isActive: location.pathname === "/project",
       enabled: !!currentProjectId,
       onClick: () => currentProjectId && navigate("/project"),
     },
     {
-      icon: articleIcon,
+      icon: EpisodeIcon_folder,
+      iconActive: EpisodeIcon_folderOpen,
       label: "에피소드",
       isActive:
         location.pathname.includes("/episode") &&
         !location.pathname.includes("/page"),
       enabled: !!currentProjectId,
       onClick: () =>
-        currentProjectId &&
-        navigate(`/project/${currentProjectId}/episode`),
+        currentProjectId && navigate(`/project/${currentProjectId}/episode`),
     },
     {
-      icon: noteStackIcon,
+      icon: PageIcon_article,
       label: "페이지",
       isActive: location.pathname.includes("/page"),
       enabled: !!currentProjectId && !!currentEpisodeId,
@@ -292,15 +310,27 @@ export default function Sidebar({
         <div className="sidebar-header">
           {isOpen ? (
             <>
-              <span className="sidebar-avatar">😊</span>
-              <span className="sidebar-username">베베</span>
+              <img
+                src={SidebarLogoIconOpen_happy}
+                className="sidebar-logo-icon"
+                alt=""
+              />
+              <span className="sidebar-logo-text">PlotNote</span>
               <button className="sidebar-toggle" onClick={toggleSidebar}>
-                ✕
+                <img
+                  src={SidebarCloseIcon_doubleArrow}
+                  className="sidebar-toggle-icon"
+                  alt="사이드바 닫기"
+                />
               </button>
             </>
           ) : (
             <button className="sidebar-toggle" onClick={toggleSidebar}>
-              <span className="sidebar-avatar">😊</span>
+              <img
+                src={SidebarLogoIconClose_calm}
+                className="sidebar-logo-icon"
+                alt="PlotNote"
+              />
             </button>
           )}
         </div>
@@ -323,7 +353,9 @@ export default function Sidebar({
                   즐겨찾기
                   <img
                     src={
-                      expandedSections.favorites ? arrowDownIcon : arrowRightIcon
+                      expandedSections.favorites
+                        ? arrowDownIcon
+                        : arrowRightIcon
                     }
                     className="sidebar-tree-item-icon"
                     alt=""
@@ -341,7 +373,7 @@ export default function Sidebar({
                   onClick={() => handleSectionClick("myBookshelves")}
                 >
                   <img
-                    src={libraryBooksIcon}
+                    src={LibraryIcon_house}
                     className="sidebar-tree-item-icon"
                     alt=""
                   />
@@ -398,7 +430,7 @@ export default function Sidebar({
                 title={crumb.label}
               >
                 <img
-                  src={crumb.icon}
+                  src={crumb.isActive && crumb.iconActive ? crumb.iconActive : crumb.icon}
                   className="sidebar-breadcrumb-icon"
                   alt={crumb.label}
                 />
@@ -420,7 +452,7 @@ export default function Sidebar({
         </div>
       </div>
 
-      <ResizeHandle isResizing={isResizing} onMouseDown={useResizeHandle} />
+      <ResizeHandle isResizing={isResizing} onMouseDown={onResizeMouseDown} />
     </>
   );
 }

@@ -1,0 +1,391 @@
+// ============================================================
+//  guide/guide.scss
+//  디자인 가이드 페이지 전용 스타일.
+//  CSS custom properties만 사용 — @use 불필요.
+//  Guide 폴더 전체 삭제 + MainLayout에서 import 제거하면 완전 분리됨.
+// ============================================================
+
+// ── 플로팅 버튼
+.guide-float-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: var(--text-on-primary);
+  font-size: 15px;
+  font-family: var(--font-family-mono);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  z-index: 8000;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &:hover {
+    background: #1e3a6e;
+    transform: scale(1.1);
+    box-shadow: 0 8px 24px rgba(42, 77, 136, 0.35);
+  }
+}
+
+// ── 오버레이
+.guide-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 26, 26, 0.55);
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.15s ease;
+}
+
+// ── 패널
+.guide-panel {
+  width: 940px;
+  max-width: calc(100vw - 48px);
+  height: 82vh;
+  max-height: 740px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(26, 26, 26, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: scaleIn 0.15s ease both;
+}
+
+// ── 패널 헤더
+.guide-panel-header {
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--border-light);
+  background: var(--bg-primary);
+
+  &__title {
+    font-family: var(--font-family-mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    // 로고 도트
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      opacity: 0.6;
+    }
+  }
+
+  &__close {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--text-tertiary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+
+    &:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+  }
+}
+
+// ── 패널 바디
+.guide-panel-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+// ── 탭 nav
+.guide-nav {
+  width: 148px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border-light);
+  padding: 8px 0;
+  overflow-y: auto;
+  background: var(--bg-primary);
+
+  &::-webkit-scrollbar { width: 3px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--color-primary-dim); border-radius: 2px; }
+}
+
+.guide-nav-group {
+  padding: 12px 12px 4px;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+
+  &:first-child { padding-top: 4px; }
+}
+
+.guide-nav-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: 0;
+  transition: background 0.12s;
+  position: relative;
+
+  &:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+
+  &.active {
+    color: var(--color-primary);
+    background: #eef1f7;
+    font-weight: 500;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--color-primary);
+    }
+  }
+}
+
+// ── 콘텐츠 영역
+.guide-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 28px;
+
+  &::-webkit-scrollbar { width: 5px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--color-primary-dim); border-radius: 3px; }
+}
+
+// ── 섹션 공통
+.guide-section-title {
+  font-family: var(--font-family-serif);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
+}
+
+.guide-section-desc {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.guide-section-sub {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  margin-top: 20px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+// ── 색상 스와치
+.guide-colors {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px;
+}
+
+.guide-swatch {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+
+  &__preview {
+    height: 44px;
+  }
+
+  &__info {
+    padding: 6px 8px;
+
+    .swatch-name {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .swatch-var {
+      font-size: 9px;
+      color: var(--text-tertiary);
+      font-family: var(--font-family-mono);
+      margin-top: 1px;
+    }
+
+    .swatch-hex {
+      font-size: 9px;
+      color: var(--text-tertiary);
+      font-family: var(--font-family-mono);
+      opacity: 0.7;
+    }
+  }
+}
+
+// ── 코드 블록
+.guide-code {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  white-space: pre;
+  overflow-x: auto;
+  margin-top: 6px;
+  margin-bottom: 4px;
+
+  &::-webkit-scrollbar { height: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--color-primary-dim); border-radius: 2px; }
+}
+
+.guide-code-inline {
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  color: var(--color-primary);
+  background: #eef1f7;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+// ── 데모 행
+.guide-demo-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 14px 16px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  margin-bottom: 6px;
+}
+
+// ── 훅 카드
+.guide-hook-card {
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 12px;
+
+  &__header {
+    padding: 10px 14px;
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+
+    .hook-name {
+      font-family: var(--font-family-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-primary);
+    }
+
+    .hook-path {
+      font-family: var(--font-family-mono);
+      font-size: 10px;
+      color: var(--text-tertiary);
+    }
+  }
+
+  &__desc {
+    padding: 8px 14px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .guide-code {
+    margin: 0;
+    border-radius: 0;
+    border: none;
+    border-top: 1px solid var(--border-light);
+  }
+}
+
+// ── 타이포 행
+.guide-type-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-light);
+
+  &:last-child { border-bottom: none; }
+}
+
+// ── 간격 바
+.guide-spacing-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+
+  .bar-label {
+    width: 120px;
+    font-family: var(--font-family-mono);
+    font-size: 10px;
+    color: var(--text-tertiary);
+  }
+
+  .bar-px {
+    width: 30px;
+    font-size: 10px;
+    color: var(--text-tertiary);
+  }
+
+  .bar-visual {
+    height: 14px;
+    background: var(--color-primary);
+    border-radius: 2px;
+    opacity: 0.65;
+    min-width: 4px;
+  }
+}

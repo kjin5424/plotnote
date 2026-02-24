@@ -1,0 +1,331 @@
+// ============================================================
+//  variables.scss
+//  디자인 시스템의 모든 토큰을 관리하는 중심 파일.
+//  이 파일만 수정하면 앱 전체 테마가 바뀜.
+//  Design 1 "Paper" 기준 + Deep Blue 주색 + Amber 포인트(5%)
+// ============================================================
+
+// ─────────────────────────────────────────────
+// [1] SCSS 변수 (컴파일 타임에만 사용)
+//     - mixin/function 내부에서 쓰이거나
+//       CSS var()으로 전환 전 계산에 사용
+// ─────────────────────────────────────────────
+
+// Color palette (raw values)
+$deep-blue:    #2A4D88;
+$ocean:        #7C94B8;
+$glacial:      #B1BBC8;
+$concerto:     #D9D9D8;
+$amber:        #fbc662;   // ← 포인트 컬러. 전체 UI의 약 5%에만 사용
+$amber-dark:   #e8a83c;
+$amber-light:  #fdd99b;
+
+$ink:          #1a1a1a;
+$ink-soft:     #4a4a4a;
+$ink-ghost:    #9a9a9a;
+$paper:        #f7f6f3;
+$white:        #fefefe;
+$border:       #e8e6e0;
+
+// Transition durations (animation 예시 1~3 참고해서 만든 변수들)
+$dur-fast:     0.15s;
+$dur-base:     0.2s;
+$dur-slow:     0.3s;
+$dur-bounce:   0.4s;
+$dur-panel:    0.8s;
+
+// Easing functions (예시1: cubic-bezier(0.175, 0.885, 0, 1), 예시3: ease 0s)
+$ease-default:    ease;
+$ease-out:        ease-out;
+$ease-in-out:     ease-in-out;
+$ease-bounce:     cubic-bezier(0.175, 0.885, 0, 1);   // 예시1 카드 스케일 easing
+$ease-panel:      cubic-bezier(0.785, 0.135, 0.15, 0.86); // 예시3 슬라이드 패널
+$ease-fill:       ease 0s;                             // 예시2 배경 fill
+
+
+// ─────────────────────────────────────────────
+// [2] CSS Custom Properties (런타임에도 사용 가능)
+//     - var()로 어디서나 참조 가능
+//     - JavaScript로도 변경 가능 (테마 전환 등)
+// ─────────────────────────────────────────────
+:root {
+
+  // ── 컬러 시스템 (60-30-10 Rule) ──────────────
+
+  // 배경 (60%)
+  --bg-primary:          #{$paper};    // 앱 전체 배경
+  --bg-secondary:        #{$white};    // 카드/패널 배경
+  --bg-tertiary:         #edede9;      // 호버/선택 배경
+
+  // 주색 (30%) - Deep Blue 계열
+  --color-primary:       #{$deep-blue};
+  --color-primary-light: #{$ocean};
+  --color-primary-muted: #{$glacial};
+  --color-primary-dim:   #{$concerto};
+
+  // 포인트색 (10%, 실제 UI에선 ~5%) - Amber
+  --color-accent:        #{$amber};
+  --color-accent-dark:   #{$amber-dark};
+  --color-accent-light:  #{$amber-light};
+
+  // 상태색
+  --color-error:         #e05555;
+  --color-success:       #52c787;
+  --color-warning:       #f5b841;
+  --color-info:          #{$ocean};
+
+  // 텍스트
+  --text-primary:        #{$ink};
+  --text-secondary:      #{$ink-soft};
+  --text-tertiary:       #{$ink-ghost};
+  --text-disabled:       #b0b0b0;
+  --text-on-primary:     #{$white};    // primary 배경 위 텍스트
+  --text-on-accent:      #1a1200;      // amber 배경 위 텍스트
+
+  // 테두리
+  --border-light:        #{$border};
+  --border-medium:       #d0cddf;
+  --border-dark:         #{$glacial};
+  --border-focus:        #{$deep-blue};
+
+  // 그림자
+  --shadow-xs:           0 1px 2px rgba(26,26,26,0.05);
+  --shadow-sm:           0 2px 4px rgba(26,26,26,0.08);
+  --shadow-md:           0 4px 12px rgba(26,26,26,0.10);
+  --shadow-lg:           0 8px 20px rgba(26,26,26,0.12);
+  --shadow-focus:        0 0 0 3px rgba(42,77,136,0.18);
+  --shadow-amber:        0 2px 8px rgba(251,198,98,0.30);
+
+
+  // ── 레이아웃 ────────────────────────────────
+
+  --sidebar-width:       200px;
+  --header-height:       48px;
+
+  --spacing-xs:          4px;
+  --spacing-sm:          8px;
+  --spacing-md:          16px;
+  --spacing-lg:          24px;
+  --spacing-xl:          32px;
+  --spacing-2xl:         48px;
+
+  --radius-sm:           4px;
+  --radius-md:           8px;
+  --radius-lg:           12px;
+  --radius-xl:           20px;
+  --radius-full:         9999px;
+
+  --container-sm:        640px;
+  --container-md:        768px;
+  --container-lg:        1024px;
+
+
+  // ── 타이포그래피 ─────────────────────────────
+
+  --font-family-base:    'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-serif:   'Noto Serif KR', serif;
+  --font-family-mono:    'DM Mono', 'Fira Code', source-code-pro, Consolas, monospace;
+
+  --font-xs:             0.75rem;   // 12px
+  --font-sm:             0.875rem;  // 14px
+  --font-base:           1rem;      // 16px
+  --font-lg:             1.125rem;  // 18px
+  --font-xl:             1.25rem;   // 20px
+
+  --font-light:          300;
+  --font-normal:         400;
+  --font-medium:         500;
+  --font-semibold:       600;
+  --font-bold:           700;
+
+  --leading-tight:       1.25;
+  --leading-normal:      1.5;
+  --leading-relaxed:     1.75;
+
+
+  // ── 애니메이션 타이밍 변수 ──────────────────
+  //    예시1~3을 참고하여 재사용 가능한 transition 값들을 변수화
+  //    사용법: transition: transform var(--transition-base);
+
+  --transition-fast:     #{$dur-fast} #{$ease-default};    // 빠른 hover
+  --transition-base:     #{$dur-base} #{$ease-default};    // 기본 hover
+  --transition-slow:     #{$dur-slow} #{$ease-default};    // 느린 전환
+  --transition-bounce:   #{$dur-bounce} #{$ease-bounce};   // 스케일/팝업 (예시1)
+  --transition-panel:    #{$dur-panel} #{$ease-panel};     // 슬라이딩 패널 (예시3)
+  --transition-fill:     #{$dur-slow} #{$ease-fill};       // 배경 fill (예시2)
+
+  // ── 이미지 아이콘 (이미지 버튼) ─────────────
+  //    global.css의 .image-btn과 함께 사용
+
+  // 기존 유지
+  --img-menu:            url('../images/menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg');
+  --img-home:            url('../images/home_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg');
+  --img-close:           url('../images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg');
+  --img-add:             url('../images/add_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg');
+  --img-search:          url('../images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg');
+  --img-settings:        url('../images/settings_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg');
+  --img-logout:          url('../images/logout_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg');
+  --img-person:          url('../images/person_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg');
+  --img-folder:          url('../images/folder_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg');
+  --img-folder-open:     url('../images/folder_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg');
+  --img-docs:            url('../images/docs_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg');
+  --img-arrow-right:     url('../images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg');
+  --img-arrow-down:      url('../images/keyboard_arrow_down_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg');
+  --img-more:            url('../images/more_horiz_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg');
+  --img-favorite:        url('../images/favorite_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg');
+
+  // 구 variables.css 호환성 유지 (기존 컴포넌트에서 --color-border 등을 직접 쓰는 경우)
+  --color-border:        #{$border};
+  --primary-blue:        #{$deep-blue};
+  --accent-pink:         #{$amber};   // cut.css에서 사용하던 --accent-pink를 amber로 교체
+  --bg-white:            #{$white};
+  --color-text:          #{$ink};
+  --color-bg:            #{$paper};
+  --font-size-sm:        0.75rem;
+  --font-size-md:        0.875rem;
+  --font-size-lg:        1rem;
+}
+
+
+// ─────────────────────────────────────────────
+// [3] SCSS Mixins — 애니메이션 패턴
+//     예시 1~3에서 뽑아낸 재사용 가능한 hover 효과들
+// ─────────────────────────────────────────────
+
+// ── [A] 카드 스케일 리프트 (예시1 기반)
+//    사용: @include hover-card-lift;
+@mixin hover-card-lift($scale: 1.02, $shadow: var(--shadow-lg)) {
+  transition: all var(--transition-bounce);
+  &:hover {
+    transform: scale($scale);
+    box-shadow: $shadow;
+  }
+}
+
+// ── [B] 세로 올리기 (translateY) — 가장 흔한 hover
+//    사용: @include hover-lift;  또는  @include hover-lift(-4px);
+@mixin hover-lift($y: -2px, $shadow: null) {
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
+  &:hover {
+    transform: translateY($y);
+    @if $shadow { box-shadow: $shadow; }
+  }
+}
+
+// ── [C] 배경 fill from bottom (예시2 기반)
+//    아이콘 버튼·소셜 버튼처럼 배경이 아래서 올라오는 효과
+//    사용: @include hover-fill-from-bottom(#2A4D88);
+@mixin hover-fill-from-bottom($color, $text-color: white) {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: $color;
+    transition: top var(--transition-fill);
+    z-index: -1;
+  }
+
+  &:hover {
+    color: $text-color;
+    &::before { top: 0; }
+  }
+}
+
+// ── [D] 배경 fill from left (예시3 기반)
+//    사이드바 nav 아이템처럼 왼쪽에서 배경이 밀려오는 효과
+//    border-left 강조와 함께 사용
+//    사용: @include hover-fill-from-left(#2A4D88, 3px);
+@mixin hover-fill-from-left($color, $border-width: 3px, $text-color: white) {
+  position: relative;
+  border-left: $border-width solid transparent;
+  overflow: hidden;
+  z-index: 1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    width: 0;
+    height: 100%;
+    background: $color;
+    transition: width var(--transition-fill);
+    z-index: -1;
+  }
+
+  &:hover {
+    border-left-color: $color;
+    color: $text-color;
+    &::after { width: 100%; }
+  }
+}
+
+// ── [E] 아이콘 3D 회전 (예시2 아이콘 rotateY)
+//    사용: @include hover-rotate-icon;
+@mixin hover-rotate-icon {
+  transition: transform var(--transition-slow);
+  &:hover { transform: rotateY(360deg); }
+}
+
+// ── [F] 부드러운 배경 전환 (일반 hover)
+//    사용: @include hover-bg(#eef1f7);
+@mixin hover-bg($color) {
+  transition: background var(--transition-fast);
+  &:hover { background: $color; }
+}
+
+// ── [G] 포커스 링 (접근성 + design)
+//    사용: @include focus-ring;
+@mixin focus-ring($color: var(--border-focus)) {
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(42, 77, 136, 0.2);
+  }
+}
+
+// ── [H] 텍스트 말줄임 유틸
+//    사용: @include text-ellipsis(2);  // 최대 2줄
+@mixin text-ellipsis($lines: 1) {
+  @if $lines == 1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+// ── [I] 스크롤바 커스텀
+//    사용: @include custom-scrollbar;
+@mixin custom-scrollbar($width: 5px, $thumb: var(--color-primary-dim)) {
+  &::-webkit-scrollbar { width: $width; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: $thumb;
+    border-radius: calc($width / 2);
+    &:hover { background: var(--color-primary-muted); }
+  }
+}
+
+// ── [J] 이미지 아이콘 버튼 기반
+//    사용: @include image-icon(var(--img-menu));
+@mixin image-icon($url, $size: 20px) {
+  background-image: $url;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: $size;
+  height: $size;
+  display: inline-block;
+}
