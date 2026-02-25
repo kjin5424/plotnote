@@ -4,6 +4,7 @@ import { startResize, updateWidth, endResize } from "hooks/ui/useResizeHandle";
 import { Outlet } from "react-router-dom";
 import useData from "contexts/DataContext";
 import Guide from "components/screens/guide/Guide";
+import PrototypeViewer from "components/screens/Prototype/PrototypeViewer";
 
 // Sidebar + Workspace 레이아웃
 export default function AppLayout() {
@@ -46,6 +47,7 @@ export default function AppLayout() {
           <Outlet />
         </main>
       </div>
+      <PrototypeViewer />
       <Guide />
     </div>
   );
