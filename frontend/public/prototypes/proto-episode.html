@@ -1,325 +1,1792 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-<meta charset="UTF-8">
-<title>PlotNote — 에피소드</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
-<style>
-:root{--db:#2A4D88;--oc:#7C94B8;--gl:#B1BBC8;--co:#D9D9D8;--am:#fbc662;--am-bg:#fff8e6;--wh:#fefefe;--pa:#f7f6f3;--ink:#1a1a1a;--i2:#4a4a4a;--gh:#9a9a9a;--bd:#e8e6e0;--bd2:#d5d2cb;--sw:220px;--hh:48px;}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Noto Sans KR',sans-serif;background:var(--pa);color:var(--ink);height:100vh;overflow:hidden;display:flex;flex-direction:column;font-size:13px;}
-button{font-family:'Noto Sans KR',sans-serif;cursor:pointer;}
-.hd{height:var(--hh);background:var(--wh);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 16px;gap:8px;flex-shrink:0;}
-.hd-menu{width:28px;height:28px;border-radius:5px;border:none;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3.5px;}
-.hd-menu:hover{background:var(--pa);}
-.hd-menu span{display:block;height:1.5px;border-radius:1px;background:var(--gh);}
-.hd-menu span:nth-child(1){width:14px;}.hd-menu span:nth-child(2){width:10px;}.hd-menu span:nth-child(3){width:14px;}
-.bc{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--gh);}
-.bc a{color:var(--gh);text-decoration:none;cursor:pointer;}.bc a:hover{color:var(--db);}
-.bc .cur{color:var(--ink);font-weight:500;}.bc .sep{color:var(--co);}
-.hd-r{margin-left:auto;display:flex;gap:4px;}
-.hbtn{width:28px;height:28px;border-radius:5px;border:none;background:none;color:var(--gh);display:flex;align-items:center;justify-content:center;font-size:14px;}
-.hbtn:hover{background:var(--pa);}
-.main{flex:1;display:flex;overflow:hidden;}
-.sb{width:var(--sw);min-width:var(--sw);height:100%;background:var(--wh);border-right:1px solid var(--bd);display:flex;flex-direction:column;}
-.sb-logo{padding:13px 16px 11px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:7px;}
-.sb-mk{width:24px;height:24px;background:var(--db);border-radius:5px;display:flex;align-items:center;justify-content:center;}
-.sb-mk svg{width:12px;height:12px;fill:#fff;}
-.sb-nm{font-family:'DM Mono',monospace;font-size:12px;}
-.sb-sec{padding:8px 8px 3px;}
-.sb-lbl{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--gh);padding:0 8px;margin-bottom:2px;}
-.si{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:5px;font-size:11px;color:var(--i2);cursor:pointer;transition:background .1s;}
-.si:hover{background:var(--pa);}
-.si.on{background:#eef1f7;color:var(--db);font-weight:500;}
-.si .d{width:5px;height:5px;border-radius:50%;background:var(--gl);flex-shrink:0;}
-.si.on .d{background:var(--db);}
-.sb-ft{margin-top:auto;padding:8px;border-top:1px solid var(--bd);}
-.sb-u{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:5px;cursor:pointer;}
-.sb-u:hover{background:var(--pa);}
-.av{width:22px;height:22px;border-radius:50%;background:var(--db);display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;font-weight:600;}
+  <head>
+    <meta charset="UTF-8" />
+    <title>PlotNote — 에피소드</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&family=Noto+Serif+KR:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --db: #2a4d88;
+        --oc: #7c94b8;
+        --gl: #b1bbc8;
+        --co: #d9d9d8;
+        --am: #fbc662;
+        --am-bg: #fff8e6;
+        --wh: #fefefe;
+        --pa: #f7f6f3;
+        --ink: #1a1a1a;
+        --i2: #4a4a4a;
+        --gh: #9a9a9a;
+        --bd: #e8e6e0;
+        --bd2: #d5d2cb;
+        --rail: 44px;
+        --sw: 220px;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Noto Sans KR", sans-serif;
+        background: var(--pa);
+        color: var(--ink);
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        font-size: 13px;
+      }
+      button {
+        font-family: inherit;
+        cursor: pointer;
+      }
 
-/* Main layout: sidebar + workspace */
-.ws{flex:1;display:flex;overflow:hidden;}
-/* 에피소드 목록 */
-.ep-list-col{width:300px;min-width:300px;height:100%;background:var(--wh);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden;}
-.ep-list-hd{flex-shrink:0;padding:14px 16px 0;border-bottom:1px solid var(--bd);}
-.ep-list-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.ep-list-ttl{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:600;letter-spacing:-.02em;}
-.abtn{padding:4px 11px;border-radius:6px;border:1px solid var(--bd2);background:var(--wh);font-size:11px;color:var(--i2);display:flex;align-items:center;gap:3px;}
-.abtn:hover{border-color:var(--db);color:var(--db);}
-.abtn.pri{background:var(--db);color:#fff;border-color:var(--db);}
-.abtn.pri:hover{background:#1e3d73;}
-/* ep tabs */
-.etabs{display:flex;gap:0;border-bottom:2px solid var(--bd);margin:0 -16px;padding:0 16px;}
-.etab{padding:5px 11px;font-size:11px;color:var(--gh);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;}
-.etab:hover{color:var(--i2);}
-.etab.on{color:var(--db);border-bottom-color:var(--db);font-weight:500;}
-.ep-list-bd{flex:1;overflow-y:auto;}
-/* ep rows */
-.erow{display:flex;align-items:stretch;gap:11px;padding:10px 14px;cursor:pointer;position:relative;border-bottom:1px solid var(--bd);}
-.erow::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;}
-.erow:hover{background:#f8f9fc;}
-.erow:hover::before{background:var(--gl);}
-.erow.on{background:#eef1f7;}
-.erow.on::before{background:var(--db);}
-.eth{width:40px;min-width:40px;aspect-ratio:238/324;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.eth-n{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:rgba(255,255,255,.85);}
-.ebody{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:3px;}
-.ebody-num{font-size:9px;font-family:'DM Mono',monospace;color:var(--gh);}
-.ebody-ttl{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.ebody-memo{font-size:10px;color:var(--i2);overflow:hidden;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;}
-.ebody-memo.empty{color:var(--gh);font-style:italic;}
-.ebody-ft{display:flex;align-items:center;gap:4px;margin-top:1px;}
-.ebody-pg{font-size:9px;font-family:'DM Mono',monospace;color:var(--gh);}
-.etag{font-size:8px;padding:1px 5px;border-radius:999px;}
-.t-wip{background:var(--am-bg);color:#8a6200;border:1px solid rgba(251,198,98,.4);}
-.t-done{background:#e8f5ee;color:#2a7a50;border:1px solid #b6dfc8;}
-.t-todo{background:var(--pa);color:var(--gh);border:1px solid var(--bd2);}
-.er-acts{display:flex;flex-direction:column;justify-content:center;opacity:0;transition:opacity .1s;}
-.erow:hover .er-acts{opacity:1;}
-.drag-h{display:flex;flex-direction:column;gap:2px;cursor:grab;padding:4px 2px;}
-.drag-h span{display:block;width:10px;height:1.5px;background:var(--gl);border-radius:1px;}
-.ep-add-row{display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;cursor:pointer;color:var(--gh);font-size:11px;border-bottom:1px solid var(--bd);border-top:2px dashed var(--bd2);}
-.ep-add-row:hover{background:#f5f8ff;color:var(--db);}
+      /* ═══ SIDEBAR (same as bookshelf) ═══ */
+      .sb {
+        width: var(--sw);
+        min-width: var(--sw);
+        height: 100%;
+        background: var(--wh);
+        border-right: 1px solid var(--bd);
+        display: flex;
+        flex-direction: column;
+        transition:
+          width 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+          min-width 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: visible;
+        position: relative;
+        z-index: 50;
+        flex-shrink: 0;
+      }
+      .sb.rail {
+        width: var(--rail);
+        min-width: var(--rail);
+      }
+      .sb.rail .sb-x,
+      .sb.rail .sb-lbl,
+      .sb.rail .si-t,
+      .sb.rail .si-b,
+      .sb.rail .sb-ft-n {
+        display: none;
+      }
+      .sb.rail .si {
+        justify-content: center;
+        padding: 7px;
+      }
+      .sb.rail .si .d {
+        width: 8px;
+        height: 8px;
+      }
+      .sb.rail .sb-dv {
+        margin: 2px 8px;
+      }
+      .sb.rail .sb-sec {
+        padding: 6px 4px 3px;
+      }
+      .sb.rail .sb-logo {
+        justify-content: center;
+        padding: 10px 8px;
+      }
+      .sb.rail .sb-u {
+        justify-content: center;
+        padding: 5px;
+      }
+      .sb-logo {
+        padding: 12px 14px 10px;
+        border-bottom: 1px solid var(--bd);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      .sb-mk {
+        width: 24px;
+        height: 24px;
+        background: var(--db);
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+      .sb-mk svg {
+        width: 12px;
+        height: 12px;
+        fill: #fff;
+      }
+      .sb-x {
+        font-family: "DM Mono", monospace;
+        font-size: 12px;
+        color: var(--ink);
+      }
+      .sb-sec {
+        padding: 8px 8px 3px;
+      }
+      .sb-lbl {
+        font-size: 9px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--gh);
+        padding: 0 8px;
+        margin-bottom: 2px;
+      }
+      .sb-dv {
+        height: 1px;
+        background: var(--bd);
+        margin: 4px 12px;
+      }
+      .si {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 8px;
+        border-radius: 5px;
+        font-size: 11px;
+        color: var(--i2);
+        cursor: pointer;
+        transition: background 0.1s;
+        position: relative;
+      }
+      .si:hover {
+        background: var(--pa);
+      }
+      .si.on {
+        background: #eef1f7;
+        color: var(--db);
+        font-weight: 500;
+      }
+      .si .d {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--gl);
+        flex-shrink: 0;
+      }
+      .si.on .d {
+        background: var(--db);
+      }
+      .si-t {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .si-b {
+        margin-left: auto;
+        font-size: 9px;
+        background: var(--db);
+        color: #fff;
+        padding: 1px 5px;
+        border-radius: 9px;
+        font-family: "DM Mono", monospace;
+        flex-shrink: 0;
+      }
+      .sb-ft {
+        margin-top: auto;
+        padding: 8px;
+        border-top: 1px solid var(--bd);
+      }
+      .sb-u {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 8px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .sb-u:hover {
+        background: var(--pa);
+      }
+      .av {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--db);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        color: #fff;
+        font-weight: 600;
+        flex-shrink: 0;
+      }
+      .si-pop {
+        display: none;
+        position: absolute;
+        left: 100%;
+        top: -4px;
+        margin-left: 6px;
+        background: var(--wh);
+        border: 1px solid var(--bd);
+        border-radius: 8px;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.13);
+        padding: 6px 0;
+        min-width: 180px;
+        max-height: 260px;
+        overflow-y: auto;
+        z-index: 100;
+      }
+      .sb.rail .si:hover .si-pop {
+        display: block;
+      }
+      .si-pop-hd {
+        padding: 5px 12px 4px;
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--gh);
+        border-bottom: 1px solid var(--bd);
+        margin-bottom: 2px;
+      }
+      .si-pop-i {
+        padding: 5px 12px;
+        font-size: 11px;
+        color: var(--i2);
+        cursor: pointer;
+      }
+      .si-pop-i:hover {
+        background: var(--pa);
+        color: var(--db);
+      }
+      .sb-tgl {
+        position: absolute;
+        right: -12px;
+        top: 14px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--wh);
+        border: 1px solid var(--bd);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 60;
+        font-size: 10px;
+        color: var(--gh);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      }
+      .sb-tgl:hover {
+        background: var(--pa);
+        color: var(--db);
+      }
 
-/* 오른쪽 에피소드 디테일 */
-.ep-detail-col{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
-.ep-det-hd{flex-shrink:0;padding:16px 22px;border-bottom:1px solid var(--bd);background:var(--wh);}
-.ep-det-ttl{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:600;letter-spacing:-.02em;margin-bottom:3px;}
-.ep-det-meta{font-size:11px;font-family:'DM Mono',monospace;color:var(--gh);}
-.ep-det-tabs{display:flex;gap:0;border-bottom:2px solid var(--bd);margin:12px -22px 0;padding:0 22px;}
-.ep-det-tab{padding:6px 12px;font-size:12px;color:var(--gh);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;}
-.ep-det-tab:hover{color:var(--i2);}
-.ep-det-tab.on{color:var(--db);border-bottom-color:var(--db);font-weight:500;}
-.ep-det-bd{flex:1;overflow-y:auto;padding:20px 22px;}
+      /* ═══ MAIN ═══ */
+      .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        min-width: 0;
+      }
 
-/* 메모 탭 */
-.memo-sec{margin-bottom:20px;}
-.memo-sec-ttl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--gh);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--bd);}
-.memo-textarea{width:100%;background:var(--pa);border:1px solid var(--bd2);border-radius:7px;padding:10px 13px;font-size:12px;font-family:'Noto Sans KR',sans-serif;color:var(--ink);resize:none;outline:none;line-height:1.7;}
-.memo-textarea:focus{border-color:var(--oc);box-shadow:0 0 0 3px rgba(42,77,136,.08);}
-/* 페이지 메모 목록 */
-.pmemo-list{display:flex;flex-direction:column;gap:2px;}
-.pmemo-row{display:flex;align-items:flex-start;gap:10px;padding:6px 10px;border-radius:5px;cursor:pointer;}
-.pmemo-row:hover{background:var(--pa);}
-.pmemo-n{font-family:'DM Mono',monospace;font-size:10px;color:var(--gh);min-width:26px;flex-shrink:0;padding-top:1px;}
-.pmemo-t{font-size:11px;color:var(--i2);line-height:1.4;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.pmemo-t.empty{color:var(--gh);font-style:italic;}
+      /* WS Header */
+      .ws-hd {
+        flex-shrink: 0;
+        background: var(--wh);
+        border-bottom: 1px solid var(--bd);
+        padding: 10px 24px;
+      }
+      .ws-hd-top {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .ws-bc {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        color: var(--gh);
+      }
+      .ws-bc a {
+        color: var(--gh);
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .ws-bc a:hover {
+        color: var(--db);
+      }
+      .ws-bc .cur {
+        color: var(--ink);
+        font-weight: 500;
+      }
+      .ws-bc .sep {
+        color: var(--co);
+      }
+      .ws-hd-r {
+        margin-left: auto;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .srch {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 12px;
+        background: var(--pa);
+        border: 1px solid var(--bd);
+        border-radius: 7px;
+        cursor: pointer;
+        width: 200px;
+      }
+      .srch:hover {
+        border-color: var(--oc);
+      }
+      .srch svg {
+        flex-shrink: 0;
+        color: var(--gh);
+      }
+      .srch span {
+        font-size: 11px;
+        color: var(--gh);
+      }
+      .hbtn {
+        width: 28px;
+        height: 28px;
+        border-radius: 5px;
+        border: none;
+        background: none;
+        color: var(--gh);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+      }
+      .hbtn:hover {
+        background: var(--pa);
+        color: var(--i2);
+      }
 
-/* 설정 탭 */
-.cfg-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.cfg-card{background:var(--pa);border:1px solid var(--bd);border-radius:8px;padding:11px 14px;cursor:pointer;}
-.cfg-card:hover{border-color:var(--oc);}
-.cfg-card.ov{background:var(--am-bg);border-color:rgba(251,198,98,.4);}
-.cfg-card-lbl{font-size:10px;color:var(--gh);margin-bottom:4px;}
-.cfg-card-val{font-size:14px;font-family:'DM Mono',monospace;font-weight:500;color:var(--ink);}
-.cfg-card.ov .cfg-card-val{color:#8a6200;}
-.cfg-card-note{font-size:9px;color:var(--am);margin-top:3px;font-family:'DM Mono',monospace;}
+      /* ═══ WORKSPACE BODY ═══ */
+      .ws-bd {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+      }
 
-/* 페이지 썸네일 그리드 탭 */
-.pg-mini-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;}
-.pg-mini{aspect-ratio:238/324;background:var(--wh);border:1px solid var(--bd);border-radius:3px;position:relative;cursor:pointer;}
-.pg-mini:hover{border-color:var(--oc);}
-.pg-mini-n{position:absolute;bottom:3px;right:4px;font-size:8px;font-family:'DM Mono',monospace;color:var(--gh);}
-.pg-mini-memo{position:absolute;top:4px;left:4px;right:4px;font-size:7px;color:var(--i2);overflow:hidden;height:28px;line-height:1.3;}
-</style>
-</head>
-<body>
+      /* ── 좌측 에피소드 목록 ── */
+      .ep-col {
+        width: 310px;
+        min-width: 310px;
+        height: 100%;
+        background: var(--wh);
+        border-right: 1px solid var(--bd);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .ep-col-hd {
+        flex-shrink: 0;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--bd);
+      }
+      .ep-col-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+      .ep-col-ttl {
+        font-family: "Noto Serif KR", serif;
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+      .ep-col-acts {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+      }
+      .abtn {
+        padding: 4px 11px;
+        border-radius: 6px;
+        border: 1px solid var(--bd2);
+        background: var(--wh);
+        font-size: 11px;
+        color: var(--i2);
+        display: flex;
+        align-items: center;
+        gap: 3px;
+      }
+      .abtn:hover {
+        border-color: var(--db);
+        color: var(--db);
+      }
+      .abtn.pri {
+        background: var(--db);
+        color: #fff;
+        border-color: var(--db);
+      }
+      .abtn.pri:hover {
+        background: #1e3d73;
+      }
+      /* 정순/역순 토글 */
+      .sort-tgl {
+        padding: 3px 8px;
+        border-radius: 5px;
+        border: 1px solid var(--bd2);
+        background: var(--wh);
+        font-size: 10px;
+        color: var(--gh);
+        cursor: pointer;
+        font-family: "DM Mono", monospace;
+      }
+      .sort-tgl:hover {
+        border-color: var(--oc);
+        color: var(--db);
+      }
+      /* tabs */
+      .ep-tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 2px solid var(--bd);
+        margin: 0 -16px;
+        padding: 0 16px;
+      }
+      .ep-tab {
+        padding: 5px 11px;
+        font-size: 11px;
+        color: var(--gh);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+      }
+      .ep-tab:hover {
+        color: var(--i2);
+      }
+      .ep-tab.on {
+        color: var(--db);
+        border-bottom-color: var(--db);
+        font-weight: 500;
+      }
 
-<div class="hd">
-  <button class="hd-menu"><span></span><span></span><span></span></button>
-  <div class="bc">
-    <a>책장</a><span class="sep">›</span>
-    <a>고양이와 강아지</a><span class="sep">›</span>
-    <span class="cur">에피소드 관리</span>
-  </div>
-  <div class="hd-r">
-    <button class="hbtn">⚙</button>
-    <button class="hbtn">⋯</button>
-  </div>
-</div>
+      /* 에피소드 리스트 */
+      .ep-list {
+        flex: 1;
+        overflow-y: auto;
+      }
+      .ep-list::-webkit-scrollbar {
+        width: 5px;
+      }
+      .ep-list::-webkit-scrollbar-thumb {
+        background: var(--co);
+        border-radius: 3px;
+      }
+      /* 에피소드 row */
+      .erow {
+        display: flex;
+        align-items: stretch;
+        gap: 11px;
+        padding: 10px 14px;
+        cursor: pointer;
+        position: relative;
+        border-bottom: 1px solid var(--bd);
+        transition: background 0.1s;
+      }
+      .erow::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: transparent;
+        transition: background 0.1s;
+      }
+      .erow:hover {
+        background: #f8f9fc;
+      }
+      .erow:hover::before {
+        background: var(--gl);
+      }
+      .erow.on {
+        background: #eef1f7;
+      }
+      .erow.on::before {
+        background: var(--db);
+      }
+      /* 드래그 상태 */
+      .erow.dragging {
+        background: #e8edf5;
+        box-shadow: 0 4px 16px rgba(42, 77, 136, 0.15);
+        border: 1px dashed var(--db);
+        border-radius: 6px;
+        opacity: 0.9;
+        z-index: 10;
+      }
+      .eth {
+        width: 40px;
+        min-width: 40px;
+        aspect-ratio: 238/324;
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .eth-n {
+        font-family: "DM Mono", monospace;
+        font-size: 12px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.85);
+      }
+      .ebody {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 3px;
+      }
+      .ebody-num {
+        font-size: 9px;
+        font-family: "DM Mono", monospace;
+        color: var(--gh);
+      }
+      .ebody-ttl {
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .ebody-memo {
+        font-size: 10px;
+        color: var(--i2);
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+      }
+      .ebody-memo.empty {
+        color: var(--gh);
+        font-style: italic;
+      }
+      .ebody-ft {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-top: 1px;
+      }
+      .ebody-pg {
+        font-size: 9px;
+        font-family: "DM Mono", monospace;
+        color: var(--gh);
+      }
+      .etag {
+        font-size: 8px;
+        padding: 1px 5px;
+        border-radius: 999px;
+      }
+      .t-wip {
+        background: var(--am-bg);
+        color: #8a6200;
+        border: 1px solid rgba(251, 198, 98, 0.4);
+      }
+      .t-done {
+        background: #e8f5ee;
+        color: #2a7a50;
+        border: 1px solid #b6dfc8;
+      }
+      .t-todo {
+        background: var(--pa);
+        color: var(--gh);
+        border: 1px solid var(--bd2);
+      }
+      /* grab handle */
+      .er-acts {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+        opacity: 0;
+        transition: opacity 0.1s;
+        flex-shrink: 0;
+      }
+      .erow:hover .er-acts {
+        opacity: 1;
+      }
+      .drag-h {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        cursor: grab;
+        padding: 4px 2px;
+      }
+      .drag-h span {
+        display: block;
+        width: 10px;
+        height: 1.5px;
+        background: var(--gl);
+        border-radius: 1px;
+      }
+      .drag-h:active {
+        cursor: grabbing;
+      }
 
-<div class="main">
-  <div class="sb">
-    <div class="sb-logo">
-      <div class="sb-mk"><svg viewBox="0 0 14 14"><rect x="1" y="1" width="4" height="12" rx="1"/><rect x="7" y="1" width="4" height="7" rx="1" opacity=".6"/><rect x="7" y="10" width="4" height="3" rx="1" opacity=".4"/></svg></div>
-      <span class="sb-nm">plotnote</span>
-    </div>
-    <div class="sb-sec">
-      <div class="sb-lbl">고양이와 강아지</div>
-      <div class="si"><div class="d"></div>프로젝트 개요</div>
-      <div class="si on"><div class="d"></div>에피소드 관리</div>
-    </div>
-    <div class="sb-sec">
-      <div class="sb-lbl">내 책장</div>
-      <div class="si"><div class="d"></div>베베의 작업실</div>
-    </div>
-    <div class="sb-ft">
-      <div class="sb-u"><div class="av">베</div><span style="font-size:11px;color:var(--i2);">베베</span></div>
-    </div>
-  </div>
+      /* 에피소드 추가 (pc-add 스타일) */
+      .ep-add {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 14px;
+        cursor: pointer;
+        color: var(--gh);
+        font-size: 11px;
+        border: 2px dashed var(--bd2);
+        margin: 8px 14px;
+        border-radius: 8px;
+      }
+      .ep-add:hover {
+        background: #f5f8ff;
+        color: var(--db);
+        border-color: var(--oc);
+      }
+      .ep-add-ic {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 1.5px dashed var(--bd2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+      }
+      .ep-add:hover .ep-add-ic {
+        border-color: var(--oc);
+      }
 
-  <div class="ws">
-    <!-- 에피소드 목록 (좌) -->
-    <div class="ep-list-col">
-      <div class="ep-list-hd">
-        <div class="ep-list-top">
-          <div class="ep-list-ttl">에피소드</div>
-          <button class="abtn pri" onclick="addEp()">+ 추가</button>
+      /* ── 우측 디테일 패널 ── */
+      .det-col {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        min-width: 0;
+      }
+      .det-placeholder {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gh);
+        font-size: 13px;
+      }
+
+      /* det header */
+      .det-hd {
+        flex-shrink: 0;
+        padding: 16px 22px;
+        border-bottom: 1px solid var(--bd);
+        background: var(--wh);
+      }
+      .det-hd-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+      .det-hd-l {
+        flex: 1;
+        min-width: 0;
+      }
+      .det-ttl-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .det-ep-num {
+        font-size: 12px;
+        font-family: "DM Mono", monospace;
+        color: var(--oc);
+        flex-shrink: 0;
+      }
+      .det-ttl {
+        font-family: "Noto Serif KR", serif;
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        flex: 1;
+        min-width: 0;
+      }
+      .det-pg-count {
+        font-size: 12px;
+        font-family: "DM Mono", monospace;
+        color: var(--gh);
+        flex-shrink: 0;
+      }
+      /* 상태 + 설정 아이콘 */
+      .det-hd-acts {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        margin-top: 3px;
+        flex-shrink: 0;
+      }
+      .det-status {
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .det-status:hover {
+        opacity: 0.85;
+      }
+      .det-cfg-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 5px;
+        border: 1px solid var(--bd2);
+        background: var(--wh);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: var(--gh);
+        cursor: pointer;
+      }
+      .det-cfg-btn:hover {
+        border-color: var(--oc);
+        color: var(--db);
+      }
+
+      /* det tabs (메모만) + 우측 페이지추가 */
+      .det-tab-row {
+        display: flex;
+        align-items: center;
+        margin: 12px -22px 0;
+        padding: 0 22px;
+        border-bottom: 2px solid var(--bd);
+      }
+      .det-tab {
+        padding: 6px 12px;
+        font-size: 12px;
+        color: var(--gh);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+      }
+      .det-tab:hover {
+        color: var(--i2);
+      }
+      .det-tab.on {
+        color: var(--db);
+        border-bottom-color: var(--db);
+        font-weight: 500;
+      }
+      .det-tab-r {
+        margin-left: auto;
+        margin-bottom: 4px;
+      }
+      .det-add-pg {
+        padding: 3px 10px;
+        border-radius: 5px;
+        border: 1px solid var(--bd2);
+        background: var(--wh);
+        font-size: 10px;
+        color: var(--i2);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+      }
+      .det-add-pg:hover {
+        border-color: var(--db);
+        color: var(--db);
+      }
+
+      /* det body */
+      .det-bd {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px 22px;
+      }
+      .det-bd::-webkit-scrollbar {
+        width: 5px;
+      }
+      .det-bd::-webkit-scrollbar-thumb {
+        background: var(--co);
+        border-radius: 3px;
+      }
+
+      /* 메모 섹션 */
+      .m-sec {
+        margin-bottom: 18px;
+      }
+      .m-sec-t {
+        font-size: 10px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--gh);
+        margin-bottom: 8px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid var(--bd);
+      }
+      .m-ta {
+        width: 100%;
+        background: var(--pa);
+        border: 1px solid var(--bd2);
+        border-radius: 7px;
+        padding: 10px 13px;
+        font-size: 12px;
+        font-family: inherit;
+        color: var(--ink);
+        resize: none;
+        outline: none;
+        line-height: 1.7;
+      }
+      .m-ta:focus {
+        border-color: var(--oc);
+        box-shadow: 0 0 0 3px rgba(42, 77, 136, 0.08);
+      }
+      /* eps.memo (에피소드 상위 메모 — 읽기전용 표시) */
+      .ep-parent-memo {
+        background: #f0f3f8;
+        border: 1px solid #dde3ed;
+        border-radius: 7px;
+        padding: 8px 12px;
+        font-size: 11px;
+        color: var(--i2);
+        line-height: 1.6;
+        margin-bottom: 10px;
+      }
+      .ep-parent-memo-lbl {
+        font-size: 9px;
+        font-family: "DM Mono", monospace;
+        color: var(--oc);
+        margin-bottom: 3px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      /* 페이지별 메모 */
+      .pm-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .pm-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 8px;
+        border-radius: 5px;
+        transition: background 0.1s;
+      }
+      .pm-row:hover {
+        background: var(--pa);
+      }
+      .pm-grab {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5px;
+        cursor: grab;
+        padding: 3px 2px;
+        opacity: 0.3;
+        flex-shrink: 0;
+      }
+      .pm-grab span {
+        display: block;
+        width: 8px;
+        height: 1.5px;
+        background: var(--gl);
+        border-radius: 1px;
+      }
+      .pm-row:hover .pm-grab {
+        opacity: 0.7;
+      }
+      .pm-grab:active {
+        cursor: grabbing;
+        opacity: 1;
+      }
+      .pm-n {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        color: var(--db);
+        min-width: 30px;
+        flex-shrink: 0;
+        cursor: pointer;
+        padding: 2px 4px;
+        border-radius: 3px;
+      }
+      .pm-n:hover {
+        background: #eef1f7;
+      }
+      .pm-input {
+        flex: 1;
+        border: 1px solid transparent;
+        background: transparent;
+        border-radius: 4px;
+        padding: 3px 6px;
+        font-size: 11px;
+        font-family: inherit;
+        color: var(--i2);
+        outline: none;
+      }
+      .pm-input:focus {
+        border-color: var(--oc);
+        background: var(--wh);
+      }
+      .pm-input::placeholder {
+        color: var(--co);
+      }
+      /* 페이지 추가 row */
+      .pm-add {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding: 6px;
+        cursor: pointer;
+        color: var(--gh);
+        font-size: 10px;
+        border: 1px dashed var(--bd2);
+        border-radius: 5px;
+        margin-top: 4px;
+      }
+      .pm-add:hover {
+        background: #f5f8ff;
+        color: var(--db);
+        border-color: var(--oc);
+      }
+
+      /* ═══ SETTINGS MODAL ═══ */
+      .cfg-ov {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 200;
+        align-items: center;
+        justify-content: center;
+      }
+      .cfg-ov.open {
+        display: flex;
+      }
+      .cfg-box {
+        background: var(--wh);
+        border-radius: 12px;
+        padding: 24px;
+        width: 380px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      }
+      .cfg-title {
+        font-family: "Noto Serif KR", serif;
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 16px;
+      }
+      .cfg-desc {
+        font-size: 11px;
+        color: var(--gh);
+        margin-bottom: 14px;
+        line-height: 1.6;
+      }
+      .cfg-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .cfg-card {
+        background: var(--pa);
+        border: 1px solid var(--bd);
+        border-radius: 8px;
+        padding: 11px 14px;
+        cursor: pointer;
+        transition: border-color 0.15s;
+      }
+      .cfg-card:hover {
+        border-color: var(--oc);
+      }
+      .cfg-card.ov {
+        background: var(--am-bg);
+        border-color: rgba(251, 198, 98, 0.4);
+      }
+      .cfg-card-l {
+        font-size: 10px;
+        color: var(--gh);
+        margin-bottom: 4px;
+      }
+      .cfg-card-v {
+        font-size: 14px;
+        font-family: "DM Mono", monospace;
+        font-weight: 500;
+        color: var(--ink);
+      }
+      .cfg-card.ov .cfg-card-v {
+        color: #8a6200;
+      }
+      .cfg-card-note {
+        font-size: 9px;
+        color: var(--am);
+        margin-top: 3px;
+        font-family: "DM Mono", monospace;
+      }
+      .cfg-acts {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 16px;
+        padding-top: 12px;
+        border-top: 1px solid var(--bd);
+      }
+
+      /* ═══ SEARCH MODAL ═══ */
+      .s-ov {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.25);
+        z-index: 200;
+        align-items: flex-start;
+        justify-content: center;
+        padding-top: 80px;
+      }
+      .s-ov.open {
+        display: flex;
+      }
+      .s-box {
+        background: var(--wh);
+        border-radius: 12px;
+        width: 520px;
+        max-height: 480px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .s-in {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--bd);
+      }
+      .s-in svg {
+        color: var(--gh);
+        flex-shrink: 0;
+      }
+      .s-in input {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        font-family: inherit;
+        color: var(--ink);
+        background: transparent;
+      }
+      .s-in input::placeholder {
+        color: var(--co);
+      }
+      .s-tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 1px solid var(--bd);
+        padding: 0 18px;
+      }
+      .s-tab {
+        padding: 7px 12px;
+        font-size: 11px;
+        color: var(--gh);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+      }
+      .s-tab.on {
+        color: var(--db);
+        border-bottom-color: var(--db);
+        font-weight: 500;
+      }
+      .s-bd {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px 18px;
+      }
+      .s-hint {
+        text-align: center;
+        color: var(--gh);
+        font-size: 12px;
+        padding: 30px 0;
+      }
+      .s-esc {
+        font-size: 10px;
+        color: var(--gh);
+        padding: 8px 18px;
+        border-top: 1px solid var(--bd);
+        font-family: "DM Mono", monospace;
+      }
+
+      /* ═══ FLOATING MEMO MODAL ═══ */
+      .mm {
+        display: none;
+        position: fixed;
+        z-index: 150;
+        width: 360px;
+        height: 400px;
+        background: var(--wh);
+        border: 1px solid var(--bd);
+        border-radius: 10px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        flex-direction: column;
+        overflow: hidden;
+        resize: both;
+        min-width: 280px;
+        min-height: 200px;
+      }
+      .mm.open {
+        display: flex;
+      }
+      .mm-hd {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--bd);
+        cursor: grab;
+        flex-shrink: 0;
+        background: var(--pa);
+        user-select: none;
+      }
+      .mm-hd:active {
+        cursor: grabbing;
+      }
+      .mm-hd-t {
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--i2);
+        flex: 1;
+      }
+      .mm-b {
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        border: none;
+        background: none;
+        color: var(--gh);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .mm-b:hover {
+        background: var(--bd);
+      }
+      .mm-b.pin {
+        color: var(--am);
+      }
+      .mm-tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 1px solid var(--bd);
+        padding: 0 12px;
+        flex-shrink: 0;
+      }
+      .mm-tab {
+        padding: 6px 10px;
+        font-size: 10px;
+        color: var(--gh);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        font-family: "DM Mono", monospace;
+      }
+      .mm-tab.on {
+        color: var(--db);
+        border-bottom-color: var(--db);
+      }
+      .mm-bd {
+        flex: 1;
+        overflow-y: auto;
+        padding: 12px;
+      }
+      .mm-item {
+        background: var(--pa);
+        border-radius: 6px;
+        padding: 8px 10px;
+        margin-bottom: 6px;
+      }
+      .mm-lbl {
+        font-size: 9px;
+        font-family: "DM Mono", monospace;
+        color: var(--gh);
+        margin-bottom: 3px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .mm-txt {
+        font-size: 11px;
+        color: var(--i2);
+        line-height: 1.6;
+      }
+      .mm-txt.empty {
+        color: var(--gh);
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ═══ SIDEBAR ═══ -->
+    <aside class="sb" id="sb">
+      <div class="sb-tgl" onclick="tglSb()" id="sb-tgl">◂</div>
+      <div class="sb-logo">
+        <div class="sb-mk" onclick="tglSb()">
+          <svg viewBox="0 0 14 14">
+            <rect x="1" y="1" width="4" height="12" rx="1" />
+            <rect x="7" y="1" width="4" height="7" rx="1" opacity=".6" />
+            <rect x="7" y="10" width="4" height="3" rx="1" opacity=".4" />
+          </svg>
         </div>
-        <div class="etabs">
-          <div class="etab on" onclick="swEtab('all',this)">전체 <span style="font-family:'DM Mono',monospace;font-size:9px;">7</span></div>
-          <div class="etab" onclick="swEtab('wip',this)">진행중</div>
-          <div class="etab" onclick="swEtab('done',this)">완료</div>
+        <span class="sb-x">plotnote</span>
+      </div>
+      <div class="sb-sec">
+        <div class="sb-lbl">즐겨찾기</div>
+        <div class="si">
+          <div class="d" style="background: var(--am)"></div>
+          <span class="si-t">고양이와 강아지</span
+          ><span class="si-b">ep.7</span>
+          <div class="si-pop">
+            <div class="si-pop-hd">에피소드</div>
+            <div class="si-pop-i">ep.1 첫 만남</div>
+            <div class="si-pop-i">ep.2 공원의 하루</div>
+            <div class="si-pop-i">ep.3 이웃 친구들</div>
+          </div>
         </div>
       </div>
-      <div class="ep-list-bd" id="ep-list">
-      </div>
-    </div>
-
-    <!-- 에피소드 디테일 (우) -->
-    <div class="ep-detail-col">
-      <div id="det-placeholder" style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--gh);">
-        <div style="font-size:32px;opacity:.2;">📋</div>
-        <div style="font-size:13px;">에피소드를 선택하세요</div>
-      </div>
-      <div id="det-panel" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
-        <div class="ep-det-hd">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;">
-            <div>
-              <div class="ep-det-ttl" id="det-ttl">첫 만남</div>
-              <div class="ep-det-meta" id="det-meta">ep.1 · 24p · RTL</div>
-            </div>
-            <div style="display:flex;gap:6px;margin-top:3px;">
-              <button class="abtn">페이지 관리 →</button>
-            </div>
-          </div>
-          <div class="ep-det-tabs">
-            <div class="ep-det-tab on" onclick="swDet('memo',this)">메모</div>
-            <div class="ep-det-tab" onclick="swDet('pages',this)">페이지 목록</div>
-            <div class="ep-det-tab" onclick="swDet('cfg',this)">개별 설정</div>
-          </div>
-        </div>
-        <div class="ep-det-bd">
-          <!-- 메모 탭 -->
-          <div id="det-memo">
-            <div class="memo-sec">
-              <div class="memo-sec-ttl">에피소드 메모</div>
-              <textarea class="memo-textarea" rows="4" placeholder="에피소드 전체 메모...">고양이와 강아지가 공원에서 처음 마주치는 장면. 처음엔 어색하지만 점점 가까워짐.</textarea>
-            </div>
-            <div class="memo-sec">
-              <div class="memo-sec-ttl">페이지별 메모 <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--gh);">(클릭하면 해당 페이지로)</span></div>
-              <div class="pmemo-list" id="pmemo-list"></div>
-            </div>
-          </div>
-          <!-- 페이지 탭 -->
-          <div id="det-pages" style="display:none">
-            <div class="pg-mini-grid" id="pg-mini-grid"></div>
-          </div>
-          <!-- 설정 탭 -->
-          <div id="det-cfg" style="display:none">
-            <div style="font-size:11px;color:var(--gh);margin-bottom:14px;line-height:1.6;">프로젝트 기본 설정과 다른 항목만 표시됩니다. 카드를 클릭하면 변경할 수 있습니다.</div>
-            <div class="cfg-grid">
-              <div class="cfg-card"><div class="cfg-card-lbl">기본 페이지수</div><div class="cfg-card-val">24p</div></div>
-              <div class="cfg-card ov"><div class="cfg-card-lbl">시작 페이지</div><div class="cfg-card-val">짝수</div><div class="cfg-card-note">⚠ 프로젝트와 다름 (홀수)</div></div>
-              <div class="cfg-card"><div class="cfg-card-lbl">읽기 방향</div><div class="cfg-card-val">RTL</div></div>
-              <div class="cfg-card"><div class="cfg-card-lbl">기본 뷰</div><div class="cfg-card-val">양면</div></div>
-            </div>
+      <div class="sb-dv"></div>
+      <div class="sb-sec">
+        <div class="sb-lbl">내 책장</div>
+        <div class="si">
+          <div class="d"></div>
+          <span class="si-t">베베의 작업실</span>
+          <div class="si-pop">
+            <div class="si-pop-hd">프로젝트 (최신순)</div>
+            <div class="si-pop-i">고양이와 강아지</div>
+            <div class="si-pop-i">여름 단편</div>
           </div>
         </div>
       </div>
+      <div class="sb-ft">
+        <div class="sb-u">
+          <div class="av">베</div>
+          <span class="sb-ft-n" style="font-size: 11px; color: var(--i2)"
+            >베베</span
+          >
+        </div>
+      </div>
+    </aside>
+
+    <!-- ═══ MAIN ═══ -->
+    <div class="main">
+      <!-- WS Header -->
+      <div class="ws-hd">
+        <div class="ws-hd-top">
+          <div class="ws-bc">
+            <a>책장</a><span class="sep">›</span> <a>고양이와 강아지</a
+            ><span class="sep">›</span>
+            <span class="cur">에피소드 관리</span>
+          </div>
+          <div class="ws-hd-r">
+            <button class="hbtn" onclick="tglMM()" title="메모 패널">⋯</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- WS Body: 에피소드 목록 + 디테일 -->
+      <div class="ws-bd">
+        <!-- 좌측 에피소드 목록 -->
+        <div class="ep-col">
+          <div class="ep-col-hd">
+            <div class="ep-col-top">
+              <div class="ep-col-ttl">에피소드 목록</div>
+              <div class="ep-col-acts">
+                <button class="sort-tgl" id="sort-tgl" onclick="tglSort()">
+                  정순 ↓
+                </button>
+              </div>
+            </div>
+            <div class="ep-tabs">
+              <div class="ep-tab on">
+                전체
+                <span
+                  style="
+                    font-family: &quot;DM Mono&quot;, monospace;
+                    font-size: 10px;
+                    color: var(--gh);
+                  "
+                  >7</span
+                >
+              </div>
+              <div class="ep-tab">진행중</div>
+              <div class="ep-tab">완료</div>
+            </div>
+          </div>
+          <div class="ep-list" id="ep-list"></div>
+          <div class="ep-add" onclick="addEp()">
+            <div class="ep-add-ic">+</div>
+            <span>에피소드 추가</span>
+          </div>
+        </div>
+
+        <!-- 우측 디테일 패널 -->
+        <div class="det-col">
+          <div class="det-placeholder" id="det-ph">에피소드를 선택하세요</div>
+          <div
+            id="det-panel"
+            style="
+              display: none;
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              overflow: hidden;
+            "
+          >
+            <div class="det-hd">
+              <div class="det-hd-top">
+                <div class="det-hd-l">
+                  <div class="det-ttl-row">
+                    <span class="det-ep-num" id="det-ep-n">ep.1</span>
+                    <span class="det-ttl" id="det-ttl">첫 만남</span>
+                    <span class="det-pg-count" id="det-pg-c">24p</span>
+                  </div>
+                </div>
+                <div class="det-hd-acts">
+                  <div
+                    class="det-status t-done"
+                    id="det-status"
+                    onclick="cycleStatus()"
+                  >
+                    ● 완료
+                  </div>
+                  <button
+                    class="det-cfg-btn"
+                    onclick="openCfg()"
+                    title="에피소드 개별 설정"
+                  >
+                    ⚙
+                  </button>
+                </div>
+              </div>
+              <div class="det-tab-row">
+                <div class="det-tab on">메모</div>
+                <div class="det-tab-r">
+                  <button class="det-add-pg" onclick="addPg()">
+                    + 페이지 추가
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="det-bd" id="det-bd">
+              <!-- eps.memo (상위 메모) -->
+              <div class="ep-parent-memo" id="ep-parent-memo">
+                <div class="ep-parent-memo-lbl">에피소드 메모 (eps.memo)</div>
+                <div id="ep-parent-memo-txt">
+                  고양이와 강아지가 공원에서 처음 마주치는 장면.
+                </div>
+              </div>
+              <!-- 에피소드 세부 메모 -->
+              <div class="m-sec">
+                <div class="m-sec-t">에피소드 세부 메모</div>
+                <textarea
+                  class="m-ta"
+                  rows="4"
+                  placeholder="에피소드 세부 메모..."
+                  id="det-memo"
+                >
+처음엔 어색하지만 점점 가까워짐. 벚꽃이 날리는 봄 배경.</textarea
+                >
+              </div>
+              <!-- 페이지별 메모 -->
+              <div class="m-sec">
+                <div class="m-sec-t">페이지별 메모</div>
+                <div class="pm-list" id="pm-list"></div>
+                <div class="pm-add" onclick="addPg()">
+                  <span style="font-size: 13px">+</span> 페이지 추가
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<script>
-const eps=[
-  {n:'ep.1',t:'첫 만남',memo:'고양이와 강아지가 공원에서 처음 만남.',pg:24,tag:'done'},
-  {n:'ep.2',t:'공원의 하루',memo:'함께 공원을 탐험.',pg:24,tag:'done'},
-  {n:'ep.3',t:'이웃 친구들',memo:'동네 친구들 소개.',pg:24,tag:'wip'},
-  {n:'ep.4',t:'비 오는 날',memo:'',pg:24,tag:'wip'},
-  {n:'ep.5',t:'새 에피소드',memo:'',pg:24,tag:'todo'},
-  {n:'ep.6',t:'새 에피소드',memo:'',pg:24,tag:'todo'},
-  {n:'ep.7',t:'새 에피소드',memo:'',pg:24,tag:'todo'},
-];
-const tagCls={done:'t-done',wip:'t-wip',todo:'t-todo'};
-const tagMap={done:'완료',wip:'진행중',todo:'예정'};
-const colors=['linear-gradient(150deg,#B1BBC8,#7C94B8)','linear-gradient(150deg,#8998b1,#6b7a98)','linear-gradient(150deg,#7C94B8,#5a7aaa)','linear-gradient(150deg,#b89fe8,#8998b1)'];
-let selEp=-1;
+    <!-- ═══ SETTINGS MODAL (아이콘버튼→모달) ═══ -->
+    <div class="cfg-ov" id="cfg-ov" onclick="closeCfg(event)">
+      <div class="cfg-box" onclick="event.stopPropagation()">
+        <div class="cfg-title">에피소드 개별 설정</div>
+        <div class="cfg-desc">
+          프로젝트 기본 설정과 다른 항목은 노란색으로 표시됩니다. 카드를
+          클릭하면 변경할 수 있습니다.
+        </div>
+        <div class="cfg-grid">
+          <div class="cfg-card">
+            <div class="cfg-card-l">기본 페이지수</div>
+            <div class="cfg-card-v">24p</div>
+          </div>
+          <div class="cfg-card ov">
+            <div class="cfg-card-l">시작 페이지</div>
+            <div class="cfg-card-v">짝수</div>
+            <div class="cfg-card-note">⚠ 프로젝트: 홀수</div>
+          </div>
+          <div class="cfg-card">
+            <div class="cfg-card-l">읽기 방향</div>
+            <div class="cfg-card-v">RTL</div>
+          </div>
+          <div class="cfg-card">
+            <div class="cfg-card-l">기본 뷰</div>
+            <div class="cfg-card-v">양면</div>
+          </div>
+        </div>
+        <div class="cfg-acts">
+          <button class="abtn" onclick="closeCfg()">닫기</button>
+        </div>
+      </div>
+    </div>
 
-function renderEpList(){
-  const list=document.getElementById('ep-list');
-  list.innerHTML='';
-  eps.forEach((e,i)=>{
-    const row=document.createElement('div');
-    row.className='erow'+(selEp===i?' on':'');
-    row.innerHTML=`
-      <div class="eth" style="background:${colors[i%colors.length]}"><span class="eth-n">${i+1}</span></div>
+    <!-- ═══ SEARCH MODAL ═══ -->
+    <div class="s-ov" id="s-ov" onclick="closeS(event)">
+      <div class="s-box" onclick="event.stopPropagation()">
+        <div class="s-in">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" /></svg
+          ><input
+            type="text"
+            placeholder="검색어 입력 후 Enter..."
+            id="s-input"
+          />
+        </div>
+        <div class="s-tabs">
+          <div class="s-tab on">프로젝트</div>
+          <div class="s-tab">에피소드</div>
+          <div class="s-tab">페이지</div>
+          <div class="s-tab">컷</div>
+        </div>
+        <div class="s-bd">
+          <div class="s-hint">Enter를 눌러 검색을 시작하세요</div>
+        </div>
+        <div class="s-esc">esc 닫기</div>
+      </div>
+    </div>
+
+    <!-- ═══ FLOATING MEMO MODAL ═══ -->
+    <div class="mm" id="mm" style="top: 80px; right: 60px">
+      <div class="mm-hd" id="mm-hd">
+        <span class="mm-hd-t">메모</span
+        ><button class="mm-b" id="mm-pin" onclick="tglPin()">📌</button
+        ><button class="mm-b" onclick="closeMM()">✕</button>
+      </div>
+      <div class="mm-tabs">
+        <div class="mm-tab on">프로젝트</div>
+        <div class="mm-tab">에피소드</div>
+      </div>
+      <div class="mm-bd">
+        <div class="mm-item">
+          <div class="mm-lbl">프로젝트 메모</div>
+          <div class="mm-txt">고양이와 강아지가 처음 만나는 이야기.</div>
+        </div>
+        <div class="mm-item">
+          <div class="mm-lbl">에피소드 메모</div>
+          <div class="mm-txt empty">에피소드를 선택하세요</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const eps = [
+        {
+          n: "ep.1",
+          t: "첫 만남",
+          memo: "고양이와 강아지가 공원에서 처음 만남.",
+          detail: "처음엔 어색하지만 점점 가까워짐. 벚꽃이 날리는 봄 배경.",
+          pg: 24,
+          tag: "done",
+        },
+        {
+          n: "ep.2",
+          t: "공원의 하루",
+          memo: "함께 공원을 탐험.",
+          detail: "",
+          pg: 24,
+          tag: "done",
+        },
+        {
+          n: "ep.3",
+          t: "이웃 친구들",
+          memo: "동네 친구들 소개.",
+          detail: "",
+          pg: 24,
+          tag: "wip",
+        },
+        {
+          n: "ep.4",
+          t: "비 오는 날",
+          memo: "",
+          detail: "",
+          pg: 24,
+          tag: "wip",
+        },
+        {
+          n: "ep.5",
+          t: "새 에피소드",
+          memo: "",
+          detail: "",
+          pg: 24,
+          tag: "todo",
+        },
+        {
+          n: "ep.6",
+          t: "새 에피소드",
+          memo: "",
+          detail: "",
+          pg: 24,
+          tag: "todo",
+        },
+        {
+          n: "ep.7",
+          t: "새 에피소드",
+          memo: "",
+          detail: "",
+          pg: 24,
+          tag: "todo",
+        },
+      ];
+      const tagCls = { done: "t-done", wip: "t-wip", todo: "t-todo" };
+      const tagTxt = { done: "완료", wip: "진행중", todo: "예정" };
+      const colors = [
+        "linear-gradient(150deg,#B1BBC8,#7C94B8)",
+        "linear-gradient(150deg,#8998b1,#6b7a98)",
+        "linear-gradient(150deg,#7C94B8,#5a7aaa)",
+        "linear-gradient(150deg,#b89fe8,#8998b1)",
+      ];
+      const pageMemos = [
+        "고양이가 공원에 들어오는 장면",
+        "강아지와 처음 눈이 마주침",
+        "",
+        "두 동물이 어색하게 주변",
+        "",
+        "서로 조심스럽게 다가감",
+        "",
+        "처음으로 코를 맞대는 장면",
+        "",
+        "놀이를 시작하는 장면",
+        "",
+        "",
+      ];
+      let selEp = 0,
+        sortAsc = true;
+
+      function renderList() {
+        const list = document.getElementById("ep-list");
+        list.innerHTML = "";
+        const order = sortAsc ? [...eps.keys()] : [...eps.keys()].reverse();
+        order.forEach((i) => {
+          const e = eps[i];
+          const row = document.createElement("div");
+          row.className = "erow" + (selEp === i ? " on" : "");
+          row.innerHTML = `
+      <div class="eth" style="background:${colors[i % colors.length]}"><span class="eth-n">${i + 1}</span></div>
       <div class="ebody">
         <div class="ebody-num">${e.n}</div>
         <div class="ebody-ttl">${e.t}</div>
-        <div class="ebody-memo${e.memo?'':' empty'}">${e.memo||'메모 없음'}</div>
-        <div class="ebody-ft"><span class="ebody-pg">${e.pg}p</span><span class="etag ${tagCls[e.tag]}">${tagMap[e.tag]}</span></div>
+        <div class="ebody-memo${e.memo ? "" : " empty"}">${e.memo || "메모 없음"}</div>
+        <div class="ebody-ft"><span class="ebody-pg">${e.pg}p</span><span class="etag ${tagCls[e.tag]}">${tagTxt[e.tag]}</span></div>
       </div>
-      <div class="er-acts"><div class="drag-h"><span></span><span></span><span></span></div></div>`;
-    row.addEventListener('click',()=>selEpItem(i));
-    list.appendChild(row);
-  });
-  const addRow=document.createElement('div');
-  addRow.className='ep-add-row';
-  addRow.innerHTML='<span style="font-size:14px">+</span> 에피소드 추가';
-  addRow.onclick=addEp;
-  list.appendChild(addRow);
-}
+      <div class="er-acts"><div class="drag-h" title="길게 클릭: 드래그"><span></span><span></span><span></span></div></div>`;
+          // 클릭→detail
+          row.addEventListener("click", () => {
+            selEp = i;
+            renderList();
+            showDet(i);
+          });
+          // 더블클릭→페이지화면 이동
+          row.addEventListener("dblclick", () => {
+            alert("→ 페이지 관리 화면으로 이동: " + e.n);
+          });
+          list.appendChild(row);
+        });
+        // 최근 작업물(ep.3)이 가운데 오도록 스크롤
+        if (selEp >= 0) {
+          setTimeout(() => {
+            const rows = list.querySelectorAll(".erow");
+            const idx = sortAsc ? selEp : eps.length - 1 - selEp;
+            if (rows[idx]) {
+              rows[idx].scrollIntoView({ block: "center", behavior: "smooth" });
+            }
+          }, 50);
+        }
+      }
 
-function selEpItem(i){
-  selEp=i;
-  renderEpList();
-  const e=eps[i];
-  document.getElementById('det-placeholder').style.display='none';
-  const panel=document.getElementById('det-panel');
-  panel.style.display='flex';
-  document.getElementById('det-ttl').textContent=e.t;
-  document.getElementById('det-meta').textContent=`${e.n} · ${e.pg}p · RTL`;
-  // page memos
-  const pmemoList=document.getElementById('pmemo-list');
-  pmemoList.innerHTML='';
-  const pageMemos=['고양이가 공원에 들어오는 장면','강아지와 처음 눈이 마주침','','두 동물이 어색하게 주변을 돌아다님','','서로 조심스럽게 다가가는 장면','','처음으로 코를 맞대는 장면','','놀이를 시작하는 장면','',''];
-  for(let p=0;p<e.pg;p++){
-    const row=document.createElement('div');row.className='pmemo-row';
-    const t=pageMemos[p]||'';
-    row.innerHTML=`<span class="pmemo-n">p.${String(p+1).padStart(2,'0')}</span><span class="pmemo-t${t?'':' empty'}">${t||'메모 없음'}</span>`;
-    pmemoList.appendChild(row);
-  }
-  // page mini grid
-  const grid=document.getElementById('pg-mini-grid');
-  grid.innerHTML='';
-  for(let p=0;p<e.pg;p++){
-    const pg=document.createElement('div');pg.className='pg-mini';
-    const memo=pageMemos[p]||'';
-    pg.innerHTML=`${memo?`<div class="pg-mini-memo">${memo}</div>`:''}<div class="pg-mini-n">${p+1}</div>`;
-    grid.appendChild(pg);
-  }
-}
+      function showDet(i) {
+        const e = eps[i];
+        document.getElementById("det-ph").style.display = "none";
+        const panel = document.getElementById("det-panel");
+        panel.style.display = "flex";
+        document.getElementById("det-ep-n").textContent = e.n;
+        document.getElementById("det-ttl").textContent = e.t;
+        document.getElementById("det-pg-c").textContent = e.pg + "p";
+        document.getElementById("det-status").className =
+          "det-status " + tagCls[e.tag];
+        document.getElementById("det-status").innerHTML = "● " + tagTxt[e.tag];
+        document.getElementById("ep-parent-memo-txt").textContent =
+          e.memo || "(없음)";
+        document.getElementById("det-memo").value = e.detail;
+        // 페이지별 메모
+        const pmList = document.getElementById("pm-list");
+        pmList.innerHTML = "";
+        for (let p = 0; p < e.pg; p++) {
+          const memo = pageMemos[p] || "";
+          const row = document.createElement("div");
+          row.className = "pm-row";
+          row.innerHTML = `<div class="pm-grab"><span></span><span></span><span></span></div><span class="pm-n">p.${String(p + 1).padStart(2, "0")}</span><input class="pm-input" value="${memo}" placeholder="메모 없음">`;
+          pmList.appendChild(row);
+        }
+      }
 
-function addEp(){
-  eps.push({n:`ep.${eps.length+1}`,t:'새 에피소드',memo:'',pg:24,tag:'todo'});
-  renderEpList();
-  selEpItem(eps.length-1);
-}
+      function tglSort() {
+        sortAsc = !sortAsc;
+        document.getElementById("sort-tgl").textContent = sortAsc
+          ? "정순 ↓"
+          : "역순 ↑";
+        renderList();
+      }
 
-function swEtab(id,el){
-  document.querySelectorAll('.etab').forEach(t=>t.classList.remove('on'));
-  el.classList.add('on');
-}
+      function addEp() {
+        eps.push({
+          n: `ep.${eps.length + 1}`,
+          t: "새 에피소드",
+          memo: "",
+          detail: "",
+          pg: 24,
+          tag: "todo",
+        });
+        selEp = eps.length - 1;
+        renderList();
+        showDet(selEp);
+      }
+      function addPg() {
+        if (selEp >= 0) {
+          eps[selEp].pg++;
+          showDet(selEp);
+        }
+      }
 
-function swDet(id,el){
-  ['memo','pages','cfg'].forEach(t=>document.getElementById('det-'+t).style.display=t===id?'':'none');
-  document.querySelectorAll('.ep-det-tab').forEach(t=>t.classList.remove('on'));
-  el.classList.add('on');
-}
+      function cycleStatus() {
+        if (selEp < 0) return;
+        const order = ["todo", "wip", "done"];
+        const cur = order.indexOf(eps[selEp].tag);
+        eps[selEp].tag = order[(cur + 1) % 3];
+        renderList();
+        showDet(selEp);
+      }
 
-renderEpList();
-</script>
-</body>
+      function openCfg() {
+        document.getElementById("cfg-ov").classList.add("open");
+      }
+      function closeCfg(e) {
+        if (
+          e &&
+          e.target &&
+          !e.target.classList.contains("cfg-ov") &&
+          !e.target.closest(".abtn")
+        )
+          return;
+        document.getElementById("cfg-ov").classList.remove("open");
+      }
+
+      /* sidebar */
+      function tglSb() {
+        const s = document.getElementById("sb"),
+          t = document.getElementById("sb-tgl");
+        s.classList.toggle("rail");
+        t.textContent = s.classList.contains("rail") ? "▸" : "◂";
+      }
+
+      /* search */
+      function openS() {
+        document.getElementById("s-ov").classList.add("open");
+        document.getElementById("s-input").focus();
+      }
+      function closeS(e) {
+        if (e && e.target !== document.getElementById("s-ov")) return;
+        document.getElementById("s-ov").classList.remove("open");
+      }
+
+      /* memo modal */
+      let mmOpen = false,
+        pinned = false,
+        drag = false,
+        ox = 0,
+        oy = 0;
+      function tglMM() {
+        const m = document.getElementById("mm");
+        mmOpen = !mmOpen;
+        m.classList.toggle("open", mmOpen);
+        if (mmOpen) {
+          m.style.top = "80px";
+          m.style.right = "60px";
+          m.style.left = "auto";
+        }
+      }
+      function closeMM() {
+        mmOpen = false;
+        document.getElementById("mm").classList.remove("open");
+      }
+      function tglPin() {
+        pinned = !pinned;
+        document.getElementById("mm-pin").classList.toggle("pin", pinned);
+      }
+      document.getElementById("mm-hd").addEventListener("mousedown", (e) => {
+        drag = true;
+        const m = document.getElementById("mm"),
+          r = m.getBoundingClientRect();
+        m.style.left = r.left + "px";
+        m.style.top = r.top + "px";
+        m.style.right = "auto";
+        ox = e.clientX - r.left;
+        oy = e.clientY - r.top;
+      });
+      document.addEventListener("mousemove", (e) => {
+        if (!drag) return;
+        const m = document.getElementById("mm");
+        m.style.left = e.clientX - ox + "px";
+        m.style.top = e.clientY - oy + "px";
+      });
+      document.addEventListener("mouseup", () => {
+        drag = false;
+      });
+      document.addEventListener("mousedown", (e) => {
+        if (!mmOpen || pinned) return;
+        const m = document.getElementById("mm");
+        if (!m.contains(e.target) && !e.target.closest(".hbtn")) closeMM();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeS({ target: document.getElementById("s-ov") });
+          if (!pinned) closeMM();
+          closeCfg({ target: document.getElementById("cfg-ov") });
+        }
+      });
+
+      // init: 가장 최근 작업물 (ep.3 = 진행중 중 첫번째) active
+      selEp = 2;
+      renderList();
+      showDet(selEp);
+    </script>
+  </body>
 </html>
