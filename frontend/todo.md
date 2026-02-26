@@ -154,7 +154,7 @@ function tglLeaf(id) {
 
 ---
 
-### ⬜ 3. `proto-episode.html` — 사이드바 적용
+### ✅ 3. `proto-episode.html` — 사이드바 적용 [완료]
 
 **파일**: `public/prototypes/proto-episode.html`
 
