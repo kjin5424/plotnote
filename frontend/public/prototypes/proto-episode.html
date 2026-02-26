@@ -1312,9 +1312,12 @@
           </div>
         </div>
       </div>
+      <!-- 디자인 관련 주석 -->
+      <!-- 클로드용 주석 -->
       <!-- 에피소드의 헤더나 헤더 아래쪽이나 그런데서 pageMemo, 좀더 세부적으로는 pageDetailMemos를 확인할 수 있도록 -->
 
       <!-- WS Body: 에피소드 목록 + 디테일 -->
+      <!-- 클로드용 주석 -->
       <!-- .det-col가 원래 전체 width를 차지하고 있는데, eth를 클릭하면 해당 정보에 맞는 det-col가 뜨도록 -->
       <div class="ws-bd">
         <!-- 좌측 에피소드 목록 -->
@@ -1335,6 +1338,7 @@
               </div>
               <div class="ep-tab">진행중</div>
               <div class="ep-tab">완료</div>
+              <!-- 클로드용 주석 -->
               <!-- ep-col-acts는 ep-tab들이랑 space-around시키고 싶음 -->
               <div class="ep-col-acts" style="margin-left: 100px">
                 <button class="sort-tgl" id="sort-tgl" onclick="tglSort()">
@@ -1343,6 +1347,7 @@
                     alt=""
                     style="width: 16px; aspect-ratio: 1/1"
                   />
+                  <!-- 클로드용 주석 -->
                   <!-- 클릭하면 "../../src/assets/images/sort-descending-svgrepo-com.svg" -->
                 </button>
               </div>
@@ -1407,6 +1412,7 @@
               <!-- eps.memo (상위 메모) -->
               <div class="ep-parent-memo" id="ep-parent-memo">
                 <div class="ep-parent-memo-lbl">에피소드 메모 (eps.memo)</div>
+                <!-- 클로드용 주석 -->
                 <!-- 이게 episodeMemo -->
                 <div id="ep-parent-memo-txt">
                   고양이와 강아지가 공원에서 처음 마주치는 장면.
@@ -1415,7 +1421,8 @@
               <!-- 에피소드 세부 메모 -->
               <div class="m-sec">
                 <div class="m-sec-t">에피소드 세부 메모</div>
-                <!-- episodeDetailMemos -->
+                <!-- 클로드용 주석 -->
+                <!-- 이게 episodeDetailMemos -->
                 <textarea
                   class="m-ta"
                   rows="4"
@@ -1428,6 +1435,7 @@
               <!-- 페이지별 메모 -->
               <div class="m-sec">
                 <div class="m-sec-t">페이지별 메모</div>
+                <!-- 클로드용 주석 -->
                 <!-- 이게 pageMemo -->
                 <div class="pm-list" id="pm-list"></div>
                 <div class="pm-add" onclick="addPg()">
@@ -1633,9 +1641,11 @@
         <div class="ebody-ft"><span class="ebody-pg">${e.pg}p</span><span class="etag ${tagCls[e.tag]}">${tagTxt[e.tag]}</span></div>
       </div>
       `;
-          // bebe-info에 대한 설명 : ebody-num, ebody-ttl 우측으로 src/assets/images의 favorite 아이콘이 들어갈거임
+          // 클로드용 주석
+          // bebe-info에 대한 설명 : ebody-num, ebody-ttl 우측으로 src/assets/images의 bookmark 아이콘이 들어갈거임
           // space-around처리할거고 한...16px정도면 될거같음
 
+          // 클로드용 주석
           // 주목!: ebody-memo가 episodeMemo
 
           // 클릭→detail
@@ -1676,6 +1686,7 @@
         document.getElementById("ep-parent-memo-txt").textContent =
           e.memo || "(없음)";
         document.getElementById("det-memo").value = e.detail;
+        // 클로드용 주석
         // 페이지별 메모
         const pmList = document.getElementById("pm-list");
         pmList.innerHTML = "";
