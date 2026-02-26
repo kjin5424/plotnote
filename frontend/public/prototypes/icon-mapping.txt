@@ -1,0 +1,28 @@
+| 요소           | 파일명 (prefix: `../../src/assets/images/`)                             |
+| -------------- | -----------------------------------------------------------------------|
+| 책장(house)    | `house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`                      |
+| 프로젝트 닫힘   | `book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`                 |
+| 프로젝트 열림   | `book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`                  |
+| 에피소드 닫힘   | `article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`                    |
+| 에피소드 열림   | `library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`              |
+| 페이지 닫힘     | `page-svgrepo-com.svg`                                                  |
+| 페이지 열림     | `page-edit-svgrepo-com.svg`                                             |
+| 컷 (rail only) | `note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`                 |
+| 즐겨찾기        | `bookmark_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`                   |
+| 공유 책장       | `diversity_3_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`                |
+| 노드 화살표     | `keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`       |
+| 사이드바 접기   | `keyboard_double_arrow_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg` |
+| 검색           | `search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`                     |
+| 메모 패널       | `more_horiz_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`                 |
+| 핀             | `pin-svgrepo-com.svg`                                                   |
+| 닫기           | `close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`                      |
+| 설정           | `setting-5-svgrepo-com.svg`                                             |
+| 공유           | `handshake-svgrepo-com.svg`                                             |
+| 이전 페이지     | `splitscreen_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`           |
+| 다음 페이지     | `splitscreen_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`          |
+| 양면           | `view_column_2_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`              |
+| 단면           | `grid_view_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`                  |
+| 정렬asc        | `sort-ascending-svgrepo-com.svg`                                        |
+| 정렬desc       | `sort-descending-svgrepo-com.svg`                                       |
+| 명시적 수정     | `sort-descending-svgrepo-com.svg`                                       |
+| 전체 화면       | `fit_screen_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`                 |
