@@ -982,19 +982,6 @@
         <span class="sb-x">plotnote</span>
       </div>
       <div class="sb-sec">
-        <div class="srch" onclick="openS()">
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35" /></svg
-          ><span>검색...</span>
-        </div>
         <div class="sb-lbl">프로젝트</div>
         <div class="si on">
           <div class="d"></div>
@@ -1034,10 +1021,32 @@
 
     <!-- MAIN -->
     <div class="main">
-      <!-- 디자인 관련 주석 -->
-      <!-- 클로드용 주석 -->
-      <!-- Toolbar(x) 이거 헤더 됨: ep명 + 양면단면+페이지추가 오른쪽 -->
-      <!-- 페이지의 헤더나 헤더 아래쪽이나 그런데서 episodeMemo, 좀더 세부적으로는 episodeDetailMemos를 확인할 수 있도록 -->
+      <!-- WS Header (breadcrumb + search + ⋯) -->
+      <div class="ws-hd">
+        <div class="ws-bc">
+          <a>책장</a><span class="sep">›</span> <a>고양이와 강아지</a
+          ><span class="sep">›</span>
+          <span class="cur">ep.1 첫 만남</span>
+        </div>
+        <div class="ws-hd-r">
+          <div class="srch" onclick="openS()">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.35-4.35" /></svg
+            ><span>검색...</span>
+          </div>
+          <button class="hbtn" onclick="tglMM()" title="메모 패널">⋯</button>
+        </div>
+      </div>
+
+      <!-- Toolbar: ep명 + 양면단면+페이지추가 오른쪽 -->
       <div class="toolbar">
         <span class="ep-name">ep.1 — 첫 만남</span>
         <span class="ep-pg-count">24p</span>
@@ -1049,7 +1058,6 @@
             <button class="vtb" onclick="swView('single', this)">단면</button>
           </div>
           <button class="abtn pri" onclick="addPage()">+ 페이지 추가</button>
-          <button class="hbtn" onclick="tglMM()" title="메모 패널">⋯</button>
         </div>
       </div>
 
@@ -1061,7 +1069,6 @@
         <div class="rsp" id="rsp">
           <div class="rsp-tabs">
             <div class="rsp-tab on" id="rsp-pg-tab">p.01</div>
-            <div class="rsp-tab" id="rsp-pg-tab">p.02</div>
           </div>
           <div class="rsp-bd">
             <!-- 페이지 메모 -->
@@ -1069,12 +1076,8 @@
               <div class="rsp-sec-hd" onclick="togSec(this)">
                 <span>📄 페이지 메모</span
                 ><span class="rsp-arrow" style="transform: rotate(90deg)"
-                  ><img
-                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                    alt=""
-                /></span>
-                <!-- 클로드용 주석 -->
-                <!-- 이게 pageMemo -->
+                  >▶</span
+                >
               </div>
               <div class="rsp-sec-body">
                 <div class="rsp-mi" style="margin-bottom: 6px">
@@ -1089,34 +1092,25 @@
                 </div>
               </div>
             </div>
-            <!-- 디자인용 주석 -->
-            <!-- 클로드용 주석 -->
-            <!-- pageMemo와 cutMemo 사이에 pageDetailMemo도 들어가야 함 -->
-            <!-- pageDetailMemo는 필요 없을까 싶기도 한데...일단은 넣어보기 -->
-            <!-- ui/ux적으로 과하거나 디자인적으로 과하면 뺄 수도 있음 -->
-            <!-- 컷 메모 -->
+            <!-- 컷별 메모 -->
             <div class="rsp-sec">
               <div class="rsp-sec-hd" onclick="togSec(this)">
-                <span>✂ 컷 메모</span
+                <span>✂ 컷별 메모</span
                 ><span class="rsp-arrow" style="transform: rotate(90deg)"
-                  ><img
-                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                    alt=""
-                /></span>
+                  >▶</span
+                >
               </div>
               <div class="rsp-sec-body">
                 <div class="rsp-ci">
-                  <!-- 클로드용 주석 -->
-                  <!-- 얘도 drag-h?? 왼쪽에 위치 -->
-                  <span class="rsp-cn">1</span
+                  <span class="rsp-cn">c.1</span
                   ><span class="rsp-ct">공원 입구 전경</span>
                 </div>
                 <div class="rsp-ci">
-                  <span class="rsp-cn">2</span
+                  <span class="rsp-cn">c.2</span
                   ><span class="rsp-ct">고양이 발 클로즈업</span>
                 </div>
                 <div class="rsp-ci">
-                  <span class="rsp-cn">3</span
+                  <span class="rsp-cn">c.3</span
                   ><span class="rsp-ct empty">메모 없음</span>
                 </div>
                 <button class="rsp-add">+ 컷 메모 추가</button>
@@ -1135,8 +1129,6 @@
         <div class="ft-item">마지막 저장 14:23</div>
         <div class="ft-item" id="ft-pg">pg 10 / 24</div>
         <div class="ft-r">ctrl+scroll 크기 조정</div>
-        <!-- 클로드용 주석 -->
-        <!-- 크기 조정이 가능하니까 여기도 proto-cut.html에 있는 .zoom-ctl 하단툴바를 만들기  -->
       </div>
     </div>
 
@@ -1242,13 +1234,9 @@
           for (let i = 0; i < pageCount; i++) {
             g.appendChild(makeCard(i));
           }
-          // 지금은 단면일땐 5개, 양면일땐 spread-cell 기준 세개씩 보이는데,
-          // 양면일땐 두개씩, 단면은 양면일때 두개씩으로 맞춘 상태랑 같은 크기에서
-          // 한 행에 들어갈 수 있는 만큼의 개수로
           const add = document.createElement("div");
           add.className = "pcard pg-add-cell";
           add.innerHTML = '<div class="pi">+</div>';
-          // 이 +는 그냥 +만 있는게 아니라 페이지 추가 라고 말도 써놓기(전체적인 디자인, ui/ux 통일)
           add.onclick = addPage;
           g.appendChild(add);
           area.appendChild(g);
@@ -1294,13 +1282,6 @@
         const w = document.createElement("div");
         w.className = "pcard" + (half ? " half-page" : "");
         w.innerHTML = `<div class="pi"><div class="pi-num">${String(i + 1).padStart(2, "0")}</div><div class="pi-lines"><div class="pi-line"></div><div class="pi-line"></div><div class="pi-line"></div><div class="pi-line"></div></div></div><div class="pcard-info"><div class="pcard-memo${memo ? "" : " empty"}">${memo || ""}</div></div>`;
-        // 클로드용 주석
-        // 디자인 관련 주석
-        // 이부분이 현재 src/components/screens/Page/PageBody의 내용
-        // 페이지 안에 컷 내용이 보여야 함
-        // 그렇다 한다면!? pi-num이 pi위에 있으면 안되겠지!?
-        // pcard-memo가 pageMemo: 두줄까지만 나오고 그 이상은 ... 처리
-        // pi끼리는 붙어있어도 pcard-info끼리는 서로 사이에 gap 같은게 있어야 별개로 보일듯
         return w;
       }
 

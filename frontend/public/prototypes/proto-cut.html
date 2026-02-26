@@ -974,30 +974,12 @@
         <span class="sb-x">plotnote</span>
       </div>
       <div class="sb-sec">
-        <div class="srch" onclick="openS()">
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35" /></svg
-          ><span>검색...</span>
-        </div>
         <div class="sb-lbl">에피소드</div>
         <div class="si on">
           <div class="d"></div>
           <span class="si-t">ep.1 첫 만남</span>
           <div class="si-pop">
-            <!-- 클로드용 주석 -->
-            <!-- 이거 .si-pop-i를 클릭해서 해당 페이지로 이동할 수 있도록 해야 함 -->
-            <!-- 그러려면 si-pop위로 커서를 올릴 수 있어야 함 -->
             <div class="si-pop-hd">페이지 (pageOrder)</div>
-            <!-- 클로드용 주석 -->
-            <!-- pageOrder 순 -->
             <div class="si-pop-i">p.01 공원 입구</div>
             <div class="si-pop-i">p.02 강아지 등장</div>
             <div class="si-pop-i">p.03</div>
@@ -1028,48 +1010,31 @@
 
         <div class="pg-nav">
           <div class="pg-nav-grp">
-            <button class="pn-btn" onclick="navPage(-1)">
-              <img
-                src="../../src/assets/images/split_scene_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                alt=""
-              />
-            </button>
+            <button class="pn-btn" onclick="navPage(-1)">◀</button>
             <span class="pn-lbl">이전</span>
           </div>
           <div class="pg-nav-grp">
             <span class="pn-lbl">다음</span>
-            <button class="pn-btn" onclick="navPage(1)">
-              <img
-                src="../../src/assets/images/splitscreen_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                alt=""
-              />
-            </button>
+            <button class="pn-btn" onclick="navPage(1)">▶</button>
           </div>
         </div>
 
-        <!-- 클로드용 주석 -->
-        <!-- 이 zoom-ctl 하단 toolbar의 오른쪽에 새로운 toolbar를 만들어서 그 안에서 관리 -->
         <div class="zoom-ctl">
           <button class="z-btn" onclick="zoom(-10)">−</button>
+          <span class="z-pct" id="z-pct">100%</span>
           <button
             class="fb-full"
             onclick="toggleFullPage()"
             id="full-btn"
             title="전체 페이지"
           >
-            <img
-              src="../../src/assets/images/fit_screen_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-              alt=""
-            />
+            ⛶
           </button>
           <button class="z-btn" onclick="zoom(10)">+</button>
           <button class="hbtn" onclick="tglMM()" title="메모 패널">⋯</button>
         </div>
       </div>
 
-      <!-- 디자인 관련 주석 -->
-      <!-- 실제 페이지처럼 보이게 만드는 그림자같은거 필요 없음 -->
-      <!-- 전체 외곽 shadow는 조금만 -->
       <!-- Canvas + RSP -->
       <div class="canvas-area">
         <div class="canvas-scroll">
@@ -1080,49 +1045,54 @@
         <div class="rsp" id="rsp">
           <div class="rsp-tabs">
             <div class="rsp-tab on">p.01</div>
-            <div class="rsp-tab">p.02</div>
           </div>
           <div class="rsp-bd">
             <div class="rsp-sec">
               <div class="rsp-sec-hd">
+                <span>📄 페이지 메모</span
+                ><span class="rsp-arrow" style="transform: rotate(90deg)"
+                  >▶</span
+                >
+              </div>
+              <div>
+                <div class="rsp-mi">
+                  <div class="rsp-mi-lbl">페이지 메모</div>
+                  <textarea class="rsp-ta" rows="2">
+고양이가 공원에 들어오는 장면</textarea
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="rsp-sec">
+              <div class="rsp-sec-hd">
                 <span>✂ 컷별 메모</span
                 ><span class="rsp-arrow" style="transform: rotate(90deg)"
-                  ><img
-                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                    alt=""
-                /></span>
+                  >▶</span
+                >
               </div>
               <div>
                 <div class="rsp-ci on">
-                  <!-- 클로드용 주석 -->
-                  <!-- 여기도 drag-h 왼쪽에 필요 -->
-                  <span class="rsp-cn">1</span
+                  <span class="rsp-cn">c.1</span
                   ><span class="rsp-ct">공원 입구 전경</span>
-                  <!-- 클로드용 주석(주석) -->
-                  <!-- 각 rsp-ci 에 cutNotes 입력할 수 있어야 함 -->
-                  <!-- cutMemo랑 cutNotes랑 다른거임 -->
-                  <!-- 지금 localStorage에는 cutNotes밖에 없는데, -->
-                  <!-- 이것도 다른거랑 동일하게 cutMemo가 있고 cutDetailMemo가 있는 구조 -->
-                  <!-- 이 rsp-ci를 드래그해서 cut-cell에 놓으면 해당 cut-cell이랑 cutMemo+cutDetailMemo가 연동 -->
                 </div>
                 <div class="rsp-ci">
-                  <span class="rsp-cn">2</span
+                  <span class="rsp-cn">c.2</span
                   ><span class="rsp-ct">고양이 발 클로즈업</span>
                 </div>
                 <div class="rsp-ci">
-                  <span class="rsp-cn">3</span
+                  <span class="rsp-cn">c.3</span
                   ><span class="rsp-ct empty">메모 없음</span>
                 </div>
                 <div class="rsp-ci">
-                  <span class="rsp-cn">4</span
+                  <span class="rsp-cn">c.4</span
                   ><span class="rsp-ct">강아지 등장</span>
                 </div>
                 <div class="rsp-ci">
-                  <span class="rsp-cn">5</span
+                  <span class="rsp-cn">c.5</span
                   ><span class="rsp-ct empty">메모 없음</span>
                 </div>
                 <div class="rsp-ci">
-                  <span class="rsp-cn">6</span
+                  <span class="rsp-cn">c.6</span
                   ><span class="rsp-ct">두 눈이 마주침</span>
                 </div>
                 <button class="rsp-add">+ 컷 메모 추가</button>
@@ -1268,18 +1238,7 @@
             const cell = document.createElement("div");
             cell.className =
               "cut-cell" + (selCut === i && pi === 0 ? " sel" : "");
-            cell.innerHTML = `<div class="cut-cell-n">${i + 1}</div>${cellMemos[i] ? `<div class="cut-cell-memo">${cellMemos[i]}</div>` : ""}`;
-            <!-- 클로드용 주석(중요) -->
-            <!-- 이부분 로직을 어떻게 하는게 좋으려나... -->
-            <!-- 컷 모양이랑 cutMemo+cutDetailMemo는 아예 별개로 두고 -->
-            <!-- 드래그앤드롭으로 지정이 되어야 서로 연계되는 형식 -->
-            <!-- 그리고 cut-cell-memo는 cutMemo인데, -->
-            <!-- cutDetailMemo도 여기에 표시될 것이며, -->
-            <!-- cutDetailMemo는 드래그앤드롭으로 다른 컷으로 이동 가능함 -->
-            <!-- 그리고 우측 패널에서만 내용을 수정할 수 있는게 아니라 cut-cell에서도 각각 수정이 가능함 -->
-            <!-- cutMemo는 제외, cutDetailMemo만 해당. -->
-            <!-- 디자인 관련 주석 -->
-            <!-- cut-cell 내부에서 cutMemo와 cutDetailMemo는 css처리를 다르게 해야겠지? -->
+            cell.innerHTML = `<div class="cut-cell-n">c.${i + 1}</div>${cellMemos[i] ? `<div class="cut-cell-memo">${cellMemos[i]}</div>` : ""}`;
             cell.addEventListener("click", () => {
               selCut = i;
               renderCanvas();
@@ -1290,8 +1249,6 @@
           const badge = document.createElement("div");
           badge.className = "cut-count-badge";
           badge.textContent = `p.${String(pn).padStart(2, "0")} · ${gridCols * gridRows}컷`;
-          <!-- 클로드용 주석 -->
-          <!-- 이거 여기에 있으면 페이지를 가리니까 삭제 -->
           page.appendChild(badge);
           wrap.appendChild(page);
         });
