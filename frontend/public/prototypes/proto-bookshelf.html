@@ -441,15 +441,24 @@
 
       /* ═══ NODE SECTION (펼쳐진 노드) ═══ */
       .node {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
       }
       .node-hd {
+        box-sizing: border-box;
         display: flex;
         align-items: center;
         gap: 8px;
         padding: 6px 0;
         cursor: pointer;
         user-select: none;
+      }
+      .node-hd:hover {
+        border: 1px solid var(--gh);
+        background-color: var(--wh);
+        /* 이 색깔일 필요는 없고 약간 밝아지는 정도로만 */
+        /* 그리고 양쪽이 길어졌으면 좋겠는데 padding이나 margin을 하면 안의 내용이 오른쪽으로 이동되네 그건 싫음 */
+        /* hover했다고 좌우아래위 객체들이 움직여버리는게 싫음 */
+        border-radius: 8px;
       }
       .node-arrow {
         width: 16px;
@@ -1024,6 +1033,9 @@
   </head>
   <body>
     <!-- ═══ SIDEBAR ═══ -->
+    <!-- sidebar 오른쪽에 살~짝 shadow 있음 좋겠다 -->
+    <!-- 아닌가? 없는게 낫나? -->
+    <!-- workspace header와의 조화도 고려하고 싶음 -->
     <aside class="sb" id="sb">
       <div class="sb-tgl" onclick="tglSb()" id="sb-tgl">◂</div>
       <div class="sb-logo">
@@ -1037,6 +1049,19 @@
         <span class="sb-x">plotnote</span>
       </div>
       <div class="sb-sec">
+        <div class="srch" onclick="openS()">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" /></svg
+          ><span>검색...</span>
+        </div>
         <div class="sb-lbl">즐겨찾기</div>
         <div class="si">
           <div class="d" style="background: var(--am)"></div>
@@ -1114,27 +1139,20 @@
       </div>
 
       <div class="ws-bd">
-        <!-- filter -->
-        <div class="fbar">
-          <div class="chip on">전체</div>
-          <div class="chip">예정</div>
-          <div class="chip">진행중</div>
-          <div class="chip">완료</div>
-          <div class="chip">보류</div>
-          <button class="sort-b">최신 작업순 ▾</button>
-        </div>
-
         <!-- ★ 즐겨찾기 노드 (데이터 있음 → 펼침) -->
         <div class="node" id="node-fav">
           <div class="node-hd" onclick="tglNode('node-fav')">
-            <span class="node-arrow open">▶</span>
+            <span class="node-arrow open"
+              ><img
+                src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
             <span class="node-icon"
               ><img
                 src="../../src/assets/images/favorite_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
                 alt=""
             /></span>
             <!-- 이미지로 첨부한 아이콘은 커서 올렸을 때 border 색깔 변경, 클릭시 border, 안쪽 색상 변경 이런거 안되나? -->
-            <!-- 빨간색계열로 됐으면 좋겠음 -->
             <span class="node-ttl">즐겨찾기</span>
             <span class="node-count">2개</span>
           </div>
@@ -1193,7 +1211,11 @@
         <!-- 📂 나의 책장 노드 (데이터 있음 → 펼침) -->
         <div class="node" id="node-my">
           <div class="node-hd" onclick="tglNode('node-my')">
-            <span class="node-arrow open">▶</span>
+            <span class="node-arrow open"
+              ><img
+                src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
             <span class="node-icon"
               ><img
                 src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
@@ -1281,10 +1303,14 @@
         <!-- 🔗 공유 책장 노드 (데이터 있음 → 펼침) -->
         <div class="node" id="node-shared">
           <div class="node-hd" onclick="tglNode('node-shared')">
-            <span class="node-arrow open">▶</span>
+            <span class="node-arrow open"
+              ><img
+                src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
             <span class="node-icon"
               ><img
-                src="../../src/assets/images/"
+                src="../../src/assets/images/diversity_3_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
                 alt=""
             /></span>
             <span class="node-ttl">공유 책장</span>
@@ -1326,7 +1352,11 @@
         <!-- 예시이기 때문에 실제 구현할 필요는 없음 -->
         <div class="node disabled" id="node-archive">
           <div class="node-hd">
-            <span class="node-arrow">▶</span>
+            <span class="node-arrow"
+              ><img
+                src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
             <span class="node-icon">🗃</span>
             <span class="node-ttl">보관함</span>
             <span class="node-empty">프로젝트가 없습니다</span>
