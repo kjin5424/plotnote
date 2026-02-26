@@ -1,330 +1,1506 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-<meta charset="UTF-8">
-<title>PlotNote — 프로젝트</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
-<style>
-:root{--db:#2A4D88;--oc:#7C94B8;--gl:#B1BBC8;--co:#D9D9D8;--am:#fbc662;--am-bg:#fff8e6;--wh:#fefefe;--pa:#f7f6f3;--ink:#1a1a1a;--i2:#4a4a4a;--gh:#9a9a9a;--bd:#e8e6e0;--bd2:#d5d2cb;--sw:220px;--hh:48px;}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Noto Sans KR',sans-serif;background:var(--pa);color:var(--ink);height:100vh;overflow:hidden;display:flex;flex-direction:column;font-size:13px;}
-button{font-family:'Noto Sans KR',sans-serif;cursor:pointer;}
-/* Header */
-.hd{height:var(--hh);background:var(--wh);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 16px;gap:8px;flex-shrink:0;}
-.hd-menu{width:28px;height:28px;border-radius:5px;border:none;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3.5px;}
-.hd-menu:hover{background:var(--pa);}
-.hd-menu span{display:block;height:1.5px;border-radius:1px;background:var(--gh);}
-.hd-menu span:nth-child(1){width:14px;}.hd-menu span:nth-child(2){width:10px;}.hd-menu span:nth-child(3){width:14px;}
-.bc{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--gh);}
-.bc a{color:var(--gh);text-decoration:none;cursor:pointer;}.bc a:hover{color:var(--db);}
-.bc .cur{color:var(--ink);font-weight:500;}.bc .sep{color:var(--co);}
-.hd-r{margin-left:auto;display:flex;gap:4px;}
-.hbtn{width:28px;height:28px;border-radius:5px;border:none;background:none;color:var(--gh);display:flex;align-items:center;justify-content:center;font-size:15px;}
-.hbtn:hover{background:var(--pa);}
-/* Layout */
-.main{flex:1;display:flex;overflow:hidden;}
-.sb{width:var(--sw);min-width:var(--sw);height:100%;background:var(--wh);border-right:1px solid var(--bd);display:flex;flex-direction:column;}
-.ws{flex:1;display:flex;overflow:hidden;}
-/* Sidebar */
-.sb-logo{padding:13px 16px 11px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:7px;}
-.sb-mk{width:24px;height:24px;background:var(--db);border-radius:5px;display:flex;align-items:center;justify-content:center;}
-.sb-mk svg{width:12px;height:12px;fill:#fff;}
-.sb-nm{font-family:'DM Mono',monospace;font-size:12px;}
-.sb-sec{padding:8px 8px 3px;}
-.sb-lbl{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--gh);padding:0 8px;margin-bottom:2px;}
-.si{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:5px;font-size:11px;color:var(--i2);cursor:pointer;transition:background .1s;}
-.si:hover{background:var(--pa);}
-.si.on{background:#eef1f7;color:var(--db);font-weight:500;}
-.si .d{width:5px;height:5px;border-radius:50%;background:var(--gl);flex-shrink:0;}
-.si.on .d{background:var(--db);}
-.si-sub{padding-left:22px;font-size:11px;color:var(--gh);}
-.si-sub.on{color:var(--db);}
-.sb-ft{margin-top:auto;padding:8px;border-top:1px solid var(--bd);}
-.sb-u{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:5px;cursor:pointer;}
-.sb-u:hover{background:var(--pa);}
-.av{width:22px;height:22px;border-radius:50%;background:var(--db);display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;font-weight:600;}
+  <head>
+    <meta charset="UTF-8" />
+    <title>PlotNote — 프로젝트</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&family=Noto+Serif+KR:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --db: #2a4d88;
+        --oc: #7c94b8;
+        --gl: #b1bbc8;
+        --co: #d9d9d8;
+        --am: #fbc662;
+        --am-bg: #fff8e6;
+        --wh: #fefefe;
+        --pa: #f7f6f3;
+        --ink: #1a1a1a;
+        --i2: #4a4a4a;
+        --gh: #9a9a9a;
+        --bd: #e8e6e0;
+        --bd2: #d5d2cb;
+        --rail: 44px;
+        --sw: 220px;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Noto Sans KR", sans-serif;
+        background: var(--pa);
+        color: var(--ink);
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        font-size: 13px;
+      }
+      button {
+        font-family: inherit;
+        cursor: pointer;
+      }
 
-/* ── 좌측 프로젝트 패널 */
-.prj-panel{width:260px;min-width:260px;height:100%;background:var(--wh);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow-y:auto;}
-.prj-cover{width:100%;aspect-ratio:16/9;background:linear-gradient(140deg,#8998b1 0%,#4e5d7f 100%);position:relative;flex-shrink:0;display:flex;align-items:flex-end;}
-.prj-cover-txt{padding:14px 16px;background:linear-gradient(transparent,rgba(20,30,50,.6));width:100%;}
-.prj-cover-ttl{font-family:'Noto Serif KR',serif;font-size:16px;font-weight:600;color:#fff;line-height:1.3;}
-.prj-cover-sub{font-size:10px;color:rgba(255,255,255,.65);font-family:'DM Mono',monospace;margin-top:2px;}
-.prj-meta{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bd);border-bottom:1px solid var(--bd);}
-.prj-meta-cell{background:var(--wh);padding:10px 14px;}
-.prj-meta-val{font-family:'DM Mono',monospace;font-size:16px;font-weight:500;color:var(--ink);letter-spacing:-.02em;}
-.prj-meta-key{font-size:9px;color:var(--gh);text-transform:uppercase;letter-spacing:.06em;margin-top:1px;}
-.prj-sec{padding:14px 16px 6px;}
-.prj-sec-ttl{font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--gh);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--bd);}
-.prj-memo{font-size:12px;color:var(--i2);line-height:1.6;background:var(--pa);border-radius:6px;padding:10px 12px;min-height:60px;cursor:text;outline:none;}
-.prj-memo:focus{box-shadow:0 0 0 2px rgba(42,77,136,.15);}
-/* 설정 행 */
-.cfg-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--bd);}
-.cfg-row:last-child{border:none;}
-.cfg-lbl{font-size:11px;color:var(--i2);}
-.cfg-val{font-size:10px;font-family:'DM Mono',monospace;background:#eef1f7;color:var(--db);padding:2px 7px;border-radius:4px;cursor:pointer;border:1px solid rgba(42,77,136,.12);}
-.cfg-val:hover{background:#e0e8f5;}
+      /* ═══ SIDEBAR ═══ */
+      .sb {
+        width: var(--sw);
+        min-width: var(--sw);
+        height: 100%;
+        background: var(--wh);
+        border-right: 1px solid var(--bd);
+        display: flex;
+        flex-direction: column;
+        transition:
+          width 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+          min-width 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: visible;
+        position: relative;
+        z-index: 50;
+        flex-shrink: 0;
+      }
+      .sb.rail {
+        width: var(--rail);
+        min-width: var(--rail);
+      }
+      .sb.rail .sb-x,
+      .sb.rail .sb-lbl,
+      .sb.rail .si-t,
+      .sb.rail .si-b,
+      .sb.rail .sb-ft-n {
+        display: none;
+      }
+      .sb.rail .si {
+        justify-content: center;
+        padding: 7px;
+      }
+      .sb.rail .si .d {
+        width: 8px;
+        height: 8px;
+      }
+      .sb.rail .sb-dv {
+        margin: 2px 8px;
+      }
+      .sb.rail .sb-sec {
+        padding: 6px 4px 3px;
+      }
+      .sb.rail .sb-logo {
+        justify-content: center;
+        padding: 10px 8px;
+      }
+      .sb.rail .sb-u {
+        justify-content: center;
+        padding: 5px;
+      }
+      .sb-logo {
+        padding: 12px 14px 10px;
+        border-bottom: 1px solid var(--bd);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      .sb-mk {
+        width: 24px;
+        height: 24px;
+        background: var(--db);
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+      .sb-mk svg {
+        width: 12px;
+        height: 12px;
+        fill: #fff;
+      }
+      .sb-x {
+        font-family: "DM Mono", monospace;
+        font-size: 12px;
+        color: var(--ink);
+      }
+      .sb-sec {
+        padding: 8px 8px 3px;
+      }
+      .sb-lbl {
+        font-size: 9px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--gh);
+        padding: 0 8px;
+        margin-bottom: 2px;
+      }
+      .sb-dv {
+        height: 1px;
+        background: var(--bd);
+        margin: 4px 12px;
+      }
+      .si {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 8px;
+        border-radius: 5px;
+        font-size: 11px;
+        color: var(--i2);
+        cursor: pointer;
+        transition: background 0.1s;
+        position: relative;
+      }
+      .si:hover {
+        background: var(--pa);
+      }
+      .si.on {
+        background: #eef1f7;
+        color: var(--db);
+        font-weight: 500;
+      }
+      .si .d {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--gl);
+        flex-shrink: 0;
+      }
+      .si.on .d {
+        background: var(--db);
+      }
+      .si-t {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .si-b {
+        margin-left: auto;
+        font-size: 9px;
+        background: var(--db);
+        color: #fff;
+        padding: 1px 5px;
+        border-radius: 9px;
+        font-family: "DM Mono", monospace;
+        flex-shrink: 0;
+      }
+      .sb-ft {
+        margin-top: auto;
+        padding: 8px;
+        border-top: 1px solid var(--bd);
+      }
+      .sb-u {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 8px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .sb-u:hover {
+        background: var(--pa);
+      }
+      .av {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--db);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        color: #fff;
+        font-weight: 600;
+        flex-shrink: 0;
+      }
+      .si-pop {
+        display: none;
+        position: absolute;
+        left: 100%;
+        top: -4px;
+        margin-left: 6px;
+        background: var(--wh);
+        border: 1px solid var(--bd);
+        border-radius: 8px;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.13);
+        padding: 6px 0;
+        min-width: 180px;
+        max-height: 260px;
+        overflow-y: auto;
+        z-index: 100;
+      }
+      .sb.rail .si:hover .si-pop {
+        display: block;
+      }
+      .si-pop-hd {
+        padding: 5px 12px 4px;
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--gh);
+        border-bottom: 1px solid var(--bd);
+        margin-bottom: 2px;
+      }
+      .si-pop-i {
+        padding: 5px 12px;
+        font-size: 11px;
+        color: var(--i2);
+        cursor: pointer;
+      }
+      .si-pop-i:hover {
+        background: var(--pa);
+        color: var(--db);
+      }
+      .sb-tgl {
+        position: absolute;
+        right: -12px;
+        top: 14px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--wh);
+        border: 1px solid var(--bd);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 60;
+        font-size: 10px;
+        color: var(--gh);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      }
+      .sb-tgl:hover {
+        background: var(--pa);
+        color: var(--db);
+      }
 
-/* ── 우측 에피소드 목록 */
-.ep-area{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
-.ep-hd{flex-shrink:0;padding:16px 20px 0;background:var(--wh);border-bottom:1px solid var(--bd);}
-.ep-hd-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.ep-ttl{font-family:'Noto Serif KR',serif;font-size:17px;font-weight:600;letter-spacing:-.02em;}
-.ep-acts{display:flex;gap:6px;}
-.abtn{padding:5px 12px;border-radius:6px;border:1px solid var(--bd2);background:var(--wh);font-size:11px;color:var(--i2);display:flex;align-items:center;gap:4px;}
-.abtn:hover{border-color:var(--db);color:var(--db);}
-.abtn.pri{background:var(--db);color:#fff;border-color:var(--db);}
-.abtn.pri:hover{background:#1e3d73;}
-/* 뷰 토글 */
-.view-tgl{display:flex;border:1px solid var(--bd2);border-radius:6px;overflow:hidden;}
-.vbtn{padding:4px 10px;border:none;background:var(--wh);font-size:11px;color:var(--gh);cursor:pointer;}
-.vbtn.on{background:#eef1f7;color:var(--db);}
-/* 탭 */
-.tabs{display:flex;gap:0;border-bottom:2px solid var(--bd);margin:0 -20px;padding:0 20px;}
-.tab{padding:6px 13px;font-size:12px;color:var(--gh);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;}
-.tab:hover{color:var(--i2);}
-.tab.on{color:var(--db);border-bottom-color:var(--db);font-weight:500;}
-/* 에피소드 리스트 */
-.ep-bd{flex:1;overflow-y:auto;padding:16px 20px;}
-.ep-list{display:flex;flex-direction:column;gap:1px;background:var(--bd);border-radius:8px;overflow:hidden;}
-.ep-item{background:var(--wh);display:flex;align-items:stretch;gap:14px;padding:12px 14px;cursor:pointer;position:relative;}
-.ep-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;}
-.ep-item:hover{background:#f8f9fc;}
-.ep-item:hover::before{background:var(--gl);}
-.ep-item.on{background:#eef1f7;}
-.ep-item.on::before{background:var(--db);}
-.ep-th{width:46px;min-width:46px;aspect-ratio:238/324;border-radius:3px;background:linear-gradient(150deg,var(--gl),var(--oc));display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.ep-th-n{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:rgba(255,255,255,.85);}
-.ep-body{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:3px;}
-.ep-num{font-size:10px;font-family:'DM Mono',monospace;color:var(--gh);}
-.ep-ttl2{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.ep-memo{font-size:11px;color:var(--i2);line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;}
-.ep-memo.empty{color:var(--gh);font-style:italic;}
-.ep-ft{display:flex;align-items:center;gap:6px;margin-top:2px;}
-.ep-pg{font-size:10px;font-family:'DM Mono',monospace;color:var(--gh);}
-.ep-tag{font-size:9px;padding:1px 6px;border-radius:999px;}
-.t-wip{background:var(--am-bg);color:#8a6200;border:1px solid rgba(251,198,98,.4);}
-.t-done{background:#e8f5ee;color:#2a7a50;border:1px solid #b6dfc8;}
-.t-todo{background:var(--pa);color:var(--gh);border:1px solid var(--bd2);}
-.ep-r{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;flex-shrink:0;opacity:0;}
-.ep-item:hover .ep-r{opacity:1;}
-.ep-drag{display:flex;flex-direction:column;gap:2px;cursor:grab;padding:4px 2px;}
-.ep-drag span{display:block;width:10px;height:1.5px;background:var(--gl);border-radius:1px;}
-.ep-more{width:20px;height:20px;border-radius:4px;border:none;background:none;color:var(--gh);font-size:14px;display:flex;align-items:center;justify-content:center;}
-.ep-more:hover{background:var(--pa);}
-/* 추가 행 */
-.ep-add{background:var(--wh);display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;cursor:pointer;color:var(--gh);font-size:11px;border:2px dashed var(--bd2);border-top:none;border-radius:0 0 8px 8px;}
-.ep-add:hover{background:#f5f8ff;color:var(--db);border-color:var(--oc);}
-/* 확장 패널 */
-.ep-detail{background:#f5f8ff;padding:12px 14px 12px calc(46px + 28px);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);}
-.ep-d-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:var(--gh);margin-bottom:6px;}
-.ep-d-memo{width:100%;background:var(--wh);border:1px solid var(--bd2);border-radius:6px;padding:8px 11px;font-size:11px;font-family:'Noto Sans KR',sans-serif;color:var(--ink);resize:none;min-height:60px;outline:none;line-height:1.6;}
-.ep-d-memo:focus{border-color:var(--oc);}
-.ep-d-chips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
-.ep-d-chip{padding:3px 10px;border-radius:999px;font-size:10px;border:1px solid var(--bd2);background:var(--wh);cursor:pointer;display:flex;align-items:center;gap:4px;}
-.ep-d-chip:hover{border-color:var(--oc);background:#eef1f7;}
-.ep-d-chip span{color:var(--gh);font-size:9px;font-family:'DM Mono',monospace;}
-.ep-d-chip.ov{background:var(--am-bg);border-color:rgba(251,198,98,.5);color:#8a6200;}
-.ep-d-chip.ov span{color:#8a6200;}
-/* 타임라인 뷰 */
-.tl-list{display:flex;flex-direction:column;gap:0;}
-.tl-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd);}
-.tl-n{font-family:'DM Mono',monospace;font-size:11px;color:var(--gh);min-width:40px;}
-.tl-bar-wrap{flex:1;background:var(--pa);border-radius:4px;height:22px;position:relative;overflow:hidden;}
-.tl-bar{height:100%;border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:10px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tl-status{font-size:10px;font-family:'DM Mono',monospace;color:var(--gh);min-width:60px;text-align:right;}
-</style>
-</head>
-<body>
+      /* ═══ MAIN ═══ */
+      .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        min-width: 0;
+      }
+      .ws-hd {
+        flex-shrink: 0;
+        background: var(--wh);
+        border-bottom: 1px solid var(--bd);
+      }
+      .ws-hd-top {
+        display: flex;
+        align-items: center;
+        padding: 10px 24px 0;
+        gap: 12px;
+      }
+      .ws-bc {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        color: var(--gh);
+      }
+      .ws-bc a {
+        color: var(--gh);
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .ws-bc a:hover {
+        color: var(--db);
+      }
+      .ws-bc .cur {
+        color: var(--ink);
+        font-weight: 500;
+      }
+      .ws-bc .sep {
+        color: var(--co);
+      }
+      .ws-hd-r {
+        margin-left: auto;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .srch {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 12px;
+        background: var(--pa);
+        border: 1px solid var(--bd);
+        border-radius: 7px;
+        cursor: pointer;
+        width: 200px;
+      }
+      .srch:hover {
+        border-color: var(--oc);
+      }
+      .srch svg {
+        flex-shrink: 0;
+        color: var(--gh);
+      }
+      .srch span {
+        font-size: 11px;
+        color: var(--gh);
+      }
+      .hbtn {
+        width: 28px;
+        height: 28px;
+        border-radius: 5px;
+        border: none;
+        background: none;
+        color: var(--gh);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+      }
+      .hbtn:hover {
+        background: var(--pa);
+        color: var(--i2);
+      }
 
-<div class="hd">
-  <button class="hd-menu"><span></span><span></span><span></span></button>
-  <div class="bc">
-    <a>책장</a><span class="sep">›</span>
-    <span class="cur">고양이와 강아지</span>
-  </div>
-  <div class="hd-r">
-    <button class="hbtn" title="설정">⚙</button>
-    <button class="hbtn" title="공유">⋯</button>
-  </div>
-</div>
+      /* Title row */
+      .ws-tr {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 24px 0;
+      }
+      .ws-ttl {
+        font-family: "Noto Serif KR", serif;
+        font-size: 19px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+      .ws-fav {
+        border: none;
+        background: none;
+        font-size: 16px;
+        color: var(--co);
+        cursor: pointer;
+      }
+      .ws-fav:hover {
+        color: var(--am);
+      }
+      .ws-fav.on {
+        color: var(--am);
+      }
+      .ws-acts {
+        margin-left: auto;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .abtn {
+        padding: 5px 12px;
+        border-radius: 6px;
+        border: 1px solid var(--bd2);
+        background: var(--wh);
+        font-size: 11px;
+        color: var(--i2);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .abtn:hover {
+        border-color: var(--db);
+        color: var(--db);
+      }
+      .abtn.pri {
+        background: var(--db);
+        color: #fff;
+        border-color: var(--db);
+      }
+      .abtn.pri:hover {
+        background: #1e3d73;
+      }
+      .cfg-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 5px;
+        border: 1px solid var(--bd2);
+        background: var(--wh);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: var(--gh);
+        cursor: pointer;
+      }
+      .cfg-btn:hover {
+        border-color: var(--oc);
+        color: var(--db);
+      }
 
-<div class="main">
-  <!-- 좌측 글로벌 사이드바 -->
-  <div class="sb">
-    <div class="sb-logo">
-      <div class="sb-mk"><svg viewBox="0 0 14 14"><rect x="1" y="1" width="4" height="12" rx="1"/><rect x="7" y="1" width="4" height="7" rx="1" opacity=".6"/><rect x="7" y="10" width="4" height="3" rx="1" opacity=".4"/></svg></div>
-      <span class="sb-nm">plotnote</span>
-    </div>
-    <div class="sb-sec">
-      <div class="sb-lbl">즐겨찾기</div>
-      <div class="si on"><div class="d"></div>고양이와 강아지</div>
-      <div class="si"><div class="d"></div>여름 단편</div>
-    </div>
-    <div class="sb-sec">
-      <div class="sb-lbl">내 책장</div>
-      <div class="si"><div class="d"></div>베베의 작업실</div>
-    </div>
-    <div class="sb-ft">
-      <div class="sb-u"><div class="av">베</div><span style="font-size:11px;color:var(--i2);">베베</span></div>
-    </div>
-  </div>
+      /* Tabs */
+      .tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 2px solid var(--bd);
+        margin: 12px -24px 0;
+        padding: 0 24px;
+      }
+      .tab {
+        padding: 7px 14px;
+        font-size: 12px;
+        color: var(--gh);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+      }
+      .tab:hover {
+        color: var(--i2);
+      }
+      .tab.on {
+        color: var(--db);
+        border-bottom-color: var(--db);
+        font-weight: 500;
+      }
 
-  <div class="ws">
-    <!-- 프로젝트 패널 -->
-    <div class="prj-panel">
-      <div class="prj-cover">
-        <div class="prj-cover-txt">
-          <div class="prj-cover-ttl">고양이와 강아지</div>
-          <div class="prj-cover-sub">RTL · 24p 기본</div>
+      /* Body */
+      .ws-bd {
+        flex: 1;
+        overflow-y: auto;
+        padding: 18px 24px 30px;
+      }
+      .ws-bd::-webkit-scrollbar {
+        width: 6px;
+      }
+      .ws-bd::-webkit-scrollbar-thumb {
+        background: var(--co);
+        border-radius: 3px;
+      }
+
+      /* Project info area */
+      .pj-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+      .pj-card {
+        background: var(--wh);
+        border: 1px solid var(--bd);
+        border-radius: 8px;
+        padding: 14px 16px;
+      }
+      .pj-card-t {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--gh);
+        margin-bottom: 8px;
+        font-family: "DM Mono", monospace;
+      }
+      .pj-ta {
+        width: 100%;
+        background: var(--pa);
+        border: 1px solid var(--bd2);
+        border-radius: 6px;
+        padding: 9px 12px;
+        font-size: 12px;
+        font-family: inherit;
+        color: var(--ink);
+        resize: none;
+        outline: none;
+        line-height: 1.7;
+      }
+      .pj-ta:focus {
+        border-color: var(--oc);
+        box-shadow: 0 0 0 3px rgba(42, 77, 136, 0.08);
+      }
+      .pj-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .pj-meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .pj-meta-lbl {
+        font-size: 9px;
+        font-family: "DM Mono", monospace;
+        color: var(--gh);
+        text-transform: uppercase;
+      }
+      .pj-meta-val {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--ink);
+      }
+
+      /* Section header */
+      .sec-hd {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        margin-top: 2px;
+      }
+      .sec-hd h2 {
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--gh);
+      }
+      .sec-c {
+        font-size: 10px;
+        color: var(--oc);
+        font-family: "DM Mono", monospace;
+      }
+      .sort-tgl {
+        padding: 3px 8px;
+        border-radius: 5px;
+        border: 1px solid var(--bd2);
+        background: var(--wh);
+        font-size: 10px;
+        color: var(--gh);
+        cursor: pointer;
+        font-family: "DM Mono", monospace;
+      }
+      .sort-tgl:hover {
+        border-color: var(--oc);
+        color: var(--db);
+      }
+
+      /* Episode card grid (pc 전체 단위) */
+      .pgrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+      .pc {
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--bd);
+        background: var(--wh);
+        cursor: pointer;
+        transition:
+          box-shadow 0.15s,
+          border-color 0.15s;
+      }
+      .pc:hover {
+        box-shadow: 0 4px 16px rgba(42, 77, 136, 0.1);
+        border-color: var(--oc);
+      }
+      .pc-th {
+        width: 100%;
+        aspect-ratio: 16/10;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .pc-th-n {
+        font-family: "DM Mono", monospace;
+        font-size: 20px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .pc-info {
+        padding: 10px 12px 12px;
+      }
+      .pc-tr {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .pc-ep-n {
+        font-size: 10px;
+        font-family: "DM Mono", monospace;
+        color: var(--oc);
+        flex-shrink: 0;
+      }
+      .pc-ttl {
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
+        min-width: 0;
+      }
+      .pc-fav {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: none;
+        background: none;
+        font-size: 13px;
+        cursor: pointer;
+        color: var(--co);
+        flex-shrink: 0;
+      }
+      .pc-fav:hover {
+        color: var(--am);
+      }
+      .pc-fav.on {
+        color: var(--am);
+      }
+      .pc-mt {
+        font-size: 10px;
+        color: var(--gh);
+        font-family: "DM Mono", monospace;
+        margin-top: 3px;
+      }
+      .pc-memo {
+        font-size: 10px;
+        color: var(--i2);
+        margin-top: 4px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+      }
+      .pc-memo.empty {
+        color: var(--gh);
+        font-style: italic;
+      }
+      .pc-ft {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-top: 5px;
+      }
+      .etag {
+        font-size: 8px;
+        padding: 1px 5px;
+        border-radius: 999px;
+      }
+      .t-wip {
+        background: var(--am-bg);
+        color: #8a6200;
+        border: 1px solid rgba(251, 198, 98, 0.4);
+      }
+      .t-done {
+        background: #e8f5ee;
+        color: #2a7a50;
+        border: 1px solid #b6dfc8;
+      }
+      .t-todo {
+        background: var(--pa);
+        color: var(--gh);
+        border: 1px solid var(--bd2);
+      }
+      .pc-add {
+        border: 2px dashed var(--bd2);
+        background: transparent;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        color: var(--gh);
+        font-size: 11px;
+      }
+      .pc-add:hover {
+        border-color: var(--oc);
+        color: var(--db);
+        background: #f5f8ff;
+      }
+      .pc-add-ic {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1.5px dashed var(--bd2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+      .pc-add:hover .pc-add-ic {
+        border-color: var(--oc);
+      }
+
+      /* ═══ SETTINGS MODAL ═══ */
+      .cfg-ov {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 200;
+        align-items: center;
+        justify-content: center;
+      }
+      .cfg-ov.open {
+        display: flex;
+      }
+      .cfg-box {
+        background: var(--wh);
+        border-radius: 12px;
+        padding: 24px;
+        width: 420px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      }
+      .cfg-title {
+        font-family: "Noto Serif KR", serif;
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 14px;
+      }
+      .cfg-desc {
+        font-size: 11px;
+        color: var(--gh);
+        margin-bottom: 14px;
+        line-height: 1.6;
+      }
+      .cfg-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .cfg-card {
+        background: var(--pa);
+        border: 1px solid var(--bd);
+        border-radius: 8px;
+        padding: 11px 14px;
+        cursor: pointer;
+        transition: border-color 0.15s;
+      }
+      .cfg-card:hover {
+        border-color: var(--oc);
+      }
+      .cfg-card-l {
+        font-size: 10px;
+        color: var(--gh);
+        margin-bottom: 4px;
+      }
+      .cfg-card-v {
+        font-size: 14px;
+        font-family: "DM Mono", monospace;
+        font-weight: 500;
+        color: var(--ink);
+      }
+      .cfg-acts {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        margin-top: 16px;
+        padding-top: 12px;
+        border-top: 1px solid var(--bd);
+      }
+
+      /* ═══ SEARCH / MEMO (same pattern) ═══ */
+      .s-ov {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.25);
+        z-index: 200;
+        align-items: flex-start;
+        justify-content: center;
+        padding-top: 80px;
+      }
+      .s-ov.open {
+        display: flex;
+      }
+      .s-box {
+        background: var(--wh);
+        border-radius: 12px;
+        width: 520px;
+        max-height: 480px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .s-in {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--bd);
+      }
+      .s-in svg {
+        color: var(--gh);
+      }
+      .s-in input {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        font-family: inherit;
+        color: var(--ink);
+        background: transparent;
+      }
+      .s-in input::placeholder {
+        color: var(--co);
+      }
+      .s-tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 1px solid var(--bd);
+        padding: 0 18px;
+      }
+      .s-tab {
+        padding: 7px 12px;
+        font-size: 11px;
+        color: var(--gh);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+      }
+      .s-tab.on {
+        color: var(--db);
+        border-bottom-color: var(--db);
+        font-weight: 500;
+      }
+      .s-bd {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px 18px;
+      }
+      .s-hint {
+        text-align: center;
+        color: var(--gh);
+        font-size: 12px;
+        padding: 30px 0;
+      }
+      .s-esc {
+        font-size: 10px;
+        color: var(--gh);
+        padding: 8px 18px;
+        border-top: 1px solid var(--bd);
+        font-family: "DM Mono", monospace;
+      }
+
+      .mm {
+        display: none;
+        position: fixed;
+        z-index: 150;
+        width: 360px;
+        height: 400px;
+        background: var(--wh);
+        border: 1px solid var(--bd);
+        border-radius: 10px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        flex-direction: column;
+        overflow: hidden;
+        resize: both;
+        min-width: 280px;
+        min-height: 200px;
+      }
+      .mm.open {
+        display: flex;
+      }
+      .mm-hd {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--bd);
+        cursor: grab;
+        flex-shrink: 0;
+        background: var(--pa);
+        user-select: none;
+      }
+      .mm-hd:active {
+        cursor: grabbing;
+      }
+      .mm-hd-t {
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--i2);
+        flex: 1;
+      }
+      .mm-b {
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        border: none;
+        background: none;
+        color: var(--gh);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .mm-b:hover {
+        background: var(--bd);
+      }
+      .mm-b.pin {
+        color: var(--am);
+      }
+      .mm-tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 1px solid var(--bd);
+        padding: 0 12px;
+        flex-shrink: 0;
+      }
+      .mm-tab {
+        padding: 6px 10px;
+        font-size: 10px;
+        color: var(--gh);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        font-family: "DM Mono", monospace;
+      }
+      .mm-tab.on {
+        color: var(--db);
+        border-bottom-color: var(--db);
+      }
+      .mm-bd {
+        flex: 1;
+        overflow-y: auto;
+        padding: 12px;
+      }
+      .mm-item {
+        background: var(--pa);
+        border-radius: 6px;
+        padding: 8px 10px;
+        margin-bottom: 6px;
+      }
+      .mm-lbl {
+        font-size: 9px;
+        font-family: "DM Mono", monospace;
+        color: var(--gh);
+        margin-bottom: 3px;
+        text-transform: uppercase;
+      }
+      .mm-txt {
+        font-size: 11px;
+        color: var(--i2);
+        line-height: 1.6;
+      }
+      .mm-txt.empty {
+        color: var(--gh);
+        font-style: italic;
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .pc {
+        animation: fadeUp 0.25s ease both;
+      }
+      .pc:nth-child(1) {
+        animation-delay: 0.02s;
+      }
+      .pc:nth-child(2) {
+        animation-delay: 0.05s;
+      }
+      .pc:nth-child(3) {
+        animation-delay: 0.08s;
+      }
+      .pc:nth-child(4) {
+        animation-delay: 0.11s;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ═══ SIDEBAR ═══ -->
+    <aside class="sb" id="sb">
+      <div class="sb-tgl" onclick="tglSb()" id="sb-tgl">◂</div>
+      <div class="sb-logo">
+        <div class="sb-mk" onclick="tglSb()">
+          <svg viewBox="0 0 14 14">
+            <rect x="1" y="1" width="4" height="12" rx="1" />
+            <rect x="7" y="1" width="4" height="7" rx="1" opacity=".6" />
+            <rect x="7" y="10" width="4" height="3" rx="1" opacity=".4" />
+          </svg>
+        </div>
+        <span class="sb-x">plotnote</span>
+      </div>
+      <div class="sb-sec">
+        <div class="sb-lbl">즐겨찾기</div>
+        <div class="si on">
+          <div class="d" style="background: var(--am)"></div>
+          <span class="si-t">고양이와 강아지</span
+          ><span class="si-b">ep.7</span>
+          <div class="si-pop">
+            <div class="si-pop-hd">에피소드 (episodeOrder)</div>
+            <div class="si-pop-i">ep.1 첫 만남</div>
+            <div class="si-pop-i">ep.2 공원의 하루</div>
+            <div class="si-pop-i">ep.3 이웃 친구들</div>
+          </div>
         </div>
       </div>
-      <div class="prj-meta">
-        <div class="prj-meta-cell"><div class="prj-meta-val">7</div><div class="prj-meta-key">에피소드</div></div>
-        <div class="prj-meta-cell"><div class="prj-meta-val">168</div><div class="prj-meta-key">총 페이지</div></div>
-        <div class="prj-meta-cell"><div class="prj-meta-val">312</div><div class="prj-meta-key">총 컷</div></div>
-        <div class="prj-meta-cell"><div class="prj-meta-val">ep.4</div><div class="prj-meta-key">최근 작업</div></div>
+      <div class="sb-dv"></div>
+      <div class="sb-sec">
+        <div class="sb-lbl">내 책장</div>
+        <div class="si">
+          <div class="d"></div>
+          <span class="si-t">베베의 작업실</span>
+          <div class="si-pop">
+            <div class="si-pop-hd">프로젝트 (최신순)</div>
+            <div class="si-pop-i">고양이와 강아지</div>
+            <div class="si-pop-i">여름 단편</div>
+          </div>
+        </div>
       </div>
-      <div class="prj-sec">
-        <div class="prj-sec-ttl">프로젝트 메모</div>
-        <div class="prj-memo" contenteditable="true">고양이와 강아지가 처음 만나는 이야기. 1화는 공원에서의 만남으로 시작.</div>
+      <div class="sb-ft">
+        <div class="sb-u">
+          <div class="av">베</div>
+          <span class="sb-ft-n" style="font-size: 11px; color: var(--i2)"
+            >베베</span
+          >
+        </div>
       </div>
-      <div class="prj-sec">
-        <div class="prj-sec-ttl">기본 설정</div>
-        <div class="cfg-row"><span class="cfg-lbl">기본 페이지수</span><span class="cfg-val" onclick="">24p</span></div>
-        <div class="cfg-row"><span class="cfg-lbl">읽기 방향</span><span class="cfg-val">RTL</span></div>
-        <div class="cfg-row"><span class="cfg-lbl">시작 페이지</span><span class="cfg-val">홀수</span></div>
-        <div class="cfg-row"><span class="cfg-lbl">기본 뷰</span><span class="cfg-val">양면</span></div>
-      </div>
-    </div>
+    </aside>
 
-    <!-- 에피소드 영역 -->
-    <div class="ep-area">
-      <div class="ep-hd">
-        <div class="ep-hd-top">
-          <div class="ep-ttl">에피소드 목록</div>
-          <div class="ep-acts">
-            <div class="view-tgl">
-              <button class="vbtn on" onclick="swView('list',this)">≡ 목록</button>
-              <button class="vbtn" onclick="swView('tl',this)">∷ 타임라인</button>
+    <!-- ═══ MAIN ═══ -->
+    <div class="main">
+      <div class="ws-hd">
+        <div class="ws-hd-top">
+          <div class="ws-bc">
+            <a>책장</a><span class="sep">›</span>
+            <span class="cur">고양이와 강아지</span>
+          </div>
+          <div class="ws-hd-r">
+            <div class="srch" onclick="openS()">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" /></svg
+              ><span>검색...</span>
             </div>
-            <button class="abtn pri" onclick="addEp()">+ 에피소드 추가</button>
+            <button class="hbtn" onclick="tglMM()" title="메모 패널">⋯</button>
+          </div>
+        </div>
+        <div class="ws-tr">
+          <div class="ws-ttl">고양이와 강아지</div>
+          <button
+            class="ws-fav on"
+            onclick="
+              this.classList.toggle('on');
+              this.textContent = this.classList.contains('on') ? '★' : '☆';
+            "
+          >
+            ★
+          </button>
+          <div class="ws-acts">
+            <button class="cfg-btn" onclick="openCfg()" title="프로젝트 설정">
+              ⚙
+            </button>
+            <button class="abtn pri">+ 에피소드 추가</button>
           </div>
         </div>
         <div class="tabs">
-          <div class="tab on" onclick="swTab('all',this)">전체 <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--gh);">7</span></div>
-          <div class="tab" onclick="swTab('wip',this)">진행중</div>
-          <div class="tab" onclick="swTab('done',this)">완료</div>
+          <div class="tab on" onclick="swT('all', this)">전체</div>
+          <div class="tab" onclick="swT('fav', this)">즐겨찾기</div>
+          <div class="tab" onclick="swT('shr', this)">공유됨</div>
         </div>
       </div>
 
-      <div class="ep-bd">
-        <!-- 목록 뷰 -->
-        <div id="v-list">
-          <div class="ep-list" id="ep-list">
-            <!-- ep items injected by JS -->
+      <div class="ws-bd">
+        <!-- 전체 탭 -->
+        <div id="t-all">
+          <!-- 프로젝트 정보 영역 -->
+          <div class="pj-info">
+            <div class="pj-card">
+              <div class="pj-card-t">프로젝트 메모</div>
+              <textarea class="pj-ta" rows="3" placeholder="프로젝트 메모...">
+고양이와 강아지가 처음 만나 함께 모험하는 이야기. 전체 12화 예정.</textarea
+              >
+            </div>
+            <div class="pj-card">
+              <div class="pj-card-t">프로젝트 세부 메모</div>
+              <textarea class="pj-ta" rows="3" placeholder="세부 메모...">
+장르: 힐링 일상. 대상: 전연령. 연재 주기: 주 1회. 참고: 동물 해부학 자료집.</textarea
+              >
+            </div>
           </div>
-          <div class="ep-add" onclick="addEp()"><span style="font-size:16px;line-height:1;">+</span> 에피소드 추가</div>
+          <div class="pj-info" style="grid-template-columns: 1fr">
+            <div class="pj-card">
+              <div class="pj-card-t">프로젝트 정보</div>
+              <div class="pj-meta">
+                <div class="pj-meta-item">
+                  <span class="pj-meta-lbl">에피소드</span
+                  ><span class="pj-meta-val">7화</span>
+                </div>
+                <div class="pj-meta-item">
+                  <span class="pj-meta-lbl">총 페이지</span
+                  ><span class="pj-meta-val">168p</span>
+                </div>
+                <div class="pj-meta-item">
+                  <span class="pj-meta-lbl">마지막 작업</span
+                  ><span class="pj-meta-val">3일 전</span>
+                </div>
+                <div class="pj-meta-item">
+                  <span class="pj-meta-lbl">소유자</span
+                  ><span class="pj-meta-val">베베</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 에피소드 목록 -->
+          <div class="sec-hd">
+            <h2>에피소드 목록</h2>
+            <div style="display: flex; gap: 6px; align-items: center">
+              <span class="sec-c">7개</span>
+              <button class="sort-tgl" id="sort-tgl" onclick="tglSort()">
+                최신 작업순 ▾
+              </button>
+            </div>
+          </div>
+          <div class="pgrid" id="ep-grid"></div>
         </div>
 
-        <!-- 타임라인 뷰 -->
-        <div id="v-tl" style="display:none;">
-          <div class="tl-list">
-            <div class="tl-row"><span class="tl-n">ep.1</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:100%;background:var(--db)">첫 만남</div></div><span class="tl-status" style="color:#2a7a50">완료</span></div>
-            <div class="tl-row"><span class="tl-n">ep.2</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:100%;background:var(--db)">공원의 하루</div></div><span class="tl-status" style="color:#2a7a50">완료</span></div>
-            <div class="tl-row"><span class="tl-n">ep.3</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:80%;background:var(--db)">이웃 친구들</div></div><span class="tl-status" style="color:#8a6200">진행중</span></div>
-            <div class="tl-row"><span class="tl-n">ep.4</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:30%;background:var(--am)">비 오는 날</div></div><span class="tl-status" style="color:#8a6200">진행중</span></div>
-            <div class="tl-row"><span class="tl-n">ep.5</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:5%;background:var(--co)"></div></div><span class="tl-status">예정</span></div>
-            <div class="tl-row"><span class="tl-n">ep.6</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:5%;background:var(--co)"></div></div><span class="tl-status">예정</span></div>
-            <div class="tl-row"><span class="tl-n">ep.7</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:5%;background:var(--co)"></div></div><span class="tl-status">예정</span></div>
+        <!-- 즐겨찾기 탭 -->
+        <div id="t-fav" style="display: none">
+          <div class="sec-hd"><h2>즐겨찾기 에피소드</h2></div>
+          <div class="pgrid">
+            <div class="pc">
+              <div
+                class="pc-th"
+                style="background: linear-gradient(150deg, #8998b1, #4e5d7f)"
+              >
+                <span class="pc-th-n">1</span>
+              </div>
+              <div class="pc-info">
+                <div class="pc-tr">
+                  <span class="pc-ep-n">ep.1</span
+                  ><span class="pc-ttl">첫 만남</span
+                  ><button class="pc-fav on" onclick="event.stopPropagation()">
+                    ★
+                  </button>
+                </div>
+                <div class="pc-mt">24p</div>
+                <div class="pc-ft"><span class="etag t-done">완료</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 공유됨 탭 -->
+        <div id="t-shr" style="display: none">
+          <div style="text-align: center; color: var(--gh); padding: 40px 0">
+            공유된 에피소드가 없습니다
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<script>
-const eps=[
-  {n:'ep.1',t:'첫 만남',memo:'고양이와 강아지가 공원에서 처음 마주치는 장면.',pg:24,tag:'done'},
-  {n:'ep.2',t:'공원의 하루',memo:'함께 공원을 탐험하는 하루.',pg:24,tag:'done'},
-  {n:'ep.3',t:'이웃 친구들',memo:'동네 친구들을 소개받는 에피소드.',pg:24,tag:'wip'},
-  {n:'ep.4',t:'비 오는 날',memo:'',pg:24,tag:'wip'},
-  {n:'ep.5',t:'새 에피소드',memo:'',pg:24,tag:'todo'},
-  {n:'ep.6',t:'새 에피소드',memo:'',pg:24,tag:'todo'},
-  {n:'ep.7',t:'새 에피소드',memo:'',pg:24,tag:'todo'},
-];
-const tagMap={done:'완료',wip:'진행중',todo:'예정'};
-const tagCls={done:'t-done',wip:'t-wip',todo:'t-todo'};
-let openEp=-1;
-
-function renderEps(){
-  const list=document.getElementById('ep-list');
-  list.innerHTML='';
-  eps.forEach((e,i)=>{
-    // item row
-    const div=document.createElement('div');
-    div.className='ep-item'+(openEp===i?' on':'');
-    div.innerHTML=`
-      <div class="ep-th"><span class="ep-th-n">${i+1}</span></div>
-      <div class="ep-body">
-        <div class="ep-num">${e.n}</div>
-        <div class="ep-ttl2">${e.t}</div>
-        <div class="ep-memo${e.memo?'':' empty'}">${e.memo||'메모 없음'}</div>
-        <div class="ep-ft">
-          <span class="ep-pg">${e.pg}p</span>
-          <span class="ep-tag ${tagCls[e.tag]}">${tagMap[e.tag]}</span>
+    <!-- ═══ SETTINGS MODAL ═══ -->
+    <div class="cfg-ov" id="cfg-ov" onclick="closeCfg(event)">
+      <div class="cfg-box" onclick="event.stopPropagation()">
+        <div class="cfg-title">프로젝트 설정</div>
+        <div class="cfg-desc">
+          프로젝트 전체에 적용되는 기본 설정입니다. 개별 에피소드에서
+          오버라이드할 수 있습니다.
+        </div>
+        <div class="cfg-grid">
+          <div class="cfg-card">
+            <div class="cfg-card-l">기본 페이지수</div>
+            <div class="cfg-card-v">24p</div>
+          </div>
+          <div class="cfg-card">
+            <div class="cfg-card-l">읽기 방향</div>
+            <div class="cfg-card-v">RTL (→←)</div>
+          </div>
+          <div class="cfg-card">
+            <div class="cfg-card-l">시작 페이지</div>
+            <div class="cfg-card-v">홀수</div>
+          </div>
+          <div class="cfg-card">
+            <div class="cfg-card-l">기본 뷰</div>
+            <div class="cfg-card-v">양면</div>
+          </div>
+          <div class="cfg-card">
+            <div class="cfg-card-l">판형</div>
+            <div class="cfg-card-v">B4</div>
+          </div>
+          <div class="cfg-card">
+            <div class="cfg-card-l">제목</div>
+            <div class="cfg-card-v" style="font-size: 11px">
+              고양이와 강아지
+            </div>
+          </div>
+        </div>
+        <div class="cfg-acts">
+          <button class="abtn" onclick="closeCfg()">닫기</button>
         </div>
       </div>
-      <div class="ep-r">
-        <button class="ep-more">⋯</button>
-        <div class="ep-drag"><span></span><span></span><span></span></div>
-      </div>`;
-    div.addEventListener('click',()=>toggleEp(i));
-    list.appendChild(div);
+    </div>
 
-    // detail panel
-    if(openEp===i){
-      const det=document.createElement('div');
-      det.className='ep-detail';
-      det.innerHTML=`
-        <div class="ep-d-lbl">에피소드 메모</div>
-        <textarea class="ep-d-memo" rows="3" placeholder="에피소드 메모...">${e.memo}</textarea>
-        <div class="ep-d-chips">
-          <div class="ep-d-chip"><span>페이지수</span> ${e.pg}p</div>
-          <div class="ep-d-chip ${e.tag==='wip'?'ov':''}"><span>상태</span> ${tagMap[e.tag]}</div>
-          <div class="ep-d-chip"><span>읽기방향</span> RTL</div>
-          <div class="ep-d-chip"><span>시작</span> 홀수</div>
+    <!-- ═══ SEARCH MODAL ═══ -->
+    <div class="s-ov" id="s-ov" onclick="closeS(event)">
+      <div class="s-box" onclick="event.stopPropagation()">
+        <div class="s-in">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" /></svg
+          ><input
+            type="text"
+            placeholder="검색어 입력 후 Enter..."
+            id="s-input"
+          />
         </div>
-        <div style="display:flex;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bd);">
-          <button class="abtn" style="font-size:11px;">페이지 관리 →</button>
-        </div>`;
-      list.appendChild(det);
-    }
-  });
-}
+        <div class="s-tabs">
+          <div class="s-tab on">프로젝트</div>
+          <div class="s-tab">에피소드</div>
+          <div class="s-tab">페이지</div>
+          <div class="s-tab">컷</div>
+        </div>
+        <div class="s-bd">
+          <div class="s-hint">Enter를 눌러 검색을 시작하세요</div>
+        </div>
+        <div class="s-esc">esc 닫기</div>
+      </div>
+    </div>
 
-function toggleEp(i){openEp=openEp===i?-1:i;renderEps();}
+    <!-- ═══ FLOATING MEMO MODAL ═══ -->
+    <div class="mm" id="mm" style="top: 80px; right: 60px">
+      <div class="mm-hd" id="mm-hd">
+        <span class="mm-hd-t">메모</span
+        ><button class="mm-b" id="mm-pin" onclick="tglPin()">📌</button
+        ><button class="mm-b" onclick="closeMM()">✕</button>
+      </div>
+      <div class="mm-tabs"><div class="mm-tab on">프로젝트</div></div>
+      <div class="mm-bd">
+        <div class="mm-item">
+          <div class="mm-lbl">프로젝트 메모</div>
+          <div class="mm-txt">
+            고양이와 강아지가 처음 만나 함께 모험하는 이야기.
+          </div>
+        </div>
+        <div class="mm-item">
+          <div class="mm-lbl">세부 메모</div>
+          <div class="mm-txt">장르: 힐링 일상. 대상: 전연령.</div>
+        </div>
+      </div>
+    </div>
 
-function addEp(){
-  eps.push({n:`ep.${eps.length+1}`,t:'새 에피소드',memo:'',pg:24,tag:'todo'});
-  renderEps();
-}
+    <script>
+      const eps = [
+        {
+          n: "ep.1",
+          t: "첫 만남",
+          memo: "공원에서 첫 만남",
+          pg: 24,
+          tag: "done",
+          fav: true,
+        },
+        {
+          n: "ep.2",
+          t: "공원의 하루",
+          memo: "함께 공원 탐험",
+          pg: 24,
+          tag: "done",
+          fav: false,
+        },
+        {
+          n: "ep.3",
+          t: "이웃 친구들",
+          memo: "동네 친구들 소개",
+          pg: 24,
+          tag: "wip",
+          fav: false,
+        },
+        {
+          n: "ep.4",
+          t: "비 오는 날",
+          memo: "",
+          pg: 24,
+          tag: "wip",
+          fav: false,
+        },
+        {
+          n: "ep.5",
+          t: "새 에피소드",
+          memo: "",
+          pg: 24,
+          tag: "todo",
+          fav: false,
+        },
+        {
+          n: "ep.6",
+          t: "새 에피소드",
+          memo: "",
+          pg: 24,
+          tag: "todo",
+          fav: false,
+        },
+        {
+          n: "ep.7",
+          t: "새 에피소드",
+          memo: "",
+          pg: 24,
+          tag: "todo",
+          fav: false,
+        },
+      ];
+      const tagCls = { done: "t-done", wip: "t-wip", todo: "t-todo" };
+      const tagTxt = { done: "완료", wip: "진행중", todo: "예정" };
+      const colors = [
+        "linear-gradient(150deg,#8998b1,#4e5d7f)",
+        "linear-gradient(150deg,#7C94B8,#5a7aaa)",
+        "linear-gradient(150deg,#b89fe8,#8998b1)",
+        "linear-gradient(150deg,#B1BBC8,#7C94B8)",
+      ];
 
-function swView(id,el){
-  document.getElementById('v-list').style.display=id==='list'?'':'none';
-  document.getElementById('v-tl').style.display=id==='tl'?'':'none';
-  document.querySelectorAll('.vbtn').forEach(b=>b.classList.remove('on'));
-  el.classList.add('on');
-}
+      function renderGrid() {
+        const g = document.getElementById("ep-grid");
+        g.innerHTML = "";
+        eps.forEach((e, i) => {
+          const card = document.createElement("div");
+          card.className = "pc";
+          card.innerHTML = `
+      <div class="pc-th" style="background:${colors[i % colors.length]}"><span class="pc-th-n">${i + 1}</span></div>
+      <div class="pc-info">
+        <div class="pc-tr"><span class="pc-ep-n">${e.n}</span><span class="pc-ttl">${e.t}</span><button class="pc-fav${e.fav ? " on" : ""}" onclick="event.stopPropagation();eps[${i}].fav=!eps[${i}].fav;renderGrid()">${e.fav ? "★" : "☆"}</button></div>
+        <div class="pc-mt">${e.pg}p</div>
+        <div class="pc-memo${e.memo ? "" : " empty"}">${e.memo || "메모 없음"}</div>
+        <div class="pc-ft"><span class="etag ${tagCls[e.tag]}">${tagTxt[e.tag]}</span></div>
+      </div>`;
+          g.appendChild(card);
+        });
+        // add card
+        const add = document.createElement("div");
+        add.className = "pc pc-add";
+        add.innerHTML =
+          '<div class="pc-add-ic">+</div><span>에피소드 추가</span>';
+        add.onclick = () => {
+          eps.push({
+            n: `ep.${eps.length + 1}`,
+            t: "새 에피소드",
+            memo: "",
+            pg: 24,
+            tag: "todo",
+            fav: false,
+          });
+          renderGrid();
+        };
+        g.appendChild(add);
+      }
 
-function swTab(id,el){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  el.classList.add('on');
-  // TODO: filter by status
-}
+      function swT(id, el) {
+        ["all", "fav", "shr"].forEach((t) => {
+          const e = document.getElementById("t-" + t);
+          if (e) e.style.display = t === id ? "" : "none";
+        });
+        document
+          .querySelectorAll(".tab")
+          .forEach((t) => t.classList.remove("on"));
+        el.classList.add("on");
+      }
+      let sortAsc = false;
+      function tglSort() {
+        sortAsc = !sortAsc;
+        document.getElementById("sort-tgl").textContent = sortAsc
+          ? "오래된순 ▴"
+          : "최신 작업순 ▾";
+        if (sortAsc) eps.reverse();
+        else eps.sort((a, b) => 0);
+        renderGrid();
+      }
 
-renderEps();
-</script>
-</body>
+      function openCfg() {
+        document.getElementById("cfg-ov").classList.add("open");
+      }
+      function closeCfg(e) {
+        if (
+          e &&
+          e.target &&
+          !e.target.classList.contains("cfg-ov") &&
+          !e.target.closest(".abtn")
+        )
+          return;
+        document.getElementById("cfg-ov").classList.remove("open");
+      }
+
+      function tglSb() {
+        const s = document.getElementById("sb"),
+          t = document.getElementById("sb-tgl");
+        s.classList.toggle("rail");
+        t.textContent = s.classList.contains("rail") ? "▸" : "◂";
+      }
+      function openS() {
+        document.getElementById("s-ov").classList.add("open");
+        document.getElementById("s-input").focus();
+      }
+      function closeS(e) {
+        if (e && e.target !== document.getElementById("s-ov")) return;
+        document.getElementById("s-ov").classList.remove("open");
+      }
+
+      let mmOpen = false,
+        pinned = false,
+        drag = false,
+        ox = 0,
+        oy = 0;
+      function tglMM() {
+        const m = document.getElementById("mm");
+        mmOpen = !mmOpen;
+        m.classList.toggle("open", mmOpen);
+        if (mmOpen) {
+          m.style.top = "80px";
+          m.style.right = "60px";
+          m.style.left = "auto";
+        }
+      }
+      function closeMM() {
+        mmOpen = false;
+        document.getElementById("mm").classList.remove("open");
+      }
+      function tglPin() {
+        pinned = !pinned;
+        document.getElementById("mm-pin").classList.toggle("pin", pinned);
+      }
+      document.getElementById("mm-hd").addEventListener("mousedown", (e) => {
+        drag = true;
+        const m = document.getElementById("mm"),
+          r = m.getBoundingClientRect();
+        m.style.left = r.left + "px";
+        m.style.top = r.top + "px";
+        m.style.right = "auto";
+        ox = e.clientX - r.left;
+        oy = e.clientY - r.top;
+      });
+      document.addEventListener("mousemove", (e) => {
+        if (!drag) return;
+        const m = document.getElementById("mm");
+        m.style.left = e.clientX - ox + "px";
+        m.style.top = e.clientY - oy + "px";
+      });
+      document.addEventListener("mouseup", () => {
+        drag = false;
+      });
+      document.addEventListener("mousedown", (e) => {
+        if (!mmOpen || pinned) return;
+        const m = document.getElementById("mm");
+        if (!m.contains(e.target) && !e.target.closest(".hbtn")) closeMM();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeS({ target: document.getElementById("s-ov") });
+          if (!pinned) closeMM();
+          closeCfg({ target: document.getElementById("cfg-ov") });
+        }
+      });
+
+      renderGrid();
+    </script>
+  </body>
 </html>
