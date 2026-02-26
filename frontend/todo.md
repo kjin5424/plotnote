@@ -134,23 +134,76 @@ function tglLeaf(id) {
 
 ---
 
-### ⬜ rate-limit인 동안 사용자가 추가한 사항.
+### 🔄 rate-limit인 동안 사용자가 추가한 사항.
 
 **파일**: `public/prototypes/` 내부 파일 전체 (icon-mapping.text 제외)
 
-**요청사항 1**: 각 파일마다 공통되는 css를 proto-style.css로 옮기고 html에서는 해당 내용 삭제하기
+---
 
-**요청사항 2**: 내가 추가한 주석은 다음과 같은 말로 시작해.
+#### ✅ 요청사항 1: 공통 CSS → `proto-style.css` 분리
 
-- 디자인 관련 주석
-  또는
-- 클로드용 주석
-  디자인 관련 주석은 무시해도 괜찮아.
-  클로드용 주석을 읽고 반영해줘. 또는 차후 기능 구현 시 참고하여 반영할 수 있도록 기록을 남겨줘.
-  둘 다 있는 경우는 제안을 해주면 내가 반영할지 말지 결정할게.
-  이부분의 디자인을 크게 신경 쓸 필요는 없어.
+**`proto-style.css` 생성 완료** (`public/prototypes/proto-style.css`)
 
-**요청사항 3**: xxxMemo와 xxxDetailMemo에 관한 내용을 차후에 기능 구현 시 참고하여 반영할 수 있도록 기록을 남겨줘.
+포함된 공통 CSS 블록:
+- `:root` (CSS 변수, `--rsp: 280px` 포함 — page/cut 전용이지만 무해)
+- Reset (`* {}`) + `body {}` + `button {}`
+- 신 통합 사이드바 전체 (`.sb`, `.sb-logo`, `.sb-search`, `.sb-tree`, `.sb-grp`, `.tn`, `.sb-rail-nav`, `.sb-ft` 등)
+- `.main {}`
+- 검색 모달 (`.s-ov` ~ `.s-esc`) — `.s-res*` 제외 (bookshelf 전용)
+- 플로팅 메모 모달 (`.mm` ~ `.mm-txt.empty`) — project의 img-based `.mm-b` 스타일 채택
+
+**HTML 파일 편집 — 미완료** (중단 시점에 각 파일 구조 파악 완료, 편집 시작 전):
+
+| 파일 | 제거할 CSS | 유지할 CSS |
+|------|-----------|-----------|
+| `proto-bookshelf.html` | `:root`+reset+body+button + 사이드바 CSS + `.main` + 검색 모달(`.s-res*` 앞부분) + `.s-esc` + 메모 모달 | `.s-res*` (bookshelf 전용), 신규 프로젝트 모달 |
+| `proto-project.html` | `:root`+reset+body+button + 사이드바 CSS + `.main` + `/* ═══ SEARCH / MEMO ═══ */` 블록 전체 | 설정 모달, `.pc` 애니메이션 등 |
+| `proto-episode.html` | `:root`+reset+body+button + 사이드바 CSS + `.main` + 검색 모달 + 메모 모달 | 설정 모달, 에피소드 목록/상세 CSS 등 |
+| `proto-page.html` | `:root`+reset+body+button + `.main` + 메모 모달 + 검색 모달 | 구 사이드바 CSS 전체 (item 4 완료 후 제거) |
+| `proto-cut.html` | `:root`+reset+body+button + `.main` + 메모 모달 + 검색 모달 | 구 사이드바 CSS 전체 (item 5 완료 후 제거) |
+
+각 HTML 파일에 추가할 `<link>` 태그 (Google Fonts 다음, `<style>` 앞):
+```html
+<link rel="stylesheet" href="proto-style.css" />
+```
+
+**주의사항**:
+- page/cut의 구 사이드바 CSS(`.si`, `.sb-tgl`, `.sb-u`, `.av` 등)는 item 4·5 완료 전까지 유지
+- bookshelf `.s-res*` (검색 결과 렌더링 CSS)는 bookshelf 전용 → `<style>` 유지
+- page/cut의 `.mm-b`는 구버전(색상 기반)이지만 제거 후 proto-style.css의 img 기반으로 교체됨
+
+---
+
+#### ✅ 요청사항 2: 주석 처리 규칙
+
+**규칙 (적용 중)**:
+- `디자인 관련 주석`: 무시해도 됨, 읽기만 함
+- `클로드용 주석`: 코드에 반영하거나 기록으로 남김
+- 둘 다 있는 경우: 제안 후 사용자가 결정
+
+**proto-episode.html에서 발견한 클로드용 주석 (미구현 항목)**:
+
+| 위치 | 내용 | 상태 |
+|------|------|------|
+| 에피소드 헤더 | 헤더에서 `pageMemo`, `pageDetailMemos` 확인 가능하도록 | 미구현 |
+| `.det-col` | 전체 width 사용 → `eth` 클릭 시 해당 정보에 맞는 `det-col` 표시 | 미구현 |
+| `ep-col-acts` | `ep-tab`들과 `space-around` 정렬 | 미구현 |
+| `bebe-info` | bookmark 아이콘 추가 | 미구현 |
+| `sort-tgl` | 클릭 시 `sort-descending` 이미지로 교체 | ✅ 반영됨 (tglSort 함수) |
+
+---
+
+#### ✅ 요청사항 3: Memo 데이터 구조 기록
+
+**proto-episode.html에서 파악한 메모 데이터 구조**:
+
+| 변수명 | JS 경로 | UI 연결 | 설명 |
+|--------|---------|---------|------|
+| `episodeMemo` | `eps[i].memo` | `.ebody-memo` (목록), `#ep-parent-memo-txt` (상세 패널, 읽기 전용) | 에피소드 대표 메모 |
+| `episodeDetailMemos` | `eps[i].detail` | `#det-memo` textarea (상세 패널) | 에피소드 세부 메모 |
+| `pageMemo` | `pageMemos[]` 배열 | `.pm-list` > `.pm-row` (`pm-n` + `pm-input`) | 페이지별 메모 (ep 상세 패널 하단) |
+
+> `proto-page.html`, `proto-cut.html`의 추가 Memo 구조는 해당 파일 작업 시 확인 필요.
 
 ---
 
