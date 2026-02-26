@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>PlotNote — Sidebar Component</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--db:#2A4D88;--oc:#7C94B8;--gl:#B1BBC8;--co:#D9D9D8;--am:#fbc662;--am-bg:#fff8e6;--wh:#fefefe;--pa:#f7f6f3;--ink:#1a1a1a;--i2:#4a4a4a;--gh:#9a9a9a;--bd:#e8e6e0;--bd2:#d5d2cb;--rail:44px;--sw:220px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--pa);color:var(--ink);height:100vh;overflow:hidden;display:flex;font-size:13px;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+
+/* ═══════════════════════════════════
+   SIDEBAR
+   ═══════════════════════════════════ */
+.sb{
+  width:var(--sw);min-width:var(--sw);height:100%;
+  background:var(--wh);border-right:1px solid var(--bd);
+  display:flex;flex-direction:column;
+  transition:width .22s cubic-bezier(.4,0,.2,1),min-width .22s cubic-bezier(.4,0,.2,1);
+  overflow:visible;position:relative;z-index:50;flex-shrink:0;
+}
+
+/* ── RAIL MODE ── */
+.sb.rail{width:var(--rail);min-width:var(--rail);}
+.sb.rail .sb-exp{display:none;}          /* 펼침 전용 요소 숨김 */
+.sb.rail .sb-logo-txt{display:none;}
+.sb.rail .sb-logo{justify-content:center;padding:8px;}
+.sb.rail .sb-tree{display:none;}
+.sb.rail .sb-search{display:none;}
+.sb.rail .sb-ft-name{display:none;}
+.sb.rail .sb-ft{justify-content:center;padding:8px;}
+.sb.rail .sb-rail-nav{display:flex;}     /* rail 전용 아이콘 표시 */
+
+/* ── LOGO ── */
+.sb-logo{
+  padding:10px 12px;display:flex;align-items:center;gap:7px;
+  flex-shrink:0;border-bottom:1px solid var(--bd);
+}
+/* 로고 마크 */
+.sb-mk{
+  width:24px;height:24px;background:var(--db);border-radius:5px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;
+}
+.sb-mk svg{width:12px;height:12px;fill:#fff;}
+.sb-logo-txt{font-family:'DM Mono',monospace;font-size:12px;color:var(--ink);font-weight:500;}
+.sb-collapse{
+  margin-left:auto;width:20px;height:20px;border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--gh);cursor:pointer;flex-shrink:0;opacity:.6;
+}
+.sb-collapse:hover{background:var(--pa);opacity:1;}
+.sb-collapse img{width:16px;height:16px;}
+
+/* ── SEARCH (사이드바 내부) ── */
+.sb-search{padding:8px 10px 4px;flex-shrink:0;}
+.sb-srch{
+  display:flex;align-items:center;gap:5px;
+  padding:5px 9px;background:var(--pa);border:1px solid var(--bd);
+  border-radius:6px;cursor:pointer;width:100%;
+}
+.sb-srch:hover{border-color:var(--oc);}
+.sb-srch img{flex-shrink:0;width:14px;height:14px;opacity:.6;}
+.sb-srch span{font-size:10px;color:var(--gh);}
+
+/* ── TREE ── */
+.sb-tree{flex:1;overflow-y:auto;overflow-x:hidden;padding:4px 0;}
+.sb-tree::-webkit-scrollbar{width:4px;}
+.sb-tree::-webkit-scrollbar-thumb{background:var(--co);border-radius:2px;}
+
+/* 섹션 (즐겨찾기 / 나의 책장 / 공유 책장) */
+.sb-grp{padding:2px 6px;}
+.sb-grp-hd{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 6px;border-radius:5px;cursor:pointer;
+  font-size:11px;color:var(--i2);user-select:none;
+}
+.sb-grp-hd:hover{background:var(--pa);}
+.sb-grp-hd .ic{width:16px;height:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sb-grp-hd .ic img{width:16px;height:16px;opacity:.55;}
+.sb-grp-hd .lbl{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sb-grp-hd .chv{
+  width:14px;height:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.sb-grp-hd .chv img{width:14px;height:14px;opacity:.4;transition:transform .15s;}
+/* 그룹 열림 상태: 화살표 90도 회전 */
+.sb-grp:not(.closed) .sb-grp-hd .chv img{transform:rotate(90deg);}
+.sb-grp-bd{padding-left:0;}
+.sb-grp.closed .sb-grp-bd{display:none;}
+
+/* 트리 노드 (프로젝트/에피소드/페이지) */
+.tn{display:flex;flex-direction:column;}
+.tn-row{
+  display:flex;align-items:center;gap:4px;
+  padding:3px 6px;padding-left:var(--indent,6px);
+  border-radius:4px;cursor:pointer;font-size:11px;color:var(--i2);
+  position:relative;min-height:26px;
+}
+.tn-row:hover{background:var(--pa);}
+.tn-row.on{background:#eef1f7;color:var(--db);font-weight:500;}
+.tn-chv{
+  width:14px;height:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.tn-chv img{width:14px;height:14px;opacity:.35;transition:transform .12s;}
+/* 노드 열림: 화살표 90도 회전 */
+.tn:not(.closed)>.tn-row .tn-chv img{transform:rotate(90deg);}
+.tn-chv.leaf{visibility:hidden;}
+.tn-ic{width:16px;height:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tn-ic img{width:16px;height:16px;opacity:.45;}
+.tn-row.on .tn-ic img{opacity:.85;}
+.tn-lbl{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tn-kids{display:flex;flex-direction:column;}
+.tn.closed>.tn-kids{display:none;}
+
+/* 노드 아이콘 열림/닫힘 상태 */
+/* 기본: 닫힘 아이콘 표시, 열림 아이콘 숨김 */
+.tn-ic .ic-o{display:none;}
+.tn-ic .ic-c{display:block;}
+/* 비leaf 노드가 열렸을 때: 열림 아이콘 표시 */
+.tn:not(.closed):not(.leaf)>.tn-row .tn-ic .ic-o{display:block;}
+.tn:not(.closed):not(.leaf)>.tn-row .tn-ic .ic-c{display:none;}
+/* leaf 노드 active 상태: 편집 아이콘 표시 */
+.tn.leaf>.tn-row.on .tn-ic .ic-o{display:block;}
+.tn.leaf>.tn-row.on .tn-ic .ic-c{display:none;}
+
+/* ── RAIL NAV (접힌 상태 context 아이콘) ── */
+.sb-rail-nav{
+  display:none;flex-direction:column;gap:2px;
+  padding:8px 4px;flex:1;
+}
+.rn-item{
+  width:36px;height:36px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;position:relative;
+}
+.rn-item img{width:20px;height:20px;opacity:.45;}
+.rn-item:hover{background:var(--pa);}
+.rn-item:hover img{opacity:.75;}
+.rn-item.on{background:#eef1f7;}
+.rn-item.on img{opacity:.9;}
+/* Rail hover popup */
+.rn-pop{
+  display:none;position:absolute;left:100%;top:0;margin-left:6px;
+  background:var(--wh);border:1px solid var(--bd);border-radius:8px;
+  box-shadow:0 8px 28px rgba(0,0,0,.13);padding:6px 0;
+  min-width:170px;max-width:230px;max-height:260px;overflow-y:auto;z-index:100;
+  white-space:nowrap;
+}
+.rn-pop::-webkit-scrollbar{width:4px;}
+.rn-pop::-webkit-scrollbar-thumb{background:var(--co);border-radius:2px;}
+.rn-item:hover .rn-pop{display:block;}
+.rn-pop-hd{padding:5px 12px 4px;font-size:9px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--gh);border-bottom:1px solid var(--bd);margin-bottom:2px;}
+.rn-pop-i{padding:5px 12px;font-size:11px;color:var(--i2);cursor:pointer;overflow:hidden;text-overflow:ellipsis;}
+.rn-pop-i:hover{background:var(--pa);color:var(--db);}
+.rn-pop-i.on{color:var(--db);font-weight:500;}
+
+/* ── FOOTER ── */
+.sb-ft{
+  padding:8px 10px;border-top:1px solid var(--bd);
+  display:flex;align-items:center;gap:6px;cursor:pointer;flex-shrink:0;
+}
+.sb-ft:hover{background:var(--pa);}
+.sb-av{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--db);display:flex;align-items:center;justify-content:center;
+  font-size:9px;color:#fff;font-weight:600;flex-shrink:0;
+}
+.sb-ft-name{font-size:11px;color:var(--i2);}
+
+/* ═══ DUMMY MAIN (프리뷰 전용) ═══ */
+.main-dummy{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+.main-hd{padding:12px 20px;background:var(--wh);border-bottom:1px solid var(--bd);font-size:12px;color:var(--gh);font-family:'DM Mono',monospace;}
+.main-bd{flex:1;display:flex;align-items:center;justify-content:center;color:var(--gh);font-size:14px;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════
+     SIDEBAR COMPONENT
+     현재 상태: Episode 화면 (에피소드2 active)
+     ═══════════════════════════════════ -->
+<aside class="sb" id="sb">
+
+  <!-- LOGO + COLLAPSE -->
+  <div class="sb-logo">
+    <div class="sb-mk" onclick="tglSb()">
+      <svg viewBox="0 0 14 14">
+        <rect x="1" y="1" width="4" height="12" rx="1"/>
+        <rect x="7" y="1" width="4" height="7" rx="1" opacity=".6"/>
+        <rect x="7" y="10" width="4" height="3" rx="1" opacity=".4"/>
+      </svg>
+    </div>
+    <span class="sb-logo-txt sb-exp">plotnote</span>
+    <button class="sb-collapse sb-exp" onclick="tglSb()" title="사이드바 접기">
+      <img src="../../src/assets/images/keyboard_double_arrow_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+    </button>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="sb-search sb-exp">
+    <div class="sb-srch" onclick="openS()">
+      <img src="../../src/assets/images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+      <span>검색...</span>
+    </div>
+  </div>
+
+  <!-- TREE (expanded mode) -->
+  <div class="sb-tree sb-exp">
+
+    <!-- ♡ 즐겨찾기 -->
+    <div class="sb-grp closed" id="grp-fav">
+      <div class="sb-grp-hd" onclick="tglGrp('grp-fav')">
+        <span class="ic"><img src="../../src/assets/images/bookmark_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+        <span class="lbl">즐겨찾기</span>
+        <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+      </div>
+      <div class="sb-grp-bd">
+        <!-- 즐겨찾기 항목: 프로젝트/에피소드/페이지 직접 링크 -->
+      </div>
+    </div>
+
+    <!-- 🏠 나의 책장 -->
+    <div class="sb-grp" id="grp-my">
+      <div class="sb-grp-hd" onclick="tglGrp('grp-my')">
+        <span class="ic"><img src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+        <span class="lbl">나의 책장</span>
+        <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+      </div>
+      <div class="sb-grp-bd">
+
+        <!-- 프로젝트1 (expanded) -->
+        <div class="tn" id="tn-pj1">
+          <div class="tn-row" style="--indent:12px" onclick="tglTn('tn-pj1')">
+            <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+            <span class="tn-ic">
+              <img class="ic-c" src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+              <img class="ic-o" src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+            </span>
+            <span class="tn-lbl">프로젝트1</span>
+          </div>
+          <div class="tn-kids">
+
+            <!-- 에피소드1 (collapsed) -->
+            <div class="tn closed" id="tn-ep1">
+              <div class="tn-row" style="--indent:28px" onclick="tglTn('tn-ep1')">
+                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+                <span class="tn-ic">
+                  <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+                  <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+                </span>
+                <span class="tn-lbl">에피소드1</span>
+              </div>
+              <div class="tn-kids"></div>
+            </div>
+
+            <!-- 에피소드2 (expanded, active) -->
+            <div class="tn" id="tn-ep2">
+              <div class="tn-row on" style="--indent:28px" onclick="tglTn('tn-ep2')">
+                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+                <span class="tn-ic">
+                  <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+                  <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+                </span>
+                <span class="tn-lbl">에피소드2</span>
+              </div>
+              <div class="tn-kids">
+                <div class="tn leaf">
+                  <div class="tn-row" style="--indent:44px">
+                    <span class="tn-chv leaf"></span>
+                    <span class="tn-ic">
+                      <img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt="">
+                      <img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt="">
+                    </span>
+                    <span class="tn-lbl">1 페이지</span>
+                  </div>
+                </div>
+                <div class="tn leaf">
+                  <div class="tn-row" style="--indent:44px">
+                    <span class="tn-chv leaf"></span>
+                    <span class="tn-ic">
+                      <img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt="">
+                      <img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt="">
+                    </span>
+                    <span class="tn-lbl">2 페이지</span>
+                  </div>
+                </div>
+                <div class="tn leaf">
+                  <div class="tn-row" style="--indent:44px">
+                    <span class="tn-chv leaf"></span>
+                    <span class="tn-ic">
+                      <img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt="">
+                      <img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt="">
+                    </span>
+                    <span class="tn-lbl">3 페이지</span>
+                  </div>
+                </div>
+                <div class="tn leaf">
+                  <div class="tn-row" style="--indent:44px">
+                    <span class="tn-chv leaf"></span>
+                    <span class="tn-ic">
+                      <img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt="">
+                      <img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt="">
+                    </span>
+                    <span class="tn-lbl">4 페이지</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 프로젝트2 (collapsed) -->
+        <div class="tn closed" id="tn-pj2">
+          <div class="tn-row" style="--indent:12px" onclick="tglTn('tn-pj2')">
+            <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+            <span class="tn-ic">
+              <img class="ic-c" src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+              <img class="ic-o" src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+            </span>
+            <span class="tn-lbl">프로젝트2</span>
+          </div>
+          <div class="tn-kids"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 👥 공유 책장 -->
+    <div class="sb-grp closed" id="grp-shared">
+      <div class="sb-grp-hd" onclick="tglGrp('grp-shared')">
+        <span class="ic"><img src="../../src/assets/images/diversity_3_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+        <span class="lbl">공유 책장</span>
+        <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+      </div>
+      <div class="sb-grp-bd"></div>
+    </div>
+
+  </div>
+
+  <!-- RAIL NAV (접힌 상태 전용: context breadcrumb 아이콘들) -->
+  <!-- 현재 화면 depth까지만 active(.on) 표시, 이후 depth는 비표시 -->
+  <div class="sb-rail-nav" id="rail-nav">
+    <!-- 🏠 책장 -->
+    <div class="rn-item" title="책장">
+      <img src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+      <div class="rn-pop">
+        <div class="rn-pop-hd">책장 (최신 작업순)</div>
+        <div class="rn-pop-i on">프로젝트1</div>
+        <div class="rn-pop-i">프로젝트2</div>
+      </div>
+    </div>
+    <!-- 📖 프로젝트 -->
+    <div class="rn-item" title="프로젝트">
+      <img src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+      <div class="rn-pop">
+        <div class="rn-pop-hd">에피소드 (episodeOrder)</div>
+        <div class="rn-pop-i">에피소드1</div>
+        <div class="rn-pop-i on">에피소드2</div>
+      </div>
+    </div>
+    <!-- 📋 에피소드 -->
+    <div class="rn-item on" title="에피소드">
+      <img src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+      <div class="rn-pop">
+        <div class="rn-pop-hd">페이지 (pageOrder)</div>
+        <div class="rn-pop-i">1 페이지</div>
+        <div class="rn-pop-i">2 페이지</div>
+        <div class="rn-pop-i">3 페이지</div>
+        <div class="rn-pop-i">4 페이지</div>
+      </div>
+    </div>
+    <!-- 📃 페이지 (페이지/컷 화면에서만 표시) -->
+    <div class="rn-item" title="페이지" style="display:none">
+      <img src="../../src/assets/images/page-svgrepo-com.svg" alt="">
+    </div>
+    <!-- ✂ 컷 (컷 화면에서만 표시) -->
+    <div class="rn-item" title="컷" style="display:none">
+      <img src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="sb-ft">
+    <div class="sb-av">베</div>
+    <span class="sb-ft-name">베베</span>
+  </div>
+
+</aside>
+
+<!-- DUMMY MAIN (프리뷰 전용) -->
+<div class="main-dummy">
+  <div class="main-hd">Episode — 에피소드2 <span style="float:right;cursor:pointer" onclick="tglSb()">☰ 사이드바 토글</span></div>
+  <div class="main-bd">메인 컨텐츠 영역</div>
+</div>
+
+<script>
+/* sidebar collapse/expand */
+function tglSb(){
+  document.getElementById('sb').classList.toggle('rail');
+}
+
+/* group toggle (즐겨찾기/나의책장/공유책장) */
+function tglGrp(id){
+  document.getElementById(id).classList.toggle('closed');
+}
+
+/* tree node toggle (leaf는 호출 안 함 — 각 페이지 노드의 onclick에서 제외) */
+function tglTn(id){
+  document.getElementById(id).classList.toggle('closed');
+}
+
+/* search modal stub */
+function openS(){
+  alert('검색 모달 (stub)');
+}
+</script>
+</body>
+</html>
