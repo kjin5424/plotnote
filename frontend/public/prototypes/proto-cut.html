@@ -992,9 +992,11 @@
           <div class="d"></div>
           <span class="si-t">ep.1 첫 만남</span>
           <div class="si-pop">
+            <!-- 클로드용 주석 -->
             <!-- 이거 .si-pop-i를 클릭해서 해당 페이지로 이동할 수 있도록 해야 함 -->
             <!-- 그러려면 si-pop위로 커서를 올릴 수 있어야 함 -->
             <div class="si-pop-hd">페이지 (pageOrder)</div>
+            <!-- 클로드용 주석 -->
             <!-- pageOrder 순 -->
             <div class="si-pop-i">p.01 공원 입구</div>
             <div class="si-pop-i">p.02 강아지 등장</div>
@@ -1045,6 +1047,7 @@
           </div>
         </div>
 
+        <!-- 클로드용 주석 -->
         <!-- 이 zoom-ctl 하단 toolbar의 오른쪽에 새로운 toolbar를 만들어서 그 안에서 관리 -->
         <div class="zoom-ctl">
           <button class="z-btn" onclick="zoom(-10)">−</button>
@@ -1064,6 +1067,7 @@
         </div>
       </div>
 
+      <!-- 디자인 관련 주석 -->
       <!-- 실제 페이지처럼 보이게 만드는 그림자같은거 필요 없음 -->
       <!-- 전체 외곽 shadow는 조금만 -->
       <!-- Canvas + RSP -->
@@ -1090,9 +1094,11 @@
               </div>
               <div>
                 <div class="rsp-ci on">
+                  <!-- 클로드용 주석 -->
                   <!-- 여기도 drag-h 왼쪽에 필요 -->
                   <span class="rsp-cn">1</span
                   ><span class="rsp-ct">공원 입구 전경</span>
+                  <!-- 클로드용 주석(주석) -->
                   <!-- 각 rsp-ci 에 cutNotes 입력할 수 있어야 함 -->
                   <!-- cutMemo랑 cutNotes랑 다른거임 -->
                   <!-- 지금 localStorage에는 cutNotes밖에 없는데, -->
@@ -1263,6 +1269,7 @@
             cell.className =
               "cut-cell" + (selCut === i && pi === 0 ? " sel" : "");
             cell.innerHTML = `<div class="cut-cell-n">${i + 1}</div>${cellMemos[i] ? `<div class="cut-cell-memo">${cellMemos[i]}</div>` : ""}`;
+            <!-- 클로드용 주석(중요) -->
             <!-- 이부분 로직을 어떻게 하는게 좋으려나... -->
             <!-- 컷 모양이랑 cutMemo+cutDetailMemo는 아예 별개로 두고 -->
             <!-- 드래그앤드롭으로 지정이 되어야 서로 연계되는 형식 -->
@@ -1270,7 +1277,9 @@
             <!-- cutDetailMemo도 여기에 표시될 것이며, -->
             <!-- cutDetailMemo는 드래그앤드롭으로 다른 컷으로 이동 가능함 -->
             <!-- 그리고 우측 패널에서만 내용을 수정할 수 있는게 아니라 cut-cell에서도 각각 수정이 가능함 -->
-            <!-- cutMemo는 제외, cutDetailMemo만 해당. 따라서 둘이 css처리를 다르게 해야겠지? -->
+            <!-- cutMemo는 제외, cutDetailMemo만 해당. -->
+            <!-- 디자인 관련 주석 -->
+            <!-- cut-cell 내부에서 cutMemo와 cutDetailMemo는 css처리를 다르게 해야겠지? -->
             cell.addEventListener("click", () => {
               selCut = i;
               renderCanvas();
@@ -1281,6 +1290,7 @@
           const badge = document.createElement("div");
           badge.className = "cut-count-badge";
           badge.textContent = `p.${String(pn).padStart(2, "0")} · ${gridCols * gridRows}컷`;
+          <!-- 클로드용 주석 -->
           <!-- 이거 여기에 있으면 페이지를 가리니까 삭제 -->
           page.appendChild(badge);
           wrap.appendChild(page);

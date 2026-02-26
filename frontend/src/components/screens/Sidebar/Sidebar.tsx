@@ -11,7 +11,7 @@ import EpisodeIcon_folder from "assets/images/folder_20dp_000000_FILL0_wght400_G
 import EpisodeIcon_folderOpen from "assets/images/folder_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
 import PageIcon_article from "assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
 import SidebarCloseIcon_doubleArrow from "assets/images/keyboard_double_arrow_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
-import settingsIcon from "assets/images/settings_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
+import settingsIcon from "assets/images/setting-5-svgrepo-com.svg";
 import favoriteIcon from "assets/images/favorite_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
 import arrowDownIcon from "assets/images/keyboard_arrow_down_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
 import arrowRightIcon from "assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
@@ -430,7 +430,11 @@ export default function Sidebar({
                 title={crumb.label}
               >
                 <img
-                  src={crumb.isActive && crumb.iconActive ? crumb.iconActive : crumb.icon}
+                  src={
+                    crumb.isActive && crumb.iconActive
+                      ? crumb.iconActive
+                      : crumb.icon
+                  }
                   className="sidebar-breadcrumb-icon"
                   alt={crumb.label}
                 />
