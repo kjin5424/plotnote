@@ -46,104 +46,455 @@
 
       /* ═══ SIDEBAR ═══ */
       .sb {
-        width: var(--sw); min-width: var(--sw); height: 100%;
-        background: var(--wh); border-right: 1px solid var(--bd);
-        display: flex; flex-direction: column;
-        transition: width .22s cubic-bezier(.4,0,.2,1), min-width .22s cubic-bezier(.4,0,.2,1);
-        overflow: visible; position: relative; z-index: 50; flex-shrink: 0;
+        width: var(--sw);
+        min-width: var(--sw);
+        height: 100%;
+        background: var(--wh);
+        border-right: 1px solid var(--bd);
+        display: flex;
+        flex-direction: column;
+        transition:
+          width 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+          min-width 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: visible;
+        position: relative;
+        z-index: 50;
+        flex-shrink: 0;
       }
-      .sb.rail { width: var(--rail); min-width: var(--rail); }
-      .sb.rail .sb-exp { display: none; }
-      .sb.rail .sb-logo { justify-content: center; padding: 8px; }
-      .sb.rail .sb-tree { display: none; }
-      .sb.rail .sb-search { display: none; }
-      .sb.rail .sb-ft-name { display: none; }
-      .sb.rail .sb-ft { justify-content: center; padding: 8px; }
-      .sb.rail .sb-rail-nav { display: flex; }
+      .sb.rail {
+        width: var(--rail);
+        min-width: var(--rail);
+      }
+      .sb.rail .sb-exp {
+        display: none;
+      }
+      .sb.rail .sb-logo {
+        justify-content: center;
+        padding: 8px;
+      }
+      .sb.rail .sb-tree {
+        display: none;
+      }
+      .sb.rail .sb-search {
+        display: none;
+      }
+      .sb.rail .sb-ft-name {
+        display: none;
+      }
+      .sb.rail .sb-ft {
+        justify-content: center;
+        padding: 8px;
+      }
+      .sb.rail .sb-rail-nav {
+        display: flex;
+      }
 
       /* LOGO */
-      .sb-logo { padding: 10px 12px; display: flex; align-items: center; gap: 7px; flex-shrink: 0; border-bottom: 1px solid var(--bd); }
-      .sb-mk { width: 24px; height: 24px; background: var(--db); border-radius: 5px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; }
-      .sb-mk svg { width: 12px; height: 12px; fill: #fff; }
-      .sb-logo-txt { font-family: "DM Mono", monospace; font-size: 12px; color: var(--ink); font-weight: 500; }
-      .sb-collapse { margin-left: auto; width: 20px; height: 20px; border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; border: none; background: none; opacity: .6; }
-      .sb-collapse:hover { background: var(--pa); opacity: 1; }
-      .sb-collapse img { width: 16px; height: 16px; }
+      .sb-logo {
+        padding: 10px 12px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        flex-shrink: 0;
+        border-bottom: 1px solid var(--bd);
+      }
+      .sb-mk {
+        width: 24px;
+        height: 24px;
+        background: var(--db);
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+      .sb-mk svg {
+        width: 12px;
+        height: 12px;
+        fill: #fff;
+      }
+      .sb-logo-txt {
+        font-family: "DM Mono", monospace;
+        font-size: 12px;
+        color: var(--ink);
+        font-weight: 500;
+      }
+      .sb-collapse {
+        margin-left: auto;
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        border: none;
+        background: none;
+        opacity: 0.6;
+      }
+      .sb-collapse:hover {
+        background: var(--pa);
+        opacity: 1;
+      }
+      .sb-collapse img {
+        width: 16px;
+        height: 16px;
+      }
 
       /* SEARCH */
-      .sb-search { padding: 8px 10px 4px; flex-shrink: 0; }
-      .sb-srch { display: flex; align-items: center; gap: 5px; padding: 5px 9px; background: var(--pa); border: 1px solid var(--bd); border-radius: 6px; cursor: pointer; width: 100%; }
-      .sb-srch:hover { border-color: var(--oc); }
-      .sb-srch img { flex-shrink: 0; width: 14px; height: 14px; opacity: .6; }
-      .sb-srch span { font-size: 10px; color: var(--gh); }
+      .sb-search {
+        padding: 8px 10px 4px;
+        flex-shrink: 0;
+      }
+      .sb-srch {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 9px;
+        background: var(--pa);
+        border: 1px solid var(--bd);
+        border-radius: 6px;
+        cursor: pointer;
+        width: 100%;
+      }
+      .sb-srch:hover {
+        border-color: var(--oc);
+      }
+      .sb-srch img {
+        flex-shrink: 0;
+        width: 14px;
+        height: 14px;
+        opacity: 0.6;
+      }
+      .sb-srch span {
+        font-size: 10px;
+        color: var(--gh);
+      }
 
       /* TREE */
-      .sb-tree { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 4px 0; }
-      .sb-tree::-webkit-scrollbar { width: 4px; }
-      .sb-tree::-webkit-scrollbar-thumb { background: var(--co); border-radius: 2px; }
-      .sb-grp { padding: 2px 6px; }
-      .sb-grp-hd { display: flex; align-items: center; gap: 6px; padding: 5px 6px; border-radius: 5px; cursor: pointer; font-size: 11px; color: var(--i2); user-select: none; }
-      .sb-grp-hd:hover { background: var(--pa); }
-      .sb-grp-hd .ic { width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-      .sb-grp-hd .ic img { width: 16px; height: 16px; opacity: .55; }
-      .sb-grp-hd .lbl { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      .sb-grp-hd .chv { width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-      .sb-grp-hd .chv img { width: 14px; height: 14px; opacity: .4; transition: transform .15s; }
-      .sb-grp:not(.closed) .sb-grp-hd .chv img { transform: rotate(90deg); }
-      .sb-grp-bd { padding-left: 0; }
-      .sb-grp.closed .sb-grp-bd { display: none; }
-      .tn { display: flex; flex-direction: column; }
-      .tn-row { display: flex; align-items: center; gap: 4px; padding: 3px 6px; padding-left: var(--indent, 6px); border-radius: 4px; cursor: pointer; font-size: 11px; color: var(--i2); position: relative; min-height: 26px; }
-      .tn-row:hover { background: var(--pa); }
-      .tn-row.on { background: #eef1f7; color: var(--db); font-weight: 500; }
-      .tn-chv { width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-      .tn-chv img { width: 14px; height: 14px; opacity: .35; transition: transform .12s; }
-      .tn:not(.closed) > .tn-row .tn-chv img { transform: rotate(90deg); }
-      .tn-chv.leaf { visibility: hidden; }
-      .tn-ic { width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-      .tn-ic img { width: 16px; height: 16px; opacity: .45; }
-      .tn-row.on .tn-ic img { opacity: .85; }
-      .tn-lbl { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      .tn-kids { display: flex; flex-direction: column; }
-      .tn.closed > .tn-kids { display: none; }
+      .sb-tree {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 4px 0;
+      }
+      .sb-tree::-webkit-scrollbar {
+        width: 4px;
+      }
+      .sb-tree::-webkit-scrollbar-thumb {
+        background: var(--co);
+        border-radius: 2px;
+      }
+      .sb-grp {
+        padding: 2px 6px;
+      }
+      .sb-grp-hd {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 6px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 11px;
+        color: var(--i2);
+        user-select: none;
+      }
+      .sb-grp-hd:hover {
+        background: var(--pa);
+      }
+      .sb-grp-hd .ic {
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .sb-grp-hd .ic img {
+        width: 16px;
+        height: 16px;
+        opacity: 0.55;
+      }
+      .sb-grp-hd .lbl {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .sb-grp-hd .chv {
+        width: 14px;
+        height: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .sb-grp-hd .chv img {
+        width: 14px;
+        height: 14px;
+        opacity: 0.4;
+        transition: transform 0.15s;
+      }
+      .sb-grp:not(.closed) .sb-grp-hd .chv img {
+        transform: rotate(90deg);
+      }
+      .sb-grp-bd {
+        padding-left: 0;
+      }
+      .sb-grp.closed .sb-grp-bd {
+        display: none;
+      }
+      .tn {
+        display: flex;
+        flex-direction: column;
+      }
+      .tn-row {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 6px;
+        padding-left: var(--indent, 6px);
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 11px;
+        color: var(--i2);
+        position: relative;
+        min-height: 26px;
+      }
+      .tn-row:hover {
+        background: var(--pa);
+      }
+      .tn-row.on {
+        background: #eef1f7;
+        color: var(--db);
+        font-weight: 500;
+      }
+      .tn-chv {
+        width: 14px;
+        height: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .tn-chv img {
+        width: 14px;
+        height: 14px;
+        opacity: 0.35;
+        transition: transform 0.12s;
+      }
+      .tn:not(.closed) > .tn-row .tn-chv img {
+        transform: rotate(90deg);
+      }
+      .tn-chv.leaf {
+        visibility: hidden;
+      }
+      .tn-ic {
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .tn-ic img {
+        width: 16px;
+        height: 16px;
+        opacity: 0.45;
+      }
+      .tn-row.on .tn-ic img {
+        opacity: 0.85;
+      }
+      .tn-lbl {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .tn-kids {
+        display: flex;
+        flex-direction: column;
+      }
+      .tn.closed > .tn-kids {
+        display: none;
+      }
       /* 노드 아이콘 열림/닫힘 */
-      .tn-ic .ic-o { display: none; }
-      .tn-ic .ic-c { display: block; }
-      .tn:not(.closed):not(.leaf) > .tn-row .tn-ic .ic-o { display: block; }
-      .tn:not(.closed):not(.leaf) > .tn-row .tn-ic .ic-c { display: none; }
-      .tn.leaf > .tn-row.on .tn-ic .ic-o { display: block; }
-      .tn.leaf > .tn-row.on .tn-ic .ic-c { display: none; }
+      .tn-ic .ic-o {
+        display: none;
+      }
+      .tn-ic .ic-c {
+        display: block;
+      }
+      .tn:not(.closed):not(.leaf) > .tn-row .tn-ic .ic-o {
+        display: block;
+      }
+      .tn:not(.closed):not(.leaf) > .tn-row .tn-ic .ic-c {
+        display: none;
+      }
+      .tn.leaf > .tn-row.on .tn-ic .ic-o {
+        display: block;
+      }
+      .tn.leaf > .tn-row.on .tn-ic .ic-c {
+        display: none;
+      }
 
       /* RAIL NAV */
-      .sb-rail-nav { display: none; flex-direction: column; gap: 2px; padding: 8px 4px; flex: 1; }
-      .rn-item { width: 36px; height: 36px; border-radius: 7px; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
-      .rn-item img { width: 20px; height: 20px; opacity: .45; }
-      .rn-item:hover { background: var(--pa); }
-      .rn-item:hover img { opacity: .75; }
-      .rn-item.on { background: #eef1f7; }
-      .rn-item.on img { opacity: .9; }
-      .rn-pop { display: none; position: absolute; left: 100%; top: 0; margin-left: 6px; background: var(--wh); border: 1px solid var(--bd); border-radius: 8px; box-shadow: 0 8px 28px rgba(0,0,0,.13); padding: 6px 0; min-width: 170px; max-height: 260px; overflow-y: auto; z-index: 100; white-space: nowrap; }
-      .rn-pop::-webkit-scrollbar { width: 4px; }
-      .rn-pop::-webkit-scrollbar-thumb { background: var(--co); border-radius: 2px; }
-      .rn-item:hover .rn-pop { display: block; }
-      .rn-pop-hd { padding: 5px 12px 4px; font-size: 9px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--gh); border-bottom: 1px solid var(--bd); margin-bottom: 2px; }
-      .rn-pop-i { padding: 5px 12px; font-size: 11px; color: var(--i2); cursor: pointer; overflow: hidden; text-overflow: ellipsis; }
-      .rn-pop-i:hover { background: var(--pa); color: var(--db); }
-      .rn-pop-i.on { color: var(--db); font-weight: 500; }
+      .sb-rail-nav {
+        display: none;
+        flex-direction: column;
+        gap: 2px;
+        padding: 8px 4px;
+        flex: 1;
+      }
+      .rn-item {
+        width: 36px;
+        height: 36px;
+        border-radius: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: relative;
+      }
+      .rn-item img {
+        width: 20px;
+        height: 20px;
+        opacity: 0.45;
+      }
+      .rn-item:hover {
+        background: var(--pa);
+      }
+      .rn-item:hover img {
+        opacity: 0.75;
+      }
+      .rn-item.on {
+        background: #eef1f7;
+      }
+      .rn-item.on img {
+        opacity: 0.9;
+      }
+      .rn-pop {
+        display: none;
+        position: absolute;
+        left: 100%;
+        top: 0;
+        margin-left: 6px;
+        background: var(--wh);
+        border: 1px solid var(--bd);
+        border-radius: 8px;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.13);
+        padding: 6px 0;
+        min-width: 170px;
+        max-height: 260px;
+        overflow-y: auto;
+        z-index: 100;
+        white-space: nowrap;
+      }
+      .rn-pop::-webkit-scrollbar {
+        width: 4px;
+      }
+      .rn-pop::-webkit-scrollbar-thumb {
+        background: var(--co);
+        border-radius: 2px;
+      }
+      .rn-item:hover .rn-pop {
+        display: block;
+      }
+      .rn-pop-hd {
+        padding: 5px 12px 4px;
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--gh);
+        border-bottom: 1px solid var(--bd);
+        margin-bottom: 2px;
+      }
+      .rn-pop-i {
+        padding: 5px 12px;
+        font-size: 11px;
+        color: var(--i2);
+        cursor: pointer;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .rn-pop-i:hover {
+        background: var(--pa);
+        color: var(--db);
+      }
+      .rn-pop-i.on {
+        color: var(--db);
+        font-weight: 500;
+      }
 
       /* FOOTER */
-      .sb-ft { padding: 8px 10px; border-top: 1px solid var(--bd); display: flex; align-items: center; gap: 6px; cursor: pointer; flex-shrink: 0; }
-      .sb-ft:hover { background: var(--pa); }
-      .sb-av { width: 24px; height: 24px; border-radius: 50%; background: var(--db); display: flex; align-items: center; justify-content: center; font-size: 9px; color: #fff; font-weight: 600; flex-shrink: 0; }
-      .sb-ft-name { font-size: 11px; color: var(--i2); }
+      .sb-ft {
+        padding: 8px 10px;
+        border-top: 1px solid var(--bd);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+      .sb-ft:hover {
+        background: var(--pa);
+      }
+      .sb-av {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--db);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        color: #fff;
+        font-weight: 600;
+        flex-shrink: 0;
+      }
+      .sb-ft-name {
+        font-size: 11px;
+        color: var(--i2);
+      }
 
       /* ═══ MAIN ═══ */
-      .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
-      .ws-hd { flex-shrink: 0; background: var(--wh); border-bottom: 1px solid var(--bd); }
-      .hbtn { width: 28px; height: 28px; border-radius: 5px; border: none; background: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-      .hbtn img { width: 18px; height: 18px; opacity: .55; }
-      .hbtn:hover { background: var(--pa); }
-      .hbtn:hover img { opacity: .85; }
+      .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        min-width: 0;
+      }
+      .ws-hd {
+        flex-shrink: 0;
+        background: var(--wh);
+        border-bottom: 1px solid var(--bd);
+      }
+      .hbtn {
+        width: 28px;
+        height: 28px;
+        border-radius: 5px;
+        border: none;
+        background: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .hbtn img {
+        width: 18px;
+        height: 18px;
+        opacity: 0.55;
+      }
+      .hbtn:hover {
+        background: var(--pa);
+      }
+      .hbtn:hover img {
+        opacity: 0.85;
+      }
 
       /* Title row */
       .ws-tr {
@@ -158,10 +509,28 @@
         font-weight: 600;
         letter-spacing: -0.02em;
       }
-      .ws-fav { border: none; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; padding: 0; }
-      .ws-fav img { width: 18px; height: 18px; opacity: .35; }
-      .ws-fav:hover img { opacity: .65; }
-      .ws-fav.on img { opacity: 1; }
+      .ws-fav {
+        border: none;
+        background: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+      }
+      .ws-fav img {
+        width: 18px;
+        height: 18px;
+        opacity: 0.35;
+      }
+      .ws-fav:hover img {
+        opacity: 0.65;
+      }
+      .ws-fav.on img {
+        opacity: 1;
+      }
       .ws-acts {
         margin-left: auto;
         display: flex;
@@ -191,11 +560,28 @@
       .abtn.pri:hover {
         background: #1e3d73;
       }
-      .cfg-btn { width: 28px; height: 28px; border-radius: 5px; border: 1px solid var(--bd2); background: var(--wh); display: flex; align-items: center; justify-content: center; cursor: pointer; }
-      .cfg-btn img { width: 18px; height: 18px; opacity: .55; }
-      .cfg-btn:hover { border-color: var(--oc); }
-      .cfg-btn:hover img { opacity: .85; }
-
+      .cfg-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 5px;
+        border: 1px solid var(--bd2);
+        background: var(--wh);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .cfg-btn img {
+        width: 18px;
+        height: 18px;
+        opacity: 0.55;
+      }
+      .cfg-btn:hover {
+        border-color: var(--oc);
+      }
+      .cfg-btn:hover img {
+        opacity: 0.85;
+      }
 
       /* Body */
       .ws-bd {
@@ -366,10 +752,29 @@
         flex: 1;
         min-width: 0;
       }
-      .pc-fav { width: 22px; height: 22px; border-radius: 50%; border: none; background: none; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-      .pc-fav img { width: 14px; height: 14px; opacity: .3; }
-      .pc-fav:hover img { opacity: .6; }
-      .pc-fav.on img { opacity: 1; }
+      .pc-fav {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: none;
+        background: none;
+        cursor: pointer;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .pc-fav img {
+        width: 14px;
+        height: 14px;
+        opacity: 0.3;
+      }
+      .pc-fav:hover img {
+        opacity: 0.6;
+      }
+      .pc-fav.on img {
+        opacity: 1;
+      }
       .pc-mt {
         font-size: 10px;
         color: var(--gh);
@@ -635,11 +1040,32 @@
         color: var(--i2);
         flex: 1;
       }
-      .mm-b { width: 24px; height: 24px; border-radius: 4px; border: none; background: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-      .mm-b img { width: 18px; height: 18px; opacity: .5; }
-      .mm-b:hover { background: var(--bd); }
-      .mm-b:hover img { opacity: .8; }
-      .mm-b.pin img { opacity: 1; filter: sepia(1) saturate(4) hue-rotate(5deg); }
+      .mm-b {
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        border: none;
+        background: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .mm-b img {
+        width: 18px;
+        height: 18px;
+        opacity: 0.5;
+      }
+      .mm-b:hover {
+        background: var(--bd);
+      }
+      .mm-b:hover img {
+        opacity: 0.8;
+      }
+      .mm-b.pin img {
+        opacity: 1;
+        filter: sepia(1) saturate(4) hue-rotate(5deg);
+      }
       .mm-tabs {
         display: flex;
         gap: 0;
@@ -718,7 +1144,6 @@
   <body>
     <!-- ═══ SIDEBAR ═══ -->
     <aside class="sb" id="sb">
-
       <!-- LOGO + COLLAPSE -->
       <div class="sb-logo">
         <div class="sb-mk" onclick="tglSb()">
@@ -729,47 +1154,96 @@
           </svg>
         </div>
         <span class="sb-logo-txt sb-exp">plotnote</span>
-        <button class="sb-collapse sb-exp" onclick="tglSb()" title="사이드바 접기">
-          <img src="../../src/assets/images/keyboard_double_arrow_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+        <button
+          class="sb-collapse sb-exp"
+          onclick="tglSb()"
+          title="사이드바 접기"
+        >
+          <img
+            src="../../src/assets/images/keyboard_double_arrow_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt=""
+          />
         </button>
       </div>
 
       <!-- SEARCH -->
       <div class="sb-search sb-exp">
         <div class="sb-srch" onclick="openS()">
-          <img src="../../src/assets/images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+          <img
+            src="../../src/assets/images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt=""
+          />
           <span>검색...</span>
         </div>
       </div>
 
       <!-- TREE -->
       <div class="sb-tree sb-exp">
-
         <!-- 즐겨찾기 (closed) -->
         <div class="sb-grp closed" id="grp-fav">
           <div class="sb-grp-hd" onclick="tglGrp('grp-fav')">
-            <span class="ic"><img src="../../src/assets/images/bookmark_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+            <span class="ic"
+              ><img
+                src="../../src/assets/images/bookmark_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
             <span class="lbl">즐겨찾기</span>
-            <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+            <span class="chv"
+              ><img
+                src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
           </div>
           <div class="sb-grp-bd">
             <div class="tn closed" id="tn-fav-pj1">
-              <div class="tn-row" style="--indent:12px" onclick="tglTn('tn-fav-pj1')">
-                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+              <div
+                class="tn-row"
+                style="--indent: 12px"
+                onclick="tglTn('tn-fav-pj1')"
+              >
+                <span class="tn-chv"
+                  ><img
+                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                /></span>
                 <span class="tn-ic">
-                  <img class="ic-c" src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                  <img class="ic-o" src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+                  <img
+                    class="ic-c"
+                    src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
+                  <img
+                    class="ic-o"
+                    src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
                 </span>
                 <span class="tn-lbl">고양이와 강아지</span>
               </div>
               <div class="tn-kids"></div>
             </div>
             <div class="tn closed" id="tn-fav-pj2">
-              <div class="tn-row" style="--indent:12px" onclick="tglTn('tn-fav-pj2')">
-                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+              <div
+                class="tn-row"
+                style="--indent: 12px"
+                onclick="tglTn('tn-fav-pj2')"
+              >
+                <span class="tn-chv"
+                  ><img
+                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                /></span>
                 <span class="tn-ic">
-                  <img class="ic-c" src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                  <img class="ic-o" src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+                  <img
+                    class="ic-c"
+                    src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
+                  <img
+                    class="ic-o"
+                    src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
                 </span>
                 <span class="tn-lbl">여름 단편</span>
               </div>
@@ -781,57 +1255,145 @@
         <!-- 나의 책장 (open) → 고양이와 강아지 (현재 프로젝트, open + active) -->
         <div class="sb-grp" id="grp-my">
           <div class="sb-grp-hd" onclick="tglGrp('grp-my')">
-            <span class="ic"><img src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+            <span class="ic"
+              ><img
+                src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
             <span class="lbl">나의 책장</span>
-            <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+            <span class="chv"
+              ><img
+                src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
           </div>
           <div class="sb-grp-bd">
             <div class="tn" id="tn-pj1">
-              <div class="tn-row on" style="--indent:12px" onclick="tglTn('tn-pj1')">
-                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+              <div
+                class="tn-row on"
+                style="--indent: 12px"
+                onclick="tglTn('tn-pj1')"
+              >
+                <span class="tn-chv"
+                  ><img
+                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                /></span>
                 <span class="tn-ic">
-                  <img class="ic-c" src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                  <img class="ic-o" src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+                  <img
+                    class="ic-c"
+                    src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
+                  <img
+                    class="ic-o"
+                    src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
                 </span>
                 <span class="tn-lbl">고양이와 강아지</span>
               </div>
               <div class="tn-kids">
                 <div class="tn leaf" id="tn-ep1">
-                  <div class="tn-row" style="--indent:26px" onclick="tglLeaf('tn-ep1')">
-                    <span class="tn-chv leaf"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+                  <div
+                    class="tn-row"
+                    style="--indent: 26px"
+                    onclick="tglLeaf('tn-ep1')"
+                  >
+                    <span class="tn-chv leaf"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
                     <span class="tn-ic">
-                      <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                      <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
                     </span>
                     <span class="tn-lbl">ep.1 첫 만남</span>
                   </div>
                 </div>
                 <div class="tn leaf" id="tn-ep2">
-                  <div class="tn-row" style="--indent:26px" onclick="tglLeaf('tn-ep2')">
-                    <span class="tn-chv leaf"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+                  <div
+                    class="tn-row"
+                    style="--indent: 26px"
+                    onclick="tglLeaf('tn-ep2')"
+                  >
+                    <span class="tn-chv leaf"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
                     <span class="tn-ic">
-                      <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                      <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
                     </span>
                     <span class="tn-lbl">ep.2 공원의 하루</span>
                   </div>
                 </div>
                 <div class="tn leaf" id="tn-ep3">
-                  <div class="tn-row" style="--indent:26px" onclick="tglLeaf('tn-ep3')">
-                    <span class="tn-chv leaf"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+                  <div
+                    class="tn-row"
+                    style="--indent: 26px"
+                    onclick="tglLeaf('tn-ep3')"
+                  >
+                    <span class="tn-chv leaf"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
                     <span class="tn-ic">
-                      <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                      <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
                     </span>
                     <span class="tn-lbl">ep.3 이웃 친구들</span>
                   </div>
                 </div>
                 <div class="tn leaf" id="tn-ep4">
-                  <div class="tn-row" style="--indent:26px" onclick="tglLeaf('tn-ep4')">
-                    <span class="tn-chv leaf"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+                  <div
+                    class="tn-row"
+                    style="--indent: 26px"
+                    onclick="tglLeaf('tn-ep4')"
+                  >
+                    <span class="tn-chv leaf"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
                     <span class="tn-ic">
-                      <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                      <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
                     </span>
                     <span class="tn-lbl">ep.4 비 오는 날</span>
                   </div>
@@ -839,22 +1401,54 @@
               </div>
             </div>
             <div class="tn closed" id="tn-pj2">
-              <div class="tn-row" style="--indent:12px" onclick="tglTn('tn-pj2')">
-                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+              <div
+                class="tn-row"
+                style="--indent: 12px"
+                onclick="tglTn('tn-pj2')"
+              >
+                <span class="tn-chv"
+                  ><img
+                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                /></span>
                 <span class="tn-ic">
-                  <img class="ic-c" src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                  <img class="ic-o" src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+                  <img
+                    class="ic-c"
+                    src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
+                  <img
+                    class="ic-o"
+                    src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
                 </span>
                 <span class="tn-lbl">여름 단편</span>
               </div>
               <div class="tn-kids"></div>
             </div>
             <div class="tn closed" id="tn-pj3">
-              <div class="tn-row" style="--indent:12px" onclick="tglTn('tn-pj3')">
-                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+              <div
+                class="tn-row"
+                style="--indent: 12px"
+                onclick="tglTn('tn-pj3')"
+              >
+                <span class="tn-chv"
+                  ><img
+                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                /></span>
                 <span class="tn-ic">
-                  <img class="ic-c" src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                  <img class="ic-o" src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+                  <img
+                    class="ic-c"
+                    src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
+                  <img
+                    class="ic-o"
+                    src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
                 </span>
                 <span class="tn-lbl">겨울 연작</span>
               </div>
@@ -866,17 +1460,41 @@
         <!-- 공유 책장 (closed) -->
         <div class="sb-grp closed" id="grp-shared">
           <div class="sb-grp-hd" onclick="tglGrp('grp-shared')">
-            <span class="ic"><img src="../../src/assets/images/diversity_3_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+            <span class="ic"
+              ><img
+                src="../../src/assets/images/diversity_3_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
             <span class="lbl">공유 책장</span>
-            <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+            <span class="chv"
+              ><img
+                src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
           </div>
           <div class="sb-grp-bd">
             <div class="tn closed" id="tn-sh-pj1">
-              <div class="tn-row" style="--indent:12px" onclick="tglTn('tn-sh-pj1')">
-                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+              <div
+                class="tn-row"
+                style="--indent: 12px"
+                onclick="tglTn('tn-sh-pj1')"
+              >
+                <span class="tn-chv"
+                  ><img
+                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                /></span>
                 <span class="tn-ic">
-                  <img class="ic-c" src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                  <img class="ic-o" src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+                  <img
+                    class="ic-c"
+                    src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
+                  <img
+                    class="ic-o"
+                    src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
                 </span>
                 <span class="tn-lbl">팀 프로젝트 A</span>
               </div>
@@ -884,13 +1502,15 @@
             </div>
           </div>
         </div>
-
       </div>
 
       <!-- RAIL NAV: 프로젝트 화면 — house + book_open(active) -->
       <div class="sb-rail-nav">
         <div class="rn-item" title="책장">
-          <img src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+          <img
+            src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt=""
+          />
           <div class="rn-pop">
             <div class="rn-pop-hd">나의 책장</div>
             <div class="rn-pop-i">고양이와 강아지</div>
@@ -899,7 +1519,10 @@
           </div>
         </div>
         <div class="rn-item on" title="고양이와 강아지">
-          <img src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+          <img
+            src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt=""
+          />
           <div class="rn-pop">
             <div class="rn-pop-hd">에피소드</div>
             <div class="rn-pop-i">ep.1 첫 만남</div>
@@ -915,7 +1538,6 @@
         <div class="sb-av">베</div>
         <span class="sb-ft-name">베베</span>
       </div>
-
     </aside>
 
     <!-- ═══ MAIN ═══ -->
@@ -924,18 +1546,29 @@
         <div class="ws-tr">
           <div class="ws-ttl">고양이와 강아지</div>
           <button class="ws-fav on">
-            <img src="../../src/assets/images/bookmark_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+            <img
+              src="../../src/assets/images/bookmark_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+              alt=""
+            />
           </button>
           <div class="ws-acts">
             <button class="abtn pri">+ 에피소드 추가</button>
+            <!-- 디자인 관련 주석 -->
+            <!-- 클로드용 주석 -->
             <!-- 이런것들도 다 + img를 사이드에 삽입한 아이콘버튼이었으면 좋겠음 -->
             <!-- 텍스트가 아니라 이미지아이콘을 사용하고 싶은데 그러면 용량만 커지고 실속이 없나? -->
             <!-- 어느쪽이 좋은지 추천좀 -->
             <button class="cfg-btn" onclick="openCfg()" title="프로젝트 설정">
-              <img src="../../src/assets/images/setting-5-svgrepo-com.svg" alt="">
+              <img
+                src="../../src/assets/images/setting-5-svgrepo-com.svg"
+                alt=""
+              />
             </button>
             <button class="hbtn" onclick="tglMM()" title="메모 패널">
-              <img src="../../src/assets/images/more_horiz_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+              <img
+                src="../../src/assets/images/more_horiz_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+              />
             </button>
           </div>
         </div>
@@ -943,12 +1576,14 @@
 
       <div class="ws-bd">
         <!-- 전체 탭 -->
+        <!-- 디자인 관련 주석 -->
         <!-- 디자인이 정말정말 구림. -->
         <div id="t-all">
           <!-- 프로젝트 정보 영역 -->
           <div class="pj-info">
             <div class="pj-card">
               <div class="pj-card-t">프로젝트 메모</div>
+              <!-- 클로드용 주석 -->
               <!-- 이게 projectMemo -->
               <textarea class="pj-ta" rows="3" placeholder="프로젝트 메모...">
 고양이와 강아지가 처음 만나 함께 모험하는 이야기. 전체 12화 예정.</textarea
@@ -956,10 +1591,15 @@
             </div>
             <div class="pj-card">
               <div class="pj-card-t">프로젝트 세부 메모</div>
+              <!-- 클로드용 주석 -->
               <!-- 이게 projectDetailMemos -->
               <textarea class="pj-ta" rows="3" placeholder="세부 메모...">
 장르: 힐링 일상. 대상: 전연령. 연재 주기: 주 1회. 참고: 동물 해부학 자료집.</textarea
               >
+              <!-- 디자인 관련 주석 -->
+              <!-- 클로드용 주석 -->
+              <!-- 이 부분, 디자인도 필요하지만 데이터 구조의 수정이 필요함 -->
+              <!-- 어떤 식이 좋을지 제안해주면 내가 선택하겠음 -->
               <!-- 세부 메모를 입력할 때 태그지정이나...카테고리 설정 같은 개념으로 -->
               <!-- 장르, 대상, 연재주기... 이런 내용을 정할 수 있는데, -->
               <!-- 예를 들어 현재 세부 메모는 이렇게 저장됨 -->
@@ -977,6 +1617,7 @@
           <div class="pj-info" style="grid-template-columns: 1fr">
             <div class="pj-card">
               <div class="pj-card-t">프로젝트 정보</div>
+              <!-- 디자인 관련 주석 -->
               <!-- 프로젝트 설정의 내용이 프로젝트 정보 내용이랑 같이 있어도 될듯 -->
               <div class="pj-meta">
                 <div class="pj-meta-item">
@@ -991,6 +1632,7 @@
                   <span class="pj-meta-lbl">마지막 작업</span
                   ><span class="pj-meta-val">yyyy-mm-dd hh-mm</span>
                 </div>
+                <!-- 디자인 관련 주석 -->
                 <!-- 공유 버튼이 어딘가에 필요. 구글드라이브나 노션같은 느낌. -->
                 <!-- 아이콘 닉네임          소유자 -->
                 <!-- 아이콘 닉네임          편집자/댓글 작성자/뷰어/제거 -->
@@ -1000,6 +1642,8 @@
           </div>
 
           <!-- 에피소드 목록 -->
+          <!-- 디자인 관련 주석 -->
+          <!-- 클로드용 주석 -->
           <!-- .pc-th, .pc-ep-n, pc-ttl, pc-fav-on을 왼쪽에 위치시킴. 여기는 정보 영역 -->
           <!-- .pc-ttl은 클릭하면 text처럼 보이던 input이 입력형태가 됨 -->
           <!-- 정보영역 오른쪽으로는 input이 있음, 여기에 pc-memo 즉, episodeMemo를 적는 것 -->
@@ -1022,6 +1666,8 @@
       <div class="cfg-box" onclick="event.stopPropagation()">
         <div class="cfg-title">프로젝트 설정</div>
         <div class="cfg-desc">프로젝트 전체에 적용되는 기본 설정입니다.</div>
+        <!-- 디자인 관련 주석 -->
+        <!-- 클로드용 주석 -->
         <!-- 클릭하면 .cfg-card-v가 변경모드가 됨. 그럴려면 기본적으로 .cfg-card-v는 input인데 input티가 안나는 -->
         <!-- 그냥 text처럼 보이는 input이었다가 클릭하면 input처럼 보이게 되는게 나을듯 -->
         <!-- 누누히 말하지만 클릭했다고 좌우위아래 뭐가 움직이고 그런건 싫음 -->
@@ -1087,10 +1733,13 @@
       <div class="mm-hd" id="mm-hd">
         <span class="mm-hd-t">메모</span>
         <button class="mm-b" id="mm-pin" onclick="tglPin()">
-          <img src="../../src/assets/images/pin-svgrepo-com.svg" alt="">
+          <img src="../../src/assets/images/pin-svgrepo-com.svg" alt="" />
         </button>
         <button class="mm-b" onclick="closeMM()">
-          <img src="../../src/assets/images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+          <img
+            src="../../src/assets/images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt=""
+          />
         </button>
       </div>
       <div class="mm-tabs"><div class="mm-tab on">프로젝트</div></div>
@@ -1246,13 +1895,21 @@
         document.getElementById("cfg-ov").classList.remove("open");
       }
 
-      function tglSb() { document.getElementById("sb").classList.toggle("rail"); }
-      function tglGrp(id) { document.getElementById(id).classList.toggle("closed"); }
-      function tglTn(id) { document.getElementById(id).classList.toggle("closed"); }
+      function tglSb() {
+        document.getElementById("sb").classList.toggle("rail");
+      }
+      function tglGrp(id) {
+        document.getElementById(id).classList.toggle("closed");
+      }
+      function tglTn(id) {
+        document.getElementById(id).classList.toggle("closed");
+      }
       function tglLeaf(id) {
         const row = document.querySelector("#" + id + " .tn-row");
         const wasOn = row.classList.contains("on");
-        document.querySelectorAll(".tn.leaf .tn-row.on").forEach(r => r.classList.remove("on"));
+        document
+          .querySelectorAll(".tn.leaf .tn-row.on")
+          .forEach((r) => r.classList.remove("on"));
         if (!wasOn) row.classList.add("on");
       }
       function openS() {
