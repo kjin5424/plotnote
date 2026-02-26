@@ -428,7 +428,7 @@
       }
       /* 정순/역순 토글 */
       .sort-tgl {
-        padding: 3px 8px;
+        padding: 3px 4px;
         border-radius: 5px;
         border: 1px solid var(--bd2);
         background: var(--wh);
@@ -1231,6 +1231,10 @@
         color: var(--gh);
         font-style: italic;
       }
+      img {
+        width: 18px;
+        aspect-ratio: 1/1;
+      }
     </style>
   </head>
   <body>
@@ -1248,6 +1252,19 @@
         <span class="sb-x">plotnote</span>
       </div>
       <div class="sb-sec">
+        <div class="srch" onclick="openS()">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" /></svg
+          ><span>검색...</span>
+        </div>
         <div class="sb-lbl">즐겨찾기</div>
         <div class="si">
           <div class="d" style="background: var(--am)"></div>
@@ -1289,30 +1306,21 @@
       <!-- WS Header -->
       <div class="ws-hd">
         <div class="ws-hd-top">
-          <div class="ws-bc">
-            <a>책장</a><span class="sep">›</span> <a>고양이와 강아지</a
-            ><span class="sep">›</span>
-            <span class="cur">에피소드 관리</span>
-          </div>
+          <div class="ep-col-ttl">에피소드 목록</div>
           <div class="ws-hd-r">
             <button class="hbtn" onclick="tglMM()" title="메모 패널">⋯</button>
           </div>
         </div>
       </div>
+      <!-- 에피소드의 헤더나 헤더 아래쪽이나 그런데서 pageMemo, 좀더 세부적으로는 pageDetailMemos를 확인할 수 있도록 -->
 
       <!-- WS Body: 에피소드 목록 + 디테일 -->
+      <!-- .det-col가 원래 전체 width를 차지하고 있는데, eth를 클릭하면 해당 정보에 맞는 det-col가 뜨도록 -->
       <div class="ws-bd">
         <!-- 좌측 에피소드 목록 -->
         <div class="ep-col">
           <div class="ep-col-hd">
-            <div class="ep-col-top">
-              <div class="ep-col-ttl">에피소드 목록</div>
-              <div class="ep-col-acts">
-                <button class="sort-tgl" id="sort-tgl" onclick="tglSort()">
-                  정순 ↓
-                </button>
-              </div>
-            </div>
+            <div class="ep-col-top"></div>
             <div class="ep-tabs">
               <div class="ep-tab on">
                 전체
@@ -1327,6 +1335,17 @@
               </div>
               <div class="ep-tab">진행중</div>
               <div class="ep-tab">완료</div>
+              <!-- ep-col-acts는 ep-tab들이랑 space-around시키고 싶음 -->
+              <div class="ep-col-acts" style="margin-left: 100px">
+                <button class="sort-tgl" id="sort-tgl" onclick="tglSort()">
+                  <img
+                    src="../../src/assets/images/sort-ascending-svgrepo-com.svg"
+                    alt=""
+                    style="width: 16px; aspect-ratio: 1/1"
+                  />
+                  <!-- 클릭하면 "../../src/assets/images/sort-descending-svgrepo-com.svg" -->
+                </button>
+              </div>
             </div>
           </div>
           <div class="ep-list" id="ep-list"></div>
@@ -1388,6 +1407,7 @@
               <!-- eps.memo (상위 메모) -->
               <div class="ep-parent-memo" id="ep-parent-memo">
                 <div class="ep-parent-memo-lbl">에피소드 메모 (eps.memo)</div>
+                <!-- 이게 episodeMemo -->
                 <div id="ep-parent-memo-txt">
                   고양이와 강아지가 공원에서 처음 마주치는 장면.
                 </div>
@@ -1395,6 +1415,7 @@
               <!-- 에피소드 세부 메모 -->
               <div class="m-sec">
                 <div class="m-sec-t">에피소드 세부 메모</div>
+                <!-- episodeDetailMemos -->
                 <textarea
                   class="m-ta"
                   rows="4"
@@ -1407,6 +1428,7 @@
               <!-- 페이지별 메모 -->
               <div class="m-sec">
                 <div class="m-sec-t">페이지별 메모</div>
+                <!-- 이게 pageMemo -->
                 <div class="pm-list" id="pm-list"></div>
                 <div class="pm-add" onclick="addPg()">
                   <span style="font-size: 13px">+</span> 페이지 추가
@@ -1600,14 +1622,22 @@
           const row = document.createElement("div");
           row.className = "erow" + (selEp === i ? " on" : "");
           row.innerHTML = `
+          <div class="er-acts"><div class="drag-h" title="길게 클릭: 드래그"><span></span><span></span><span></span></div></div>
       <div class="eth" style="background:${colors[i % colors.length]}"><span class="eth-n">${i + 1}</span></div>
       <div class="ebody">
+        <div class="bebe-info" style="display:flex; flex-direction:row; align-items:flex-end; gap:4px;">
         <div class="ebody-num">${e.n}</div>
         <div class="ebody-ttl">${e.t}</div>
+        </div>
         <div class="ebody-memo${e.memo ? "" : " empty"}">${e.memo || "메모 없음"}</div>
         <div class="ebody-ft"><span class="ebody-pg">${e.pg}p</span><span class="etag ${tagCls[e.tag]}">${tagTxt[e.tag]}</span></div>
       </div>
-      <div class="er-acts"><div class="drag-h" title="길게 클릭: 드래그"><span></span><span></span><span></span></div></div>`;
+      `;
+          // bebe-info에 대한 설명 : ebody-num, ebody-ttl 우측으로 src/assets/images의 favorite 아이콘이 들어갈거임
+          // space-around처리할거고 한...16px정도면 될거같음
+
+          // 주목!: ebody-memo가 episodeMemo
+
           // 클릭→detail
           row.addEventListener("click", () => {
             selEp = i;

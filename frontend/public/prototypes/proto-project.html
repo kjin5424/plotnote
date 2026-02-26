@@ -1002,6 +1002,10 @@
       .pc:nth-child(4) {
         animation-delay: 0.11s;
       }
+      img {
+        width: 18px;
+        aspect-ratio: 1/1;
+      }
     </style>
   </head>
   <body>
@@ -1019,6 +1023,19 @@
         <span class="sb-x">plotnote</span>
       </div>
       <div class="sb-sec">
+        <div class="srch" onclick="openS()">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" /></svg
+          ><span>검색...</span>
+        </div>
         <div class="sb-lbl">즐겨찾기</div>
         <div class="si on">
           <div class="d" style="background: var(--am)"></div>
@@ -1058,74 +1075,66 @@
     <!-- ═══ MAIN ═══ -->
     <div class="main">
       <div class="ws-hd">
-        <div class="ws-hd-top">
-          <div class="ws-bc">
-            <a>책장</a><span class="sep">›</span>
-            <span class="cur">고양이와 강아지</span>
-          </div>
-          <div class="ws-hd-r">
-            <div class="srch" onclick="openS()">
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <circle cx="11" cy="11" r="8" />
-                <path d="M21 21l-4.35-4.35" /></svg
-              ><span>검색...</span>
-            </div>
-            <button class="hbtn" onclick="tglMM()" title="메모 패널">⋯</button>
-          </div>
-        </div>
-        <div class="ws-tr">
+        <div class="ws-tr" style="display: flex; align-items: center">
           <div class="ws-ttl">고양이와 강아지</div>
-          <button
-            class="ws-fav on"
-            onclick="
-              this.classList.toggle('on');
-              this.textContent = this.classList.contains('on') ? '★' : '☆';
-            "
-          >
-            ★
+          <button class="ws-fav on" style="display: flex; align-items: center">
+            <img
+              src="../../src/assets/images/favorite_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+              alt=""
+            />
           </button>
           <div class="ws-acts">
-            <button class="cfg-btn" onclick="openCfg()" title="프로젝트 설정">
-              ⚙
-            </button>
             <button class="abtn pri">+ 에피소드 추가</button>
+            <!-- 이런것들도 다 + img를 사이드에 삽입한 아이콘버튼이었으면 좋겠음 -->
+            <!-- 텍스트가 아니라 이미지아이콘을 사용하고 싶은데 그러면 용량만 커지고 실속이 없나? -->
+            <!-- 어느쪽이 좋은지 추천좀 -->
+            <img
+              src="../../src/assets/images/setting-5-svgrepo-com.svg"
+              alt=""
+              onclick="openCfg()"
+            />
+            <button class="hbtn" onclick="tglMM()" title="메모 패널">⋯</button>
           </div>
-        </div>
-        <div class="tabs">
-          <div class="tab on" onclick="swT('all', this)">전체</div>
-          <div class="tab" onclick="swT('fav', this)">즐겨찾기</div>
-          <div class="tab" onclick="swT('shr', this)">공유됨</div>
         </div>
       </div>
 
       <div class="ws-bd">
         <!-- 전체 탭 -->
+        <!-- 디자인이 정말정말 구림. -->
         <div id="t-all">
           <!-- 프로젝트 정보 영역 -->
           <div class="pj-info">
             <div class="pj-card">
               <div class="pj-card-t">프로젝트 메모</div>
+              <!-- 이게 projectMemo -->
               <textarea class="pj-ta" rows="3" placeholder="프로젝트 메모...">
 고양이와 강아지가 처음 만나 함께 모험하는 이야기. 전체 12화 예정.</textarea
               >
             </div>
             <div class="pj-card">
               <div class="pj-card-t">프로젝트 세부 메모</div>
+              <!-- 이게 projectDetailMemos -->
               <textarea class="pj-ta" rows="3" placeholder="세부 메모...">
 장르: 힐링 일상. 대상: 전연령. 연재 주기: 주 1회. 참고: 동물 해부학 자료집.</textarea
               >
+              <!-- 세부 메모를 입력할 때 태그지정이나...카테고리 설정 같은 개념으로 -->
+              <!-- 장르, 대상, 연재주기... 이런 내용을 정할 수 있는데, -->
+              <!-- 예를 들어 현재 세부 메모는 이렇게 저장됨 -->
+              <!--                
+               projectDetailMemos: {
+                "장르": "힐링 일상",
+                "대상": "전연령",
+                "연재 주기": "주 1회",
+                "참고": "동물 해부학 자료집"
+               } 
+                -->
+              <!-- 이런식으로 세부메모도 에피소드 추가 하듯이 하나씩 추가하는 형태임 -->
             </div>
           </div>
           <div class="pj-info" style="grid-template-columns: 1fr">
             <div class="pj-card">
               <div class="pj-card-t">프로젝트 정보</div>
+              <!-- 프로젝트 설정의 내용이 프로젝트 정보 내용이랑 같이 있어도 될듯 -->
               <div class="pj-meta">
                 <div class="pj-meta-item">
                   <span class="pj-meta-lbl">에피소드</span
@@ -1137,17 +1146,20 @@
                 </div>
                 <div class="pj-meta-item">
                   <span class="pj-meta-lbl">마지막 작업</span
-                  ><span class="pj-meta-val">3일 전</span>
+                  ><span class="pj-meta-val">yyyy-mm-dd hh-mm</span>
                 </div>
-                <div class="pj-meta-item">
-                  <span class="pj-meta-lbl">소유자</span
-                  ><span class="pj-meta-val">베베</span>
-                </div>
+                <!-- 공유 버튼이 어딘가에 필요. 구글드라이브나 노션같은 느낌. -->
+                <!-- 아이콘 닉네임          소유자 -->
+                <!-- 아이콘 닉네임          편집자/댓글 작성자/뷰어/제거 -->
+                <!-- 링크 복사-->
               </div>
             </div>
           </div>
 
           <!-- 에피소드 목록 -->
+          <!-- .pc-th, .pc-ep-n, pc-ttl, pc-fav-on을 왼쪽에 위치시킴. 여기는 정보 영역 -->
+          <!-- .pc-ttl은 클릭하면 text처럼 보이던 input이 입력형태가 됨 -->
+          <!-- 정보영역 오른쪽으로는 input이 있음, 여기에 pc-memo 즉, episodeMemo를 적는 것 -->
           <div class="sec-hd">
             <h2>에피소드 목록</h2>
             <div style="display: flex; gap: 6px; align-items: center">
@@ -1159,39 +1171,6 @@
           </div>
           <div class="pgrid" id="ep-grid"></div>
         </div>
-
-        <!-- 즐겨찾기 탭 -->
-        <div id="t-fav" style="display: none">
-          <div class="sec-hd"><h2>즐겨찾기 에피소드</h2></div>
-          <div class="pgrid">
-            <div class="pc">
-              <div
-                class="pc-th"
-                style="background: linear-gradient(150deg, #8998b1, #4e5d7f)"
-              >
-                <span class="pc-th-n">1</span>
-              </div>
-              <div class="pc-info">
-                <div class="pc-tr">
-                  <span class="pc-ep-n">ep.1</span
-                  ><span class="pc-ttl">첫 만남</span
-                  ><button class="pc-fav on" onclick="event.stopPropagation()">
-                    ★
-                  </button>
-                </div>
-                <div class="pc-mt">24p</div>
-                <div class="pc-ft"><span class="etag t-done">완료</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 공유됨 탭 -->
-        <div id="t-shr" style="display: none">
-          <div style="text-align: center; color: var(--gh); padding: 40px 0">
-            공유된 에피소드가 없습니다
-          </div>
-        </div>
       </div>
     </div>
 
@@ -1199,10 +1178,10 @@
     <div class="cfg-ov" id="cfg-ov" onclick="closeCfg(event)">
       <div class="cfg-box" onclick="event.stopPropagation()">
         <div class="cfg-title">프로젝트 설정</div>
-        <div class="cfg-desc">
-          프로젝트 전체에 적용되는 기본 설정입니다. 개별 에피소드에서
-          오버라이드할 수 있습니다.
-        </div>
+        <div class="cfg-desc">프로젝트 전체에 적용되는 기본 설정입니다.</div>
+        <!-- 클릭하면 .cfg-card-v가 변경모드가 됨. 그럴려면 기본적으로 .cfg-card-v는 input인데 input티가 안나는 -->
+        <!-- 그냥 text처럼 보이는 input이었다가 클릭하면 input처럼 보이게 되는게 나을듯 -->
+        <!-- 누누히 말하지만 클릭했다고 좌우위아래 뭐가 움직이고 그런건 싫음 -->
         <div class="cfg-grid">
           <div class="cfg-card">
             <div class="cfg-card-l">기본 페이지수</div>
@@ -1210,7 +1189,7 @@
           </div>
           <div class="cfg-card">
             <div class="cfg-card-l">읽기 방향</div>
-            <div class="cfg-card-v">RTL (→←)</div>
+            <div class="cfg-card-v">RTL <small>(오른쪽→왼쪽)</small></div>
           </div>
           <div class="cfg-card">
             <div class="cfg-card-l">시작 페이지</div>
@@ -1219,16 +1198,6 @@
           <div class="cfg-card">
             <div class="cfg-card-l">기본 뷰</div>
             <div class="cfg-card-v">양면</div>
-          </div>
-          <div class="cfg-card">
-            <div class="cfg-card-l">판형</div>
-            <div class="cfg-card-v">B4</div>
-          </div>
-          <div class="cfg-card">
-            <div class="cfg-card-l">제목</div>
-            <div class="cfg-card-v" style="font-size: 11px">
-              고양이와 강아지
-            </div>
           </div>
         </div>
         <div class="cfg-acts">
