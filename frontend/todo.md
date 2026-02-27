@@ -261,9 +261,4 @@ function tglLeaf(id) {
 
 ---
 
-## 작업 규칙 (`.clinerules` 기반)
-
-- 전체 파일 재작성 금지 → **Search & Replace (diff)만 출력**
-- 각 단계 완료 후 git commit 메시지 제안
-- 디자인 관련 HTML 주석 절대 제거 금지
-- 다음 단계 진행 전 확인 요청
+> 작업 규칙은 `CLAUDE.md` 참조 (§3, §4)
