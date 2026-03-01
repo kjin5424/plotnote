@@ -3,10 +3,12 @@ import {
   useContext,
   useReducer,
   useState,
+  useEffect,
   type Dispatch,
   type ReactNode,
 } from 'react';
 import { nanoid } from 'nanoid';
+import { debouncedSave, loadStore } from 'services/persistence';
 import type { NormalizedStore } from 'types/store';
 import type {
   CutFrame,
@@ -441,6 +443,16 @@ const UIContext = createContext<UIContextValue | null>(null);
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [store, dispatch] = useReducer(storeReducer, INITIAL_STORE);
   const [ui, setUi] = useState<UiState>(INITIAL_UI);
+
+  useEffect(() => {
+    loadStore().then(saved => {
+      if (saved) dispatch({ type: 'LOAD_STORE', payload: saved });
+    });
+  }, []);
+
+  useEffect(() => {
+    debouncedSave(store);
+  }, [store]);
 
   const uiValue: UIContextValue = {
     ui,
