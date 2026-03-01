@@ -1,8 +1,8 @@
 import "assets/styles/index.scss";
 import { AuthProvider } from "./contexts/AuthContext";
 import { DataProvider } from "./contexts/DataContext";
+import { StoreProvider } from "./contexts/StoreContext";
 import { Navigate, Route, Routes } from "react-router-dom";
-import DashboardManagement from "components/screens/Dashboard";
 import BookshelfManagement from "./components/screens/Bookshelf";
 import ProjectManagement from "./components/screens/Project";
 import EpisodeManagement from "./components/screens/Episode";
@@ -13,26 +13,20 @@ import MainLayout from "./components/layout/MainLayout";
 function App() {
   return (
     <AuthProvider>
-      <DataProvider>
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            <Route index element={<Navigate to="/bookshelf" />} />
-            <Route path="bookshelf" element={<BookshelfManagement />} />
-            <Route path="dashboard" element={<DashboardManagement />} />
-            <Route path="project" element={<ProjectManagement />} />
-            <Route
-              path="project/:projectId/episode"
-              element={<EpisodeManagement />}
-            />
-            <Route
-              path="project/:projectId/episode/:episodeId/page"
-              element={<PageManagement />}
-            />
-            <Route path="/pages" element={<PageManagement />} />
-            <Route path="/pages/:pageId" element={<CutManagement />} />
-          </Route>
-        </Routes>
-      </DataProvider>
+      <StoreProvider>
+        <DataProvider>
+          <Routes>
+            <Route path="/" element={<MainLayout />}>
+              <Route index element={<Navigate to="/bookshelf" replace />} />
+              <Route path="bookshelf" element={<BookshelfManagement />} />
+              <Route path="project/:projectId" element={<ProjectManagement />} />
+              <Route path="project/:projectId/episode/:episodeId" element={<EpisodeManagement />} />
+              <Route path="project/:projectId/episode/:episodeId/page/:pageId" element={<PageManagement />} />
+              <Route path="project/:projectId/episode/:episodeId/page/:pageId/cut/:cutId" element={<CutManagement />} />
+            </Route>
+          </Routes>
+        </DataProvider>
+      </StoreProvider>
     </AuthProvider>
   );
 }

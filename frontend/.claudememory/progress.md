@@ -72,14 +72,19 @@ interface Memo extends BaseEntity {
 **다음 할 일:**
 - `techContext.md §5` NormalizedStore 인터페이스 갱신 (memos 추가, 엔티티 memo 필드 제거) ← React 구현 A단계 전에 수행
 
-### 구현 순서 (우선순위, 데이터 모델 확정 후)
-- [ ] **A.** 타입 정의 — `src/types/entities.ts`, `src/types/store.ts` (Memo 인터페이스 포함)
-- [ ] **B.** B4 유틸리티 — `src/utils/b4Layout.ts` (B4_SPEC, frameToPixels, calcInnerFrameOffset)
-- [ ] **C.** Context/Reducer — `src/contexts/StoreContext.tsx` (NormalizedStore + Action 타입)
-- [ ] **D.** 로컬 저장소 — `src/services/persistence.ts` (IndexedDB Debounced Save)
-- [ ] **E.** 라우팅 — react-router-dom v7 기반 (Bookshelf → Project → Episode → Page → Cut)
+### 구현 순서 (우선순위)
+- [x] **A.** 타입 정의 — `src/types/entities.ts`, `src/types/store.ts`
+- [x] **B.** B4 유틸리티 — `src/utils/b4Layout.ts`
+- [x] **C.** Context/Reducer — `src/contexts/StoreContext.tsx`
+- [x] **D.** 로컬 저장소 — `src/services/persistence.ts` (IndexedDB + debouncedSave)
+- [x] **E.** 라우팅 — `src/App.tsx` 정리 (5단계 중첩 라우트, StoreProvider 추가)
 - [ ] **F.** 공통 컴포넌트 — Button, Modal, GuideLine (B4 가이드라인 오버레이)
 - [ ] **G~K.** 화면 구현 (Bookshelf → Project → Episode → Page → Cut 순)
+
+### ⚠️ 마이그레이션 잔존 이슈 (G~K 진행 시 해소)
+- `DataContext.tsx`: `DataContextValue`, `CutNote` 타입 import 오류 (Vite 빌드는 통과, IDE 경고만)
+- `DataProvider`는 App.tsx에 임시 유지 — 스크린 마이그레이션 완료 후 제거
+- 기존 화면들(Bookshelf, Project, Episode, Page, Cut)은 여전히 `useData()` 사용 중 → G~K에서 `useStore()` / `useDispatch()` / `useUI()`로 교체
 
 ---
 
