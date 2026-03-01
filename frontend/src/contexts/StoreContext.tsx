@@ -4,11 +4,12 @@ import {
   useReducer,
   useState,
   useEffect,
+  useRef,
   type Dispatch,
   type ReactNode,
 } from 'react';
 import { nanoid } from 'nanoid';
-import { debouncedSave, loadStore } from 'services/persistence';
+import { saveToLocal, loadStore, classifyDbError } from 'services/persistence';
 import type { NormalizedStore } from 'types/store';
 import type {
   CutFrame,
@@ -424,6 +425,8 @@ const DispatchContext = createContext<Dispatch<Action> | null>(null);
 
 interface UIContextValue {
   ui: UiState;
+  dbError: string | null;
+  clearDbError: () => void;
   setCurrentBookshelfId: (id: string) => void;
   setCurrentProjectId:   (id: string) => void;
   setCurrentEpisodeId:   (id: string) => void;
@@ -443,19 +446,27 @@ const UIContext = createContext<UIContextValue | null>(null);
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [store, dispatch] = useReducer(storeReducer, INITIAL_STORE);
   const [ui, setUi] = useState<UiState>(INITIAL_UI);
+  const [dbError, setDbError] = useState<string | null>(null);
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
-    loadStore().then(saved => {
-      if (saved) dispatch({ type: 'LOAD_STORE', payload: saved });
-    });
+    loadStore()
+      .then(saved => { if (saved) dispatch({ type: 'LOAD_STORE', payload: saved }); })
+      .catch(err => setDbError(classifyDbError(err)));
   }, []);
 
   useEffect(() => {
-    debouncedSave(store);
+    clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => {
+      saveToLocal(store).catch(err => setDbError(classifyDbError(err)));
+    }, 500);
+    return () => clearTimeout(saveTimerRef.current);
   }, [store]);
 
   const uiValue: UIContextValue = {
     ui,
+    dbError,
+    clearDbError: () => setDbError(null),
     setCurrentBookshelfId: (id) => setUi(prev => ({ ...prev, currentBookshelfId: id })),
     setCurrentProjectId:   (id) => setUi(prev => ({ ...prev, currentProjectId: id })),
     setCurrentEpisodeId:   (id) => setUi(prev => ({ ...prev, currentEpisodeId: id })),
