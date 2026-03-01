@@ -1,8 +1,9 @@
-import useData from "contexts/DataContext";
+import { useStore, useUI } from "contexts/StoreContext";
 
 export default function BookshelfHeader() {
-  const { getCurrentBookshelf } = useData();
-  const bookshelf = getCurrentBookshelf();
+  const store = useStore();
+  const { ui } = useUI();
+  const bookshelf = ui.currentBookshelfId ? store.bookshelves[ui.currentBookshelfId] : null;
 
   return (
     <div className="bookshelf-header">
