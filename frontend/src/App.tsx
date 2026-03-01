@@ -9,6 +9,7 @@ import EpisodeManagement from "./components/screens/Episode";
 import PageManagement from "./components/screens/Page";
 import CutManagement from "./components/screens/Cut";
 import MainLayout from "./components/layout/MainLayout";
+import DbErrorToast from "./components/common/DbErrorToast/DbErrorToast";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             </Route>
           </Routes>
         </DataProvider>
+        <DbErrorToast />
       </StoreProvider>
     </AuthProvider>
   );
