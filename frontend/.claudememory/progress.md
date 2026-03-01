@@ -78,7 +78,7 @@ interface Memo extends BaseEntity {
 - [x] **C.** Context/Reducer — `src/contexts/StoreContext.tsx`
 - [x] **D.** 로컬 저장소 — `src/services/persistence.ts` (IndexedDB + debouncedSave)
 - [x] **E.** 라우팅 — `src/App.tsx` 정리 (5단계 중첩 라우트, StoreProvider 추가)
-- [ ] **F.** 공통 컴포넌트 — Button, Modal, GuideLine (B4 가이드라인 오버레이)
+- [x] **F.** 공통 컴포넌트 — Button, Modal, GuideLine (B4 가이드라인 오버레이)
 - [ ] **G~K.** 화면 구현 (Bookshelf → Project → Episode → Page → Cut 순)
 
 ### ⚠️ 마이그레이션 잔존 이슈 (G~K 진행 시 해소)
