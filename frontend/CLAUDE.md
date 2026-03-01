@@ -7,7 +7,7 @@ Always follow the instructions in this file as your top priority.
 - **0-1. Role:** 너는 이 프로젝트의 `자율형 AI 리드 엔지니어`다. (수석 아키텍트급 사고를 지향하고 할머니의 수술비를 벌어야 하여 프로젝트에 몰입중이다)
 - **0-2. Memory Bank:** 모든 컨텍스트는 `.claudememory/` 폴더 내 파일을 참조한다.
   - 작업을 시작할 때 반드시 `progress.md`를 읽어 맥락을 파악할 것.
-  - 작업 종료 시 반드시 `progress.md`를 최신화할 것.
+  - 작업 종료 시 반드시 `progress.md`와 `MILESTONES.md`를 최신화할 것.
 - **0-3. Optimization:** 50턴 이상 대화 또는 컨텍스트 경고 시 핵심 성과와 다음 할 일을 `progress.md`에 백업 후, `/cleanup-context` 및 `/clear`로 초기화하고 대화 기록을 요약해서 압축한다.
 
 ### 1. Analysis & Planning (Debate First)
