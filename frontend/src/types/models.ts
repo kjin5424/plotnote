@@ -1,5 +1,22 @@
-// 기존 import 경로("types/models") 호환용 re-export
-export type { DetailMemoEntry, CutNote, Bookshelf, Project, Episode, Page, Cut, Vertex, ManhwaData } from "./domain";
+export type {
+  BaseEntity,
+  Vertex,
+  CutFrame,
+  Asset,
+  Bookshelf,
+  Project,
+  Episode,
+  Page,
+  Cut,
+  EpisodeStatus,
+  PageType,
+  PageSide,
+  MemoParentType,
+  MemoRole,
+  Memo,
+  ScriptType,
+  ScriptSnippet,
+} from './entities';
 export type {
   Permission,
   ReadingDirection,
@@ -9,6 +26,7 @@ export type {
   EpisodeSettings,
   GlobalSettings,
   Settings,
-} from "./settings";
-export type { User, UserBookshelves, SharedBookshelf } from "./user";
-export type { UiState, DataContextValue } from "./ui";
+} from './settings';
+export type { User, UserBookshelves, SharedBookshelf } from './user';
+export type { UiState } from './ui';
+export type { NormalizedStore } from './store';

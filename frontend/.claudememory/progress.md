@@ -42,44 +42,35 @@
 - [x] `todo.md` 하단 중복 작업규칙 제거 → `CLAUDE.md §3,4 참조`로 대체
 - [x] `todo-design.md` 4개 JS 데이터 섹션에 ⚠️ 경계 주석 추가
 
-### 🔴 미결: 데이터 모델 확정 필요 (React 구현 전 선행)
-**`memos` 통합 테이블 설계 논의 중 — 세션 종료로 중단**
+### 🟡 데이터 모델 — 큰 방향 합의, 세부 필드는 보류
 
-**합의된 방향:**
-- 모든 엔티티(Project/Episode/Page/Cut)의 메모를 `NormalizedStore.memos` Record에 통합 관리
-- 엔티티 자체에서 `memo`, `detailMemo` 필드 제거
-- `ScriptSnippet`은 성격이 달라 별도 유지 (assign 기능, type 구분, DnD 조작)
+**합의된 방향 (2026-03-01 확정):**
+- 모든 엔티티(Project/Episode/Page/Cut) 메모를 `NormalizedStore.memos` Record에 통합 관리
+- 엔티티 자체에서 `memo`, `detailMemo` 인라인 필드 제거
+- `ScriptSnippet` 별도 유지 (DnD 배정, type 구분)
+- `order: string` — **Lexosort 확정** (사용자 DnD 재정렬 존재)
+- emoji 스코프: **episode + cut** (page 아님)
+- TypeScript interface ≠ DB 스키마 1:1 대응 아님 — nullable 일부 감수
 
-**미결 쟁점 — 다음 세션에서 결정:**
-1. **쟁점 2: `order` 필드 타입** — 정수(`number`) vs Lexosort 문자열(`string`)
-   - 정수: 단순하지만 중간 삽입 시 전체 재계산 필요
-   - Lexosort: 무한 중간 삽입 가능, 약간 복잡
-   - **핵심 질문: 메모 순서를 사용자가 직접 드래그로 재정렬하는 기능이 있을까?**
-2. **쟁점 3은 해결됨**: ScriptSnippet 분리 유지로 합의
+**보류 쟁점 (향후 메모 수정 요청 시 재논의):**
+1. **Memo interface 세부 필드** — SINGLE/DETAIL role 분리 여부, CutMemo 별도 테이블 분리 여부, nullable 범위
+2. **ScriptSnippet.speakerId / type 필드** — 캐릭터를 projectDetailMemo 안에서 관리할지, 별도 Character 엔티티로 분리할지 미결. 현재는 speakerId/type 필드를 ScriptSnippet에 두되 활성화 보류.
 
-**논의된 Memo 인터페이스 (잠정안):**
+**현재 사용할 잠정 Memo 인터페이스 (세부는 추후 수정):**
 ```ts
 interface Memo extends BaseEntity {
-  parentId: string;
+  parentId: string | null;  // cutMemo 미배정 시 null 가능
   parentType: 'PROJECT' | 'EPISODE' | 'PAGE' | 'CUT';
+  role: 'SINGLE' | 'DETAIL';
   content: string;
-  order: number; // 타입 미확정 — 쟁점 2
+  order: string;            // Lexosort
+  tags: string[];
+  emoji: string | null;     // episode SINGLE, cut SINGLE/DETAIL 전용
 }
 ```
 
-**목록 미리보기 처리 방식 (합의):**
-```ts
-// order: 0 = 주 메모 (목록 1줄 미리보기)
-// order: 1 = 상세 메모 (패널 textarea)
-const getEpisodeMemos = (episodeId: string) =>
-  Object.values(memos)
-    .filter(m => m.parentId === episodeId)
-    .sort((a, b) => a.order - b.order);
-```
-
-**쟁점 2 결정 후 할 일:**
-- `techContext.md §5` NormalizedStore 인터페이스 갱신 (memos 추가, 엔티티 memo 필드 제거)
-- `todo-design.md` §3-5 경계 주석의 "memo/detailMemo 필드명 미확정" 항목 해소
+**다음 할 일:**
+- `techContext.md §5` NormalizedStore 인터페이스 갱신 (memos 추가, 엔티티 memo 필드 제거) ← React 구현 A단계 전에 수행
 
 ### 구현 순서 (우선순위, 데이터 모델 확정 후)
 - [ ] **A.** 타입 정의 — `src/types/entities.ts`, `src/types/store.ts` (Memo 인터페이스 포함)
