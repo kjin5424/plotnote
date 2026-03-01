@@ -1,6 +1,8 @@
-# PlotNote 프로토타입 디자인 리빌드 TODO
+# PlotNote 프로토타입 디자인 스펙 (정규 문서)
 
-> **목적**: 5개 프로토타입 HTML(bookshelf, project, episode, page, cut)을 완성본 수준으로 리빌드.
+> **역할**: 이 파일은 화면별 HTML 구조·CSS 패턴·JS 인터랙션의 **설계 레퍼런스**입니다.
+> 구현 체크리스트는 `todo.md`를 참조하세요.
+>
 > **공통 CSS**: `proto-style.css` (이미 완료 — 866줄)
 > **사이드바**: `proto-sidebar.html` (이미 완료 — 392줄)
 > **아이콘**: `../../src/assets/images/` 경로의 SVG 파일 50개 사용 (icon-mapping.txt 참조)

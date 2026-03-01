@@ -90,4 +90,4 @@
 ## Known Issues
 - `vite-plugin-svgr` 미등록 → SVG를 React 컴포넌트로 사용 불가 (`vite.config.ts` 추가 필요)
 - `src/Setting/` 디렉토리 용도 불명확
-- `todo-design.md §4-5`: B4 비율 `238/324` 표기가 `B4_SPEC { w:324, h:238 }`과 역순
+- B4 비율: CSS `aspect-ratio: 238/324` = width:238, height:324 → **세로형 원고 ✅ 올바름**. `B4_SPEC { w:324, h:238 }` 표기가 w/h 역순으로 잘못됨 → React 구현 시 수정 필요
