@@ -1,9 +1,13 @@
 # Progress
 
 ## Current Status
-**단계:** Phase 1 HTML 프로토타입 정리 진행 중 — Phase A/B/C 완료, 다음은 D(통합 검수)
+**단계:** React Phase H(Project 화면) 완료 — ⚠️ 디자인 프로토타입 전면 개편 예정, Phase I~K는 대기
 **브랜치:** `recover-plan`
-**마지막 작업:** Phase B~C HTML 프로토타입 폴리싱 완료 (2026-03-02)
+**마지막 작업:** EpisodeStatus 3단계 코드 반영 + Phase H Project 마이그레이션 (2026-03-02)
+
+> ⚠️ **다음 세션 주의:** 유저가 HTML 프로토타입을 직접 디자인 개편할 예정.
+> 개편 완료 후 `todo.md`/`progress.md` 다시 조정 → React Phase I(Episode) 진행 예정.
+> Phase I~K 착수 전 프로토타입 변경 내용 먼저 확인할 것.
 
 ### Phase 1 완료 항목 (2026-03-02)
 - **A-1~A-4**: proto-episode.html proto-style.css 전환 + 신 사이드바 인라인 복사 + 5단계 EpisodeStatus 적용
@@ -51,7 +55,7 @@
 
 ### 다음 작업 (G~K)
 - [x] **G.** Bookshelf 화면 — `BookshelfHeader`, `BookshelfList`, `index.tsx` 마이그레이션 완료
-- [ ] **H.** Project 화면
+- [x] **H.** Project 화면 — `ProjectHeader`, `ProjectGrid`, `index.tsx` 마이그레이션 완료
 - [ ] **I.** Episode 화면
 - [ ] **J.** Page 화면
 - [ ] **K.** Cut 화면
@@ -63,8 +67,9 @@
 
 ### 데이터 모델
 - `NormalizedStore`: bookshelves/projects/episodes/pages/cuts/memos/scriptSnippets/assets — 모두 `Record<string, T>`
+- `EpisodeStatus`: `'draft' | 'inProgress' | 'done'` — 3단계 (예정/진행중/완료) ← 5단계에서 변경
 - `Memo`: 모든 엔티티 메모를 단일 테이블 통합 (`parentId | null`, `parentType`, `role: SINGLE|DETAIL`)
-- `ScriptSnippet`: 별도 유지 (DnD 배정, cutId nullable, type/speakerId 보류)
+- `ScriptSnippet`: 미확정 보류 (cutId nullable, type/speakerId 포함 스키마 전체 재논의 필요)
 - `order: string` — Lexosort (DnD 재정렬)
 - emoji: episode + cut 전용 (`emoji: string | null`)
 - TypeScript interface ≠ DB 스키마 1:1 대응 아님

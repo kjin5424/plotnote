@@ -156,7 +156,7 @@ interface Project extends BaseEntity {
   settings: ProjectSettings; episodeOrder: string[];
 }
 
-type EpisodeStatus = 'draft' | 'storyboard' | 'lineart' | 'coloring' | 'done';
+type EpisodeStatus = 'draft' | 'inProgress' | 'done'; // 예정 | 진행중 | 완료
 interface Episode extends BaseEntity {
   projectId: string; title: string; thumbnailUrl: string | null;
   status: EpisodeStatus; deadline: string | null;
@@ -230,7 +230,7 @@ const resolveSettings = (episode: Episode, project: Project): ResolvedSettings =
 ```ts
 export const B4_SPEC = {
   BLEED: { w: 324, h: 238 }, // 제판선 (전체 캔버스), CSS: aspect-ratio: 324/238
-  TRIM:  { w: 312, h: 226 }, // 재단선
+  TRIM:  { w: 312, h: 226 }, // 재단선 — 참조용 수치만 보존, 가이드라인 오버레이 미표시
   INNER: { w: 270, h: 180 }, // 내곽선 — 모든 컷 배치 기준
   BLEED_MM: 6,
   MARGIN: { top: 21, bottom: 21, gutter: 12, outer: 23 }, // mm
@@ -290,7 +290,7 @@ export const SHOW_GUIDELINES = import.meta.env.DEV;
 }
 ```
 
-가이드라인 색상: **내곽선(Green)**, 재단선(Red), 제판선(Blue)
+가이드라인 색상: **내곽선** (파란색 — 컷 미분할 시 / 검정색 — 컷 분할 후), **제판선** (파란색). 재단선 오버레이 미표시.
 
 ---
 

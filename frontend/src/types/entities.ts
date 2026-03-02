@@ -37,7 +37,7 @@ export interface Project extends BaseEntity {
   episodeOrder: string[];
 }
 
-export type EpisodeStatus = 'draft' | 'storyboard' | 'lineart' | 'coloring' | 'done';
+export type EpisodeStatus = 'draft' | 'inProgress' | 'done';
 
 export interface Episode extends BaseEntity {
   projectId: string;
