@@ -1067,7 +1067,7 @@
           memo: "동네 친구들 소개.",
           detail: "",
           pg: 24,
-          tag: "lineart",
+          tag: "inProgress",
         },
         {
           n: "ep.4",
@@ -1075,7 +1075,7 @@
           memo: "",
           detail: "",
           pg: 24,
-          tag: "storyboard",
+          tag: "inProgress",
         },
         {
           n: "ep.5",
@@ -1103,22 +1103,16 @@
         },
       ];
       const tagCls = {
-        draft: "t-todo", storyboard: "t-todo",
-        lineart: "t-wip", coloring: "t-wip",
+        draft: "t-todo",
+        inProgress: "t-wip",
         done: "t-done",
       };
       const tagTxt = {
-        draft: "예정", storyboard: "스토리보드",
-        lineart: "선화", coloring: "채색", done: "완료",
+        draft: "예정", inProgress: "진행중", done: "완료",
       };
-      // EpisodeStatus 그루핑
-      // "전체"   → 모든 상태
-      // "진행중" → storyboard | lineart | coloring
-      // "완료"   → done
-      // "예정"   → draft
       const STATUS_GROUP = {
-        all:        ["draft", "storyboard", "lineart", "coloring", "done"],
-        inProgress: ["storyboard", "lineart", "coloring"],
+        all:        ["draft", "inProgress", "done"],
+        inProgress: ["inProgress"],
         done:       ["done"],
         draft:      ["draft"],
       };
@@ -1253,9 +1247,9 @@
 
       function cycleStatus() {
         if (selEp < 0) return;
-        const order = ["draft", "storyboard", "lineart", "coloring", "done"];
+        const order = ["draft", "inProgress", "done"];
         const cur = order.indexOf(eps[selEp].tag);
-        eps[selEp].tag = order[(cur + 1) % 5];
+        eps[selEp].tag = order[(cur + 1) % 3];
         renderList();
         showDet(selEp);
       }

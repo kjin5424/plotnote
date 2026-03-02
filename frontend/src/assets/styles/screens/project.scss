@@ -39,6 +39,126 @@
 }
 
 // ─────────────────────────────────────────────
+// [2-B] 에피소드 리스트 (ProjectGrid.tsx)
+// ─────────────────────────────────────────────
+
+.project-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.project-header-fav {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: var(--font-lg);
+  color: var(--text-tertiary);
+  padding: 0;
+  line-height: 1;
+  transition: color var(--transition-fast);
+
+  &:hover { color: var(--color-accent); }
+  &.on { color: var(--color-accent); }
+}
+
+.project-ep-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: fadeUp var(--transition-slow) ease both;
+}
+
+.project-ep-empty {
+  padding: var(--spacing-lg);
+  color: var(--text-tertiary);
+  font-size: var(--font-sm);
+  text-align: center;
+}
+
+.project-ep-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: 10px var(--spacing-md);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+
+  &:hover { background: var(--bg-tertiary); }
+
+  &--add {
+    justify-content: center;
+    color: var(--text-tertiary);
+    font-size: var(--font-sm);
+    border-style: dashed;
+    background: transparent;
+
+    &:hover {
+      color: var(--color-primary);
+      border-color: var(--color-primary);
+      background: transparent;
+    }
+  }
+}
+
+.project-ep-num {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  min-width: 36px;
+}
+
+.project-ep-body {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex: 1;
+  min-width: 0;
+}
+
+.project-ep-title {
+  font-size: var(--font-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-ep-pg {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.project-ep-status {
+  font-size: var(--font-xs);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-weight: var(--font-medium);
+  flex-shrink: 0;
+
+  &--todo {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+  }
+
+  &--wip {
+    background: rgba(42, 77, 136, 0.12);
+    color: var(--color-primary);
+  }
+
+  &--done {
+    background: rgba(82, 199, 135, 0.15);
+    color: #369060;
+  }
+}
+
+// ─────────────────────────────────────────────
 // [3] 프로젝트 사이드바 (ProjectSidebar.js)
 //     l-sidebar 기반 (layout.scss)
 // ─────────────────────────────────────────────

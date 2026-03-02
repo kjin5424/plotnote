@@ -1,45 +1,58 @@
 import { useNavigate } from "react-router-dom";
-import { useEpisode } from "hooks/data/useEpisode";
-import useData from "contexts/DataContext";
+import { useStore, useUI, useDispatch } from "contexts/StoreContext";
+import type { EpisodeStatus } from "types/entities";
+
+const STATUS_LABEL: Record<EpisodeStatus, string> = {
+  draft: "예정",
+  inProgress: "진행중",
+  done: "완료",
+};
+
+const STATUS_MOD: Record<EpisodeStatus, string> = {
+  draft: "project-ep-status--todo",
+  inProgress: "project-ep-status--wip",
+  done: "project-ep-status--done",
+};
 
 export default function ProjectGrid() {
-  const { episodes, selectEpisode, addEpisode } = useEpisode();
-  const { uiState } = useData();
+  const store = useStore();
+  const { ui } = useUI();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSelectEpisode = (episodeId: string) => {
-    selectEpisode(episodeId);
-    navigate(`/project/${uiState.currentProjectId}/episode`);
+  const project = ui.currentProjectId ? store.projects[ui.currentProjectId] : null;
+  const episodes = project
+    ? project.episodeOrder.map((id) => store.episodes[id]).filter(Boolean)
+    : [];
+
+  const handleAddEpisode = () => {
+    if (!project) return;
+    dispatch({ type: "ADD_EPISODE", payload: { projectId: project.id, title: "새 에피소드" } });
   };
 
   return (
-    <div className="project-grid">
-      <div className="project-grid-action">
-        <button className="project-grid-add-btn" onClick={addEpisode}>
-          + 에피소드 추가
-        </button>
-      </div>
-      <div className="project-episode-list">
-        {episodes.length === 0 ? (
-          <p className="project-episode-empty">에피소드가 없습니다.</p>
-        ) : (
-          episodes.map((episode, index) => (
-            <div
-              key={episode.episodeId}
-              className="project-episode-item"
-              onClick={() => handleSelectEpisode(episode.episodeId)}
-            >
-              <div className="project-episode-thumb" />
-              <div className="project-episode-info">
-                <p className="project-episode-number">{index + 1}화</p>
-                <p className="project-episode-title">{episode.title}</p>
-                {episode.episodeMemo && (
-                  <p className="project-episode-memo">{episode.episodeMemo}</p>
-                )}
-              </div>
-            </div>
-          ))
-        )}
+    <div className="project-ep-list">
+      {episodes.length === 0 && (
+        <p className="project-ep-empty">에피소드가 없습니다.</p>
+      )}
+      {episodes.map((episode, index) => (
+        <div
+          key={episode.id}
+          className="project-ep-row"
+          onClick={() => navigate(`/project/${project!.id}/episode/${episode.id}`)}
+        >
+          <span className="project-ep-num">ep.{index + 1}</span>
+          <div className="project-ep-body">
+            <span className="project-ep-title">{episode.title}</span>
+            <span className="project-ep-pg">{episode.pageOrder.length}p</span>
+          </div>
+          <span className={`project-ep-status ${STATUS_MOD[episode.status]}`}>
+            {STATUS_LABEL[episode.status]}
+          </span>
+        </div>
+      ))}
+      <div className="project-ep-row project-ep-row--add" onClick={handleAddEpisode}>
+        + 에피소드 추가
       </div>
     </div>
   );
