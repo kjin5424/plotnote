@@ -7,265 +7,14 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&family=Noto+Serif+KR:wght@600&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="proto-style.css" />
     <style>
+      /* 페이지/컷 전용 CSS 변수 */
       :root {
-        --db: #2a4d88;
-        --oc: #7c94b8;
-        --gl: #b1bbc8;
-        --co: #d9d9d8;
-        --am: #fbc662;
-        --am-bg: #fff8e6;
-        --wh: #fefefe;
-        --pa: #f7f6f3;
-        --ink: #1a1a1a;
-        --i2: #4a4a4a;
-        --gh: #9a9a9a;
-        --bd: #e8e6e0;
-        --bd2: #d5d2cb;
-        --rail: 44px;
-        --sw: 220px;
         --rsp: 280px;
       }
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      body {
-        font-family: "Noto Sans KR", sans-serif;
-        background: var(--pa);
-        color: var(--ink);
-        height: 100vh;
-        overflow: hidden;
-        display: flex;
-        font-size: 13px;
-      }
-      button {
-        font-family: inherit;
-        cursor: pointer;
-      }
 
-      /* ═══ SIDEBAR ═══ */
-      .sb {
-        width: var(--sw);
-        min-width: var(--sw);
-        height: 100%;
-        background: var(--wh);
-        border-right: 1px solid var(--bd);
-        display: flex;
-        flex-direction: column;
-        transition:
-          width 0.22s,
-          min-width 0.22s;
-        overflow: visible;
-        position: relative;
-        z-index: 50;
-        flex-shrink: 0;
-      }
-      .sb.rail {
-        width: var(--rail);
-        min-width: var(--rail);
-      }
-      .sb.rail .sb-x,
-      .sb.rail .sb-lbl,
-      .sb.rail .si-t,
-      .sb.rail .sb-ft-n {
-        display: none;
-      }
-      .sb.rail .si {
-        justify-content: center;
-        padding: 7px;
-      }
-      .sb.rail .si .d {
-        width: 8px;
-        height: 8px;
-      }
-      .sb.rail .sb-sec {
-        padding: 6px 4px 3px;
-      }
-      .sb.rail .sb-logo {
-        justify-content: center;
-        padding: 10px 8px;
-      }
-      .sb.rail .sb-u {
-        justify-content: center;
-        padding: 5px;
-      }
-      .sb-logo {
-        padding: 12px 14px 10px;
-        border-bottom: 1px solid var(--bd);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex-shrink: 0;
-      }
-      .sb-mk {
-        width: 24px;
-        height: 24px;
-        background: var(--db);
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        cursor: pointer;
-      }
-      .sb-mk svg {
-        width: 12px;
-        height: 12px;
-        fill: #fff;
-      }
-      .sb-x {
-        font-family: "DM Mono", monospace;
-        font-size: 12px;
-        color: var(--ink);
-      }
-      .sb-sec {
-        padding: 8px 8px 3px;
-      }
-      .sb-lbl {
-        font-size: 9px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--gh);
-        padding: 0 8px;
-        margin-bottom: 2px;
-      }
-      .si {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 5px 8px;
-        border-radius: 5px;
-        font-size: 11px;
-        color: var(--i2);
-        cursor: pointer;
-        position: relative;
-      }
-      .si:hover {
-        background: var(--pa);
-      }
-      .si.on {
-        background: #eef1f7;
-        color: var(--db);
-        font-weight: 500;
-      }
-      .si .d {
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        background: var(--gl);
-        flex-shrink: 0;
-      }
-      .si.on .d {
-        background: var(--db);
-      }
-      .si-t {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .sb-ft {
-        margin-top: auto;
-        padding: 8px;
-        border-top: 1px solid var(--bd);
-      }
-      .sb-u {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 5px 8px;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      .sb-u:hover {
-        background: var(--pa);
-      }
-      .av {
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        background: var(--db);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 9px;
-        color: #fff;
-        font-weight: 600;
-        flex-shrink: 0;
-      }
-      .si-pop {
-        display: none;
-        position: absolute;
-        left: 100%;
-        top: -4px;
-        margin-left: 6px;
-        background: var(--wh);
-        border: 1px solid var(--bd);
-        border-radius: 8px;
-        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.13);
-        padding: 6px 0;
-        min-width: 180px;
-        max-height: 260px;
-        overflow-y: auto;
-        z-index: 100;
-      }
-      .sb.rail .si:hover .si-pop {
-        display: block;
-      }
-      .si-pop-hd {
-        padding: 5px 12px 4px;
-        font-size: 9px;
-        font-weight: 500;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        color: var(--gh);
-        border-bottom: 1px solid var(--bd);
-        margin-bottom: 2px;
-      }
-      .si-pop-i {
-        padding: 5px 12px;
-        font-size: 11px;
-        color: var(--i2);
-        cursor: pointer;
-      }
-      .si-pop-i:hover {
-        background: var(--pa);
-        color: var(--db);
-      }
-      .sb-tgl {
-        position: absolute;
-        right: -12px;
-        top: 14px;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background: var(--wh);
-        border: 1px solid var(--bd);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        z-index: 60;
-        font-size: 10px;
-        color: var(--gh);
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-      }
-      .sb-tgl:hover {
-        background: var(--pa);
-        color: var(--db);
-      }
-
-      /* ═══ MAIN ═══ */
-      .main {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        min-width: 0;
-      }
-
-      /* WS Header (breadcrumb + search + ⋯) */
+      /* WS Header (page/cut 전용 — flex+gap 레이아웃) */
       .ws-hd {
         flex-shrink: 0;
         background: var(--wh);
@@ -296,12 +45,6 @@
       }
       .ws-bc .sep {
         color: var(--co);
-      }
-      .ws-hd-r {
-        margin-left: auto;
-        display: flex;
-        gap: 6px;
-        align-items: center;
       }
       .srch {
         display: flex;
@@ -345,11 +88,12 @@
       /* ═══ 상단 컨텍스트 바 ═══ */
       .ctx-bar {
         flex-shrink: 0;
-        height: 40px;
+        min-height: 40px;
         background: var(--wh);
         border-bottom: 1px solid var(--bd);
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
         padding: 0 16px;
         gap: 8px;
       }
@@ -400,12 +144,11 @@
         color: var(--gh);
         font-family: "DM Mono", monospace;
       }
-      /* zoom in ctx-bar */
       .zoom-ctl {
         display: flex;
         align-items: center;
         gap: 3px;
-        margin-left: 12px;
+        margin-left: auto;
         border-left: 1px solid var(--bd);
         padding-left: 12px;
       }
@@ -548,7 +291,7 @@
         pointer-events: none;
       }
 
-      /* ═══ 우측 메모 패널 (Design1 Paper) ═══ */
+      /* ═══ 우측 메모 패널 ═══ */
       .rsp {
         width: 0;
         overflow: hidden;
@@ -770,199 +513,12 @@
         background: #ffeaea;
         color: #c93a3a;
       }
-
-      /* ═══ FLOATING MEMO MODAL ═══ */
-      .mm {
-        display: none;
-        position: fixed;
-        z-index: 150;
-        width: 360px;
-        height: 400px;
-        background: var(--wh);
-        border: 1px solid var(--bd);
-        border-radius: 10px;
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-        flex-direction: column;
-        overflow: hidden;
-        resize: both;
-        min-width: 280px;
-        min-height: 200px;
-      }
-      .mm.open {
-        display: flex;
-      }
-      .mm-hd {
-        display: flex;
-        align-items: center;
-        padding: 8px 12px;
-        border-bottom: 1px solid var(--bd);
-        cursor: grab;
-        flex-shrink: 0;
-        background: var(--pa);
-        user-select: none;
-      }
-      .mm-hd:active {
-        cursor: grabbing;
-      }
-      .mm-hd-t {
-        font-size: 11px;
-        font-weight: 500;
-        color: var(--i2);
-        flex: 1;
-      }
-      .mm-b {
-        width: 24px;
-        height: 24px;
-        border-radius: 4px;
-        border: none;
-        background: none;
-        color: var(--gh);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 13px;
-        cursor: pointer;
-      }
-      .mm-b:hover {
-        background: var(--bd);
-      }
-      .mm-b.pin {
-        color: var(--am);
-      }
-      .mm-tabs {
-        display: flex;
-        gap: 0;
-        border-bottom: 1px solid var(--bd);
-        padding: 0 12px;
-        flex-shrink: 0;
-      }
-      .mm-tab {
-        padding: 6px 10px;
-        font-size: 10px;
-        color: var(--gh);
-        cursor: pointer;
-        border-bottom: 2px solid transparent;
-        margin-bottom: -1px;
-        font-family: "DM Mono", monospace;
-      }
-      .mm-tab.on {
-        color: var(--db);
-        border-bottom-color: var(--db);
-      }
-      .mm-bd {
-        flex: 1;
-        overflow-y: auto;
-        padding: 12px;
-      }
-      .mm-item {
-        background: var(--pa);
-        border-radius: 6px;
-        padding: 8px 10px;
-        margin-bottom: 6px;
-      }
-      .mm-lbl {
-        font-size: 9px;
-        font-family: "DM Mono", monospace;
-        color: var(--gh);
-        margin-bottom: 3px;
-        text-transform: uppercase;
-      }
-      .mm-txt {
-        font-size: 11px;
-        color: var(--i2);
-        line-height: 1.6;
-      }
-      .mm-txt.empty {
-        color: var(--gh);
-        font-style: italic;
-      }
-
-      /* search */
-      .s-ov {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.25);
-        z-index: 200;
-        align-items: flex-start;
-        justify-content: center;
-        padding-top: 80px;
-      }
-      .s-ov.open {
-        display: flex;
-      }
-      .s-box {
-        background: var(--wh);
-        border-radius: 12px;
-        width: 520px;
-        max-height: 480px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-      }
-      .s-in {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 14px 18px;
-        border-bottom: 1px solid var(--bd);
-      }
-      .s-in input {
-        flex: 1;
-        border: none;
-        outline: none;
-        font-size: 14px;
-        font-family: inherit;
-        color: var(--ink);
-        background: transparent;
-      }
-      .s-in input::placeholder {
-        color: var(--co);
-      }
-      .s-tabs {
-        display: flex;
-        gap: 0;
-        border-bottom: 1px solid var(--bd);
-        padding: 0 18px;
-      }
-      .s-tab {
-        padding: 7px 12px;
-        font-size: 11px;
-        color: var(--gh);
-        cursor: pointer;
-        border-bottom: 2px solid transparent;
-        margin-bottom: -1px;
-      }
-      .s-tab.on {
-        color: var(--db);
-        border-bottom-color: var(--db);
-        font-weight: 500;
-      }
-      .s-bd {
-        flex: 1;
-        overflow-y: auto;
-        padding: 10px 18px;
-      }
-      .s-hint {
-        text-align: center;
-        color: var(--gh);
-        font-size: 12px;
-        padding: 30px 0;
-      }
-      .s-esc {
-        font-size: 10px;
-        color: var(--gh);
-        padding: 8px 18px;
-        border-top: 1px solid var(--bd);
-        font-family: "DM Mono", monospace;
-      }
     </style>
   </head>
   <body>
-    <!-- SIDEBAR (rail mode) -->
+    <!-- ═══ SIDEBAR (rail 기본) ═══ -->
     <aside class="sb rail" id="sb">
-      <div class="sb-tgl" onclick="tglSb()" id="sb-tgl">▸</div>
+      <!-- LOGO + COLLAPSE -->
       <div class="sb-logo">
         <div class="sb-mk" onclick="tglSb()">
           <svg viewBox="0 0 14 14">
@@ -971,47 +527,234 @@
             <rect x="7" y="10" width="4" height="3" rx="1" opacity=".4" />
           </svg>
         </div>
-        <span class="sb-x">plotnote</span>
+        <span class="sb-logo-txt sb-exp">plotnote</span>
+        <button class="sb-collapse sb-exp" onclick="tglSb()" title="사이드바 접기">
+          <img src="../../src/assets/images/keyboard_double_arrow_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+        </button>
       </div>
-      <div class="sb-sec">
-        <div class="srch" onclick="openS()">
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35" /></svg
-          ><span>검색...</span>
+
+      <!-- SEARCH -->
+      <div class="sb-search sb-exp">
+        <div class="sb-srch" onclick="openS()">
+          <img src="../../src/assets/images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+          <span>검색...</span>
         </div>
-        <div class="sb-lbl">에피소드</div>
-        <div class="si on">
-          <div class="d"></div>
-          <span class="si-t">ep.1 첫 만남</span>
-          <div class="si-pop">
-            <!-- 클로드용 주석 -->
-            <!-- 이거 .si-pop-i를 클릭해서 해당 페이지로 이동할 수 있도록 해야 함 -->
-            <!-- 그러려면 si-pop위로 커서를 올릴 수 있어야 함 -->
-            <div class="si-pop-hd">페이지 (pageOrder)</div>
-            <!-- 클로드용 주석 -->
-            <!-- pageOrder 순 -->
-            <div class="si-pop-i">p.01 공원 입구</div>
-            <div class="si-pop-i">p.02 강아지 등장</div>
-            <div class="si-pop-i">p.03</div>
-            <div class="si-pop-i">p.04</div>
+      </div>
+
+      <!-- TREE -->
+      <div class="sb-tree sb-exp">
+        <!-- 즐겨찾기 (closed) -->
+        <div class="sb-grp closed" id="grp-fav">
+          <div class="sb-grp-hd" onclick="tglGrp('grp-fav')">
+            <span class="ic"><img src="../../src/assets/images/bookmark_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+            <span class="lbl">즐겨찾기</span>
+            <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+          </div>
+          <div class="sb-grp-bd"></div>
+        </div>
+
+        <!-- 나의 책장 (open) -->
+        <div class="sb-grp" id="grp-my">
+          <div class="sb-grp-hd" onclick="tglGrp('grp-my')">
+            <span class="ic"><img src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+            <span class="lbl">나의 책장</span>
+            <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+          </div>
+          <div class="sb-grp-bd">
+            <!-- 고양이와 강아지 (open) -->
+            <div class="tn" id="tn-pj1">
+              <div class="tn-row" style="--indent: 12px" onclick="tglTn('tn-pj1')">
+                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                <span class="tn-ic">
+                  <img class="ic-c" src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                  <img class="ic-o" src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                </span>
+                <span class="tn-lbl">고양이와 강아지</span>
+              </div>
+              <div class="tn-kids">
+                <!-- ep.1 (closed) -->
+                <div class="tn closed" id="tn-ep1">
+                  <div class="tn-row" style="--indent: 24px" onclick="tglTn('tn-ep1')">
+                    <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                    <span class="tn-ic">
+                      <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                      <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                    </span>
+                    <span class="tn-lbl">ep.1 첫 만남</span>
+                  </div>
+                  <div class="tn-kids"></div>
+                </div>
+                <!-- ep.2 (closed) -->
+                <div class="tn closed" id="tn-ep2">
+                  <div class="tn-row" style="--indent: 24px" onclick="tglTn('tn-ep2')">
+                    <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                    <span class="tn-ic">
+                      <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                      <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                    </span>
+                    <span class="tn-lbl">ep.2 공원의 하루</span>
+                  </div>
+                  <div class="tn-kids"></div>
+                </div>
+                <!-- ep.3 (open) — 현재 에피소드 -->
+                <div class="tn" id="tn-ep3">
+                  <div class="tn-row" style="--indent: 24px" onclick="tglTn('tn-ep3')">
+                    <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                    <span class="tn-ic">
+                      <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                      <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                    </span>
+                    <span class="tn-lbl">ep.3 이웃 친구들</span>
+                  </div>
+                  <div class="tn-kids">
+                    <!-- p.01 (closed) -->
+                    <div class="tn closed" id="tn-pg1">
+                      <div class="tn-row" style="--indent: 36px" onclick="tglTn('tn-pg1')">
+                        <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                        <span class="tn-ic">
+                          <img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt="" />
+                          <img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt="" />
+                        </span>
+                        <span class="tn-lbl">p.01</span>
+                      </div>
+                      <div class="tn-kids"></div>
+                    </div>
+                    <!-- p.02 (closed) -->
+                    <div class="tn closed" id="tn-pg2">
+                      <div class="tn-row" style="--indent: 36px" onclick="tglTn('tn-pg2')">
+                        <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                        <span class="tn-ic">
+                          <img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt="" />
+                          <img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt="" />
+                        </span>
+                        <span class="tn-lbl">p.02</span>
+                      </div>
+                      <div class="tn-kids"></div>
+                    </div>
+                    <!-- p.03 (open) — 현재 페이지 -->
+                    <div class="tn" id="tn-pg3">
+                      <div class="tn-row" style="--indent: 36px" onclick="tglTn('tn-pg3')">
+                        <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                        <span class="tn-ic">
+                          <img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt="" />
+                          <img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt="" />
+                        </span>
+                        <span class="tn-lbl">p.03</span>
+                      </div>
+                      <div class="tn-kids">
+                        <!-- cut 1 (active) -->
+                        <div class="tn leaf" id="tn-cut1">
+                          <div class="tn-row on" style="--indent: 48px" onclick="tglLeaf('tn-cut1')">
+                            <span class="tn-chv leaf"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                            <span class="tn-ic">
+                              <img class="ic-c" src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                              <img class="ic-o" src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                            </span>
+                            <span class="tn-lbl">cut 1</span>
+                          </div>
+                        </div>
+                        <!-- cut 2 -->
+                        <div class="tn leaf" id="tn-cut2">
+                          <div class="tn-row" style="--indent: 48px" onclick="tglLeaf('tn-cut2')">
+                            <span class="tn-chv leaf"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                            <span class="tn-ic">
+                              <img class="ic-c" src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                              <img class="ic-o" src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                            </span>
+                            <span class="tn-lbl">cut 2</span>
+                          </div>
+                        </div>
+                        <!-- cut 3 -->
+                        <div class="tn leaf" id="tn-cut3">
+                          <div class="tn-row" style="--indent: 48px" onclick="tglLeaf('tn-cut3')">
+                            <span class="tn-chv leaf"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                            <span class="tn-ic">
+                              <img class="ic-c" src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                              <img class="ic-o" src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                            </span>
+                            <span class="tn-lbl">cut 3</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- p.04 (closed) -->
+                    <div class="tn closed" id="tn-pg4">
+                      <div class="tn-row" style="--indent: 36px" onclick="tglTn('tn-pg4')">
+                        <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                        <span class="tn-ic">
+                          <img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt="" />
+                          <img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt="" />
+                        </span>
+                        <span class="tn-lbl">p.04</span>
+                      </div>
+                      <div class="tn-kids"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 공유 책장 (closed) -->
+        <div class="sb-grp closed" id="grp-shared">
+          <div class="sb-grp-hd" onclick="tglGrp('grp-shared')">
+            <span class="ic"><img src="../../src/assets/images/diversity_3_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+            <span class="lbl">공유 책장</span>
+            <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+          </div>
+          <div class="sb-grp-bd"></div>
+        </div>
+      </div>
+
+      <!-- RAIL NAV: 컷 화면 — note_stack(on) -->
+      <div class="sb-rail-nav" id="rail-nav">
+        <div class="rn-item" title="책장">
+          <img src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+          <div class="rn-pop">
+            <div class="rn-pop-hd">나의 책장</div>
+            <div class="rn-pop-i">고양이와 강아지</div>
+          </div>
+        </div>
+        <div class="rn-item" title="프로젝트">
+          <img src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+          <div class="rn-pop">
+            <div class="rn-pop-hd">고양이와 강아지</div>
+            <div class="rn-pop-i on">ep.3 이웃 친구들</div>
+          </div>
+        </div>
+        <div class="rn-item" title="에피소드">
+          <img src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+          <div class="rn-pop">
+            <div class="rn-pop-hd">ep.3 이웃 친구들</div>
+            <div class="rn-pop-i">24 페이지</div>
+          </div>
+        </div>
+        <div class="rn-item" title="페이지">
+          <img src="../../src/assets/images/page-svgrepo-com.svg" alt="" />
+          <div class="rn-pop">
+            <div class="rn-pop-hd">페이지 목록</div>
+            <div class="rn-pop-i">p.01</div>
+            <div class="rn-pop-i">p.02</div>
+            <div class="rn-pop-i on">p.03</div>
+            <div class="rn-pop-i">p.04</div>
+          </div>
+        </div>
+        <div class="rn-item on" title="컷">
+          <img src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+          <div class="rn-pop">
+            <div class="rn-pop-hd">p.03 컷 목록</div>
+            <div class="rn-pop-i on">cut 1</div>
+            <div class="rn-pop-i">cut 2</div>
+            <div class="rn-pop-i">cut 3</div>
           </div>
         </div>
       </div>
+
+      <!-- FOOTER -->
       <div class="sb-ft">
-        <div class="sb-u">
-          <div class="av">베</div>
-          <span class="sb-ft-n" style="font-size: 11px; color: var(--i2)"
-            >베베</span
-          >
-        </div>
+        <div class="sb-av">베</div>
+        <span class="sb-ft-name">베베</span>
       </div>
     </aside>
 
@@ -1019,7 +762,7 @@
     <div class="main">
       <!-- 상단 컨텍스트 바: ep명 + 페이지(양면시 둘다) + 이전/다음 + zoom -->
       <div class="ctx-bar">
-        <span class="ctx-ep">ep.1 첫 만남</span>
+        <span class="ctx-ep">ep.3 이웃 친구들</span>
         <span class="ctx-sep">›</span>
         <span class="ctx-pg" id="ctx-pg1">p.01</span>
         <span class="ctx-pg" id="ctx-pg2" style="margin-left: -2px"
@@ -1051,6 +794,7 @@
         <!-- 이 zoom-ctl 하단 toolbar의 오른쪽에 새로운 toolbar를 만들어서 그 안에서 관리 -->
         <div class="zoom-ctl">
           <button class="z-btn" onclick="zoom(-10)">−</button>
+          <span class="z-pct" id="z-pct">100%</span>
           <button
             class="fb-full"
             onclick="toggleFullPage()"
@@ -1085,7 +829,7 @@
           <div class="rsp-bd">
             <div class="rsp-sec">
               <div class="rsp-sec-hd">
-                <span>✂ 컷별 메모</span
+                <span><img src="../../src/assets/images/content_cut_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" style="width:13px;height:13px;vertical-align:middle;margin-right:4px;opacity:0.6"> 컷별 메모</span
                 ><span class="rsp-arrow" style="transform: rotate(90deg)"
                   ><img
                     src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
@@ -1135,8 +879,12 @@
         <div class="ftb" id="ftb">
           <!-- undo/redo -->
           <div class="ftb-grp">
-            <button class="fb" onclick="undo()" title="되돌리기">↩</button>
-            <button class="fb" onclick="redo()" title="다시하기">↪</button>
+            <button class="fb" onclick="undo()" title="되돌리기">
+              <img src="../../src/assets/images/undo_20dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.svg" alt="되돌리기" />
+            </button>
+            <button class="fb" onclick="redo()" title="다시하기">
+              <img src="../../src/assets/images/redo_20dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.svg" alt="다시하기" />
+            </button>
           </div>
           <div class="ftb-sep"></div>
           <!-- 컷 분할 모드 -->
@@ -1147,13 +895,13 @@
               onclick="togEditMode()"
               title="컷 분할 모드"
             >
-              ✂
+              <img src="../../src/assets/images/content_cut_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="컷 분할 모드" />
             </button>
           </div>
           <div class="ftb-sep"></div>
           <!-- 선택 컷 삭제 -->
           <button class="fb danger" title="선택 컷 삭제" onclick="delCut()">
-            🗑
+            <img src="../../src/assets/images/delete_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="선택 컷 삭제" />
           </button>
           <div class="ftb-sep"></div>
           <!-- 컷 초기화 -->
@@ -1162,7 +910,7 @@
             title="컷 초기화 (모양만 삭제)"
             onclick="resetCuts()"
           >
-            ↺
+            <img src="../../src/assets/images/restart_alt_20dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.svg" alt="컷 초기화" />
           </button>
         </div>
       </div>
@@ -1204,9 +952,13 @@
     <!-- FLOATING MEMO MODAL -->
     <div class="mm" id="mm" style="top: 80px; right: 60px">
       <div class="mm-hd" id="mm-hd">
-        <span class="mm-hd-t">메모</span
-        ><button class="mm-b" id="mm-pin" onclick="tglPin()">📌</button
-        ><button class="mm-b" onclick="closeMM()">✕</button>
+        <span class="mm-hd-t">메모</span>
+        <button class="mm-b" id="mm-pin" onclick="tglPin()" title="고정">
+          <img src="../../src/assets/images/pin-svgrepo-com.svg" alt="" />
+        </button>
+        <button class="mm-b" onclick="closeMM()" title="닫기">
+          <img src="../../src/assets/images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+        </button>
       </div>
       <div class="mm-tabs">
         <div class="mm-tab">프로젝트</div>
@@ -1355,11 +1107,23 @@
 
       /* sidebar */
       function tglSb() {
-        const s = document.getElementById("sb"),
-          t = document.getElementById("sb-tgl");
-        s.classList.toggle("rail");
-        t.textContent = s.classList.contains("rail") ? "▸" : "◂";
+        document.getElementById("sb").classList.toggle("rail");
       }
+      function tglGrp(id) {
+        document.getElementById(id).classList.toggle("closed");
+      }
+      function tglTn(id) {
+        document.getElementById(id).classList.toggle("closed");
+      }
+      function tglLeaf(id) {
+        const row = document.querySelector("#" + id + " .tn-row");
+        const wasOn = row.classList.contains("on");
+        document
+          .querySelectorAll(".tn.leaf .tn-row.on")
+          .forEach((r) => r.classList.remove("on"));
+        if (!wasOn) row.classList.add("on");
+      }
+
       /* rsp toggle via memo btn or directly */
       function toggleRsp() {
         document.getElementById("rsp").classList.toggle("open");

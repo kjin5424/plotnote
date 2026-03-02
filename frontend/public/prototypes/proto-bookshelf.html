@@ -753,7 +753,12 @@
             <span class="node-arrow">
               <img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
             </span>
-            <span class="node-icon">🗃</span>
+            <span class="node-icon">
+              <img
+                src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+              />
+            </span>
             <span class="node-ttl">보관함</span>
             <span class="node-empty">프로젝트가 없습니다</span>
           </div>
@@ -873,6 +878,8 @@
         document.getElementById("s-bd").innerHTML =
           '<div class="s-hint">Enter를 눌러 검색을 시작하세요</div>';
       }
+      // ⚠️ XSS 주의: innerHTML에 q 직접 삽입 중.
+      // React 구현 시 JSX(자동 이스케이프) 또는 textContent 기반으로 교체할 것.
       function doS() {
         const q = document.getElementById("s-input").value.trim();
         if (!q) return;

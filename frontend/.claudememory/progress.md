@@ -1,9 +1,25 @@
 # Progress
 
 ## Current Status
-**단계:** Phase 2 React 구현 진행 중 — A~G 완료, 다음은 H(Project 화면)
+**단계:** Phase 1 HTML 프로토타입 정리 진행 중 — Phase A/B/C 완료, 다음은 D(통합 검수)
 **브랜치:** `recover-plan`
-**마지막 작업:** Phase G Bookshelf 화면 마이그레이션 완료 (2026-03-01)
+**마지막 작업:** Phase B~C HTML 프로토타입 폴리싱 완료 (2026-03-02)
+
+### Phase 1 완료 항목 (2026-03-02)
+- **A-1~A-4**: proto-episode.html proto-style.css 전환 + 신 사이드바 인라인 복사 + 5단계 EpisodeStatus 적용
+- **A-2**: proto-page.html 신 사이드바 교체 + proto-style.css 전환 (구 `.si`/`.si-pop`/`.av` 제거)
+- **A-3**: proto-cut.html 신 사이드바 교체 + proto-style.css 전환 + missing `z-pct` 버그 수정
+- **B-1**: proto-bookshelf.html "보관함" 🗃 이모지 → `library_books` SVG
+- **B-2**: proto-cut.html 플로팅 툴바 이모지(↩↪🗑✂↺) → SVG(undo/redo/delete/content_cut/restart_alt)
+- **B-3**: progress.md B4 비율 Known Issue 표현 정정 (B4 257mm×364mm 세로형)
+- **B-4**: proto-project.html "마지막 작업" 타임스탬프 → "3일 전" 상대시간
+- **B-5**: proto-bookshelf/project.html doS() 함수에 XSS 경고 주석 추가
+- **C-1**: proto-page.html spread 뷰 홀수 시작 blank cover 어포던스 (`.pcard--cover-blank` + JS)
+- **C-2**: proto-cut.html ctx-bar flex-wrap + zoom-ctl margin-left:auto 대응
+
+### 다음 작업
+- **D**: 통합 검수 (D-1 CSS 일관성 ~ D-5 아이콘 정합성)
+- **React Phase H**: Project 화면 마이그레이션 (D 완료 후)
 
 ---
 
@@ -90,4 +106,4 @@
 ## Known Issues
 - `vite-plugin-svgr` 미등록 → SVG를 React 컴포넌트로 사용 불가 (`vite.config.ts` 추가 필요)
 - `src/Setting/` 디렉토리 용도 불명확
-- B4 비율: CSS `aspect-ratio: 238/324` = width:238, height:324 → **세로형 원고 ✅ 올바름**. `B4_SPEC { w:324, h:238 }` 표기가 w/h 역순으로 잘못됨 → React 구현 시 수정 필요
+- B4 비율: CSS `aspect-ratio: 238/324` = width:238, height:324 → **세로형 원고 ✅ 올바름**. B4 = 257mm×364mm 근사. React `b4Layout.ts`의 `B4_SPEC { w:324, h:238 }` 표기가 w/h 역순 — Phase I(Episode) 구현 시 수정
