@@ -7,507 +7,17 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&family=Noto+Serif+KR:wght@600&display=swap"
       rel="stylesheet"
     />
+    <!-- 공통 스타일 -->
+    <link rel="stylesheet" href="proto-style.css" />
     <style>
-      :root {
-        --db: #2a4d88;
-        --oc: #7c94b8;
-        --gl: #b1bbc8;
-        --co: #d9d9d8;
-        --am: #fbc662;
-        --am-bg: #fff8e6;
-        --wh: #fefefe;
-        --pa: #f7f6f3;
-        --ink: #1a1a1a;
-        --i2: #4a4a4a;
-        --gh: #9a9a9a;
-        --bd: #e8e6e0;
-        --bd2: #d5d2cb;
-        --rail: 44px;
-        --sw: 220px;
-      }
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      body {
-        font-family: "Noto Sans KR", sans-serif;
-        background: var(--pa);
-        color: var(--ink);
-        height: 100vh;
-        overflow: hidden;
-        display: flex;
-        font-size: 13px;
-      }
-      button {
-        font-family: inherit;
-        cursor: pointer;
-      }
+      /* ═══════════════════════════════════════════
+         프로젝트(Project) 화면 고유 스타일
+      ═══════════════════════════════════════════ */
 
-      /* ═══ SIDEBAR ═══ */
-      .sb {
-        width: var(--sw);
-        min-width: var(--sw);
-        height: 100%;
-        background: var(--wh);
-        border-right: 1px solid var(--bd);
-        display: flex;
-        flex-direction: column;
-        transition:
-          width 0.22s cubic-bezier(0.4, 0, 0.2, 1),
-          min-width 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-        overflow: visible;
-        position: relative;
-        z-index: 50;
-        flex-shrink: 0;
-      }
-      .sb.rail {
-        width: var(--rail);
-        min-width: var(--rail);
-      }
-      .sb.rail .sb-exp {
-        display: none;
-      }
-      .sb.rail .sb-logo {
-        justify-content: center;
-        padding: 8px;
-      }
-      .sb.rail .sb-tree {
-        display: none;
-      }
-      .sb.rail .sb-search {
-        display: none;
-      }
-      .sb.rail .sb-ft-name {
-        display: none;
-      }
-      .sb.rail .sb-ft {
-        justify-content: center;
-        padding: 8px;
-      }
-      .sb.rail .sb-rail-nav {
-        display: flex;
-      }
-
-      /* LOGO */
-      .sb-logo {
-        padding: 10px 12px;
-        display: flex;
-        align-items: center;
-        gap: 7px;
-        flex-shrink: 0;
-        border-bottom: 1px solid var(--bd);
-      }
-      .sb-mk {
-        width: 24px;
-        height: 24px;
-        background: var(--db);
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        cursor: pointer;
-      }
-      .sb-mk svg {
-        width: 12px;
-        height: 12px;
-        fill: #fff;
-      }
-      .sb-logo-txt {
-        font-family: "DM Mono", monospace;
-        font-size: 12px;
-        color: var(--ink);
-        font-weight: 500;
-      }
-      .sb-collapse {
-        margin-left: auto;
-        width: 20px;
-        height: 20px;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        flex-shrink: 0;
-        border: none;
-        background: none;
-        opacity: 0.6;
-      }
-      .sb-collapse:hover {
-        background: var(--pa);
-        opacity: 1;
-      }
-      .sb-collapse img {
-        width: 16px;
-        height: 16px;
-      }
-
-      /* SEARCH */
-      .sb-search {
-        padding: 8px 10px 4px;
-        flex-shrink: 0;
-      }
-      .sb-srch {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        padding: 5px 9px;
-        background: var(--pa);
-        border: 1px solid var(--bd);
-        border-radius: 6px;
-        cursor: pointer;
-        width: 100%;
-      }
-      .sb-srch:hover {
-        border-color: var(--oc);
-      }
-      .sb-srch img {
-        flex-shrink: 0;
-        width: 14px;
-        height: 14px;
-        opacity: 0.6;
-      }
-      .sb-srch span {
-        font-size: 10px;
-        color: var(--gh);
-      }
-
-      /* TREE */
-      .sb-tree {
-        flex: 1;
-        overflow-y: auto;
-        overflow-x: hidden;
-        padding: 4px 0;
-      }
-      .sb-tree::-webkit-scrollbar {
-        width: 4px;
-      }
-      .sb-tree::-webkit-scrollbar-thumb {
-        background: var(--co);
-        border-radius: 2px;
-      }
-      .sb-grp {
-        padding: 2px 6px;
-      }
-      .sb-grp-hd {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 5px 6px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 11px;
-        color: var(--i2);
-        user-select: none;
-      }
-      .sb-grp-hd:hover {
-        background: var(--pa);
-      }
-      .sb-grp-hd .ic {
-        width: 16px;
-        height: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-      .sb-grp-hd .ic img {
-        width: 16px;
-        height: 16px;
-        opacity: 0.55;
-      }
-      .sb-grp-hd .lbl {
-        flex: 1;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .sb-grp-hd .chv {
-        width: 14px;
-        height: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-      .sb-grp-hd .chv img {
-        width: 14px;
-        height: 14px;
-        opacity: 0.4;
-        transition: transform 0.15s;
-      }
-      .sb-grp:not(.closed) .sb-grp-hd .chv img {
-        transform: rotate(90deg);
-      }
-      .sb-grp-bd {
-        padding-left: 0;
-      }
-      .sb-grp.closed .sb-grp-bd {
-        display: none;
-      }
-      .tn {
-        display: flex;
-        flex-direction: column;
-      }
-      .tn-row {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        padding: 3px 6px;
-        padding-left: var(--indent, 6px);
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 11px;
-        color: var(--i2);
-        position: relative;
-        min-height: 26px;
-      }
-      .tn-row:hover {
-        background: var(--pa);
-      }
-      .tn-row.on {
-        background: #eef1f7;
-        color: var(--db);
-        font-weight: 500;
-      }
-      .tn-chv {
-        width: 14px;
-        height: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-      .tn-chv img {
-        width: 14px;
-        height: 14px;
-        opacity: 0.35;
-        transition: transform 0.12s;
-      }
-      .tn:not(.closed) > .tn-row .tn-chv img {
-        transform: rotate(90deg);
-      }
-      .tn-chv.leaf {
-        visibility: hidden;
-      }
-      .tn-ic {
-        width: 16px;
-        height: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-      .tn-ic img {
-        width: 16px;
-        height: 16px;
-        opacity: 0.45;
-      }
-      .tn-row.on .tn-ic img {
-        opacity: 0.85;
-      }
-      .tn-lbl {
-        flex: 1;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .tn-kids {
-        display: flex;
-        flex-direction: column;
-      }
-      .tn.closed > .tn-kids {
-        display: none;
-      }
-      /* 노드 아이콘 열림/닫힘 */
-      .tn-ic .ic-o {
-        display: none;
-      }
-      .tn-ic .ic-c {
-        display: block;
-      }
-      .tn:not(.closed):not(.leaf) > .tn-row .tn-ic .ic-o {
-        display: block;
-      }
-      .tn:not(.closed):not(.leaf) > .tn-row .tn-ic .ic-c {
-        display: none;
-      }
-      .tn.leaf > .tn-row.on .tn-ic .ic-o {
-        display: block;
-      }
-      .tn.leaf > .tn-row.on .tn-ic .ic-c {
-        display: none;
-      }
-
-      /* RAIL NAV */
-      .sb-rail-nav {
-        display: none;
-        flex-direction: column;
-        gap: 2px;
-        padding: 8px 4px;
-        flex: 1;
-      }
-      .rn-item {
-        width: 36px;
-        height: 36px;
-        border-radius: 7px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        position: relative;
-      }
-      .rn-item img {
-        width: 20px;
-        height: 20px;
-        opacity: 0.45;
-      }
-      .rn-item:hover {
-        background: var(--pa);
-      }
-      .rn-item:hover img {
-        opacity: 0.75;
-      }
-      .rn-item.on {
-        background: #eef1f7;
-      }
-      .rn-item.on img {
-        opacity: 0.9;
-      }
-      .rn-pop {
-        display: none;
-        position: absolute;
-        left: 100%;
-        top: 0;
-        margin-left: 6px;
-        background: var(--wh);
-        border: 1px solid var(--bd);
-        border-radius: 8px;
-        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.13);
-        padding: 6px 0;
-        min-width: 170px;
-        max-height: 260px;
-        overflow-y: auto;
-        z-index: 100;
-        white-space: nowrap;
-      }
-      .rn-pop::-webkit-scrollbar {
-        width: 4px;
-      }
-      .rn-pop::-webkit-scrollbar-thumb {
-        background: var(--co);
-        border-radius: 2px;
-      }
-      .rn-item:hover .rn-pop {
-        display: block;
-      }
-      .rn-pop-hd {
-        padding: 5px 12px 4px;
-        font-size: 9px;
-        font-weight: 500;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        color: var(--gh);
-        border-bottom: 1px solid var(--bd);
-        margin-bottom: 2px;
-      }
-      .rn-pop-i {
-        padding: 5px 12px;
-        font-size: 11px;
-        color: var(--i2);
-        cursor: pointer;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .rn-pop-i:hover {
-        background: var(--pa);
-        color: var(--db);
-      }
-      .rn-pop-i.on {
-        color: var(--db);
-        font-weight: 500;
-      }
-
-      /* FOOTER */
-      .sb-ft {
-        padding: 8px 10px;
-        border-top: 1px solid var(--bd);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        cursor: pointer;
-        flex-shrink: 0;
-      }
-      .sb-ft:hover {
-        background: var(--pa);
-      }
-      .sb-av {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background: var(--db);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 9px;
-        color: #fff;
-        font-weight: 600;
-        flex-shrink: 0;
-      }
-      .sb-ft-name {
-        font-size: 11px;
-        color: var(--i2);
-      }
-
-      /* ═══ MAIN ═══ */
-      .main {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        min-width: 0;
-      }
-      .ws-hd {
-        flex-shrink: 0;
-        background: var(--wh);
-        border-bottom: 1px solid var(--bd);
-      }
-      .hbtn {
-        width: 28px;
-        height: 28px;
-        border-radius: 5px;
-        border: none;
-        background: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      }
-      .hbtn img {
-        width: 18px;
-        height: 18px;
-        opacity: 0.55;
-      }
-      .hbtn:hover {
-        background: var(--pa);
-      }
-      .hbtn:hover img {
-        opacity: 0.85;
-      }
-
-      /* Title row */
+      /* ─── WORKSPACE HEADER 확장 ─── */
       .ws-tr {
-        display: flex;
-        align-items: center;
         gap: 12px;
         padding: 10px 24px 0;
-      }
-      .ws-ttl {
-        font-family: "Noto Serif KR", serif;
-        font-size: 19px;
-        font-weight: 600;
-        letter-spacing: -0.02em;
       }
       .ws-fav {
         border: none;
@@ -524,6 +34,7 @@
         width: 18px;
         height: 18px;
         opacity: 0.35;
+        transition: opacity var(--dur-fast);
       }
       .ws-fav:hover img {
         opacity: 0.65;
@@ -531,83 +42,21 @@
       .ws-fav.on img {
         opacity: 1;
       }
-      .ws-acts {
-        margin-left: auto;
-        display: flex;
-        gap: 6px;
-        align-items: center;
-      }
-      .abtn {
-        padding: 5px 12px;
-        border-radius: 6px;
-        border: 1px solid var(--bd2);
-        background: var(--wh);
-        font-size: 11px;
-        color: var(--i2);
-        display: flex;
-        align-items: center;
-        gap: 4px;
-      }
-      .abtn:hover {
-        border-color: var(--db);
-        color: var(--db);
-      }
-      .abtn.pri {
-        background: var(--db);
-        color: #fff;
-        border-color: var(--db);
-      }
-      .abtn.pri:hover {
-        background: #1e3d73;
-      }
-      .cfg-btn {
-        width: 28px;
-        height: 28px;
-        border-radius: 5px;
-        border: 1px solid var(--bd2);
-        background: var(--wh);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      }
-      .cfg-btn img {
-        width: 18px;
-        height: 18px;
-        opacity: 0.55;
-      }
-      .cfg-btn:hover {
-        border-color: var(--oc);
-      }
-      .cfg-btn:hover img {
-        opacity: 0.85;
-      }
 
-      /* Body */
-      .ws-bd {
-        flex: 1;
-        overflow-y: auto;
-        padding: 18px 24px 30px;
-      }
-      .ws-bd::-webkit-scrollbar {
-        width: 6px;
-      }
-      .ws-bd::-webkit-scrollbar-thumb {
-        background: var(--co);
-        border-radius: 3px;
-      }
-
-      /* Project info area */
+      /* ─── PROJECT INFO AREA ─── */
       .pj-info {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 14px;
         margin-bottom: 20px;
       }
+      .pj-info.full {
+        grid-template-columns: 1fr;
+      }
       .pj-card {
         background: var(--wh);
         border: 1px solid var(--bd);
-        border-radius: 8px;
+        border-radius: var(--r-lg);
         padding: 14px 16px;
       }
       .pj-card-t {
@@ -622,7 +71,7 @@
         width: 100%;
         background: var(--pa);
         border: 1px solid var(--bd2);
-        border-radius: 6px;
+        border-radius: var(--r-md);
         padding: 9px 12px;
         font-size: 12px;
         font-family: inherit;
@@ -630,6 +79,9 @@
         resize: none;
         outline: none;
         line-height: 1.7;
+        transition:
+          border-color var(--dur-fast),
+          box-shadow var(--dur-fast);
       }
       .pj-ta:focus {
         border-color: var(--oc);
@@ -657,7 +109,7 @@
         color: var(--ink);
       }
 
-      /* Section header */
+      /* ─── SECTION HEADER ─── */
       .sec-hd {
         display: flex;
         align-items: center;
@@ -672,27 +124,18 @@
         text-transform: uppercase;
         color: var(--gh);
       }
+      .sec-right {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
       .sec-c {
         font-size: 10px;
         color: var(--oc);
         font-family: "DM Mono", monospace;
       }
-      .sort-tgl {
-        padding: 3px 8px;
-        border-radius: 5px;
-        border: 1px solid var(--bd2);
-        background: var(--wh);
-        font-size: 10px;
-        color: var(--gh);
-        cursor: pointer;
-        font-family: "DM Mono", monospace;
-      }
-      .sort-tgl:hover {
-        border-color: var(--oc);
-        color: var(--db);
-      }
 
-      /* Episode card grid (pc 전체 단위) */
+      /* ─── EPISODE CARD GRID ─── */
       .pgrid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
@@ -700,18 +143,20 @@
         margin-bottom: 20px;
       }
       .pc {
-        border-radius: 8px;
+        border-radius: var(--r-lg);
         overflow: hidden;
         border: 1px solid var(--bd);
         background: var(--wh);
         cursor: pointer;
         transition:
           box-shadow 0.15s,
-          border-color 0.15s;
+          border-color 0.15s,
+          transform 0.15s;
       }
       .pc:hover {
         box-shadow: 0 4px 16px rgba(42, 77, 136, 0.1);
         border-color: var(--oc);
+        transform: translateY(-2px);
       }
       .pc-th {
         width: 100%;
@@ -756,13 +201,12 @@
         width: 22px;
         height: 22px;
         border-radius: 50%;
-        border: none;
-        background: none;
         cursor: pointer;
         flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: opacity var(--dur-fast);
       }
       .pc-fav img {
         width: 14px;
@@ -800,26 +244,8 @@
         gap: 4px;
         margin-top: 5px;
       }
-      .etag {
-        font-size: 8px;
-        padding: 1px 5px;
-        border-radius: 999px;
-      }
-      .t-wip {
-        background: var(--am-bg);
-        color: #8a6200;
-        border: 1px solid rgba(251, 198, 98, 0.4);
-      }
-      .t-done {
-        background: #e8f5ee;
-        color: #2a7a50;
-        border: 1px solid #b6dfc8;
-      }
-      .t-todo {
-        background: var(--pa);
-        color: var(--gh);
-        border: 1px solid var(--bd2);
-      }
+
+      /* ─── ADD CARD ─── */
       .pc-add {
         border: 2px dashed var(--bd2);
         background: transparent;
@@ -827,14 +253,20 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 6px;
+        gap: 8px;
         color: var(--gh);
         font-size: 11px;
+        transition:
+          border-color var(--dur-fast),
+          color var(--dur-fast),
+          background var(--dur-fast);
       }
       .pc-add:hover {
         border-color: var(--oc);
         color: var(--db);
         background: #f5f8ff;
+        box-shadow: none;
+        transform: none;
       }
       .pc-add-ic {
         width: 32px;
@@ -845,31 +277,13 @@
         align-items: center;
         justify-content: center;
         font-size: 18px;
+        transition: border-color var(--dur-fast);
       }
       .pc-add:hover .pc-add-ic {
         border-color: var(--oc);
       }
 
-      /* ═══ SETTINGS MODAL ═══ */
-      .cfg-ov {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.3);
-        z-index: 200;
-        align-items: center;
-        justify-content: center;
-      }
-      .cfg-ov.open {
-        display: flex;
-      }
-      .cfg-box {
-        background: var(--wh);
-        border-radius: 12px;
-        padding: 24px;
-        width: 420px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-      }
+      /* ─── SETTINGS MODAL 확장 ─── */
       .cfg-title {
         font-family: "Noto Serif KR", serif;
         font-size: 15px;
@@ -882,238 +296,8 @@
         margin-bottom: 14px;
         line-height: 1.6;
       }
-      .cfg-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-      }
-      .cfg-card {
-        background: var(--pa);
-        border: 1px solid var(--bd);
-        border-radius: 8px;
-        padding: 11px 14px;
-        cursor: pointer;
-        transition: border-color 0.15s;
-      }
-      .cfg-card:hover {
-        border-color: var(--oc);
-      }
-      .cfg-card-l {
-        font-size: 10px;
-        color: var(--gh);
-        margin-bottom: 4px;
-      }
-      .cfg-card-v {
-        font-size: 14px;
-        font-family: "DM Mono", monospace;
-        font-weight: 500;
-        color: var(--ink);
-      }
-      .cfg-acts {
-        display: flex;
-        gap: 8px;
-        justify-content: flex-end;
-        margin-top: 16px;
-        padding-top: 12px;
-        border-top: 1px solid var(--bd);
-      }
 
-      /* ═══ SEARCH / MEMO (same pattern) ═══ */
-      .s-ov {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.25);
-        z-index: 200;
-        align-items: flex-start;
-        justify-content: center;
-        padding-top: 80px;
-      }
-      .s-ov.open {
-        display: flex;
-      }
-      .s-box {
-        background: var(--wh);
-        border-radius: 12px;
-        width: 520px;
-        max-height: 480px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-      }
-      .s-in {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 14px 18px;
-        border-bottom: 1px solid var(--bd);
-      }
-      .s-in svg {
-        color: var(--gh);
-      }
-      .s-in input {
-        flex: 1;
-        border: none;
-        outline: none;
-        font-size: 14px;
-        font-family: inherit;
-        color: var(--ink);
-        background: transparent;
-      }
-      .s-in input::placeholder {
-        color: var(--co);
-      }
-      .s-tabs {
-        display: flex;
-        gap: 0;
-        border-bottom: 1px solid var(--bd);
-        padding: 0 18px;
-      }
-      .s-tab {
-        padding: 7px 12px;
-        font-size: 11px;
-        color: var(--gh);
-        cursor: pointer;
-        border-bottom: 2px solid transparent;
-        margin-bottom: -1px;
-      }
-      .s-tab.on {
-        color: var(--db);
-        border-bottom-color: var(--db);
-        font-weight: 500;
-      }
-      .s-bd {
-        flex: 1;
-        overflow-y: auto;
-        padding: 10px 18px;
-      }
-      .s-hint {
-        text-align: center;
-        color: var(--gh);
-        font-size: 12px;
-        padding: 30px 0;
-      }
-      .s-esc {
-        font-size: 10px;
-        color: var(--gh);
-        padding: 8px 18px;
-        border-top: 1px solid var(--bd);
-        font-family: "DM Mono", monospace;
-      }
-
-      .mm {
-        display: none;
-        position: fixed;
-        z-index: 150;
-        width: 360px;
-        height: 400px;
-        background: var(--wh);
-        border: 1px solid var(--bd);
-        border-radius: 10px;
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-        flex-direction: column;
-        overflow: hidden;
-        resize: both;
-        min-width: 280px;
-        min-height: 200px;
-      }
-      .mm.open {
-        display: flex;
-      }
-      .mm-hd {
-        display: flex;
-        align-items: center;
-        padding: 8px 12px;
-        border-bottom: 1px solid var(--bd);
-        cursor: grab;
-        flex-shrink: 0;
-        background: var(--pa);
-        user-select: none;
-      }
-      .mm-hd:active {
-        cursor: grabbing;
-      }
-      .mm-hd-t {
-        font-size: 11px;
-        font-weight: 500;
-        color: var(--i2);
-        flex: 1;
-      }
-      .mm-b {
-        width: 24px;
-        height: 24px;
-        border-radius: 4px;
-        border: none;
-        background: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      }
-      .mm-b img {
-        width: 18px;
-        height: 18px;
-        opacity: 0.5;
-      }
-      .mm-b:hover {
-        background: var(--bd);
-      }
-      .mm-b:hover img {
-        opacity: 0.8;
-      }
-      .mm-b.pin img {
-        opacity: 1;
-        filter: sepia(1) saturate(4) hue-rotate(5deg);
-      }
-      .mm-tabs {
-        display: flex;
-        gap: 0;
-        border-bottom: 1px solid var(--bd);
-        padding: 0 12px;
-        flex-shrink: 0;
-      }
-      .mm-tab {
-        padding: 6px 10px;
-        font-size: 10px;
-        color: var(--gh);
-        cursor: pointer;
-        border-bottom: 2px solid transparent;
-        margin-bottom: -1px;
-        font-family: "DM Mono", monospace;
-      }
-      .mm-tab.on {
-        color: var(--db);
-        border-bottom-color: var(--db);
-      }
-      .mm-bd {
-        flex: 1;
-        overflow-y: auto;
-        padding: 12px;
-      }
-      .mm-item {
-        background: var(--pa);
-        border-radius: 6px;
-        padding: 8px 10px;
-        margin-bottom: 6px;
-      }
-      .mm-lbl {
-        font-size: 9px;
-        font-family: "DM Mono", monospace;
-        color: var(--gh);
-        margin-bottom: 3px;
-        text-transform: uppercase;
-      }
-      .mm-txt {
-        font-size: 11px;
-        color: var(--i2);
-        line-height: 1.6;
-      }
-      .mm-txt.empty {
-        color: var(--gh);
-        font-style: italic;
-      }
-
+      /* ─── ANIMATION ─── */
       @keyframes fadeUp {
         from {
           opacity: 0;
@@ -1144,7 +328,6 @@
   <body>
     <!-- ═══ SIDEBAR ═══ -->
     <aside class="sb" id="sb">
-      <!-- LOGO + COLLAPSE -->
       <div class="sb-logo">
         <div class="sb-mk" onclick="tglSb()">
           <svg viewBox="0 0 14 14">
@@ -1166,7 +349,6 @@
         </button>
       </div>
 
-      <!-- SEARCH -->
       <div class="sb-search sb-exp">
         <div class="sb-srch" onclick="openS()">
           <img
@@ -1177,10 +359,9 @@
         </div>
       </div>
 
-      <!-- TREE -->
       <div class="sb-tree sb-exp">
-        <!-- 즐겨찾기 (closed) -->
-        <div class="sb-grp closed" id="grp-fav">
+        <!-- 즐겨찾기 -->
+        <div class="sb-grp" id="grp-fav">
           <div class="sb-grp-hd" onclick="tglGrp('grp-fav')">
             <span class="ic"
               ><img
@@ -1220,39 +401,28 @@
                 </span>
                 <span class="tn-lbl">고양이와 강아지</span>
               </div>
-              <div class="tn-kids"></div>
-            </div>
-            <div class="tn closed" id="tn-fav-pj2">
-              <div
-                class="tn-row"
-                style="--indent: 12px"
-                onclick="tglTn('tn-fav-pj2')"
-              >
-                <span class="tn-chv"
-                  ><img
-                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                    alt=""
-                /></span>
-                <span class="tn-ic">
-                  <img
-                    class="ic-c"
-                    src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                    alt=""
-                  />
-                  <img
-                    class="ic-o"
-                    src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                    alt=""
-                  />
-                </span>
-                <span class="tn-lbl">여름 단편</span>
+              <div class="tn-kids">
+                <div class="tn leaf" id="tn-fav-ep1">
+                  <div
+                    class="tn-row on"
+                    style="--indent: 32px"
+                    onclick="tglLeaf('tn-fav-ep1')"
+                  >
+                    <span class="tn-chv"></span>
+                    <span class="tn-ic"
+                      ><img
+                        src="../../src/assets/images/docs_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
+                    <span class="tn-lbl">ep.1 첫 만남</span>
+                  </div>
+                </div>
               </div>
-              <div class="tn-kids"></div>
             </div>
           </div>
         </div>
 
-        <!-- 나의 책장 (open) → 고양이와 강아지 (현재 프로젝트, open + active) -->
+        <!-- 나의 책장 — 현재 프로젝트 열림 -->
         <div class="sb-grp" id="grp-my">
           <div class="sb-grp-hd" onclick="tglGrp('grp-my')">
             <span class="ic"
@@ -1268,6 +438,7 @@
             /></span>
           </div>
           <div class="sb-grp-bd">
+            <!-- 현재 프로젝트: 열림 + on -->
             <div class="tn" id="tn-pj1">
               <div
                 class="tn-row on"
@@ -1297,105 +468,46 @@
                 <div class="tn leaf" id="tn-ep1">
                   <div
                     class="tn-row"
-                    style="--indent: 26px"
+                    style="--indent: 32px"
                     onclick="tglLeaf('tn-ep1')"
                   >
-                    <span class="tn-chv leaf"
+                    <span class="tn-chv"></span>
+                    <span class="tn-ic"
                       ><img
-                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        src="../../src/assets/images/docs_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
                         alt=""
                     /></span>
-                    <span class="tn-ic">
-                      <img
-                        class="ic-c"
-                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                        alt=""
-                      />
-                      <img
-                        class="ic-o"
-                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                        alt=""
-                      />
-                    </span>
                     <span class="tn-lbl">ep.1 첫 만남</span>
                   </div>
                 </div>
                 <div class="tn leaf" id="tn-ep2">
                   <div
                     class="tn-row"
-                    style="--indent: 26px"
+                    style="--indent: 32px"
                     onclick="tglLeaf('tn-ep2')"
                   >
-                    <span class="tn-chv leaf"
+                    <span class="tn-chv"></span>
+                    <span class="tn-ic"
                       ><img
-                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        src="../../src/assets/images/docs_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
                         alt=""
                     /></span>
-                    <span class="tn-ic">
-                      <img
-                        class="ic-c"
-                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                        alt=""
-                      />
-                      <img
-                        class="ic-o"
-                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                        alt=""
-                      />
-                    </span>
                     <span class="tn-lbl">ep.2 공원의 하루</span>
                   </div>
                 </div>
                 <div class="tn leaf" id="tn-ep3">
                   <div
                     class="tn-row"
-                    style="--indent: 26px"
+                    style="--indent: 32px"
                     onclick="tglLeaf('tn-ep3')"
                   >
-                    <span class="tn-chv leaf"
+                    <span class="tn-chv"></span>
+                    <span class="tn-ic"
                       ><img
-                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        src="../../src/assets/images/docs_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
                         alt=""
                     /></span>
-                    <span class="tn-ic">
-                      <img
-                        class="ic-c"
-                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                        alt=""
-                      />
-                      <img
-                        class="ic-o"
-                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                        alt=""
-                      />
-                    </span>
                     <span class="tn-lbl">ep.3 이웃 친구들</span>
-                  </div>
-                </div>
-                <div class="tn leaf" id="tn-ep4">
-                  <div
-                    class="tn-row"
-                    style="--indent: 26px"
-                    onclick="tglLeaf('tn-ep4')"
-                  >
-                    <span class="tn-chv leaf"
-                      ><img
-                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                        alt=""
-                    /></span>
-                    <span class="tn-ic">
-                      <img
-                        class="ic-c"
-                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                        alt=""
-                      />
-                      <img
-                        class="ic-o"
-                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                        alt=""
-                      />
-                    </span>
-                    <span class="tn-lbl">ep.4 비 오는 날</span>
                   </div>
                 </div>
               </div>
@@ -1427,37 +539,10 @@
               </div>
               <div class="tn-kids"></div>
             </div>
-            <div class="tn closed" id="tn-pj3">
-              <div
-                class="tn-row"
-                style="--indent: 12px"
-                onclick="tglTn('tn-pj3')"
-              >
-                <span class="tn-chv"
-                  ><img
-                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                    alt=""
-                /></span>
-                <span class="tn-ic">
-                  <img
-                    class="ic-c"
-                    src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                    alt=""
-                  />
-                  <img
-                    class="ic-o"
-                    src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                    alt=""
-                  />
-                </span>
-                <span class="tn-lbl">겨울 연작</span>
-              </div>
-              <div class="tn-kids"></div>
-            </div>
           </div>
         </div>
 
-        <!-- 공유 책장 (closed) -->
+        <!-- 공유 책장 -->
         <div class="sb-grp closed" id="grp-shared">
           <div class="sb-grp-hd" onclick="tglGrp('grp-shared')">
             <span class="ic"
@@ -1504,8 +589,8 @@
         </div>
       </div>
 
-      <!-- RAIL NAV: 프로젝트 화면 — house + book_open(active) -->
-      <div class="sb-rail-nav">
+      <!-- RAIL NAV -->
+      <div class="sb-rail-nav" id="rail-nav">
         <div class="rn-item" title="책장">
           <img
             src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
@@ -1515,25 +600,22 @@
             <div class="rn-pop-hd">나의 책장</div>
             <div class="rn-pop-i">고양이와 강아지</div>
             <div class="rn-pop-i">여름 단편</div>
-            <div class="rn-pop-i">겨울 연작</div>
           </div>
         </div>
-        <div class="rn-item on" title="고양이와 강아지">
+        <div class="rn-item on" title="프로젝트">
           <img
             src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
             alt=""
           />
           <div class="rn-pop">
-            <div class="rn-pop-hd">에피소드</div>
-            <div class="rn-pop-i">ep.1 첫 만남</div>
+            <div class="rn-pop-hd">고양이와 강아지</div>
+            <div class="rn-pop-i on">ep.1 첫 만남</div>
             <div class="rn-pop-i">ep.2 공원의 하루</div>
             <div class="rn-pop-i">ep.3 이웃 친구들</div>
-            <div class="rn-pop-i">ep.4 비 오는 날</div>
           </div>
         </div>
       </div>
 
-      <!-- FOOTER -->
       <div class="sb-ft">
         <div class="sb-av">베</div>
         <span class="sb-ft-name">베베</span>
@@ -1553,11 +635,6 @@
           </button>
           <div class="ws-acts">
             <button class="abtn pri">+ 에피소드 추가</button>
-            <!-- 디자인 관련 주석 -->
-            <!-- 클로드용 주석 -->
-            <!-- 이런것들도 다 + img를 사이드에 삽입한 아이콘버튼이었으면 좋겠음 -->
-            <!-- 텍스트가 아니라 이미지아이콘을 사용하고 싶은데 그러면 용량만 커지고 실속이 없나? -->
-            <!-- 어느쪽이 좋은지 추천좀 -->
             <button class="cfg-btn" onclick="openCfg()" title="프로젝트 설정">
               <img
                 src="../../src/assets/images/setting-5-svgrepo-com.svg"
@@ -1575,89 +652,53 @@
       </div>
 
       <div class="ws-bd">
-        <!-- 전체 탭 -->
-        <!-- 디자인 관련 주석 -->
-        <!-- 디자인이 정말정말 구림. -->
-        <div id="t-all">
-          <!-- 프로젝트 정보 영역 -->
-          <div class="pj-info">
-            <div class="pj-card">
-              <div class="pj-card-t">프로젝트 메모</div>
-              <!-- 클로드용 주석 -->
-              <!-- 이게 projectMemo -->
-              <textarea class="pj-ta" rows="3" placeholder="프로젝트 메모...">
+        <!-- 프로젝트 정보 영역 -->
+        <div class="pj-info">
+          <div class="pj-card">
+            <div class="pj-card-t">프로젝트 메모</div>
+            <textarea class="pj-ta" rows="3" placeholder="프로젝트 메모...">
 고양이와 강아지가 처음 만나 함께 모험하는 이야기. 전체 12화 예정.</textarea
-              >
-            </div>
-            <div class="pj-card">
-              <div class="pj-card-t">프로젝트 세부 메모</div>
-              <!-- 클로드용 주석 -->
-              <!-- 이게 projectDetailMemos -->
-              <textarea class="pj-ta" rows="3" placeholder="세부 메모...">
-장르: 힐링 일상. 대상: 전연령. 연재 주기: 주 1회. 참고: 동물 해부학 자료집.</textarea
-              >
-              <!-- 디자인 관련 주석 -->
-              <!-- 클로드용 주석 -->
-              <!-- 이 부분, 디자인도 필요하지만 데이터 구조의 수정이 필요함 -->
-              <!-- 어떤 식이 좋을지 제안해주면 내가 선택하겠음 -->
-              <!-- 세부 메모를 입력할 때 태그지정이나...카테고리 설정 같은 개념으로 -->
-              <!-- 장르, 대상, 연재주기... 이런 내용을 정할 수 있는데, -->
-              <!-- 예를 들어 현재 세부 메모는 이렇게 저장됨 -->
-              <!--                
-               projectDetailMemos: {
-                "장르": "힐링 일상",
-                "대상": "전연령",
-                "연재 주기": "주 1회",
-                "참고": "동물 해부학 자료집"
-               } 
-                -->
-              <!-- 이런식으로 세부메모도 에피소드 추가 하듯이 하나씩 추가하는 형태임 -->
-            </div>
+            >
           </div>
-          <div class="pj-info" style="grid-template-columns: 1fr">
-            <div class="pj-card">
-              <div class="pj-card-t">프로젝트 정보</div>
-              <!-- 디자인 관련 주석 -->
-              <!-- 프로젝트 설정의 내용이 프로젝트 정보 내용이랑 같이 있어도 될듯 -->
-              <div class="pj-meta">
-                <div class="pj-meta-item">
-                  <span class="pj-meta-lbl">에피소드</span
-                  ><span class="pj-meta-val">7화</span>
-                </div>
-                <div class="pj-meta-item">
-                  <span class="pj-meta-lbl">총 페이지</span
-                  ><span class="pj-meta-val">168p</span>
-                </div>
-                <div class="pj-meta-item">
-                  <span class="pj-meta-lbl">마지막 작업</span
-                  ><span class="pj-meta-val">yyyy-mm-dd hh-mm</span>
-                </div>
-                <!-- 디자인 관련 주석 -->
-                <!-- 공유 버튼이 어딘가에 필요. 구글드라이브나 노션같은 느낌. -->
-                <!-- 아이콘 닉네임          소유자 -->
-                <!-- 아이콘 닉네임          편집자/댓글 작성자/뷰어/제거 -->
-                <!-- 링크 복사-->
+          <div class="pj-card">
+            <div class="pj-card-t">프로젝트 세부 메모</div>
+            <!-- 클로드용 주석: projectDetailMemos — 태그/카테고리 기반 키-값 구조 -->
+            <textarea class="pj-ta" rows="3" placeholder="세부 메모...">
+장르: 힐링 일상. 대상: 전연령. 연재 주기: 주 1회. 참고: 동물 해부학 자료집.</textarea
+            >
+          </div>
+        </div>
+        <div class="pj-info full">
+          <div class="pj-card">
+            <div class="pj-card-t">프로젝트 정보</div>
+            <div class="pj-meta">
+              <div class="pj-meta-item">
+                <span class="pj-meta-lbl">에피소드</span>
+                <span class="pj-meta-val">7화</span>
+              </div>
+              <div class="pj-meta-item">
+                <span class="pj-meta-lbl">총 페이지</span>
+                <span class="pj-meta-val">168p</span>
+              </div>
+              <div class="pj-meta-item">
+                <span class="pj-meta-lbl">마지막 작업</span>
+                <span class="pj-meta-val">3일 전</span>
               </div>
             </div>
           </div>
-
-          <!-- 에피소드 목록 -->
-          <!-- 디자인 관련 주석 -->
-          <!-- 클로드용 주석 -->
-          <!-- .pc-th, .pc-ep-n, pc-ttl, pc-fav-on을 왼쪽에 위치시킴. 여기는 정보 영역 -->
-          <!-- .pc-ttl은 클릭하면 text처럼 보이던 input이 입력형태가 됨 -->
-          <!-- 정보영역 오른쪽으로는 input이 있음, 여기에 pc-memo 즉, episodeMemo를 적는 것 -->
-          <div class="sec-hd">
-            <h2>에피소드 목록</h2>
-            <div style="display: flex; gap: 6px; align-items: center">
-              <span class="sec-c">7개</span>
-              <button class="sort-tgl" id="sort-tgl" onclick="tglSort()">
-                최신 작업순 ▾
-              </button>
-            </div>
-          </div>
-          <div class="pgrid" id="ep-grid"></div>
         </div>
+
+        <!-- 에피소드 목록 -->
+        <div class="sec-hd">
+          <h2>에피소드 목록</h2>
+          <div class="sec-right">
+            <span class="sec-c">7개</span>
+            <button class="sort-tgl" id="sort-tgl" onclick="tglSort()">
+              최신 작업순 ▾
+            </button>
+          </div>
+        </div>
+        <div class="pgrid" id="ep-grid"></div>
       </div>
     </div>
 
@@ -1666,11 +707,7 @@
       <div class="cfg-box" onclick="event.stopPropagation()">
         <div class="cfg-title">프로젝트 설정</div>
         <div class="cfg-desc">프로젝트 전체에 적용되는 기본 설정입니다.</div>
-        <!-- 디자인 관련 주석 -->
-        <!-- 클로드용 주석 -->
-        <!-- 클릭하면 .cfg-card-v가 변경모드가 됨. 그럴려면 기본적으로 .cfg-card-v는 input인데 input티가 안나는 -->
-        <!-- 그냥 text처럼 보이는 input이었다가 클릭하면 input처럼 보이게 되는게 나을듯 -->
-        <!-- 누누히 말하지만 클릭했다고 좌우위아래 뭐가 움직이고 그런건 싫음 -->
+        <!-- 디자인 관련 주석: cfg-card-v는 text처럼 보이는 input, 클릭시 입력모드 전환, 레이아웃 변동 없음 -->
         <div class="cfg-grid">
           <div class="cfg-card">
             <div class="cfg-card-l">기본 페이지수</div>
@@ -1708,11 +745,13 @@
             stroke-width="2"
           >
             <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35" /></svg
-          ><input
+            <path d="M21 21l-4.35-4.35" />
+          </svg>
+          <input
             type="text"
             placeholder="검색어 입력 후 Enter..."
             id="s-input"
+            onkeydown="if (event.key === 'Enter') doS();"
           />
         </div>
         <div class="s-tabs">
@@ -1721,7 +760,7 @@
           <div class="s-tab">페이지</div>
           <div class="s-tab">컷</div>
         </div>
-        <div class="s-bd">
+        <div class="s-bd" id="s-bd">
           <div class="s-hint">Enter를 눌러 검색을 시작하세요</div>
         </div>
         <div class="s-esc">esc 닫기</div>
@@ -1832,16 +871,21 @@
           const card = document.createElement("div");
           card.className = "pc";
           card.innerHTML = `
-      <div class="pc-th" style="background:${colors[i % colors.length]}"><span class="pc-th-n">${i + 1}</span></div>
-      <div class="pc-info">
-        <div class="pc-tr"><span class="pc-ep-n">${e.n}</span><span class="pc-ttl">${e.t}</span><button class="pc-fav${e.fav ? " on" : ""}" onclick="event.stopPropagation();eps[${i}].fav=!eps[${i}].fav;renderGrid()"><img src="../../src/assets/images/bookmark_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></button></div>
-        <div class="pc-mt">${e.pg}p</div>
-        <div class="pc-memo${e.memo ? "" : " empty"}">${e.memo || "메모 없음"}</div>
-        <div class="pc-ft"><span class="etag ${tagCls[e.tag]}">${tagTxt[e.tag]}</span></div>
-      </div>`;
+            <div class="pc-th" style="background:${colors[i % colors.length]}"><span class="pc-th-n">${i + 1}</span></div>
+            <div class="pc-info">
+              <div class="pc-tr">
+                <span class="pc-ep-n">${e.n}</span>
+                <span class="pc-ttl">${e.t}</span>
+                <button class="pc-fav${e.fav ? " on" : ""}" onclick="event.stopPropagation();eps[${i}].fav=!eps[${i}].fav;renderGrid()">
+                  <img src="../../src/assets/images/bookmark_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+                </button>
+              </div>
+              <div class="pc-mt">${e.pg}p</div>
+              <div class="pc-memo${e.memo ? "" : " empty"}">${e.memo || "메모 없음"}</div>
+              <div class="pc-ft"><span class="etag ${tagCls[e.tag]}">${tagTxt[e.tag]}</span></div>
+            </div>`;
           g.appendChild(card);
         });
-        // add card
         const add = document.createElement("div");
         add.className = "pc pc-add";
         add.innerHTML =
@@ -1860,16 +904,6 @@
         g.appendChild(add);
       }
 
-      function swT(id, el) {
-        ["all", "fav", "shr"].forEach((t) => {
-          const e = document.getElementById("t-" + t);
-          if (e) e.style.display = t === id ? "" : "none";
-        });
-        document
-          .querySelectorAll(".tab")
-          .forEach((t) => t.classList.remove("on"));
-        el.classList.add("on");
-      }
       let sortAsc = false;
       function tglSort() {
         sortAsc = !sortAsc;
@@ -1877,7 +911,6 @@
           ? "오래된순 ▴"
           : "최신 작업순 ▾";
         if (sortAsc) eps.reverse();
-        else eps.sort((a, b) => 0);
         renderGrid();
       }
 
@@ -1912,6 +945,7 @@
           .forEach((r) => r.classList.remove("on"));
         if (!wasOn) row.classList.add("on");
       }
+
       function openS() {
         document.getElementById("s-ov").classList.add("open");
         document.getElementById("s-input").focus();
@@ -1919,6 +953,14 @@
       function closeS(e) {
         if (e && e.target !== document.getElementById("s-ov")) return;
         document.getElementById("s-ov").classList.remove("open");
+      }
+      // ⚠️ XSS 주의: innerHTML에 q 직접 삽입 중.
+      // React 구현 시 JSX(자동 이스케이프) 또는 textContent 기반으로 교체할 것.
+      function doS() {
+        const q = document.getElementById("s-input").value.trim();
+        if (!q) return;
+        document.getElementById("s-bd").innerHTML =
+          `<div style="padding:8px 10px;border-radius:6px;cursor:pointer"><div style="font-size:12px;font-weight:500">ep.1 첫 만남</div><div style="font-size:10px;color:var(--gh);font-family:'DM Mono',monospace">고양이와 강아지 › ep.1</div></div>`;
       }
 
       let mmOpen = false,

@@ -5,6 +5,11 @@
 - IndexedDB 에러(QuotaExceeded/Security)를 UIContext.dbError로 올려 DbErrorToast에서 표시
 - Button 변형 7종(ghost/primary/accent/outline/danger/icon/add)을 기존 button.scss 클래스에 매핑, GuideLine은 DEV 전용 B4 TRIM+INNER 오버레이
 
+## 2026-03-02 (Phase 1 HTML 프로토타입 완료)
+- Phase A~C 완료: proto-episode/page/cut.html proto-style.css 전환 + 신 사이드바 교체, 5단계 EpisodeStatus 적용, spread blank-cover 어포던스, ctx-bar flex-wrap 대응
+- 모든 이모지 아이콘(🗃↩↪🗑✂↺) → SVG 교체, XSS 경고 주석 추가, B4 비율 Known Issue 표현 정정
+- D 통합 검수 완료: 5파일 proto-style.css 링크 ✅, 사이드바 펼침/접힘 기본값 ✅, rail-nav .on 계층 ✅, SVG 경로 전수 ✅
+
 ## 2026-03-01 (프로토타입 설계 검토)
 - 7관점 토론(기획/아키텍트/보안/웹디자인/앱디자인/UX/만화가)으로 프로토타입 우선순위 재정의: A-episode CSS 리팩터, B-page/cut 신 사이드바 교체, C-episode 5단계 상태 정의가 React 마이그레이션 블로커로 확정
 - todo.md 전면 재작성: Phase A(즉시) / B(중요) / C(권장) / D(통합검수) + React 이관 항목 분리 보관

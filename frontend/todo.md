@@ -10,11 +10,11 @@
 
 | 파일 | proto-style.css | 신 사이드바 | 중복 CSS 제거 | 상태 |
 |------|:-:|:-:|:-:|------|
-| proto-bookshelf.html | ✅ | ✅ | 일부 잔존 | 거의 완성 |
-| proto-project.html | ✅ | ✅ | 일부 잔존 | 거의 완성 |
-| proto-episode.html | ❌ (인라인 전체) | ✅ (인라인 복사) | ❌ | 리팩터 필요 |
-| proto-page.html | ❌ | ❌ 구 사이드바 | ❌ | 미완성 |
-| proto-cut.html | ❌ | ❌ 구 사이드바 | ❌ | 미완성 |
+| proto-bookshelf.html | ✅ | ✅ | ✅ | **완료** |
+| proto-project.html | ✅ | ✅ | ✅ | **완료** |
+| proto-episode.html | ✅ | ✅ | ✅ | **완료** |
+| proto-page.html | ✅ | ✅ | ✅ | **완료** |
+| proto-cut.html | ✅ | ✅ | ✅ | **완료** |
 
 ---
 

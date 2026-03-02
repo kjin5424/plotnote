@@ -11,7 +11,7 @@ Always follow the instructions in this file as your top priority.
 - **0-3. Optimization:** 50턴 이상 대화 또는 컨텍스트 경고 시 다음과 같은 절차를 실행한다.
   - 이 프로젝트에서 `/cleanup-context`라고 하면 현재 컨텍스트를 요약하고 불필요한 파일을 메모리에서 내려라.
   - 핵심 성과와 다음 할 일을 `progress.md`에 백업한다.
-  - `/clear`로 쵝화 하고 대화 기록을 요약해서 압축한다.
+  - `/clear`로 최적화 하고 대화 기록을 요약해서 압축한다.
 
 ### 1. Analysis & Planning (Debate First)
 
