@@ -1,5 +1,3 @@
-# plotnote 화면별 상세묘사-2
-
 # PlotNote 화면별 상세 UI 묘사
 
 > 이 문서는 디자인 설명서(`plotnote_화면_디자인_설명.txt`)와 프로젝트 기술 문서(`techContext.md`, `projectBrief.md`, `progress.md`)를 종합하여,
