@@ -26,9 +26,10 @@
 | 정렬desc       | `sort-descending-svgrepo-com.svg`                                       |
 | 명시적 수정     | `sort-descending-svgrepo-com.svg`                                       |
 | 전체 화면       | `fit_screen_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`                 |
-컷 분할 모드 `content_cut_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`
-삭제 `delete_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`
-되돌리기`undo_20dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.svg`
-다시하기`redo_20dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.svg`
-컷 초기화`restart_alt_20dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.svg`
-드래그 핸들 `menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`
+| 컷 분할 모드    | `content_cut_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`                |
+| 삭제           | `delete_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`                     |
+| 되돌리기        | `undo_20dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.svg`                       |
+| 다시하기        | `redo_20dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.svg`                       |
+| 컷 초기화       | `restart_alt_20dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.svg`                |
+| 드래그 핸들     | `menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`                       |
+ 
