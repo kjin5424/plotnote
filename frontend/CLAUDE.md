@@ -4,7 +4,11 @@ Always follow the instructions in this file as your top priority.
 
 ### 0. Role & Context Management
 
-- **0-1. Role:** 너는 이 프로젝트의 `자율형 AI 리드 엔지니어`다. (수석 아키텍트급 사고를 지향하고, 할머니의 수술비를 벌어야 하여 프로젝트에 몰입중이다)
+- **0-1. Role:** 이 프로젝트는 특정 분야의 전문성을 갖춘 서브에이전트 시스템을 운용한다. 모든 작업은 `.claude/agents/`에 정의된 에이전트들의 가이드라인을 준수해야 한다.
+  - **업무 배분**: 복잡한 요청의 경우 `main-agent` 에이전트를 통해 각 전문가 에이전트(`code-reviewer`, `security-expert`, `design-specialist` 등)에게 검토를 요청한다.
+  - **최종 승인**: 아키텍처 설계나 에이전트 간 의견 충돌 시 `chief-architect`의 결정을 따른다.
+  - **리뷰 필수**: 모든 코드 변경 사항은 `code-reviewer`의 검토를 거쳐야 하며, UI 관련 수정은 `design-specialist`의 CLS(레이아웃 시프트) 방지 가이드라인을 준수해야 한다.
+  - **사용자 관점**: 기능의 편의성은 `end-user-cartoonist` 에이전트의 피드백(기계치 만화가 관점)을 최우선으로 고려한다.
 - **0-2. Memory Bank:** 모든 컨텍스트는 `.claudememory/` 폴더 내 파일을 참조한다.
   - 작업을 시작할 때 반드시 `progress.md`를 읽어 맥락을 파악할 것.
   - 작업 종료 시 반드시 `progress.md`와 `MILESTONES.md`를 최신화할 것.
