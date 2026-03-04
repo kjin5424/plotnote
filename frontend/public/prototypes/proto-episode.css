@@ -1,0 +1,697 @@
+/* ═══════════════════════════════════════════════════════
+   PlotNote — proto-episode.css
+   에피소드 화면 전용 스타일
+   ─────────────────────────────────────────────────────
+   공통 클래스 재사용: badge, drag-h, m-sec, m-ta,
+   parent-memo, memo-input, add-item, cfg-*, hbtn, abtn,
+   sort-tgl, ws-hd, ws-hd-top, ws-hd-r, ws-sep
+═══════════════════════════════════════════════════════ */
+
+/* ─── 0. 워크스페이스 바디 오버라이드 ───
+   에피소드 화면은 좌우 분할이므로 padding/scroll 제거 */
+.ep-workspace .ws-bd {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+}
+
+/* ─── 1. 워크스페이스 헤더 보조 ─── */
+.ep-pj-link {
+  font-family: var(--ff-serif);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--i2);
+  cursor: pointer;
+  transition: color var(--dur-sm);
+  white-space: nowrap;
+}
+.ep-pj-link:hover {
+  color: var(--db);
+}
+
+.ep-hd-label {
+  font-family: var(--ff-serif);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* 헤더 메모 프리뷰 (1줄, 말줄임) */
+.ep-memo-preview {
+  padding: 0 20px 8px;
+  font-size: 12px;
+  color: var(--gh);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  border-bottom: 1px solid var(--bd);
+  transition: color var(--dur-sm);
+}
+.ep-memo-preview:hover {
+  color: var(--i2);
+}
+
+/* ═══════════════════════════════════════════════════════
+   2. 좌측 에피소드 네비게이터
+═══════════════════════════════════════════════════════ */
+.ep-nav {
+  width: 35%;
+  min-width: 280px;
+  max-width: 380px;
+  height: 100%;
+  background: var(--wh);
+  border-right: 1px solid var(--bd);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* 네비 헤더 (필터탭 + 정렬) */
+.ep-nav-hd {
+  flex-shrink: 0;
+  padding: 12px 14px 0;
+  border-bottom: 1px solid var(--bd);
+}
+
+.ep-nav-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.ep-nav-ttl {
+  font-family: var(--ff-serif);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.ep-nav-acts {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+/* ─── 2-1. 필터 탭 ─── */
+.ep-tabs {
+  display: flex;
+  gap: 0;
+  margin: 0 -14px;
+  padding: 0 14px;
+}
+
+.ep-tab {
+  padding: 6px 10px;
+  font-size: 11px;
+  color: var(--gh);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition:
+    color var(--dur-sm),
+    border-color var(--dur-sm);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.ep-tab:hover {
+  color: var(--i2);
+}
+
+.ep-tab.on {
+  color: var(--db);
+  border-bottom-color: var(--db);
+  font-weight: 500;
+}
+
+.ep-tab-count {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  color: var(--gh);
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  border-radius: var(--r-pill);
+  background: var(--pa);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ep-tab.on .ep-tab-count {
+  background: var(--db-bg);
+  color: var(--db);
+}
+
+/* ─── 2-2. 에피소드 리스트 ─── */
+.ep-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* 에피소드 카드 (리스트형) */
+.erow {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  position: relative;
+  border-bottom: 1px solid var(--bd);
+  transition: background var(--dur-xs);
+}
+
+.erow::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: transparent;
+  transition: background var(--dur-sm);
+}
+
+.erow:hover {
+  background: #f8f9fc;
+}
+
+.erow:hover::before {
+  background: var(--gl);
+}
+
+.erow.on {
+  background: var(--db-bg);
+}
+
+.erow.on::before {
+  background: var(--db);
+}
+
+/* 드래그 상태 */
+.erow.dragging {
+  background: #e8edf5;
+  box-shadow: 0 4px 16px rgba(42, 77, 136, 0.15);
+  outline: 1px dashed var(--db);
+  outline-offset: -1px;
+  border-radius: var(--r-md);
+  opacity: 0.9;
+  z-index: 10;
+}
+
+/* 썸네일 (작은 정사각) */
+.erow-thumb {
+  width: 40px;
+  min-width: 40px;
+  aspect-ratio: 1/1;
+  border-radius: var(--r-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.erow-thumb-num {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* 카드 바디 */
+.erow-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+
+.erow-num {
+  font-size: 9px;
+  font-family: var(--ff-mono);
+  color: var(--gh);
+}
+
+.erow-ttl {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--ink);
+}
+
+.erow-memo {
+  font-size: 10px;
+  color: var(--i2);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.erow-memo.empty {
+  color: var(--co);
+  font-style: italic;
+}
+
+.erow-ft {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 1px;
+}
+
+.erow-pg {
+  font-size: 9px;
+  font-family: var(--ff-mono);
+  color: var(--gh);
+}
+
+/* 카드 우측 액션 (hover 시 표시) */
+.erow-acts {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity var(--dur-sm);
+  flex-shrink: 0;
+}
+
+.erow:hover .erow-acts {
+  opacity: 1;
+}
+
+/* 에피소드 추가 (dashed) */
+.ep-add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  cursor: pointer;
+  color: var(--gh);
+  font-size: 11px;
+  border: 2px dashed var(--bd2);
+  margin: 8px 14px;
+  border-radius: var(--r-lg);
+  transition:
+    background var(--dur-sm),
+    color var(--dur-sm),
+    border-color var(--dur-sm);
+}
+
+.ep-add:hover {
+  background: #f5f8ff;
+  color: var(--db);
+  border-color: var(--oc);
+}
+
+.ep-add-ic {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--bd2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: border-color var(--dur-sm);
+}
+
+.ep-add:hover .ep-add-ic {
+  border-color: var(--oc);
+}
+
+/* ═══════════════════════════════════════════════════════
+   3. 우측 디테일 패널
+═══════════════════════════════════════════════════════ */
+.det-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* 비선택 상태 플레이스홀더 */
+.det-placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gh);
+  font-size: 13px;
+  user-select: none;
+}
+
+/* ─── 3-1. 디테일 헤더 ─── */
+.det-hd {
+  flex-shrink: 0;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--bd);
+  background: var(--wh);
+}
+
+.det-hd-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.det-hd-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.det-ttl-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.det-ep-num {
+  font-size: 12px;
+  font-family: var(--ff-mono);
+  color: var(--oc);
+  flex-shrink: 0;
+}
+
+.det-ttl {
+  font-family: var(--ff-serif);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0;
+  color: var(--ink);
+}
+
+.det-ttl:focus {
+  box-shadow: 0 1px 0 var(--oc);
+}
+
+.det-pg-count {
+  font-size: 12px;
+  font-family: var(--ff-mono);
+  color: var(--gh);
+  flex-shrink: 0;
+}
+
+/* 상태 + 설정 */
+.det-hd-acts {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.det-status {
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+  transition: opacity var(--dur-sm);
+}
+
+.det-status:hover {
+  opacity: 0.8;
+}
+
+/* 디테일 탭 행 */
+.det-tab-row {
+  display: flex;
+  align-items: center;
+  margin: 12px -22px 0;
+  padding: 0 22px;
+  border-bottom: 2px solid var(--bd);
+}
+
+.det-tab {
+  padding: 6px 12px;
+  font-size: 12px;
+  color: var(--gh);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition:
+    color var(--dur-sm),
+    border-color var(--dur-sm);
+}
+
+.det-tab:hover {
+  color: var(--i2);
+}
+
+.det-tab.on {
+  color: var(--db);
+  border-bottom-color: var(--db);
+  font-weight: 500;
+}
+
+.det-tab-right {
+  margin-left: auto;
+  margin-bottom: 4px;
+}
+
+.det-add-pg {
+  padding: 3px 10px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--bd2);
+  background: var(--wh);
+  font-size: 10px;
+  color: var(--i2);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  transition:
+    border-color var(--dur-sm),
+    color var(--dur-sm);
+}
+
+.det-add-pg:hover {
+  border-color: var(--db);
+  color: var(--db);
+}
+
+/* ─── 3-2. 디테일 바디 ─── */
+.det-bd {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 22px;
+}
+
+/* ─── 3-3. 페이지별 메모 리스트 ─── */
+.pm-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pm-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: var(--r-sm);
+  transition: background var(--dur-xs);
+}
+
+.pm-row:hover {
+  background: var(--pa);
+}
+
+/* 페이지별 메모 그랩 핸들 (인라인) */
+.pm-grab {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5px;
+  cursor: grab;
+  padding: 3px 2px;
+  opacity: 0.3;
+  flex-shrink: 0;
+  transition: opacity var(--dur-sm);
+}
+
+.pm-grab span {
+  display: block;
+  width: 8px;
+  height: 1.5px;
+  background: var(--gl);
+  border-radius: 1px;
+}
+
+.pm-row:hover .pm-grab {
+  opacity: 0.7;
+}
+
+.pm-grab:active {
+  cursor: grabbing;
+  opacity: 1;
+}
+
+/* 페이지 번호 */
+.pm-num {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  color: var(--db);
+  min-width: 30px;
+  flex-shrink: 0;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: var(--r-xs);
+  transition: background var(--dur-xs);
+}
+
+.pm-num:hover {
+  background: var(--db-bg);
+}
+
+/* 페이지 메모 추가 */
+.pm-add {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  margin-top: 4px;
+  cursor: pointer;
+  color: var(--gh);
+  font-size: 11px;
+  border: 1px dashed var(--bd2);
+  border-radius: var(--r-sm);
+  transition:
+    background var(--dur-sm),
+    color var(--dur-sm),
+    border-color var(--dur-sm);
+}
+
+.pm-add:hover {
+  background: #f5f8ff;
+  color: var(--db);
+  border-color: var(--oc);
+}
+
+/* 안내 텍스트 */
+.ep-sync-notice {
+  font-size: 10px;
+  color: var(--co);
+  font-style: italic;
+  padding: 8px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ep-sync-notice::before {
+  content: "ⓘ";
+  font-style: normal;
+  font-size: 11px;
+  color: var(--gl);
+}
+
+/* ═══════════════════════════════════════════════════════
+   4. 에피소드 설정 모달 오버라이드
+═══════════════════════════════════════════════════════ */
+.ep-cfg-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--bd2);
+  background: var(--wh);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.55;
+  transition:
+    border-color var(--dur-sm),
+    opacity var(--dur-sm);
+}
+
+.ep-cfg-btn:hover {
+  border-color: var(--oc);
+  opacity: 0.9;
+}
+
+.ep-cfg-btn img {
+  width: 16px;
+  height: 16px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   5. 데드라인 표시
+═══════════════════════════════════════════════════════ */
+.det-deadline {
+  font-size: 10px;
+  color: var(--gh);
+  font-family: var(--ff-mono);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.det-deadline-val {
+  color: var(--i2);
+  cursor: pointer;
+  padding: 1px 6px;
+  border-radius: var(--r-xs);
+  border: 1px solid transparent;
+  transition:
+    border-color var(--dur-sm),
+    background var(--dur-sm);
+}
+
+.det-deadline-val:hover {
+  border-color: var(--bd2);
+  background: var(--pa);
+}
+
+/* ═══════════════════════════════════════════════════════
+   6. 그라디언트 썸네일 (에피소드 카드용)
+═══════════════════════════════════════════════════════ */
+.erow-thumb--g1 {
+  background: linear-gradient(135deg, #6a8ec7, #2a4d88);
+}
+.erow-thumb--g2 {
+  background: linear-gradient(135deg, #7cb8a0, #2a7a50);
+}
+.erow-thumb--g3 {
+  background: linear-gradient(135deg, #b59ad4, #6b5fa0);
+}
+.erow-thumb--g4 {
+  background: linear-gradient(135deg, #e8b86d, #c48a30);
+}
+.erow-thumb--g5 {
+  background: linear-gradient(135deg, #d48a8a, #a05050);
+}
+.erow-thumb--g6 {
+  background: linear-gradient(135deg, #8ab4d4, #507090);
+}
+.erow-thumb--g7 {
+  background: linear-gradient(135deg, #b8c48a, #7a8a50);
+}
