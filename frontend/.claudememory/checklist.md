@@ -104,7 +104,7 @@ frontend/public/prototypes/
 - [x] 애니메이션 공통화 (modalUp, fadeUp, fadeIn, shake)
   > 결과물: proto-style.css, proto-sidebar.css proto-memopanel.css, proto-search.css
 
-### ✅ 1-1~1-2. 사이드바 레퍼런스 (proto-sidebar.html) — 완료(일부 6. 통합 검수 단계에서 확인 필요)
+### ✅ 1-1~1-2. 사이드바 레퍼런스 (proto-sidebar.html) — 완료(일부 7. 통합 검수 단계에서 확인 필요)
 
 - [x] 인라인 CSS 제거 → proto-style.css + proto-sidebar.css 링크 참조
 - [x] 트리뷰: 즐겨찾기/나의책장/공유책장 그룹 토글
@@ -243,7 +243,7 @@ grep "## 4. Episode 화면 (에피소드)" `project_knowledge_search`를 통해 
   - 메모 추가/삭제 stub
 - [x] 사이드바 — proto-sidebar.html 패턴 복제, 트리뷰에서 ep.3 .on, rail nav에서 에피소드 아이콘 .on - 워크스페이스 헤더 — ep-pj-link(프로젝트명 → 클릭 시 이동 시사) + ws-sep + "에피소드 리스트" + 우측 +에피소드 추가 + 메모 토글. 하단 ep-memo-preview 1줄 말줄임 - 좌측 네비 (35%) — 필터탭 4종(전체/진행중/완료/예정 + 카운트 뱃지), 정렬 토글(asc/desc 아이콘 교체), 에피소드 카드(erow: 그라디언트 썸네일 + 번호 + 제목 + 메모 1줄 + 상태배지 + 페이지수 + hover 드래그핸들), 선택 하이라이트(.on), - 더블클릭 → 페이지 화면 stub - 우측 디테일 (65%) — 2탭 구조: - 메모 탭: 프로젝트 메모 읽기전용 프리뷰(parent-memo), 에피소드 메모 textarea(m-ta), 세부 메모 리스트(태그 + 인라인 input + 추가/삭제) - 페이지 메모 탭: 24페이지 메모 리스트(pm-row: 그랩핸들 + 페이지번호 링크 + 인라인 input), 연동 안내 텍스트 - JS stub — 필터 탭 전환, 정렬 토글, 에피소드 선택→디테일 교체, 상태 순환(done→진행중→예정), 페이지/세부메모 추가, loadComponent (search/memo)
   > 완료보고가 checklist.md와 맞지 않아 체크리스트가 제대로 구현되었는지 확인하지 못함
-  > **6. 통합 검수 단계**에서 확인 필요
+  > **7. 통합 검수 단계**에서 확인 필요
   > 결과물: proto-episode.html, proto-episode.css
 
 ---
@@ -310,7 +310,7 @@ grep "## 5. Page 화면 (페이지)" `project_knowledge_search`를 통해 접근
 
 ---
 
-### ⬜ 5. Cut 디자인 (proto-cut.html) — 미완료
+### ⬜ 6. Cut 디자인 (proto-cut.html) — 미완료
 
 grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto-screen.md
 
@@ -383,7 +383,7 @@ grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto
 
 ---
 
-### ⬜ 6. 통합 검수 — 미완료
+### ⬜ 7. 통합 검수 — 미완료
 
 - [ ] CSS 일관성: 5개 HTML 모두 proto-style.css 링크, 고유 스타일만 `proto-*.css`에 유지
 - [ ] 변수 일관성: 공통되는 부분은 인라인 `style` 하드코딩 없이 CSS 변수 사용
