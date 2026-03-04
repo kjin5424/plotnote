@@ -1,3 +1,10 @@
+<!-- ═══════════════════════════════════════════════════════
+     PlotNote — proto-page.html
+     페이지 화면 (proto-screen.md §5)
+     ─────────────────────────────────────────────────────
+     CSS: proto-style.css (공통) + proto-sidebar.css + proto-page.css
+     Import: proto-search.html, proto-memopanel.html (loadComponent)
+═══════════════════════════════════════════════════════ -->
 <!doctype html>
 <html lang="ko">
   <head>
@@ -8,576 +15,164 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="proto-style.css" />
-    <style>
-      /* 페이지 전용 CSS 변수 */
-      :root {
-        --rsp: 280px;
-      }
-
-      /* ═══ MAIN ═══ */
-      /* (proto-style의 .main과 동일, 오버라이드 불필요) */
-
-      /* WS Header (page 전용 — flex+gap 레이아웃) */
-      .ws-hd {
-        flex-shrink: 0;
-        background: var(--wh);
-        border-bottom: 1px solid var(--bd);
-        padding: 8px 20px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-      .ws-bc {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        font-size: 12px;
-        color: var(--gh);
-      }
-      .ws-bc a {
-        color: var(--gh);
-        text-decoration: none;
-        cursor: pointer;
-      }
-      .ws-bc a:hover {
-        color: var(--db);
-      }
-      .ws-bc .cur {
-        color: var(--ink);
-        font-weight: 500;
-      }
-      .ws-bc .sep {
-        color: var(--co);
-      }
-      .srch {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 5px 12px;
-        background: var(--pa);
-        border: 1px solid var(--bd);
-        border-radius: 7px;
-        cursor: pointer;
-        width: 180px;
-      }
-      .srch:hover {
-        border-color: var(--oc);
-      }
-      .srch svg {
-        flex-shrink: 0;
-        color: var(--gh);
-      }
-      .srch span {
-        font-size: 11px;
-        color: var(--gh);
-      }
-      .hbtn {
-        width: 28px;
-        height: 28px;
-        border-radius: 5px;
-        border: none;
-        background: none;
-        color: var(--gh);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 15px;
-      }
-      .hbtn:hover {
-        background: var(--pa);
-        color: var(--i2);
-      }
-
-      /* Toolbar: ep명 + 양면단면+페이지추가 오른쪽 */
-      .toolbar {
-        flex-shrink: 0;
-        background: var(--wh);
-        border-bottom: 1px solid var(--bd);
-        padding: 8px 20px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .ep-name {
-        font-family: "Noto Serif KR", serif;
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--ink);
-      }
-      .ep-pg-count {
-        font-size: 11px;
-        font-family: "DM Mono", monospace;
-        color: var(--gh);
-      }
-      .tb-r {
-        margin-left: auto;
-        display: flex;
-        gap: 6px;
-        align-items: center;
-      }
-      .view-tgl {
-        display: flex;
-        border: 1px solid var(--bd2);
-        border-radius: 5px;
-        overflow: hidden;
-      }
-      .vtb {
-        padding: 3px 9px;
-        border: none;
-        background: var(--wh);
-        font-size: 11px;
-        color: var(--gh);
-        cursor: pointer;
-      }
-      .vtb.on {
-        background: #eef1f7;
-        color: var(--db);
-      }
-
-      /* ═══ BODY: grid + rsp (override) ═══ */
-      .ws-bd {
-        flex: 1;
-        display: flex;
-        overflow: hidden;
-      }
-      .grid-area {
-        flex: 1;
-        overflow-y: auto;
-        padding: 16px 18px;
-      }
-      .grid-area::-webkit-scrollbar {
-        width: 6px;
-      }
-      .grid-area::-webkit-scrollbar-thumb {
-        background: var(--co);
-        border-radius: 3px;
-      }
-
-      /* 페이지 그리드 */
-      .pg-grid {
-        display: grid;
-        gap: 10px;
-      }
-      .pg-grid.single {
-        grid-template-columns: repeat(5, 1fr);
-      }
-      .pg-grid.spread {
-        grid-template-columns: repeat(3, 1fr);
-      }
-      .spread-cell {
-        display: flex;
-        gap: 0;
-      }
-      .pcard {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        cursor: pointer;
-        min-width: 0;
-      }
-      .pcard:hover .pi {
-        border-color: var(--oc);
-      }
-      .pi {
-        /* B4 세로 원고 비율: width 238 / height 324 (B4 257mm×364mm 근사) */
-        aspect-ratio: 238/324;
-        background: var(--wh);
-        border: 1px solid var(--bd);
-        border-radius: 3px;
-        position: relative;
-        overflow: hidden;
-      }
-      .pi-num {
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        background: var(--db);
-        color: #fff;
-        font-size: 8px;
-        font-family: "DM Mono", monospace;
-        padding: 1px 5px;
-        border-radius: 3px;
-      }
-      .pi-lines {
-        padding: 6px;
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-      }
-      .pi-line {
-        height: 1.5px;
-        background: var(--pa);
-        border-radius: 1px;
-      }
-      .pi-line:nth-child(1) {
-        width: 70%;
-      }
-      .pi-line:nth-child(2) {
-        width: 85%;
-      }
-      .pi-line:nth-child(3) {
-        width: 55%;
-      }
-      .pi-line:nth-child(4) {
-        width: 80%;
-      }
-      .pcard-info {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-      }
-      .pcard-memo {
-        font-size: 10px;
-        color: var(--i2);
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        min-height: 28px;
-      }
-      .pcard-memo.empty {
-        color: var(--gh);
-        font-style: italic;
-      }
-      .pg-add-cell {
-        cursor: pointer;
-      }
-      .pg-add-cell .pi {
-        border: 2px dashed var(--bd2);
-        background: transparent;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--gh);
-        font-size: 24px;
-      }
-      .pg-add-cell:hover .pi {
-        border-color: var(--oc);
-        background: #f5f8ff;
-      }
-      .pcard--cover-blank .pi {
-        background: var(--pa);
-        opacity: 0.4;
-        pointer-events: none;
-      }
-      .pi-blank-lbl {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 9px;
-        color: var(--db);
-        white-space: nowrap;
-      }
-      .half-page {
-        flex: 1;
-        min-width: 0;
-      }
-      .half-page .pi {
-        border-radius: 0;
-      }
-      .half-page:first-child .pi {
-        border-radius: 3px 0 0 3px;
-        border-right: none;
-      }
-      .half-page:last-child .pi {
-        border-radius: 0 3px 3px 0;
-      }
-      .half-empty .pi {
-        background: var(--pa);
-        opacity: 0.4;
-      }
-
-      /* ═══ 우측 메모 패널 ═══ */
-      .rsp {
-        width: 0;
-        overflow: hidden;
-        border-left: none;
-        background: var(--wh);
-        display: flex;
-        flex-direction: column;
-        flex-shrink: 0;
-        transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-      .rsp.open {
-        width: var(--rsp);
-        border-left: 1px solid var(--bd);
-      }
-      .rsp-tabs {
-        display: flex;
-        border-bottom: 1px solid var(--bd);
-        flex-shrink: 0;
-        overflow-x: auto;
-        background: var(--pa);
-      }
-      .rsp-tabs::-webkit-scrollbar {
-        height: 2px;
-      }
-      .rsp-tabs::-webkit-scrollbar-thumb {
-        background: var(--co);
-      }
-      .rsp-tab {
-        padding: 8px 10px;
-        font-size: 10px;
-        font-family: "DM Mono", monospace;
-        color: var(--gh);
-        cursor: pointer;
-        white-space: nowrap;
-        border-bottom: 2px solid transparent;
-        margin-bottom: -1px;
-      }
-      .rsp-tab:hover {
-        color: var(--i2);
-      }
-      .rsp-tab.on {
-        color: var(--db);
-        border-bottom-color: var(--db);
-        background: var(--wh);
-      }
-      .rsp-bd {
-        flex: 1;
-        overflow-y: auto;
-        padding: 12px;
-      }
-      .rsp-bd::-webkit-scrollbar {
-        width: 4px;
-      }
-      .rsp-bd::-webkit-scrollbar-thumb {
-        background: var(--co);
-        border-radius: 2px;
-      }
-      .rsp-sec {
-        margin-bottom: 10px;
-      }
-      .rsp-sec-hd {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 5px 8px;
-        border-radius: 5px;
-        cursor: pointer;
-        color: var(--oc);
-        font-size: 10px;
-        font-family: "DM Mono", monospace;
-      }
-      .rsp-sec-hd:hover {
-        background: var(--pa);
-      }
-      .rsp-arrow {
-        font-size: 8px;
-        transition: transform 0.15s;
-        color: var(--gh);
-      }
-      .rsp-mi {
-        background: var(--pa);
-        border-radius: 6px;
-        padding: 8px 10px;
-        margin-bottom: 5px;
-        cursor: pointer;
-        border: 1px solid transparent;
-      }
-      .rsp-mi:hover {
-        border-color: var(--bd2);
-      }
-      .rsp-mi.on {
-        border-color: var(--db);
-        background: #eef1f7;
-      }
-      .rsp-mi-lbl {
-        font-size: 8px;
-        font-family: "DM Mono", monospace;
-        color: var(--gh);
-        margin-bottom: 2px;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-      .rsp-mi-txt {
-        font-size: 11px;
-        color: var(--i2);
-        line-height: 1.5;
-      }
-      .rsp-mi-txt.empty {
-        color: var(--gh);
-        font-style: italic;
-      }
-      .rsp-ci {
-        display: flex;
-        align-items: flex-start;
-        gap: 6px;
-        background: var(--pa);
-        border-radius: 5px;
-        padding: 6px 8px;
-        margin-bottom: 3px;
-        cursor: pointer;
-        border: 1px solid transparent;
-      }
-      .rsp-ci:hover {
-        border-color: var(--bd2);
-      }
-      .rsp-ci.on {
-        border-color: var(--db);
-        background: #eef1f7;
-      }
-      .rsp-cn {
-        font-size: 9px;
-        font-family: "DM Mono", monospace;
-        color: var(--gh);
-        min-width: 22px;
-        flex-shrink: 0;
-        padding-top: 1px;
-      }
-      .rsp-ct {
-        font-size: 10px;
-        color: var(--i2);
-        line-height: 1.4;
-      }
-      .rsp-ct.empty {
-        color: var(--gh);
-        font-style: italic;
-      }
-      .rsp-ta {
-        width: 100%;
-        background: var(--pa);
-        border: 1px solid var(--bd);
-        border-radius: 5px;
-        padding: 6px 9px;
-        font-size: 10px;
-        font-family: inherit;
-        color: var(--i2);
-        resize: none;
-        outline: none;
-        line-height: 1.6;
-      }
-      .rsp-ta:focus {
-        border-color: var(--oc);
-        box-shadow: 0 0 0 3px rgba(42, 77, 136, 0.08);
-      }
-      .rsp-add {
-        width: 100%;
-        background: transparent;
-        border: 1px dashed var(--bd2);
-        border-radius: 5px;
-        padding: 5px 9px;
-        font-size: 9px;
-        color: var(--gh);
-        cursor: pointer;
-        margin-top: 3px;
-        font-family: inherit;
-      }
-      .rsp-add:hover {
-        border-color: var(--oc);
-        color: var(--db);
-      }
-
-      /* ═══ FOOTER ═══ */
-      .ws-ft {
-        flex-shrink: 0;
-        height: 28px;
-        background: var(--wh);
-        border-top: 1px solid var(--bd);
-        display: flex;
-        align-items: center;
-        padding: 0 16px;
-        gap: 16px;
-      }
-      .ft-item {
-        font-size: 10px;
-        color: var(--gh);
-        font-family: "DM Mono", monospace;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-      }
-      .ft-dot {
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        background: #4ade80;
-      }
-      .ft-r {
-        margin-left: auto;
-        font-size: 10px;
-        color: var(--gh);
-        font-family: "DM Mono", monospace;
-      }
-    </style>
+    <link rel="stylesheet" href="proto-sidebar.css" />
+    <link rel="stylesheet" href="proto-search.css" />
+    <link rel="stylesheet" href="proto-memopanel.css" />
+    <link rel="stylesheet" href="proto-page.css" />
   </head>
   <body>
-    <!-- ═══ SIDEBAR (rail 기본) ═══ -->
-    <aside class="sb rail" id="sb">
-      <!-- LOGO + COLLAPSE -->
+    <!-- ═══ SIDEBAR (페이지 화면: p.03 .on, rail nav 페이지 .on) ═══ -->
+    <aside class="sb" id="sb">
       <div class="sb-logo">
-        <div class="sb-mk" onclick="tglSb()">
-          <svg viewBox="0 0 14 14">
-            <rect x="1" y="1" width="4" height="12" rx="1" />
-            <rect x="7" y="1" width="4" height="7" rx="1" opacity=".6" />
-            <rect x="7" y="10" width="4" height="3" rx="1" opacity=".4" />
+        <div class="sb-mk" onclick="tglSb()" title="사이드바 펼치기">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+            />
           </svg>
         </div>
         <span class="sb-logo-txt sb-exp">plotnote</span>
-        <button class="sb-collapse sb-exp" onclick="tglSb()" title="사이드바 접기">
-          <img src="../../src/assets/images/keyboard_double_arrow_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+        <button
+          class="sb-collapse sb-exp"
+          onclick="tglSb()"
+          title="사이드바 접기"
+        >
+          <img
+            src="../../src/assets/images/keyboard_double_arrow_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt="접기"
+          />
         </button>
       </div>
 
-      <!-- SEARCH -->
       <div class="sb-search sb-exp">
-        <div class="sb-srch" onclick="openS()">
-          <img src="../../src/assets/images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+        <div class="sb-srch" onclick="openSearch()">
+          <img
+            src="../../src/assets/images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt="검색"
+          />
           <span>검색...</span>
         </div>
       </div>
 
-      <!-- TREE -->
       <div class="sb-tree sb-exp">
-        <!-- 즐겨찾기 (closed) -->
-        <div class="sb-grp closed" id="grp-fav">
+        <!-- 즐겨찾기 -->
+        <div class="sb-grp" id="grp-fav">
           <div class="sb-grp-hd" onclick="tglGrp('grp-fav')">
-            <span class="ic"><img src="../../src/assets/images/bookmark_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+            <span class="ic"
+              ><img
+                src="../../src/assets/images/bookmark_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
             <span class="lbl">즐겨찾기</span>
-            <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+            <span class="chv"
+              ><img
+                src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
           </div>
           <div class="sb-grp-bd">
-            <div class="tn closed" id="tn-fav-pj1">
-              <div class="tn-row" style="--indent: 12px" onclick="tglTn('tn-fav-pj1')">
-                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+            <div class="tn" id="fav-pj1">
+              <div
+                class="tn-row"
+                style="--indent: 16px"
+                onclick="tglTn('fav-pj1')"
+              >
+                <span class="tn-chv"
+                  ><img
+                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                /></span>
                 <span class="tn-ic">
-                  <img class="ic-c" src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
-                  <img class="ic-o" src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                  <img
+                    class="ic-c"
+                    src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
+                  <img
+                    class="ic-o"
+                    src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
                 </span>
                 <span class="tn-lbl">고양이와 강아지</span>
+                <span class="tn-cnt">4</span>
               </div>
-              <div class="tn-kids"></div>
+              <div class="tn-kids">
+                <div class="tn-empty" style="--indent: 28px">
+                  에피소드를 펼쳐보세요
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- 나의 책장 (open) -->
+        <!-- 나의 책장 -->
         <div class="sb-grp" id="grp-my">
           <div class="sb-grp-hd" onclick="tglGrp('grp-my')">
-            <span class="ic"><img src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+            <span class="ic"
+              ><img
+                src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
             <span class="lbl">나의 책장</span>
-            <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+            <span class="chv"
+              ><img
+                src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
           </div>
           <div class="sb-grp-bd">
-            <!-- 고양이와 강아지 (open) — 현재 프로젝트 -->
+            <!-- 프로젝트: 고양이와 강아지 (열림) -->
             <div class="tn" id="tn-pj1">
-              <div class="tn-row" style="--indent: 12px" onclick="tglTn('tn-pj1')">
-                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+              <div
+                class="tn-row"
+                style="--indent: 16px"
+                onclick="tglTn('tn-pj1')"
+              >
+                <span class="tn-chv"
+                  ><img
+                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                /></span>
                 <span class="tn-ic">
-                  <img class="ic-c" src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
-                  <img class="ic-o" src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                  <img
+                    class="ic-c"
+                    src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
+                  <img
+                    class="ic-o"
+                    src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
                 </span>
                 <span class="tn-lbl">고양이와 강아지</span>
+                <span class="tn-cnt">4</span>
               </div>
               <div class="tn-kids">
                 <!-- ep.1 (closed) -->
                 <div class="tn closed" id="tn-ep1">
-                  <div class="tn-row" style="--indent: 24px" onclick="tglTn('tn-ep1')">
-                    <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                  <div
+                    class="tn-row"
+                    style="--indent: 24px"
+                    onclick="tglTn('tn-ep1')"
+                  >
+                    <span class="tn-chv"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
                     <span class="tn-ic">
-                      <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
-                      <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
                     </span>
                     <span class="tn-lbl">ep.1 첫 만남</span>
                   </div>
@@ -585,64 +180,145 @@
                 </div>
                 <!-- ep.2 (closed) -->
                 <div class="tn closed" id="tn-ep2">
-                  <div class="tn-row" style="--indent: 24px" onclick="tglTn('tn-ep2')">
-                    <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                  <div
+                    class="tn-row"
+                    style="--indent: 24px"
+                    onclick="tglTn('tn-ep2')"
+                  >
+                    <span class="tn-chv"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
                     <span class="tn-ic">
-                      <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
-                      <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
                     </span>
                     <span class="tn-lbl">ep.2 공원의 하루</span>
                   </div>
                   <div class="tn-kids"></div>
                 </div>
-                <!-- ep.3 (open) — 현재 에피소드 -->
+                <!-- ep.3 (열림, 페이지 표시) -->
                 <div class="tn" id="tn-ep3">
-                  <div class="tn-row" style="--indent: 24px" onclick="tglTn('tn-ep3')">
-                    <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                  <div
+                    class="tn-row"
+                    style="--indent: 24px"
+                    onclick="tglTn('tn-ep3')"
+                  >
+                    <span class="tn-chv"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
                     <span class="tn-ic">
-                      <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
-                      <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
                     </span>
                     <span class="tn-lbl">ep.3 이웃 친구들</span>
+                    <span class="tn-cnt">24</span>
                   </div>
                   <div class="tn-kids">
                     <div class="tn leaf" id="tn-pg1">
-                      <div class="tn-row" style="--indent: 36px" onclick="tglLeaf('tn-pg1')">
-                        <span class="tn-chv leaf"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                      <div class="tn-row" style="--indent: 36px">
+                        <span class="tn-chv leaf"
+                          ><img
+                            src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                            alt=""
+                        /></span>
                         <span class="tn-ic">
-                          <img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt="" />
-                          <img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt="" />
+                          <img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt=""
+                          />
+                          <img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt=""
+                          />
                         </span>
                         <span class="tn-lbl">p.01</span>
                       </div>
                     </div>
                     <div class="tn leaf" id="tn-pg2">
-                      <div class="tn-row" style="--indent: 36px" onclick="tglLeaf('tn-pg2')">
-                        <span class="tn-chv leaf"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                      <div class="tn-row" style="--indent: 36px">
+                        <span class="tn-chv leaf"
+                          ><img
+                            src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                            alt=""
+                        /></span>
                         <span class="tn-ic">
-                          <img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt="" />
-                          <img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt="" />
+                          <img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt=""
+                          />
+                          <img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt=""
+                          />
                         </span>
                         <span class="tn-lbl">p.02</span>
                       </div>
                     </div>
-                    <!-- p.03 — 현재 페이지 (on) -->
+                    <!-- p.03 현재 선택 -->
                     <div class="tn leaf" id="tn-pg3">
-                      <div class="tn-row on" style="--indent: 36px" onclick="tglLeaf('tn-pg3')">
-                        <span class="tn-chv leaf"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                      <div class="tn-row on" style="--indent: 36px">
+                        <span class="tn-chv leaf"
+                          ><img
+                            src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                            alt=""
+                        /></span>
                         <span class="tn-ic">
-                          <img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt="" />
-                          <img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt="" />
+                          <img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt=""
+                          />
+                          <img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt=""
+                          />
                         </span>
                         <span class="tn-lbl">p.03</span>
                       </div>
                     </div>
                     <div class="tn leaf" id="tn-pg4">
-                      <div class="tn-row" style="--indent: 36px" onclick="tglLeaf('tn-pg4')">
-                        <span class="tn-chv leaf"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                      <div class="tn-row" style="--indent: 36px">
+                        <span class="tn-chv leaf"
+                          ><img
+                            src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                            alt=""
+                        /></span>
                         <span class="tn-ic">
-                          <img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt="" />
-                          <img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt="" />
+                          <img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt=""
+                          />
+                          <img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt=""
+                          />
                         </span>
                         <span class="tn-lbl">p.04</span>
                       </div>
@@ -651,11 +327,27 @@
                 </div>
                 <!-- ep.4 (closed) -->
                 <div class="tn closed" id="tn-ep4">
-                  <div class="tn-row" style="--indent: 24px" onclick="tglTn('tn-ep4')">
-                    <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                  <div
+                    class="tn-row"
+                    style="--indent: 24px"
+                    onclick="tglTn('tn-ep4')"
+                  >
+                    <span class="tn-chv"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
                     <span class="tn-ic">
-                      <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
-                      <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
                     </span>
                     <span class="tn-lbl">ep.4 비 오는 날</span>
                   </div>
@@ -669,9 +361,17 @@
         <!-- 공유 책장 (closed) -->
         <div class="sb-grp closed" id="grp-shared">
           <div class="sb-grp-hd" onclick="tglGrp('grp-shared')">
-            <span class="ic"><img src="../../src/assets/images/diversity_3_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+            <span class="ic"
+              ><img
+                src="../../src/assets/images/diversity_3_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
             <span class="lbl">공유 책장</span>
-            <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+            <span class="chv"
+              ><img
+                src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
           </div>
           <div class="sb-grp-bd"></div>
         </div>
@@ -680,7 +380,10 @@
       <!-- RAIL NAV: 페이지 화면 — page-svgrepo(on) -->
       <div class="sb-rail-nav" id="rail-nav">
         <div class="rn-item" title="책장">
-          <img src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+          <img
+            src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt=""
+          />
           <div class="rn-pop">
             <div class="rn-pop-hd">나의 책장</div>
             <div class="rn-pop-i">고양이와 강아지</div>
@@ -688,7 +391,10 @@
           </div>
         </div>
         <div class="rn-item" title="프로젝트">
-          <img src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+          <img
+            src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt=""
+          />
           <div class="rn-pop">
             <div class="rn-pop-hd">고양이와 강아지</div>
             <div class="rn-pop-i">ep.1 첫 만남</div>
@@ -698,7 +404,10 @@
           </div>
         </div>
         <div class="rn-item" title="에피소드">
-          <img src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+          <img
+            src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt=""
+          />
           <div class="rn-pop">
             <div class="rn-pop-hd">ep.3 이웃 친구들</div>
             <div class="rn-pop-i">24 페이지</div>
@@ -723,188 +432,330 @@
       </div>
     </aside>
 
-    <!-- MAIN -->
-    <div class="main">
-      <!-- 디자인 관련 주석 -->
-      <!-- 클로드용 주석 -->
-      <!-- Toolbar(x) 이거 헤더 됨: ep명 + 양면단면+페이지추가 오른쪽 -->
-      <!-- 페이지의 헤더나 헤더 아래쪽이나 그런데서 episodeMemo, 좀더 세부적으로는 episodeDetailMemos를 확인할 수 있도록 -->
-      <div class="toolbar">
-        <span class="ep-name">ep.3 — 이웃 친구들</span>
-        <span class="ep-pg-count">24p</span>
-        <div class="tb-r">
-          <div class="view-tgl">
-            <button class="vtb on" onclick="swView('spread', this)">
-              양면
-            </button>
-            <button class="vtb" onclick="swView('single', this)">단면</button>
-          </div>
-          <button class="abtn pri" onclick="addPage()">+ 페이지 추가</button>
-          <button class="hbtn" onclick="tglMM()" title="메모 패널">⋯</button>
-        </div>
-      </div>
-
-      <!-- Body: grid + right side panel -->
-      <div class="ws-bd">
-        <div class="grid-area" id="grid-area"></div>
-
-        <!-- 우측 메모 패널 (Design1 Paper 스타일) -->
-        <div class="rsp" id="rsp">
-          <div class="rsp-tabs">
-            <div class="rsp-tab on" id="rsp-pg-tab">p.01</div>
-            <div class="rsp-tab" id="rsp-pg-tab2">p.02</div>
-          </div>
-          <div class="rsp-bd">
-            <!-- 페이지 메모 -->
-            <div class="rsp-sec">
-              <div class="rsp-sec-hd" onclick="togSec(this)">
-                <span>📄 페이지 메모</span
-                ><span class="rsp-arrow" style="transform: rotate(90deg)"
-                  ><img
-                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                    alt=""
-                /></span>
-                <!-- 클로드용 주석 -->
-                <!-- 이게 pageMemo -->
-              </div>
-              <div class="rsp-sec-body">
-                <div class="rsp-mi" style="margin-bottom: 6px">
-                  <div class="rsp-mi-lbl">페이지 메모</div>
-                  <textarea
-                    class="rsp-ta"
-                    rows="3"
-                    placeholder="페이지 메모..."
-                  >
-고양이가 공원에 들어오는 장면</textarea
-                  >
-                </div>
-              </div>
-            </div>
-            <!-- 디자인용 주석 -->
-            <!-- 클로드용 주석 -->
-            <!-- pageMemo와 cutMemo 사이에 pageDetailMemo도 들어가야 함 -->
-            <!-- pageDetailMemo는 필요 없을까 싶기도 한데...일단은 넣어보기 -->
-            <!-- ui/ux적으로 과하거나 디자인적으로 과하면 뺄 수도 있음 -->
-            <!-- 컷 메모 -->
-            <div class="rsp-sec">
-              <div class="rsp-sec-hd" onclick="togSec(this)">
-                <span><img src="../../src/assets/images/content_cut_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" style="width:13px;height:13px;vertical-align:middle;margin-right:4px;opacity:0.6"> 컷 메모</span
-                ><span class="rsp-arrow" style="transform: rotate(90deg)"
-                  ><img
-                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                    alt=""
-                /></span>
-              </div>
-              <div class="rsp-sec-body">
-                <div class="rsp-ci">
-                  <!-- 클로드용 주석 -->
-                  <!-- 얘도 drag-h?? 왼쪽에 위치 -->
-                  <span class="rsp-cn">1</span
-                  ><span class="rsp-ct">공원 입구 전경</span>
-                </div>
-                <div class="rsp-ci">
-                  <span class="rsp-cn">2</span
-                  ><span class="rsp-ct">고양이 발 클로즈업</span>
-                </div>
-                <div class="rsp-ci">
-                  <span class="rsp-cn">3</span
-                  ><span class="rsp-ct empty">메모 없음</span>
-                </div>
-                <button class="rsp-add">+ 컷 메모 추가</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer: zoom + 저장시간 -->
-      <div class="ws-ft">
-        <div class="ft-item">
-          <div class="ft-dot"></div>
-          로컬 저장됨
-        </div>
-        <div class="ft-item">마지막 저장 14:23</div>
-        <div class="ft-item" id="ft-pg">pg 10 / 24</div>
-        <div class="ft-r">ctrl+scroll 크기 조정</div>
-        <!-- 클로드용 주석 -->
-        <!-- 크기 조정이 가능하니까 여기도 proto-cut.html에 있는 .zoom-ctl 하단툴바를 만들기  -->
-      </div>
-    </div>
-
-    <!-- SEARCH MODAL -->
-    <div class="s-ov" id="s-ov" onclick="closeS(event)">
-      <div class="s-box" onclick="event.stopPropagation()">
-        <div class="s-in">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
+    <!-- ═══ MAIN WORKSPACE ═══ -->
+    <div class="main pg-workspace">
+      <!-- §5-1 워크스페이스 헤더 -->
+      <div class="ws-hd">
+        <div class="ws-hd-top">
+          <span class="pg-ep-link" onclick="alert('→ 에피소드 화면')"
+            >ep.3 이웃 친구들</span
           >
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35" /></svg
-          ><input
-            type="text"
-            placeholder="검색어 입력 후 Enter..."
-            id="s-input"
-          />
+          <span class="ws-sep">/</span>
+          <span class="pg-hd-label">페이지 목록</span>
+          <span class="pg-hd-count">(24p)</span>
+          <div class="ws-hd-r">
+            <button class="abtn pri" onclick="addPage()">+ 페이지 추가</button>
+            <button class="hbtn" onclick="tglMM()" title="메모 패널">
+              <img
+                src="../../src/assets/images/more_horiz_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+              />
+            </button>
+          </div>
         </div>
-        <div class="s-tabs">
-          <div class="s-tab on">프로젝트</div>
-          <div class="s-tab">에피소드</div>
-          <div class="s-tab">페이지</div>
-          <div class="s-tab">컷</div>
+      </div>
+
+      <!-- 에피소드 메모 프리뷰 -->
+      <div class="pg-memo-preview" onclick="tglMM()">
+        이웃 친구들을 소개하는 에피소드. 고양이와 강아지의 동네 모험.
+      </div>
+
+      <!-- §5-2 / §5-4 좌우 분할 바디 -->
+      <div class="ws-bd">
+        <!-- ── 좌측 페이지 썸네일 그리드 (35%) ── -->
+        <div class="pg-nav">
+          <div class="pg-grid-wrap" id="pg-grid-wrap">
+            <div class="pg-grid" id="pg-grid">
+              <!-- JS renderGrid()에서 생성 -->
+            </div>
+          </div>
+
+          <!-- 하단 툴바 -->
+          <div class="pg-toolbar">
+            <div class="pg-view-tgl">
+              <button class="pg-view-btn on" onclick="swView('spread', this)">
+                <img
+                  src="../../src/assets/images/view_column_2_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                  alt=""
+                />
+                양면
+              </button>
+              <button class="pg-view-btn" onclick="swView('single', this)">
+                <img
+                  src="../../src/assets/images/grid_view_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                  alt=""
+                />
+                단면
+              </button>
+            </div>
+            <div class="pg-zoom">
+              <button class="pg-zoom-btn" onclick="zoomCtl(-10)">−</button>
+              <span class="pg-zoom-pct" id="zoom-pct">100%</span>
+              <button class="pg-zoom-btn" onclick="zoomCtl(10)">+</button>
+              <button class="pg-zoom-btn" onclick="zoomFit()" title="맞춤">
+                <img
+                  src="../../src/assets/images/fit_screen_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                  alt=""
+                />
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="s-bd">
-          <div class="s-hint">Enter를 눌러 검색을 시작하세요</div>
+
+        <!-- ── 우측 페이지 상세 패널 (65%) ── -->
+        <div class="pg-det" id="pg-det">
+          <!-- 비선택 상태 -->
+          <div class="pg-det-placeholder" id="pg-det-ph">
+            페이지를 선택하세요
+          </div>
+
+          <!-- 선택 시 표시 (초기 display:none, JS에서 교체) -->
+          <div
+            id="pg-det-panel"
+            style="
+              display: none;
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              overflow: hidden;
+            "
+          >
+            <!-- 디테일 헤더 -->
+            <div class="pg-det-hd">
+              <div class="pg-det-hd-top">
+                <div class="pg-det-ttl">
+                  <span class="pg-det-num" id="det-pg-num">p.03</span>
+                  <span id="det-pg-label">페이지 3</span>
+                  <span class="pg-det-side" id="det-pg-side">좌측</span>
+                </div>
+                <div class="pg-det-acts">
+                  <button class="abtn" onclick="alert('→ 컷 화면으로 이동')">
+                    컷 편집 →
+                  </button>
+                </div>
+              </div>
+              <div class="pg-det-tabs">
+                <div class="pg-det-tab on" onclick="swDetTab(this, 'memo')">
+                  메모
+                </div>
+                <div class="pg-det-tab" onclick="swDetTab(this, 'cuts')">
+                  컷 메모
+                </div>
+              </div>
+            </div>
+
+            <!-- 디테일 바디: 메모 탭 -->
+            <div class="pg-det-bd" id="det-tab-memo">
+              <!-- 에피소드 메모 읽기전용 -->
+              <div class="parent-memo" onclick="tglMM()">
+                <div class="parent-memo-lbl">EPISODE MEMO</div>
+                이웃 친구들을 소개하는 에피소드. 고양이와 강아지의 동네 모험.
+              </div>
+
+              <!-- 페이지 메모 (SINGLE) -->
+              <div class="m-sec">
+                <div class="m-sec-t">페이지 메모</div>
+                <textarea
+                  class="m-ta"
+                  rows="3"
+                  placeholder="이 페이지의 메모를 작성하세요..."
+                  id="det-pg-memo"
+                >
+두 동물이 어색하게 주변을 돌아다님</textarea
+                >
+              </div>
+
+              <!-- 페이지 세부 메모 (DETAIL) -->
+              <div class="m-sec">
+                <div class="m-sec-t">
+                  세부 메모
+                  <span class="cnt-badge" id="det-detail-cnt">2</span>
+                </div>
+                <div id="detail-memo-list">
+                  <div class="pg-detail-memo-item drag-parent">
+                    <div class="drag-h">
+                      <img
+                        src="../../src/assets/images/menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                    </div>
+                    <span class="tag">#배경</span>
+                    <input
+                      class="memo-input"
+                      type="text"
+                      value="벚꽃 날리는 공원 벤치 앞"
+                    />
+                    <button
+                      class="pg-detail-memo-del"
+                      onclick="delDetailMemo(this)"
+                    >
+                      ×
+                    </button>
+                  </div>
+                  <div class="pg-detail-memo-item drag-parent">
+                    <div class="drag-h">
+                      <img
+                        src="../../src/assets/images/menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                    </div>
+                    <span class="tag">#연출</span>
+                    <input
+                      class="memo-input"
+                      type="text"
+                      value="와이드 샷에서 클로즈업으로 전환"
+                    />
+                    <button
+                      class="pg-detail-memo-del"
+                      onclick="delDetailMemo(this)"
+                    >
+                      ×
+                    </button>
+                  </div>
+                </div>
+                <div class="pg-cut-add" onclick="addDetailMemo()">
+                  <span style="font-size: 13px">+</span> 세부 메모 추가
+                </div>
+              </div>
+            </div>
+
+            <!-- 디테일 바디: 컷 메모 탭 (초기 숨김) -->
+            <div class="pg-det-bd" id="det-tab-cuts" style="display: none">
+              <div class="m-sec">
+                <div class="m-sec-t">
+                  컷 메모
+                  <span class="cnt-badge">6</span>
+                </div>
+                <div class="pg-cut-list">
+                  <div class="pg-cut-item unassigned drag-parent">
+                    <div class="drag-h">
+                      <img
+                        src="../../src/assets/images/menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                    </div>
+                    <span class="pg-cut-num">1</span>
+                    <input
+                      class="pg-cut-text"
+                      type="text"
+                      value="공원 입구 전경"
+                    />
+                  </div>
+                  <div class="pg-cut-item unassigned drag-parent">
+                    <div class="drag-h">
+                      <img
+                        src="../../src/assets/images/menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                    </div>
+                    <span class="pg-cut-num">2</span>
+                    <input
+                      class="pg-cut-text"
+                      type="text"
+                      value="고양이 발 클로즈업"
+                    />
+                  </div>
+                  <div class="pg-cut-item unassigned drag-parent">
+                    <div class="drag-h">
+                      <img
+                        src="../../src/assets/images/menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                    </div>
+                    <span class="pg-cut-num">3</span>
+                    <input
+                      class="pg-cut-text"
+                      type="text"
+                      placeholder="메모 없음"
+                    />
+                  </div>
+                  <div class="pg-cut-item assigned drag-parent">
+                    <div class="drag-h">
+                      <img
+                        src="../../src/assets/images/menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                    </div>
+                    <span class="pg-cut-num">4</span>
+                    <input
+                      class="pg-cut-text"
+                      type="text"
+                      value="강아지 등장"
+                      disabled
+                    />
+                    <span class="pg-cut-assign">→ 컷 4</span>
+                  </div>
+                  <div class="pg-cut-item unassigned drag-parent">
+                    <div class="drag-h">
+                      <img
+                        src="../../src/assets/images/menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                    </div>
+                    <span class="pg-cut-num">5</span>
+                    <input
+                      class="pg-cut-text"
+                      type="text"
+                      placeholder="메모 없음"
+                    />
+                  </div>
+                  <div class="pg-cut-item assigned drag-parent">
+                    <div class="drag-h">
+                      <img
+                        src="../../src/assets/images/menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                    </div>
+                    <span class="pg-cut-num">6</span>
+                    <input
+                      class="pg-cut-text"
+                      type="text"
+                      value="두 눈이 마주침"
+                      disabled
+                    />
+                    <span class="pg-cut-assign">→ 컷 6</span>
+                  </div>
+                </div>
+                <div class="pg-cut-add" onclick="addCutMemo()">
+                  <span style="font-size: 13px">+</span> 컷 메모 추가
+                </div>
+                <div class="pg-sync-notice">
+                  이 메모를 컷 화면에서 드래그하여 컷에 배정할 수 있습니다
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="s-esc">esc 닫기</div>
+      </div>
+
+      <!-- 워크스페이스 풋터 (상태바) -->
+      <div class="ws-ft">
+        <span class="ft-item"><span class="ft-dot"></span> 저장됨</span>
+        <span class="ft-item">ep.3 이웃 친구들</span>
+        <span class="ft-item">24 페이지</span>
+        <span class="ft-r">RTL · 양면 · 홀수시작</span>
       </div>
     </div>
 
-    <!-- FLOATING MEMO MODAL -->
-    <div class="mm" id="mm" style="top: 80px; right: 60px">
-      <div class="mm-hd" id="mm-hd">
-        <span class="mm-hd-t">메모</span>
-        <button class="mm-b" id="mm-pin" onclick="tglPin()" title="고정">
-          <img src="../../src/assets/images/pin-svgrepo-com.svg" alt="" />
-        </button>
-        <button class="mm-b" onclick="closeMM()" title="닫기">
-          <img src="../../src/assets/images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
-        </button>
-      </div>
-      <div class="mm-tabs">
-        <div class="mm-tab">프로젝트</div>
-        <div class="mm-tab on">에피소드</div>
-        <div class="mm-tab">p.01</div>
-      </div>
-      <div class="mm-bd">
-        <div class="mm-item">
-          <div class="mm-lbl">프로젝트 메모</div>
-          <div class="mm-txt">고양이와 강아지가 처음 만나는 이야기.</div>
-        </div>
-        <div class="mm-item">
-          <div class="mm-lbl">에피소드 메모</div>
-          <div class="mm-txt">
-            공원에서의 첫 만남. 처음엔 어색하지만 점점 가까워짐.
-          </div>
-        </div>
-        <div class="mm-item">
-          <div class="mm-lbl">페이지 메모</div>
-          <div class="mm-txt">고양이가 공원에 들어오는 장면</div>
-        </div>
-      </div>
-    </div>
+    <!-- ═══ SEARCH MODAL SLOT ═══ -->
+    <div id="search-slot"></div>
+
+    <!-- ═══ MEMO PANEL SLOT ═══ -->
+    <div id="memo-slot"></div>
 
     <script>
-      const pageMemos = [
+      /* ═══════════════════════════════════════
+         데이터 (더미)
+      ═══════════════════════════════════════ */
+      var pageCount = 24;
+      var viewMode = "spread";
+      var spreadStart = "odd";
+      var zoomPct = 100;
+      var selectedPage = 2;
+      var pageMemos = [
         "고양이가 공원에 들어오는 장면",
         "강아지와 처음 눈이 마주침",
-        "",
         "두 동물이 어색하게 주변을 돌아다님",
-        "",
         "서로 조심스럽게 다가가는 장면",
         "",
         "처음으로 코를 맞대는 장면",
@@ -924,116 +775,240 @@
         "",
         "",
         "",
+        "",
+        "",
       ];
-      let pageCount = 24,
-        viewMode = "spread";
+      var cutCounts = [
+        6, 4, 6, 5, 3, 4, 6, 4, 5, 3, 6, 4, 5, 3, 6, 4, 5, 3, 6, 4, 5, 3, 4, 6,
+      ];
 
+      /* ═══════════════════════════════════════
+         렌더: 페이지 그리드
+      ═══════════════════════════════════════ */
       function renderGrid() {
-        const area = document.getElementById("grid-area");
-        area.innerHTML = "";
-        if (viewMode === "single") {
-          const g = document.createElement("div");
-          g.className = "pg-grid single";
-          for (let i = 0; i < pageCount; i++) {
-            g.appendChild(makeCard(i));
-          }
-          // 지금은 단면일땐 5개, 양면일땐 spread-cell 기준 세개씩 보이는데,
-          // 양면일땐 두개씩, 단면은 양면일때 두개씩으로 맞춘 상태랑 같은 크기에서
-          // 한 행에 들어갈 수 있는 만큼의 개수로
-          const add = document.createElement("div");
-          add.className = "pcard pg-add-cell";
-          add.innerHTML = '<div class="pi">+</div>';
-          // 이 +는 그냥 +만 있는게 아니라 페이지 추가 라고 말도 써놓기(전체적인 디자인, ui/ux 통일)
-          add.onclick = addPage;
-          g.appendChild(add);
-          area.appendChild(g);
-        } else {
-          const g = document.createElement("div");
-          g.className = "pg-grid spread";
-          let i = 0;
-          // 홀수 시작: 속표지 앞 빈 칸 + p.01
-          if (i < pageCount) {
-            const cell = document.createElement("div");
-            cell.className = "spread-cell";
-            const blank = document.createElement("div");
-            blank.className = "pcard pcard--cover-blank half-page";
-            blank.innerHTML = '<div class="pi pi--blank"><span class="pi-blank-lbl">속표지 앞</span></div><div class="pcard-info"></div>';
-            cell.appendChild(blank);
-            cell.appendChild(makeCard(i, true));
-            i++;
-            g.appendChild(cell);
-          }
-          while (i < pageCount) {
-            const cell = document.createElement("div");
-            cell.className = "spread-cell";
-            cell.appendChild(makeCard(i, true));
-            i++;
-            if (i < pageCount) {
-              cell.appendChild(makeCard(i, true));
-              i++;
-            } else {
-              const e = document.createElement("div");
-              e.className = "half-page half-empty";
-              e.innerHTML = '<div class="pi"></div>';
-              cell.appendChild(e);
+        var grid = document.getElementById("pg-grid");
+        grid.innerHTML = "";
+
+        if (viewMode === "spread") {
+          grid.className = "pg-grid";
+          var pages = [];
+          for (var i = 0; i < pageCount; i++) pages.push(i);
+
+          if (spreadStart === "odd") {
+            var row0 = document.createElement("div");
+            row0.className = "pg-spread-row rtl";
+            row0.appendChild(makeBlankCover());
+            row0.appendChild(makeCard(0));
+            grid.appendChild(row0);
+
+            for (var r = 1; r < pageCount; r += 2) {
+              var row = document.createElement("div");
+              row.className = "pg-spread-row rtl";
+              row.appendChild(makeCard(r));
+              if (r + 1 < pageCount) {
+                row.appendChild(makeCard(r + 1));
+              }
+              grid.appendChild(row);
             }
-            g.appendChild(cell);
+          } else {
+            for (var r = 0; r < pageCount; r += 2) {
+              var row = document.createElement("div");
+              row.className = "pg-spread-row rtl";
+              row.appendChild(makeCard(r));
+              if (r + 1 < pageCount) {
+                row.appendChild(makeCard(r + 1));
+              }
+              grid.appendChild(row);
+            }
           }
-          const addCell = document.createElement("div");
-          addCell.className = "spread-cell";
-          const ap = document.createElement("div");
-          ap.className = "half-page pg-add-cell";
-          ap.innerHTML = '<div class="pi">+</div>';
-          ap.onclick = addPage;
-          addCell.appendChild(ap);
-          const ep2 = document.createElement("div");
-          ep2.className = "half-page half-empty";
-          ep2.innerHTML = '<div class="pi"></div>';
-          addCell.appendChild(ep2);
-          g.appendChild(addCell);
-          area.appendChild(g);
+        } else {
+          grid.className = "pg-grid single";
+          for (var i = 0; i < pageCount; i++) {
+            grid.appendChild(makeCard(i));
+          }
         }
       }
 
-      function makeCard(i, half = false) {
-        const memo = pageMemos[i] || "";
-        const w = document.createElement("div");
-        w.className = "pcard" + (half ? " half-page" : "");
-        w.innerHTML = `<div class="pi"><div class="pi-num">${String(i + 1).padStart(2, "0")}</div><div class="pi-lines"><div class="pi-line"></div><div class="pi-line"></div><div class="pi-line"></div><div class="pi-line"></div></div></div><div class="pcard-info"><div class="pcard-memo${memo ? "" : " empty"}">${memo || ""}</div></div>`;
-        // 클로드용 주석
-        // 디자인 관련 주석
-        // 이부분이 현재 src/components/screens/Page/PageBody의 내용
-        // 페이지 안에 컷 내용이 보여야 함
-        // 그렇다 한다면!? pi-num이 pi위에 있으면 안되겠지!?
-        // pcard-memo가 pageMemo: 두줄까지만 나오고 그 이상은 ... 처리
-        // pi끼리는 붙어있어도 pcard-info끼리는 서로 사이에 gap 같은게 있어야 별개로 보일듯
-        return w;
+      function makeCard(idx) {
+        var card = document.createElement("div");
+        card.className = "pcard" + (idx === selectedPage ? " on" : "");
+        card.onclick = function () {
+          selectPage(idx);
+        };
+        card.ondblclick = function () {
+          alert("→ 컷 화면: p." + String(idx + 1).padStart(2, "0"));
+        };
+
+        var thumb = document.createElement("div");
+        thumb.className = "pcard-thumb";
+
+        var num = document.createElement("span");
+        num.className = "pcard-num";
+        num.textContent = "p." + String(idx + 1).padStart(2, "0");
+        thumb.appendChild(num);
+
+        if (cutCounts[idx] > 1) {
+          var lines = document.createElement("div");
+          lines.className = "pcard-lines";
+          var cuts = cutCounts[idx];
+          var rows = Math.ceil(cuts / 2);
+          for (var r = 1; r < rows; r++) {
+            var lh = document.createElement("div");
+            lh.className = "pcard-line-h";
+            lh.style.top = (r / rows) * 100 + "%";
+            lines.appendChild(lh);
+          }
+          if (cuts > 1) {
+            var lv = document.createElement("div");
+            lv.className = "pcard-line-v";
+            lv.style.left = "50%";
+            lines.appendChild(lv);
+          }
+          thumb.appendChild(lines);
+        }
+
+        card.appendChild(thumb);
+
+        var info = document.createElement("div");
+        info.className = "pcard-info";
+        var memo = document.createElement("div");
+        memo.className = "pcard-memo" + (pageMemos[idx] ? "" : " empty");
+        memo.textContent = pageMemos[idx] || "메모 없음";
+        info.appendChild(memo);
+        card.appendChild(info);
+
+        return card;
       }
 
-      function swView(id, el) {
-        viewMode = id;
-        document
-          .querySelectorAll(".vtb")
-          .forEach((b) => b.classList.remove("on"));
-        el.classList.add("on");
+      function makeBlankCover() {
+        var card = document.createElement("div");
+        card.className = "pcard pcard--blank";
+        var thumb = document.createElement("div");
+        thumb.className = "pcard-thumb";
+        var lbl = document.createElement("div");
+        lbl.className = "pcard--blank-lbl";
+        lbl.textContent = "속표지";
+        thumb.appendChild(lbl);
+        card.appendChild(thumb);
+        var info = document.createElement("div");
+        info.className = "pcard-info";
+        card.appendChild(info);
+        return card;
+      }
+
+      /* ═══════════════════════════════════════
+         인터랙션 stub
+      ═══════════════════════════════════════ */
+      function selectPage(idx) {
+        selectedPage = idx;
+        renderGrid();
+        showDetail(idx);
+      }
+
+      function showDetail(idx) {
+        document.getElementById("pg-det-ph").style.display = "none";
+        document.getElementById("pg-det-panel").style.display = "flex";
+
+        var pgNum = "p." + String(idx + 1).padStart(2, "0");
+        document.getElementById("det-pg-num").textContent = pgNum;
+        document.getElementById("det-pg-label").textContent =
+          "페이지 " + (idx + 1);
+        document.getElementById("det-pg-memo").value = pageMemos[idx] || "";
+
+        var isOddStart = spreadStart === "odd";
+        var isLeft;
+        if (viewMode === "spread") {
+          if (isOddStart) {
+            isLeft = idx % 2 === 0;
+          } else {
+            isLeft = idx % 2 !== 0;
+          }
+        } else {
+          isLeft = null;
+        }
+        var sideEl = document.getElementById("det-pg-side");
+        if (isLeft === null) {
+          sideEl.textContent = "단면";
+        } else {
+          sideEl.textContent = isLeft ? "좌측" : "우측";
+        }
+      }
+
+      function swView(mode, btn) {
+        viewMode = mode;
+        document.querySelectorAll(".pg-view-btn").forEach(function (b) {
+          b.classList.remove("on");
+        });
+        btn.classList.add("on");
         renderGrid();
       }
+
+      function zoomCtl(delta) {
+        zoomPct = Math.max(50, Math.min(200, zoomPct + delta));
+        document.getElementById("zoom-pct").textContent = zoomPct + "%";
+        document.getElementById("pg-grid-wrap").style.transform =
+          "scale(" + zoomPct / 100 + ")";
+        document.getElementById("pg-grid-wrap").style.transformOrigin =
+          "top center";
+      }
+
+      function zoomFit() {
+        zoomPct = 100;
+        document.getElementById("zoom-pct").textContent = "100%";
+        document.getElementById("pg-grid-wrap").style.transform = "";
+      }
+
+      function swDetTab(el, tabId) {
+        document.querySelectorAll(".pg-det-tab").forEach(function (t) {
+          t.classList.remove("on");
+        });
+        el.classList.add("on");
+        document.getElementById("det-tab-memo").style.display =
+          tabId === "memo" ? "" : "none";
+        document.getElementById("det-tab-cuts").style.display =
+          tabId === "cuts" ? "" : "none";
+      }
+
       function addPage() {
         pageCount++;
+        pageMemos.push("");
+        cutCounts.push(4);
         renderGrid();
-      }
-      function toggleRsp() {
-        document.getElementById("rsp").classList.toggle("open");
-      }
-      function togSec(hd) {
-        const body = hd.nextElementSibling;
-        const open = body.style.display !== "none";
-        body.style.display = open ? "none" : "";
-        const arrow = hd.querySelector(".rsp-arrow");
-        arrow.style.transform = open ? "" : "rotate(90deg)";
+        document.querySelector(".pg-hd-count").textContent =
+          "(" + pageCount + "p)";
       }
 
-      /* sidebar */
+      function addCutMemo() {
+        alert("컷 메모 추가 (stub)");
+      }
+
+      function addDetailMemo() {
+        alert("세부 메모 추가 (stub)");
+      }
+
+      function delDetailMemo(btn) {
+        btn.closest(".pg-detail-memo-item").remove();
+        var cnt = document.querySelectorAll(
+          "#detail-memo-list .pg-detail-memo-item",
+        ).length;
+        document.getElementById("det-detail-cnt").textContent = cnt;
+      }
+
+      /* Ctrl + Scroll 줌 */
+      document.getElementById("pg-grid-wrap").addEventListener(
+        "wheel",
+        function (e) {
+          if (e.ctrlKey) {
+            e.preventDefault();
+            zoomCtl(e.deltaY < 0 ? 10 : -10);
+          }
+        },
+        { passive: false },
+      );
+
+      /* ═══════════════════════════════════════
+         사이드바
+      ═══════════════════════════════════════ */
       function tglSb() {
         document.getElementById("sb").classList.toggle("rail");
       }
@@ -1043,83 +1018,62 @@
       function tglTn(id) {
         document.getElementById(id).classList.toggle("closed");
       }
-      function tglLeaf(id) {
-        const row = document.querySelector("#" + id + " .tn-row");
-        const wasOn = row.classList.contains("on");
-        document
-          .querySelectorAll(".tn.leaf .tn-row.on")
-          .forEach((r) => r.classList.remove("on"));
-        if (!wasOn) row.classList.add("on");
+
+      /* ═══════════════════════════════════════
+         검색 / 메모 모달 로드
+      ═══════════════════════════════════════ */
+      function openSearch() {
+        loadComponent("proto-search.html", "search-slot", function () {
+          var ov = document.getElementById("s-ov");
+          if (ov) ov.classList.add("open");
+        });
       }
 
-      /* search */
-      function openS() {
-        document.getElementById("s-ov").classList.add("open");
-        document.getElementById("s-input").focus();
-      }
-      function closeS(e) {
-        if (e && e.target !== document.getElementById("s-ov")) return;
-        document.getElementById("s-ov").classList.remove("open");
-      }
-
-      /* memo modal */
-      let mmOpen = false,
-        pinned = false,
-        drag = false,
-        ox = 0,
-        oy = 0;
+      var mmLoaded = false;
       function tglMM() {
-        const m = document.getElementById("mm");
-        mmOpen = !mmOpen;
-        m.classList.toggle("open", mmOpen);
-        if (mmOpen) {
-          m.style.top = "80px";
-          m.style.right = "60px";
-          m.style.left = "auto";
+        if (!mmLoaded) {
+          loadComponent("proto-memopanel.html", "memo-slot", function () {
+            mmLoaded = true;
+            var mm = document.getElementById("mm");
+            if (mm) mm.style.display = "";
+          });
+        } else {
+          var mm = document.getElementById("mm");
+          if (mm) mm.style.display = mm.style.display === "none" ? "" : "none";
         }
       }
-      function closeMM() {
-        mmOpen = false;
-        document.getElementById("mm").classList.remove("open");
-      }
-      function tglPin() {
-        pinned = !pinned;
-        document.getElementById("mm-pin").classList.toggle("pin", pinned);
-      }
-      document.getElementById("mm-hd").addEventListener("mousedown", (e) => {
-        drag = true;
-        const m = document.getElementById("mm"),
-          r = m.getBoundingClientRect();
-        m.style.left = r.left + "px";
-        m.style.top = r.top + "px";
-        m.style.right = "auto";
-        ox = e.clientX - r.left;
-        oy = e.clientY - r.top;
-      });
-      document.addEventListener("mousemove", (e) => {
-        if (!drag) return;
-        const m = document.getElementById("mm");
-        m.style.left = e.clientX - ox + "px";
-        m.style.top = e.clientY - oy + "px";
-      });
-      document.addEventListener("mouseup", () => {
-        drag = false;
-      });
-      document.addEventListener("mousedown", (e) => {
-        if (!mmOpen || pinned) return;
-        const m = document.getElementById("mm");
-        if (!m.contains(e.target) && !e.target.closest(".hbtn")) closeMM();
-      });
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          closeS({ target: document.getElementById("s-ov") });
-          if (!pinned) closeMM();
-        }
-      });
 
-      // rsp 기본 열림
-      document.getElementById("rsp").classList.add("open");
+      function loadComponent(url, slotId, cb) {
+        var slot = document.getElementById(slotId);
+        if (!slot) return;
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            var wrap = document.createElement("div");
+            wrap.innerHTML = xhr.responseText;
+            var frag = document.createDocumentFragment();
+            while (wrap.firstChild) frag.appendChild(wrap.firstChild);
+            slot.innerHTML = "";
+            slot.appendChild(frag);
+            var scripts = slot.querySelectorAll("script");
+            scripts.forEach(function (s) {
+              var ns = document.createElement("script");
+              if (s.src) ns.src = s.src;
+              else ns.textContent = s.textContent;
+              document.body.appendChild(ns);
+            });
+            if (cb) cb();
+          }
+        };
+        xhr.send();
+      }
+
+      /* ═══════════════════════════════════════
+         초기 렌더
+      ═══════════════════════════════════════ */
       renderGrid();
+      selectPage(2);
     </script>
   </body>
 </html>

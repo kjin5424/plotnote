@@ -1,0 +1,610 @@
+/* ═══════════════════════════════════════════════════════
+   PlotNote — proto-page.css
+   페이지 화면 전용 스타일
+   ─────────────────────────────────────────────────────
+   공통 클래스 재사용: badge, drag-h, m-sec, m-ta,
+   parent-memo, memo-input, add-item, cut-memo, hbtn,
+   abtn, ws-hd, ws-hd-top, ws-hd-r, ws-sep, ws-ft
+═══════════════════════════════════════════════════════ */
+
+/* ─── 0. 워크스페이스 바디 오버라이드 ───
+   페이지 화면은 좌우 분할이므로 padding/scroll 제거 */
+.pg-workspace .ws-bd {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+}
+
+/* ─── 1. 워크스페이스 헤더 보조 ─── */
+.pg-ep-link {
+  font-family: var(--ff-serif);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--i2);
+  cursor: pointer;
+  transition: color var(--dur-sm);
+  white-space: nowrap;
+}
+.pg-ep-link:hover {
+  color: var(--db);
+}
+
+.pg-hd-label {
+  font-family: var(--ff-serif);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.pg-hd-count {
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  color: var(--gh);
+  white-space: nowrap;
+}
+
+.pg-memo-preview {
+  padding: 0 20px 8px;
+  font-size: 12px;
+  color: var(--gh);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  border-bottom: 1px solid var(--bd);
+  transition: color var(--dur-sm);
+}
+.pg-memo-preview:hover {
+  color: var(--i2);
+}
+
+/* ═══════════════════════════════════════════════════════
+   2. 좌측 페이지 썸네일 그리드 패널
+═══════════════════════════════════════════════════════ */
+.pg-nav {
+  width: 35%;
+  min-width: 280px;
+  max-width: 420px;
+  height: 100%;
+  background: var(--pa);
+  border-right: 1px solid var(--bd);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* 그리드 스크롤 영역 */
+.pg-grid-wrap {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--co) transparent;
+}
+.pg-grid-wrap::-webkit-scrollbar {
+  width: 5px;
+}
+.pg-grid-wrap::-webkit-scrollbar-thumb {
+  background: var(--co);
+  border-radius: 3px;
+}
+.pg-grid-wrap::-webkit-scrollbar-thumb:hover {
+  background: var(--gl);
+}
+
+/* ─── 2-1. Spread(양면) 그리드 ─── */
+.pg-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pg-spread-row {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+}
+
+/* RTL: 우→좌 순서 (direction: rtl로 자식 순서 반전) */
+.pg-spread-row.rtl {
+  direction: rtl;
+}
+.pg-spread-row.rtl > * {
+  direction: ltr;
+}
+
+/* ─── 2-2. Single(단면) 그리드 ─── */
+.pg-grid.single {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 12px;
+}
+
+/* ─── 2-3. 페이지 카드 ─── */
+.pcard {
+  flex: 1;
+  max-width: 50%;
+  cursor: pointer;
+  transition: transform var(--dur-sm) var(--ease);
+}
+.pcard:hover {
+  transform: translateY(-1px);
+}
+
+.single .pcard {
+  max-width: none;
+  flex: none;
+}
+
+/* 썸네일 (B4 비율) */
+.pcard-thumb {
+  aspect-ratio: 238 / 324;
+  background: var(--wh);
+  border: 1px solid var(--bd);
+  border-radius: var(--r-sm);
+  position: relative;
+  overflow: hidden;
+  transition:
+    box-shadow var(--dur-sm) var(--ease),
+    border-color var(--dur-sm) var(--ease);
+}
+
+.pcard:hover .pcard-thumb {
+  border-color: var(--oc);
+}
+
+/* 선택 상태 */
+.pcard.on .pcard-thumb {
+  border-color: var(--db);
+  box-shadow: 0 0 0 2px var(--db);
+}
+
+/* 페이지 번호 (썸네일 우상단) */
+.pcard-num {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: var(--db);
+  color: #fff;
+  font-size: 8px;
+  font-family: var(--ff-mono);
+  font-weight: 500;
+  padding: 1px 5px;
+  border-radius: var(--r-xs);
+  line-height: 1.4;
+}
+
+/* 컷 분할선 미리보기 */
+.pcard-lines {
+  position: absolute;
+  inset: 8% 6%;
+  pointer-events: none;
+}
+
+.pcard-line-h {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--gl);
+  opacity: 0.5;
+}
+
+.pcard-line-v {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--gl);
+  opacity: 0.5;
+}
+
+/* 카드 정보 (하단) */
+.pcard-info {
+  padding: 4px 2px 0;
+}
+
+.pcard-memo {
+  font-size: 9px;
+  color: var(--i2);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.pcard-memo.empty {
+  color: var(--co);
+  font-style: italic;
+}
+
+/* ─── 2-4. Blank Cover (홀수 시작 시 빈 표지) ─── */
+.pcard--blank {
+  pointer-events: none;
+}
+
+.pcard--blank .pcard-thumb {
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 6px,
+    var(--bd) 6px,
+    var(--bd) 7px
+  );
+  border-style: dashed;
+  border-color: var(--bd2);
+}
+
+.pcard--blank-lbl {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: var(--gh);
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════
+   3. 하단 툴바
+═══════════════════════════════════════════════════════ */
+.pg-toolbar {
+  flex-shrink: 0;
+  height: 36px;
+  background: var(--wh);
+  border-top: 1px solid var(--bd);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 8px;
+}
+
+/* 뷰 모드 토글 (양면/단면) */
+.pg-view-tgl {
+  display: inline-flex;
+  border: 1px solid var(--bd2);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+}
+
+.pg-view-btn {
+  padding: 3px 8px;
+  font-size: 10px;
+  color: var(--i2);
+  background: var(--wh);
+  border-right: 1px solid var(--bd2);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  transition:
+    background var(--dur-sm),
+    color var(--dur-sm);
+}
+.pg-view-btn:last-child {
+  border-right: none;
+}
+.pg-view-btn:hover {
+  background: var(--pa);
+}
+.pg-view-btn.on {
+  background: var(--db);
+  color: #fff;
+}
+.pg-view-btn img {
+  width: 14px;
+  height: 14px;
+  opacity: 0.6;
+}
+.pg-view-btn.on img {
+  opacity: 1;
+  filter: brightness(0) invert(1);
+}
+
+/* 줌 컨트롤 */
+.pg-zoom {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pg-zoom-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--r-xs);
+  border: 1px solid var(--bd2);
+  background: var(--wh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--i2);
+  transition:
+    border-color var(--dur-sm),
+    background var(--dur-sm);
+}
+.pg-zoom-btn:hover {
+  border-color: var(--oc);
+  background: var(--pa);
+}
+.pg-zoom-btn img {
+  width: 14px;
+  height: 14px;
+  opacity: 0.55;
+}
+.pg-zoom-btn:hover img {
+  opacity: 0.85;
+}
+
+.pg-zoom-pct {
+  font-size: 10px;
+  font-family: var(--ff-mono);
+  color: var(--gh);
+  min-width: 36px;
+  text-align: center;
+  user-select: none;
+}
+
+/* ═══════════════════════════════════════════════════════
+   4. 우측 디테일 패널
+═══════════════════════════════════════════════════════ */
+.pg-det {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+  background: var(--wh);
+}
+
+/* 비선택 플레이스홀더 */
+.pg-det-placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gh);
+  font-size: 13px;
+  user-select: none;
+}
+
+/* ─── 4-1. 디테일 헤더 ─── */
+.pg-det-hd {
+  flex-shrink: 0;
+  padding: 14px 22px 0;
+  border-bottom: 1px solid var(--bd);
+  background: var(--wh);
+}
+
+.pg-det-hd-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.pg-det-ttl {
+  font-family: var(--ff-serif);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pg-det-num {
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  color: var(--oc);
+}
+
+.pg-det-side {
+  font-size: 10px;
+  font-family: var(--ff-mono);
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  background: var(--pa);
+  color: var(--gh);
+}
+
+.pg-det-acts {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* 디테일 탭 (스크롤 방지용 flex-shrink) */
+.pg-det-tabs {
+  display: flex;
+  margin: 0 -22px;
+  padding: 0 22px;
+  border-bottom: 2px solid var(--bd);
+}
+
+.pg-det-tab {
+  padding: 6px 12px;
+  font-size: 12px;
+  color: var(--gh);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition:
+    color var(--dur-sm),
+    border-color var(--dur-sm);
+}
+.pg-det-tab:hover {
+  color: var(--i2);
+}
+.pg-det-tab.on {
+  color: var(--db);
+  border-bottom-color: var(--db);
+  font-weight: 500;
+}
+
+/* ─── 4-2. 디테일 바디 ─── */
+.pg-det-bd {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 22px;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--co) transparent;
+}
+.pg-det-bd::-webkit-scrollbar {
+  width: 5px;
+}
+.pg-det-bd::-webkit-scrollbar-thumb {
+  background: var(--co);
+  border-radius: 3px;
+}
+
+/* ─── 4-3. 컷 메모 리스트 ─── */
+.pg-cut-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pg-cut-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--r-sm);
+  transition: background var(--dur-xs);
+}
+.pg-cut-item:hover {
+  background: var(--pa);
+}
+
+.pg-cut-num {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  color: var(--gh);
+  min-width: 20px;
+  flex-shrink: 0;
+}
+
+.pg-cut-text {
+  flex: 1;
+  font-size: 11px;
+  color: var(--i2);
+  border: 1px solid transparent;
+  border-radius: var(--r-xs);
+  padding: 2px 6px;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  transition:
+    border-color var(--dur-sm),
+    background var(--dur-sm);
+}
+.pg-cut-text:focus {
+  border-color: var(--oc);
+  background: var(--wh);
+}
+.pg-cut-text::placeholder {
+  color: var(--co);
+}
+
+/* 미배정 상태 (amber 왼쪽 바) */
+.pg-cut-item.unassigned {
+  border-left: 3px dashed var(--am);
+  background: rgba(251, 198, 98, 0.04);
+}
+
+/* 배정 완료 상태 */
+.pg-cut-item.assigned {
+  border-left: 3px solid var(--db);
+  opacity: 0.6;
+}
+
+.pg-cut-assign {
+  font-size: 9px;
+  font-family: var(--ff-mono);
+  color: var(--db);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* 컷 메모 추가 */
+.pg-cut-add {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  margin-top: 6px;
+  cursor: pointer;
+  color: var(--gh);
+  font-size: 11px;
+  border: 1px dashed var(--bd2);
+  border-radius: var(--r-sm);
+  transition:
+    background var(--dur-sm),
+    color var(--dur-sm),
+    border-color var(--dur-sm);
+}
+.pg-cut-add:hover {
+  background: #f5f8ff;
+  color: var(--db);
+  border-color: var(--oc);
+}
+
+/* 안내 텍스트 */
+.pg-sync-notice {
+  font-size: 10px;
+  color: var(--co);
+  font-style: italic;
+  padding: 8px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.pg-sync-notice::before {
+  content: "ⓘ";
+  font-style: normal;
+  font-size: 11px;
+  color: var(--gl);
+}
+
+/* ─── 4-4. 페이지 세부 메모 ─── */
+.pg-detail-memo-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 0;
+}
+
+.pg-detail-memo-del {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--gh);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--dur-sm);
+  flex-shrink: 0;
+}
+.pg-detail-memo-item:hover .pg-detail-memo-del {
+  opacity: 0.6;
+}
+.pg-detail-memo-del:hover {
+  opacity: 1 !important;
+  color: var(--err);
+}
