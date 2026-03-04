@@ -2,8 +2,9 @@
 
 ## Current Status
 
-**단계:** 2. Bookshelf 디자인 스킵, 6. Cut 디자인 완료, 7. 통합 검수 진행 예정
+**단계:** 7. 통합 검수(명세 검증) 대기
 **브랜치:** `kyoungjin`
+**최종 업데이트:** 2025-03-04
 
 ## 작업 원칙
 
@@ -88,15 +89,14 @@ frontend/public/prototypes/
 > - 좌측 네비 비율 기반 설계: `width: 35%; min-width: 280px; max-width: 380px` (old 고정 310px에서 개선)
 > - **다음 작업:** 5. Page 디자인 (proto-page.html + proto-page.css)
 
-> **베베의 추가 노트 (2025-03-04):**
+> **작업 노트 (2025-03-04 #2):**
 >
-> - 모든 메모는 italic, bold, 취소선, 밑줄, 텍스트 색깔 변경, 텍스트 배경 색깔 변경이 가능했으면 좋겠음.
->   text를 select(선택) 하면 툴팁처럼 뜨는 형태로
-> - 사이드바, 버튼, placeholder, 설정 등, 변경할 수 없는 부분에 대해서 user-select:none 처리가 되었으면 좋겠음.
->   적용되는 항목에 대해선 논의가 필요함.
-> - 모든 버튼에는 title 속성 또는 툴팁으로 버튼 이름이 떴으면 좋겠음.
->   title 속성을 전체적인 디자인에 맞춰 css를 적용할 수 있다면 title로 해도 되고,
->   디자인 일관성을 위해 툴팁이 필요하다면 툴팁이어도 되고.
+> - proto-screen.md 및 checklist.md 피드백 반영 완료
+> - 56개 수정/추가 항목 반영: 공통 3개, 프로젝트 6개, 에피소드 14개, 페이지 16개, 컷 12개, 👾 디자인 제안 필요 5개
+> - 표기법 통일: 에피소드 "1화", 페이지 "1p", 컷 "컷 1"
+> - user-select: none 적용 범위 명세화
+> - 메모 프리뷰 영역 공통 스타일 정의
+> - **다음 작업:** 7. 통합 검수(명세 검증) → 8. 추가 요구사항 반영 → 2. Bookshelf 디자인 → 7. 통합 검수(2차)
 
 ---
 
@@ -112,22 +112,28 @@ frontend/public/prototypes/
 - [x] 우측 메모 패널(.rsp) CSS 통합 — proto-style.css §16에 포함
 - [x] 섹션 헤더(.sec-hd), 설정 모달(.cfg-ov), 새프로젝트 모달(.np-ov) 통합
 - [x] 애니메이션 공통화 (modalUp, fadeUp, fadeIn, shake)
-  > 결과물: proto-style.css, proto-sidebar.css proto-me mopanel.css, proto-search.css
+  > 결과물: proto-style.css, proto-sidebar.css proto-memopanel.css, proto-search.css
 
-### ✅ 1-1~1-2. 사이드바 레퍼런스 (proto-sidebar.html) — 완료(일부 7. 통합 검수 단계에서 확인 필요)
+### ✅ 1-1~1-2. 사이드바 레퍼런스 (proto-sidebar.html) — 완료(7. 통합 검수에서 추가 확인 필요)
 
 - [x] 인라인 CSS 제거 → proto-style.css + proto-sidebar.css 링크 참조
 - [x] 트리뷰: 즐겨찾기/나의책장/공유책장 그룹 토글
 - [x] 프로젝트→에피소드→페이지 → 모든 화면에서 펼침 가능
 - [x] 계층 들여쓰기 → --indent 16px/32px/48px 계층 들여쓰기
 - [x] rail 모드: 아이콘 + hover 팝업 패널(.rn-pop)
-- [ ] sb-logo `height: var(--hd-h)` → 헤더와 수평선 일치 ⚠️ 재확인 필요
+- [ ] sb-logo `height: var(--hd-h)` → 헤더와 수평선 일치
 - [x] collapse 버튼 hover 시에만 표시 (CSS로 처리)
 - [x] `.tn-cnt` 에피소드/페이지 카운트 뱃지
 - [x] `.rn-item.on::after` left-bar indicator
 - [x] navTo() 클릭 시 .on 이동 stub
 - [x] search/memo import 슬롯 + loadComponent() 헬퍼
-  > 결과물: proto-sidebar.html
+  > **7. 통합 검수에서 추가 확인 필요 (추가됨: 2025-03-04):**
+  >
+  > - [ ] 마우스 터널링 현상 해결 (팝업 사라짐 지연 150~200ms)
+  > - [ ] 에피소드 hover 시 페이지 리스트 표시 ("1p, 2p, 3p, ...")
+  > - [ ] 페이지/컷 아이콘은 `.rn-pop` 없음 확인
+  > - [ ] 로고 SVG 심볼 마크 적용
+  >       결과물: proto-sidebar.html
 
 ### ✅ 7-5. 검색 모달 (proto-search.html) — 완료
 
@@ -142,7 +148,7 @@ frontend/public/prototypes/
 - [x] 하단 단축키 힌트 (Esc, ↑↓, Enter)
   > 결과물: proto-search.html
 
-### ✅ 7-6. 메모 패널 (proto-memopanel.html) — 완료
+### ✅ 7-6. 메모 패널 (proto-memopanel.html) — 완료(7. 통합 검수에서 추가 확인 필요)
 
 - [x] 단독 테스트용 HTML (하단 "열기/토글" 버튼)
 - [x] loadComponent() import 대응 (부모에서 memo-slot에 주입)
@@ -156,9 +162,16 @@ frontend/public/prototypes/
 - [x] 세부 메모 아코디언 (▶/▼ 토글)
 - [x] 빈 메모 상태 (.mm-txt.empty)
 - [x] CSS resize: both 리사이즈 지원
-  > 결과물: proto-memopanel.html
+  > **7. 통합 검수에서 추가 확인 필요 (추가됨: 2025-03-04):**
+  >
+  > - [ ] `.mm-item` 디자인 개선
+  > - [ ] `.mm-item`에 수정/삭제 기능 추가
+  > - [ ] 핀 아이콘 변경 (`keep_20dp_*.svg` → `pin-svgrepo-com.svg`)
+  >       결과물: proto-memopanel.html
 
-### ⬜ 2. Bookshelf 디자인 (proto-bookshelf.html) — 미완료
+### ⬜ 2. Bookshelf 디자인 (proto-bookshelf.html) — 미완료 (스킵 중)
+
+grep "## 2. Bookshelf 화면 (책장)" `project_knowledge_search`를 통해 접근, proto-screen.md
 
 - [ ] proto-style.css 링크 전환
 - [ ] proto-bookshelf.css 작성 및 링크 연결
@@ -174,7 +187,9 @@ frontend/public/prototypes/
 - [ ] node-hd hover: border → outline (layout shift 방지)
 - [ ] XSS 경고 주석 추가 (doS 함수)
 
-### ✅ 3. Project 디자인 (proto-project.html) — 완료
+### ✅ 3. Project 디자인 (proto-project.html) — 완료(7. 통합 검수에서 추가 확인 필요)
+
+grep "## 3. Project 화면 (프로젝트)" `project_knowledge_search`를 통해 접근, proto-screen.md
 
 - [x] proto-style.css 링크 전환
 - [x] proto-project.css 작성 및 링크 연결
@@ -184,26 +199,36 @@ frontend/public/prototypes/
 - [x] Card A: 정보/통계 + 공유/설정 버튼
 - [x] Card B: 설정 (Card A 하단 확장, stepper/toggle)
 - [x] Card C: 세부 정보 (태그 기반 #태그 | 내용)
-- [?] 프로젝트 정보/통계 카드 + 에피소드 리스트(Card A+Card B+Card C 통합 내용인듯)
 - [x] 에피소드 행: 드래그 핸들, 번호, 제목, 시놉시스, 상태 배지(3단계: draft/inProgress/done), 메타데이터, 더보기 메뉴
-- [x] 설정 모달: 2×2 그리드 카드, - [?] override 인디케이터
 - [x] "마지막 작업" → 상대시간("3일 전") 표시
 - [x] XSS 경고 주석 추가
 - [x] loadComponent (search/memo import)
-  > 결과물: proto-project.html, proto-project.css
+  > **7. 통합 검수에서 추가 확인 필요 (추가됨: 2025-03-04):**
+  >
+  > - [ ] 헤더 `.ws-ttl` 모양, `.ws-fav` 위치 — 다른 파일과 통일
+  > - [ ] `.pj-memo-preview` 제거 → 프로젝트 설정 탭 상단에 프로젝트 메모 textarea 배치
+  > - [ ] 탭 구조 변경: "프로젝트 설정" / "에피소드 목록"
+  > - [ ] `.pj-stat-row` → column 레이아웃으로 변경
+  > - [ ] 공유/설정 버튼 아이콘화
+  > - [ ] `.pj-stepper`와 `.pj-toggle` width 통일
+  > - [ ] `.pj-stepper-val` 클릭 시 직접 숫자 입력 가능
+  > - [ ] `.pj-detail-row` 좌측 드래그 핸들 추가
+  > - [ ] `.sec-hd` 디자인 통일
+  > - [ ] `.ep-row` 드래그 핸들 추가, `.ep-row-more` 가시성 개선
+  >       결과물: proto-project.html, proto-project.css
 
 ---
 
-### ✅ 4. Episode 디자인 (proto-episode.html) — 완료
+### ✅ 4. Episode 디자인 (proto-episode.html) — 완료(7. 통합 검수에서 추가 확인 필요)
 
 grep "## 4. Episode 화면 (에피소드)" `project_knowledge_search`를 통해 접근, proto-screen.md
 
-**화면 구조 (proto-screen.md §3 기준):**
+**화면 구조 (proto-screen.md §4 기준):**
 
 ```
 ┌─ 사이드바 ─┐┌─────────────── 워크스페이스 ───────────────┐
 │ (공통)     ││ 헤더: 프로젝트명 | 에피소드 리스트           │
-│            ││ 에피소드 메모 프리뷰 / +에피소드 추가 / 메모  │
+│            ││ 프로젝트 메모 프리뷰 / +에피소드 추가 / 메모  │
 │            │├──── 좌측 네비 (35%) ──┬── 우측 디테일 (65%) ──┤
 │            ││ 필터탭 (전체/진행/완료/예정)│ 에피소드 헤더    │
 │            ││ 정렬 토글              │ 에피소드 메모(SINGLE) │
@@ -216,56 +241,47 @@ grep "## 4. Episode 화면 (에피소드)" `project_knowledge_search`를 통해 
 
 **체크리스트:**
 
-- [ ] 기존 proto-episode.html 구조 확인 후 proto-style.css 링크 전환
-- [ ] proto-episode.css 작성 및 링크 연결
-- [ ] 통합 사이드바 적용 (proto-sidebar.html 기준 복사, 에피소드 화면용 `.on` 상태 설정)
-- [ ] 워크스페이스 헤더 구현
-  - 프로젝트명 표시 (링크로 프로젝트 화면 이동 가능 시사)
-  - " | 에피소드 리스트" 구분자
-  - 에피소드 메모 프리뷰 (1줄, 말줄임)
-  - "+에피소드 추가" 버튼
-  - 메모 패널 토글 버튼
-- [ ] 좌측 네비게이터 (35%) 구현
-  - 필터 탭: 전체 / 진행중 / 완료 / 예정 (탭 버튼 그룹, active 상태)
-  - 정렬 토글 (최신순/번호순)
-  - 에피소드 리스트 카드: 썸네일(작은 정사각) + 제목 + 상태 배지(3단계) + 에피소드 메모 1줄 미리보기
-  - 선택된 에피소드 하이라이트
-  - 더블클릭 → 페이지 화면 이동 stub (alert 또는 주석)
-- [ ] 우측 디테일 패널 (65%) 구현
-  - 에피소드 헤더: 제목(인라인 편집), 상태 배지, 데드라인
-  - 에피소드 메모 (SINGLE): 텍스트 영역, 이모지 선택
-  - 세부 메모 (DETAIL): 추가 버튼, 개별 메모 카드 리스트, 태그 필터
-  - 페이지 메모 리스트: 페이지별 메모 미리보기, 드래그 핸들로 순서 변경 시사
-  - "이 메모는 페이지 화면의 메모와 연동됩니다" 안내 텍스트
-- [ ] 고유 CSS 작성 (episode 전용 스타일)
-  - 좌우 분할 레이아웃 (flex: 35%/65%)
-  - 필터 탭 스타일
-  - 에피소드 카드 스타일 (리스트형, 프로젝트 화면의 행과는 다름)
-  - 상태 배지 3종 (--todo/--wip/--done) — proto-style.css에 이미 있으면 재사용
+- [x] proto-episode.html 구조 확인 후 proto-style.css 링크 전환
+- [x] proto-episode.css 작성 및 링크 연결
+- [x] 통합 사이드바 적용 (에피소드 화면용 `.on` 상태)
+- [x] 워크스페이스 헤더 구현
+- [x] 좌측 네비게이터 (35%) 구현
+- [x] 우측 디테일 패널 (65%) 구현
+- [x] 고유 CSS 작성 (episode 전용 스타일)
 - [x] JS stub 작성
-  - 필터 탭 전환 (active 토글)
-  - 정렬 토글
-  - 에피소드 선택 → 우측 디테일 교체 시뮬레이션
-  - 메모 추가/삭제 stub
-- [x] 사이드바 — proto-sidebar.html 패턴 복제, 트리뷰에서 ep.3 .on, rail nav에서 에피소드 아이콘 .on - 워크스페이스 헤더 — ep-pj-link(프로젝트명 → 클릭 시 이동 시사) + ws-sep + "에피소드 리스트" + 우측 +에피소드 추가 + 메모 토글. 하단 ep-memo-preview 1줄 말줄임 - 좌측 네비 (35%) — 필터탭 4종(전체/진행중/완료/예정 + 카운트 뱃지), 정렬 토글(asc/desc 아이콘 교체), 에피소드 카드(erow: 그라디언트 썸네일 + 번호 + 제목 + 메모 1줄 + 상태배지 + 페이지수 + hover 드래그핸들), 선택 하이라이트(.on), - 더블클릭 → 페이지 화면 stub - 우측 디테일 (65%) — 2탭 구조: - 메모 탭: 프로젝트 메모 읽기전용 프리뷰(parent-memo), 에피소드 메모 textarea(m-ta), 세부 메모 리스트(태그 + 인라인 input + 추가/삭제) - 페이지 메모 탭: 24페이지 메모 리스트(pm-row: 그랩핸들 + 페이지번호 링크 + 인라인 input), 연동 안내 텍스트 - JS stub — 필터 탭 전환, 정렬 토글, 에피소드 선택→디테일 교체, 상태 순환(done→진행중→예정), 페이지/세부메모 추가, loadComponent (search/memo)
-  > 완료보고가 checklist.md와 맞지 않아 체크리스트가 제대로 구현되었는지 확인하지 못함
-  > ⚠️ **검증 필요 사항:**
-- [ ] proto-screen.md §4와 완전 일치 확인
-- [ ] "이 메모는 페이지 화면의 메모와 연동됩니다" 안내 텍스트 존재 확인
-- [ ] 체크리스트 항목 (라인 219~253) 재검증
-  > 결과물: proto-episode.html, proto-episode.css
+  > **7. 통합 검수에서 추가 확인 필요 (추가됨: 2025-03-04):**
+  >
+  > - [ ] `.ep-nav` 접기/펼치기 기능 (44px 축소 모드)
+  > - [ ] `.ep-nav` 좌우 리사이즈 핸들
+  > - [ ] `.erow` 드래그 핸들 추가
+  > - [ ] `.erow` 레이아웃 변경 (1화 | 페이지수 / 제목 | 진행라벨 / 메모...)
+  > - [ ] `.ep-add` sticky 제거 — 다른 행과 동일 취급, 정렬순에 따라 위치 변경
+  > - [ ] `.det-deadline` 제거
+  > - [ ] 탭 좌우2단/상하2단 레이아웃 (Phase 2/3)
+  > - [ ] `.ep-memo-preview`가 프로젝트 메모 표시 확인 → `.parent-memo` 삭제
+  > - [ ] `.m-ta`, `.pm-row` 내부 배경 `$white` + border
+  > - [ ] `.pr-row` x버튼 hover 시에만 표시
+  > - [ ] 태그 없는 세부메모 디자인 (👾: 좌측 컬러바 `$glacial` 제안)
+  > - [ ] 인스타그램 형식 세부메모 처리 (👾: Phase 1은 plain text, Phase 2에서 태그 파싱)
+  > - [ ] `.det-status` badge → 드롭다운으로 변경
+  > - [ ] 페이지별 메모에 이모티콘 지정 영역 추가
+  > - [ ] `.cfg-box` → 토글 클릭 확장 형식으로 변경 (proto-project.html 참고)
+  > - [ ] 서브헤더에 공유버튼 추가
+  >       결과물: proto-episode.html, proto-episode.css
 
 ---
 
-### ✅ 5. Page 디자인 (proto-page.html) — 완료
+### ✅ 5. Page 디자인 (proto-page.html) — 완료(7. 통합 검수에서 추가 확인 필요)
 
-**화면 구조 (proto-screen.md §4 기준):**
+grep "## 5. Page 화면 (페이지)" `project_knowledge_search`를 통해 접근, proto-screen.md
+
+**화면 구조 (proto-screen.md §5 기준):**
 
 ```
 ┌─ 사이드바 ─┐┌─────────────── 워크스페이스 ───────────────┐
 │ (공통)     ││ 헤더: 에피소드명 + 페이지수                  │
 │            ││ 에피소드 메모 프리뷰 / +페이지 추가 / 메모    │
-│            │├── 좌측 그리드 (20~30%) ─┬─ 우측 디테일 (70~80%) ─┤
+│            │├── 좌측 그리드 (35%) ─┬─ 우측 디테일 (65%) ─┤
 │            ││ 페이지 썸네일 그리드     │ 페이지 메모(SINGLE)    │
 │            ││ (양면/단면 토글)         │ 페이지 세부메모(DETAIL) │
 │            ││ Ctrl+스크롤 줌          │ 컷 메모 리스트          │
@@ -277,54 +293,44 @@ grep "## 4. Episode 화면 (에피소드)" `project_knowledge_search`를 통해 
 
 **체크리스트:**
 
-- [ ] 기존 proto-page.html 구조 확인 후 proto-style.css 링크 전환
-- [ ] proto-page.css 작성 및 링크 연결
-- [ ] 통합 사이드바 적용 (페이지 화면용 `.on` 상태)
-- [ ] 워크스페이스 헤더 구현
-  - 에피소드 제목 + "(24p)" 페이지 수 표시
-  - 에피소드 메모 프리뷰 (1줄)
-  - "+페이지 추가" 버튼
-  - 메모 패널 토글 버튼
-- [ ] 좌측 페이지 그리드 (20~30%) 구현
-  - 양면(spread) 뷰: 2열 그리드, RTL 읽기방향 기본
-  - 단면(single) 뷰: 1열 또는 다열 그리드
-  - 페이지 카드: B4 비율 썸네일(aspect-ratio: 238/324), 페이지 번호
-  - 컷 분할선 미리보기 (컷이 나뉜 상태면 선이 보임)
-  - 페이지 메모 미리보기 (썸네일 하단, 최대 2줄, 말줄임)
-  - 선택 페이지 하이라이트 (파란 테두리)
-  - 양면 뷰 홀수 시작 시 첫 페이지 blank cover (`.pcard--cover-blank`)
-  - Ctrl+스크롤 줌 (JS stub)
-- [ ] 우측 디테일 패널 (70~80%) 구현
-  - 페이지 메모 (SINGLE): 텍스트 영역
-  - 페이지 세부 메모 (DETAIL): 추가/삭제
-  - 컷 메모 리스트: 미배정(cutId=null) 메모 목록, 드래그 핸들
-  - "이 메모를 컷 화면에서 드래그하여 컷에 배정할 수 있습니다" 안내
-  - 배정된 컷 메모는 배정 위치 표시 (예: "→ 컷 3")
-- [ ] 하단 툴바 구현
-  - 줌 컨트롤 (−, 퍼센트 표시, +, 맞춤 버튼)
-  - 양면/단면 토글 버튼
-- [ ] 고유 CSS 작성
-  - 좌우 분할 레이아웃 (flex: 가변)
-  - 페이지 카드 그리드 (spread/single 모드별)
-  - B4 비율 썸네일 스타일
-  - blank cover 스타일
-  - 줌 툴바 스타일
-- [ ] JS stub 작성
-  - 양면/단면 토글
-  - 페이지 선택 → 우측 디테일 교체
-  - 줌 컨트롤 (+/−/맞춤)
-  - Ctrl+스크롤 줌 stub > 결과물: proto-page.html, proto-page.css > 체크리스트 대로 결과를 반환해주지 않아 체크리스트 확인을 하지 못함. 7. 통합 검수 단계에서 확인 필요
-    ⚠️ **검증 필요 사항:**
-- [ ] RTL 읽기방향 처리 확인
-- [ ] Ctrl+스크롤 줌 JS stub 동작 확인
-- [ ] blank cover 스타일 확인
-- [ ] 체크리스트 항목 (라인 280~316) 재검증
+- [x] proto-page.html 구조 확인 후 proto-style.css 링크 전환
+- [x] proto-page.css 작성 및 링크 연결
+- [x] 통합 사이드바 적용 (페이지 화면용 `.on` 상태)
+- [x] 워크스페이스 헤더 구현
+- [x] 좌측 페이지 그리드 (35%) 구현
+- [x] 우측 디테일 패널 (65%) 구현
+- [x] 하단 툴바 구현
+- [x] 고유 CSS 작성
+- [x] JS stub 작성
+  > **7. 통합 검수에서 추가 확인 필요 (추가됨: 2025-03-04):**
+  >
+  > - [ ] `.pg-spread-row` gap 제거 (페이지 붙어있음), `.pcard-memo`만 gap 유지
+  > - [ ] `.pcard--blank` "속표지" 글씨 제거, 대각선 dash 제거 → 점선만
+  > - [ ] 마지막 페이지 위치에 "+페이지 추가 카드" 배치
+  > - [ ] `.pg-nav` 접기/펼치기 기능 (44px 축소 모드)
+  > - [ ] `.pg-nav` 좌우 리사이즈 핸들
+  > - [ ] 단면보기: `.pg-nav` width에 맞춰 한 장씩 표시, 축소 시 두 장
+  > - [ ] 페이지 카드 그리드 스크롤 위치 이슈 수정
+  > - [ ] `.pg-memo-preview`가 에피소드 메모 표시 확인 → `.parent-memo` 삭제
+  > - [ ] `.m-ta` 내부 배경 `$white`
+  > - [ ] 페이지 메모에 이모티콘 지정 영역 추가
+  > - [ ] `.pg-detail-memo-item` 드래그 핸들 항상 표시, x버튼만 hover
+  > - [ ] `.pg-detail-memo-item`에 border 추가
+  > - [ ] 탭 좌우2단/상하2단 레이아웃 (Phase 2/3)
+  > - [ ] `.pg-cut-item` 드래그 핸들 항상 표시
+  > - [ ] `.pcard-num` 위치 변경: 썸네일 하단 좌측 "1p", 우측에 메모 미리보기
+  > - [ ] 미배정 컷 메모 경고 도트 (`$amber` 6px) 추가
+  > - [ ] 페이지 카드 hover 시 "컷 편집" 버튼 표시
+  > - [ ] `.pg-cut.assign` 제거 → x버튼으로 대체
+  >       결과물: proto-page.html, proto-page.css
 
 ---
 
-### ✅ 6. Cut 디자인 (proto-cut.html) — 완료
+### ✅ 6. Cut 디자인 (proto-cut.html) — 완료(7. 통합 검수에서 추가 확인 필요)
 
-**화면 구조 (proto-screen.md §5 기준):**
+grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto-screen.md
+
+**화면 구조 (proto-screen.md §6 기준):**
 
 ```
 ┌─ 사이드바 ─┐┌─────────────── 워크스페이스 ──────────────────────┐
@@ -344,92 +350,174 @@ grep "## 4. Episode 화면 (에피소드)" `project_knowledge_search`를 통해 
 
 **체크리스트:**
 
-- [ ] proto-cut.html 구조 확인 후 proto-style.css 링크 전환
-- [ ] proto-cut.css 작성 및 링크 연결
-- [ ] 통합 사이드바 적용 (컷 화면용 `.on` 상태)
-- [ ] 워크스페이스 헤더 구현
-  - 에피소드 제목 + "p.03" 현재 페이지 번호
-  - 페이지 메모 프리뷰 (1줄)
-  - ◀ 이전 / ▶ 다음 페이지 이동 버튼
-  - 전체 미리보기 버튼 (모든 페이지 한눈에)
-  - 메모 패널 토글 버튼
-- [ ] 중앙 캔버스 영역 구현
-  - B4 비율 페이지 (aspect-ratio: 238/324)
-  - 양면 시 2페이지 나란히 (RTL 기준 우→좌)
-  - 가이드라인 오버레이: 제판선(bleed, 파란 점선), 내곽선(inner, 파란→컷 분할 후 검정)
-  - 재단선(trim)은 미표시
-  - 컷 분할 영역: CSS Grid로 분할된 영역 표시, 각 컷에 번호
-  - 배정된 컷 메모 미리보기 (컷 내부에 작은 글씨)
-  - 컷별 이모지 표시
-  - 선택된 컷 하이라이트 (파란 테두리 또는 배경)
-- [ ] 하단 플로팅 툴바 구현
-  - Undo / Redo 버튼 (SVG 아이콘, 이미 교체됨)
-  - 컷 분할 모드 토글 (active 시 강조)
-  - 컷 삭제 버튼
-  - 레이아웃 초기화 버튼
-  - 줌 컨트롤 (−, 퍼센트, +, 맞춤)
-  - flex-wrap 대응 (좁은 화면에서 줄바꿈)
-  - zoom-ctl margin-left:auto (우측 정렬)
-- [ ] 우측 패널 (320px) 구현
-  - 컷 메모 관리: 미배정 메모 리스트 (드래그 핸들), 배정된 메모는 회색 처리
-  - "드래그하여 좌측 컷에 배정" 안내
-  - 컷 세부 메모: 대사(dialog) / 지문(narration) / 연출(direction) 구분
-  - 메모 추가/삭제 버튼
-  - 이모지 선택 UI
-- [ ] 고유 CSS 작성
-  - 캔버스 영역 (중앙 정렬, 배경 #f5f5f5)
-  - B4 페이지 스타일 (가이드라인 오버레이 포함)
-  - 컷 그리드 스타일 (분할선, hover, 선택 상태)
-  - 플로팅 툴바 스타일 (position: fixed 또는 sticky)
-  - 우측 패널 스타일
-  - 메모 카드 스타일 (미배정 vs 배정됨 구분)
-- [ ] JS stub 작성
-  - 컷 분할 모드 토글
-  - 컷 선택
-  - undo/redo stub
-  - 줌 컨트롤
-  - 페이지 이동 (◀▶)
-  - 메모 배정 drag stub (시각적 시뮬레이션) > 결과물: proto-cut.html, proto-cut.css > 체크리스트 대로 결과를 반환해주지 않아 체크리스트 확인을 하지 못함. 7. 통합 검수 단계에서 확인 필요
-    ⚠️ **검증 필요 사항:**
-- [ ] 양면 시 2페이지 RTL 배치 확인
-- [ ] 가이드라인 색상 변경 로직 (파랑→검정) 확인
-- [ ] 컷 분할 모드 커서 변경 확인
-- [ ] 체크리스트 항목 (라인 349~394) 재검증
+- [x] proto-cut.html 구조 확인 후 proto-style.css 링크 전환
+- [x] proto-cut.css 작성 및 링크 연결
+- [x] 통합 사이드바 적용 (컷 화면용 `.on` 상태)
+- [x] 워크스페이스 헤더 구현
+- [x] 중앙 캔버스 영역 구현
+- [x] 하단 플로팅 툴바 구현
+- [x] 우측 패널 (320px) 구현
+- [x] 고유 CSS 작성
+- [x] JS stub 작성
+  > **7. 통합 검수에서 추가 확인 필요 (추가됨: 2025-03-04):**
+  >
+  > - [ ] `.ct-pg-nav` 형식 변경: `[◀ 이전][다음 ▶]` 아이콘+텍스트
+  > - [ ] `.hbtn`(전체 미리보기)와 `.ct-tb-btn`(화면 맞춤) 아이콘 구별
+  > - [ ] `.ct-side` 토글접기 시 동그란 아이콘으로 축소 애니메이션
+  > - [ ] `.ct-sec-a-hd`와 `.ct-memo-row` 통합 — `.ct-memo-row`만 남기기
+  > - [ ] `.ct-page` 테두리 dash → solid
+  > - [ ] 양면 뷰 `.ct-page` 사이 gap 제거
+  > - [ ] 초기 상태(컷 미분할) 내곽선 `$ocean` 실선 확인
+  > - [ ] `.ct-cell` 내부 헤더영역 (번호+컷메모 좌측, 이모지 우측) + 세부메모 배치
+  > - [ ] 기본 컷메모 세부메모 아코디언 닫힌 상태
+  > - [ ] `.ct-memo-add` 삭제, `.ct-detail-add`를 `.ct-memo-add` 디자인으로 변경
+  > - [ ] 컷메모와 컷세부메모 디자인 차별화
+  > - [ ] `.ct-toolbar` "컷 초기화" 기준 두 그룹 분리
+  > - [ ] `.ct-tb-btn` → proto-page.html처럼 `-` `+` 표시
+  > - [ ] 분할 모드 커서 변경 이슈 (👾: `cursor: crosshair !important` 적용)
+  >       결과물: proto-cut.html, proto-cut.css
 
 ---
 
-### ⬜ 7. 통합 검수 — 미완료
+### ⬜ 7. 통합 검수(명세 검증) — 미완료
 
-### 7-1. CSS 일관성 검수
-
-- [ ] 모든 HTML 파일에서 proto-style.css 링크 확인
-- [ ] 인라인 style 속성 제거 확인
-- [ ] CSS 변수 일관성 확인
-- [ ] hover 시 layout shift 방지 (outline/box-shadow 사용) 확인
+- [ ] **proto-screen.md 재검증**: 수정/추가된 요구사항 버전으로 각 화면 상세 검토
+- [ ] CSS 일관성: 5개 HTML 모두 proto-style.css 링크, 고유 스타일만 `proto-*.css`에 유지
+- [ ] 변수 일관성: 공통되는 부분은 인라인 `style` 하드코딩 없이 CSS 변수 사용
 - [ ] hover/선택 일관성: 모든 hover는 outline/box-shadow (border 변경 X → layout shift 방지)
-
-### 7-2. 아이콘 정합성 검수
-
-- [ ] icon-mapping.txt 대조
-- [ ] 누락/오타 아이콘 확인
-- [ ] 아이콘 경로 정합성
-
-### 7-3. proto-screen.md 명세 대조
-
-- [ ] 각 화면 레이아웃 ASCII 다이어그램 일치
-- [ ] 모든 UI 요소 존재 확인
-- [ ] 상호작용 스펙 일치
-
-### 7-4. 베베 추가 요구사항 구현
-
-- [ ] 메모 텍스트 포맷팅 툴팁 구현
-- [ ] user-select: none 적용
-- [ ] 버튼 title 속성/툴팁 추가
-
-### 7-5. 반응형 & 접근성
-
-- [ ] 최소 1024px 너비 레이아웃 확인
-- [ ] 키보드 접근성 확인
-- [ ] 스크린 리더 대응
+- [ ] 아이콘 정합성: icon-mapping.txt에 없는 아이콘 사용 여부 점검, 누락 아이콘 추가
+- [ ] 반응형 기본 점검: 최소 1024px 너비에서 레이아웃 깨짐 없는지 확인
+- [ ] 누락된 UI 요소 확인
+- [ ] 상호작용 스펙 일치 확인
+- [ ] 미적용 내용은 checklist.md에 추가 기입 후 "8. 추가 요구사항 반영" 단계에서 수정
 
 ---
+
+### ⬜ 8. 추가 요구사항 반영 (추가됨: 2025-03-04) — 미완료
+
+**8-1. 공통 요구사항**
+
+- [ ] **표기법 통일** 적용: 에피소드 "1화", 페이지 "1p", 컷 "컷 1"
+- [ ] **user-select: none** 적용
+  - 버튼 (`.hbtn`, `.abtn`, `.ic-btn` 등)
+  - 카드 형식 +추가 버튼 (`.ep-add`, `.pg-cut-add` 등)
+  - 사이드바 전체 (`.sb`, `.sb-tree`, `.rn-item` 등)
+  - 라벨 및 수정 불가 타이틀 (`.nav-top`, `.m-sec-t`, `.ct-side-hd-t` 등)
+  - 탭 (`.ep-tab`, `.det-tab`, `.pg-det-tab`, `.mm-tab` 등)
+  - 아이콘 전체
+- [ ] **버튼 title 속성** 추가: 모든 아이콘 버튼에 `title` 속성
+  - 👾: "Phase 2에서 data-tooltip + ::after pseudo-element로 커스텀 툴팁 구현"
+- [ ] **메모 포맷팅 툴팁** (Medium 스타일): Phase 2 구현, 현재는 placeholder만
+- [ ] **focus outline 개선**: box-shadow 또는 outline + outline-offset, 색상 `$ocean`/`$deep-blue`
+
+**8-2. 사이드바**
+
+- [ ] 마우스 터널링 현상 해결 (팝업 사라짐 지연 150~200ms)
+- [ ] 에피소드 hover 시 페이지 리스트 표시 ("1p, 2p, 3p, ...", max-height 초과 시 스크롤)
+- [ ] 페이지/컷 아이콘 `.rn-pop` 제거
+- [ ] 로고 SVG 심볼 마크 적용
+
+**8-3. 메모패널**
+
+- [ ] `.mm-item` 디자인 개선
+- [ ] `.mm-item` 수정/삭제 기능 추가
+- [ ] 핀 아이콘 변경 (`keep_20dp_*.svg` → `pin-svgrepo-com.svg`)
+
+**8-4. 프로젝트**
+
+- [ ] 헤더 `.ws-ttl`, `.ws-fav` 위치 통일
+- [ ] `.pj-memo-preview` 제거 → 탭 상단에 프로젝트 메모 textarea
+- [ ] 탭 구조: "프로젝트 설정" / "에피소드 목록"
+- [ ] `.pj-stat-row` → column 레이아웃
+- [ ] 공유/설정 버튼 아이콘화
+- [ ] `.pj-stepper`, `.pj-toggle` width 통일
+- [ ] `.pj-stepper-val` 클릭 시 직접 입력
+- [ ] `.pj-detail-row` 드래그 핸들 추가
+- [ ] `.sec-hd` 디자인 통일
+- [ ] `.ep-row` 드래그 핸들, `.ep-row-more` 가시성 개선
+
+**8-5. 에피소드**
+
+- [ ] `.ep-nav` 접기/펼치기 (44px), 리사이즈 핸들
+- [ ] `.erow` 드래그 핸들, 레이아웃 변경
+- [ ] `.ep-add` sticky 제거
+- [ ] `.det-deadline` 제거
+- [ ] 탭 좌우2단/상하2단 (Phase 2/3)
+- [ ] `.ep-memo-preview` = 프로젝트 메모 확인, `.parent-memo` 삭제
+- [ ] `.m-ta`, `.pm-row` 배경 `$white` + border
+- [ ] x버튼 hover 시에만 표시
+- [ ] 태그 없는 세부메모 디자인 (👾: 좌측 컬러바 `$glacial`)
+- [ ] 인스타그램 형식 처리 (👾: Phase 1 plain text, Phase 2 태그 파싱)
+- [ ] `.det-status` → 드롭다운
+- [ ] 페이지메모 이모티콘 영역
+- [ ] `.cfg-box` 토글 확장 형식
+- [ ] 서브헤더 공유버튼
+
+**8-6. 페이지**
+
+- [ ] `.pg-spread-row` gap 제거, `.pcard-memo` gap 유지
+- [ ] `.pcard--blank` 점선만
+- [ ] 마지막에 "+페이지 추가 카드"
+- [ ] `.pg-nav` 접기/펼치기, 리사이즈 핸들
+- [ ] 단면보기 한 장씩/축소 시 두 장
+- [ ] 스크롤 위치 이슈
+- [ ] `.pg-memo-preview` = 에피소드 메모, `.parent-memo` 삭제
+- [ ] `.m-ta` 배경 `$white`
+- [ ] 페이지메모 이모티콘 영역
+- [ ] `.pg-detail-memo-item` 드래그 핸들 항상, x버튼 hover, border 추가
+- [ ] 탭 좌우2단/상하2단 (Phase 2/3)
+- [ ] `.pg-cut-item` 드래그 핸들 항상
+- [ ] `.pcard-num` 위치 변경
+- [ ] 미배정 경고 도트
+- [ ] hover 시 "컷 편집" 버튼
+- [ ] `.pg-cut.assign` → x버튼
+
+**8-7. 컷**
+
+- [ ] `.ct-pg-nav` `[◀ 이전][다음 ▶]`
+- [ ] 전체미리보기/화면맞춤 아이콘 구별
+- [ ] `.ct-side` 접기 → 동그란 아이콘 애니메이션
+- [ ] `.ct-sec-a-hd` + `.ct-memo-row` 통합
+- [ ] `.ct-page` solid 테두리, gap 제거
+- [ ] 초기 상태 내곽선 `$ocean` 실선
+- [ ] `.ct-cell` 내부 레이아웃
+- [ ] 기본 아코디언 닫힌 상태
+- [ ] `.ct-memo-add` 삭제, `.ct-detail-add` 디자인 변경
+- [ ] 컷메모/컷세부메모 디자인 차별화
+- [ ] `.ct-toolbar` 두 그룹 분리
+- [ ] `.ct-tb-btn` `-` `+` 표시
+- [ ] 분할 모드 커서 (👾: `cursor: crosshair !important`)
+
+**8-8. 👾 디자인 제안 필요 항목**
+
+1. **태그 없는 세부메모 디자인**: 좌측 컬러바 `$glacial` 제안 — 베베 확인 필요
+2. **인스타그램 형식 세부메모 처리**: Phase 1 plain text, Phase 2 태그 파싱 — 베베 확인 필요
+3. **`.det-status` badge vs 드롭다운**: 드롭다운으로 변경 예정 — 베베 확인 필요
+4. **`.pcard-num` 위치 변경**: 하단 좌측 "1p", 우측 메모 미리보기 — 베베 확인 필요
+5. **컷 화면 초기 상태 내곽선 `$ocean` 실선**: 명세대로 구현 확인 필요
+
+---
+
+### ⬜ 9. Bookshelf 디자인 (proto-bookshelf.html) — 미완료 (8번 완료 후 진행)
+
+> 2. Bookshelf 디자인과 동일. 8번 완료 후 전체 디자인에 맞춰 작업.
+
+---
+
+### ⬜ 10. 통합 검수 (2차) — 미완료
+
+- [ ] 8번 추가 요구사항 반영 확인
+- [ ] 9번 Bookshelf 디자인 검수
+- [ ] 전체 화면 일관성 최종 확인
+- [ ] 아이콘 정합성 최종 확인
+- [ ] 반응형 최종 점검
+
+---
+
+## 우선순위 정리 (2025-03-04)
+
+1. ✅ checklist.md + proto-screen.md 추가 요구사항 반영
+2. ⬜ 7. 통합 검수 (명세 검증)
+3. ⬜ 8. 추가 요구사항 반영
+4. ⬜ 9. Bookshelf 디자인
+5. ⬜ 10. 통합 검수 (2차)
