@@ -1,0 +1,3 @@
+.share-link-input:focus {
+  border-color: var(--oc);
+}

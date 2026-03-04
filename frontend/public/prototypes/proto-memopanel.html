@@ -1,0 +1,251 @@
+<!-- ═══════════════════════════════════════════════════════
+     PlotNote — proto-memopanel.html
+     플로팅 메모 패널 (proto-screen.md §7-6)
+     ─────────────────────────────────────────────────────
+     ● 단독 테스트: 이 파일을 직접 열면 버튼으로 패널 토글
+     ● Import 사용: 부모 페이지에서 loadComponent('proto-memopanel.html', 'memo-slot')
+       → 부모 <head>에 proto-style.css + proto-memopanel.css 링크 필요
+═══════════════════════════════════════════════════════ -->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>PlotNote — Memo Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="proto-style.css">
+<link rel="stylesheet" href="proto-memopanel.css">
+<style>
+.test-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999;display:flex;gap:8px}
+.test-bar button{padding:6px 14px;border-radius:6px;border:1px solid #d5d2cb;background:#fefefe;font-size:11px;color:#4a4a4a;cursor:pointer}
+.test-bar button:hover{border-color:#2a4d88;color:#2a4d88}
+</style>
+</head>
+<body style="background:#f7f6f3">
+
+<!-- ═══ MEMO PANEL COMPONENT START ═══ -->
+<div class="mm" id="mm" style="top:60px;right:40px">
+
+  <!-- 헤더 (드래그 핸들) -->
+  <div class="mm-hd" id="mm-hd">
+    <span class="mm-hd-t">메모</span>
+    <div class="mm-b" id="mm-pin" onclick="tglPin()" title="핀 고정">
+      <img src="../../src/assets/images/keep_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="핀">
+    </div>
+    <div class="mm-b" id="mm-srch-btn" onclick="tglMmSearch()" title="메모 내 검색">
+      <img src="../../src/assets/images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="검색">
+    </div>
+    <div class="mm-b" onclick="closeMM()" title="닫기">
+      <img src="../../src/assets/images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="닫기">
+    </div>
+  </div>
+
+  <!-- 패널 내부 검색 -->
+  <div class="mm-search" id="mm-search">
+    <input type="text" placeholder="메모 내 검색..." autocomplete="off">
+  </div>
+
+  <!-- 탭 바 -->
+  <div class="mm-tabs" id="mm-tabs">
+    <div class="mm-tab on" data-tab="project" onclick="switchMmTab(this)">프로젝트</div>
+    <div class="mm-tab" data-tab="episode" onclick="switchMmTab(this)">에피소드</div>
+    <div class="mm-tab" data-tab="page" onclick="switchMmTab(this)">페이지</div>
+    <div class="mm-tab" data-tab="cut" onclick="switchMmTab(this)">컷</div>
+  </div>
+
+  <!-- 메모 콘텐츠 -->
+  <div class="mm-bd" id="mm-bd">
+
+    <!-- 프로젝트 탭 -->
+    <div class="mm-panel" data-panel="project">
+      <div class="mm-item">
+        <div class="mm-lbl">프로젝트 메모</div>
+        <div class="mm-txt">고양이와 강아지가 처음 만나 함께 모험하는 이야기. 전체 12화 예정.</div>
+      </div>
+      <div class="mm-item">
+        <div class="mm-lbl">프로젝트 세부 메모</div>
+        <div class="mm-txt">장르: 힐링 일상. 대상: 전연령.</div>
+        <div class="mm-acc-tgl" onclick="tglAcc(this)">&#9654; 세부 메모 더보기 (3)</div>
+        <div class="mm-acc closed">
+          <div class="mm-txt" style="margin-bottom:4px">연재 주기: 주 1회</div>
+          <div class="mm-txt" style="margin-bottom:4px">출판사: 미정</div>
+          <div class="mm-txt">참고 작품: 치즈인더트랩, 나의 히어로 아카데미아</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 에피소드 탭 -->
+    <div class="mm-panel" data-panel="episode" style="display:none">
+      <div class="mm-item">
+        <div class="mm-lbl">ep.1 &#8212; 에피소드 메모</div>
+        <div class="mm-txt">첫 만남 에피소드. 분위기는 봄. 벚꽃 떨어지는 장면으로 시작.</div>
+      </div>
+      <div class="mm-item">
+        <div class="mm-lbl">ep.2 &#8212; 에피소드 메모</div>
+        <div class="mm-txt">공원 에피소드. 비가 그친 직후, 무지개.</div>
+      </div>
+      <div class="mm-item" style="background:var(--db-bg)">
+        <div class="mm-lbl" style="color:var(--db)">ep.3 &#8212; 에피소드 메모 (현재)</div>
+        <div class="mm-txt">이웃 동네 고양이들과 만남. 영역 다툼 &#8594; 화해 전개.</div>
+        <div class="mm-acc-tgl" onclick="tglAcc(this)">&#9654; 세부 메모 (2)</div>
+        <div class="mm-acc closed">
+          <div class="mm-txt" style="margin-bottom:4px">배경: 골목길, 옥상</div>
+          <div class="mm-txt">키 이벤트: 비가 올 때 고양이들이 모임</div>
+        </div>
+      </div>
+      <div class="mm-item">
+        <div class="mm-lbl">ep.4 &#8212; 에피소드 메모</div>
+        <div class="mm-txt">비 오는 날 에피소드. 아직 미정.</div>
+      </div>
+    </div>
+
+    <!-- 페이지 탭 -->
+    <div class="mm-panel" data-panel="page" style="display:none">
+      <div class="mm-item">
+        <div class="mm-lbl">ep.3 &gt; p.01</div>
+        <div class="mm-txt">이웃 고양이 첫 등장. 옥상 위 실루엣.</div>
+      </div>
+      <div class="mm-item">
+        <div class="mm-lbl">ep.3 &gt; p.02</div>
+        <div class="mm-txt">주인공 고양이가 영역 표시를 발견하는 장면.</div>
+      </div>
+      <div class="mm-item" style="background:var(--db-bg)">
+        <div class="mm-lbl" style="color:var(--db)">ep.3 &gt; p.03 (현재)</div>
+        <div class="mm-txt">두 고양이가 마주치는 긴장감 있는 장면. 클로즈업 필요.</div>
+      </div>
+      <div class="mm-item">
+        <div class="mm-lbl">ep.3 &gt; p.04</div>
+        <div class="mm-txt empty">메모 없음</div>
+      </div>
+    </div>
+
+    <!-- 컷 탭 -->
+    <div class="mm-panel" data-panel="cut" style="display:none">
+      <div class="mm-item">
+        <div class="mm-lbl">ep.3 &gt; p.03 &gt; 컷 1</div>
+        <div class="mm-txt">골목길 전경. 두 고양이가 멀리서 마주보는 롱샷.</div>
+      </div>
+      <div class="mm-item">
+        <div class="mm-lbl">ep.3 &gt; p.03 &gt; 컷 2</div>
+        <div class="mm-txt">주인공 고양이 눈 클로즈업. 동공 확대.</div>
+        <div class="mm-acc-tgl" onclick="tglAcc(this)">&#9654; 세부 메모 (2)</div>
+        <div class="mm-acc closed">
+          <div class="mm-txt" style="margin-bottom:4px">대사: &#8220;&#8230;너, 누구야?&#8221;</div>
+          <div class="mm-txt">연출: 속도선 + 효과음 &#12300;찌릿&#12301;</div>
+        </div>
+      </div>
+      <div class="mm-item">
+        <div class="mm-lbl">ep.3 &gt; p.03 &gt; 컷 3</div>
+        <div class="mm-txt">이웃 고양이 반응 샷. 꼬리를 세움.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- ═══ MEMO PANEL COMPONENT END ═══ -->
+
+<script>
+(function() {
+  var mm = document.getElementById('mm');
+  var hd = document.getElementById('mm-hd');
+  var isDrag = false, startX, startY, origX, origY;
+
+  hd.addEventListener('mousedown', function(e) {
+    if (e.target.closest('.mm-b')) return;
+    isDrag = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    var rect = mm.getBoundingClientRect();
+    origX = rect.left;
+    origY = rect.top;
+    document.addEventListener('mousemove', onDrag);
+    document.addEventListener('mouseup', onUp);
+  });
+
+  function onDrag(e) {
+    if (!isDrag) return;
+    var dx = e.clientX - startX;
+    var dy = e.clientY - startY;
+    mm.style.left = (origX + dx) + 'px';
+    mm.style.top = (origY + dy) + 'px';
+    mm.style.right = 'auto';
+  }
+
+  function onUp() {
+    isDrag = false;
+    document.removeEventListener('mousemove', onDrag);
+    document.removeEventListener('mouseup', onUp);
+  }
+})();
+
+function openMM() {
+  var mm = document.getElementById('mm');
+  mm.classList.add('open');
+}
+
+function closeMM() {
+  var mm = document.getElementById('mm');
+  var pin = document.getElementById('mm-pin');
+  if (pin.classList.contains('pin-on')) return;
+  mm.classList.remove('open');
+}
+
+function tglMM() {
+  var mm = document.getElementById('mm');
+  if (mm.classList.contains('open')) {
+    var pin = document.getElementById('mm-pin');
+    if (pin.classList.contains('pin-on')) {
+      pin.classList.remove('pin-on');
+      mm.classList.remove('pinned');
+    }
+    mm.classList.remove('open');
+  } else {
+    mm.classList.add('open');
+  }
+}
+
+function tglPin() {
+  var pin = document.getElementById('mm-pin');
+  var mm = document.getElementById('mm');
+  pin.classList.toggle('pin-on');
+  mm.classList.toggle('pinned');
+}
+
+function tglMmSearch() {
+  document.getElementById('mm-search').classList.toggle('open');
+  var inp = document.querySelector('#mm-search input');
+  if (inp && document.getElementById('mm-search').classList.contains('open')) {
+    inp.focus();
+  }
+}
+
+function switchMmTab(el) {
+  document.querySelectorAll('#mm-tabs .mm-tab').forEach(function(t) { t.classList.remove('on'); });
+  el.classList.add('on');
+  var tab = el.getAttribute('data-tab');
+  document.querySelectorAll('#mm-bd .mm-panel').forEach(function(p) {
+    p.style.display = p.getAttribute('data-panel') === tab ? '' : 'none';
+  });
+}
+
+function tglAcc(trigger) {
+  var acc = trigger.nextElementSibling;
+  if (!acc) return;
+  var isClosed = acc.classList.contains('closed');
+  acc.classList.toggle('closed');
+  if (isClosed) {
+    trigger.innerHTML = trigger.innerHTML.replace('&#9654;', '&#9660;').replace('\u25B6', '\u25BC');
+  } else {
+    trigger.innerHTML = trigger.innerHTML.replace('&#9660;', '&#9654;').replace('\u25BC', '\u25B6');
+  }
+}
+</script>
+
+<!-- 단독 테스트용 버튼 -->
+<div class="test-bar">
+  <button onclick="openMM()">메모 패널 열기</button>
+  <button onclick="tglMM()">토글</button>
+</div>
+
+</body>
+</html>
