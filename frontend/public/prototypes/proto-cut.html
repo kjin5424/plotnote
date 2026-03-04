@@ -1,584 +1,178 @@
+<!-- ═══════════════════════════════════════════════════════
+     PlotNote — proto-cut.html
+     컷 화면 (proto-screen.md §6)
+     ─────────────────────────────────────────────────────
+     CSS: proto-style.css (공통) + proto-sidebar.css + proto-cut.css
+     Import: proto-search.html, proto-memopanel.html (loadComponent)
+═══════════════════════════════════════════════════════ -->
 <!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <title>PlotNote — 컷 편집</title>
+    <title>PlotNote — 컷</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&family=Noto+Serif+KR:wght@600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="proto-style.css" />
-    <style>
-      /* 페이지/컷 전용 CSS 변수 */
-      :root {
-        --rsp: 280px;
-      }
-
-      /* WS Header (page/cut 전용 — flex+gap 레이아웃) */
-      .ws-hd {
-        flex-shrink: 0;
-        background: var(--wh);
-        border-bottom: 1px solid var(--bd);
-        padding: 8px 20px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-      .ws-bc {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        font-size: 12px;
-        color: var(--gh);
-      }
-      .ws-bc a {
-        color: var(--gh);
-        text-decoration: none;
-        cursor: pointer;
-      }
-      .ws-bc a:hover {
-        color: var(--db);
-      }
-      .ws-bc .cur {
-        color: var(--ink);
-        font-weight: 500;
-      }
-      .ws-bc .sep {
-        color: var(--co);
-      }
-      .srch {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 5px 12px;
-        background: var(--pa);
-        border: 1px solid var(--bd);
-        border-radius: 7px;
-        cursor: pointer;
-        width: 180px;
-      }
-      .srch:hover {
-        border-color: var(--oc);
-      }
-      .srch svg {
-        flex-shrink: 0;
-        color: var(--gh);
-      }
-      .srch span {
-        font-size: 11px;
-        color: var(--gh);
-      }
-      .hbtn {
-        width: 28px;
-        height: 28px;
-        border-radius: 5px;
-        border: none;
-        background: none;
-        color: var(--gh);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 15px;
-      }
-      .hbtn:hover {
-        background: var(--pa);
-        color: var(--i2);
-      }
-
-      /* ═══ 상단 컨텍스트 바 ═══ */
-      .ctx-bar {
-        flex-shrink: 0;
-        min-height: 40px;
-        background: var(--wh);
-        border-bottom: 1px solid var(--bd);
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        padding: 0 16px;
-        gap: 8px;
-      }
-      .ctx-ep {
-        font-size: 11px;
-        color: var(--gh);
-        font-family: "DM Mono", monospace;
-      }
-      .ctx-sep {
-        color: var(--co);
-        font-size: 12px;
-      }
-      .ctx-pg {
-        font-size: 11px;
-        font-weight: 500;
-        color: var(--ink);
-      }
-      .pg-nav {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        margin-left: auto;
-      }
-      .pg-nav-grp {
-        display: flex;
-        align-items: center;
-        gap: 3px;
-      }
-      .pn-btn {
-        width: 24px;
-        height: 24px;
-        border-radius: 4px;
-        border: 1px solid var(--bd2);
-        background: var(--wh);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 11px;
-        color: var(--i2);
-        cursor: pointer;
-      }
-      .pn-btn:hover {
-        border-color: var(--oc);
-        color: var(--db);
-      }
-      .pn-lbl {
-        font-size: 10px;
-        color: var(--gh);
-        font-family: "DM Mono", monospace;
-      }
-      .zoom-ctl {
-        display: flex;
-        align-items: center;
-        gap: 3px;
-        margin-left: auto;
-        border-left: 1px solid var(--bd);
-        padding-left: 12px;
-      }
-      .z-btn {
-        width: 22px;
-        height: 22px;
-        border-radius: 4px;
-        border: 1px solid var(--bd2);
-        background: var(--wh);
-        font-size: 13px;
-        color: var(--i2);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      }
-      .z-btn:hover {
-        border-color: var(--oc);
-      }
-      .z-pct {
-        font-family: "DM Mono", monospace;
-        font-size: 10px;
-        color: var(--ink);
-        min-width: 35px;
-        text-align: center;
-      }
-      .fb-full {
-        width: 24px;
-        height: 24px;
-        border-radius: 4px;
-        border: 1px solid var(--bd2);
-        background: var(--wh);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 14px;
-        color: var(--i2);
-        cursor: pointer;
-      }
-      .fb-full:hover {
-        border-color: var(--oc);
-        color: var(--db);
-      }
-      .fb-full.on {
-        background: #eef1f7;
-        color: var(--db);
-        border-color: var(--db);
-      }
-
-      /* ═══ CANVAS AREA ═══ */
-      .canvas-area {
-        flex: 1;
-        display: flex;
-        overflow: hidden;
-        position: relative;
-      }
-      .canvas-scroll {
-        flex: 1;
-        overflow: auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #d8d5ce;
-        padding: 40px 40px 80px;
-      }
-      .canvas-scroll::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-      }
-      .canvas-scroll::-webkit-scrollbar-thumb {
-        background: var(--co);
-        border-radius: 3px;
-      }
-      .cut-canvas-wrap {
-        display: flex;
-        gap: 0;
-        flex-shrink: 0;
-      }
-      .cut-page {
-        background: var(--wh);
-        border: 1px solid var(--bd2);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        position: relative;
-      }
-      .cut-grid {
-        flex: 1;
-        display: grid;
-        position: relative;
-      }
-      .cut-cell {
-        border: 1px solid #e0ddd8;
-        position: relative;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        transition: background 0.1s;
-      }
-      .cut-cell:hover {
-        background: rgba(42, 77, 136, 0.03);
-      }
-      .cut-cell.sel {
-        background: rgba(42, 77, 136, 0.06);
-        outline: 2px solid var(--db);
-        outline-offset: -2px;
-      }
-      .cut-cell-n {
-        position: absolute;
-        top: 4px;
-        left: 5px;
-        font-size: 9px;
-        font-family: "DM Mono", monospace;
-        color: var(--gl);
-      }
-      .cut-cell-memo {
-        position: absolute;
-        top: 18px;
-        left: 5px;
-        right: 5px;
-        font-size: 8px;
-        color: var(--i2);
-        line-height: 1.4;
-        overflow: hidden;
-        max-height: 28px;
-      }
-      .cut-count-badge {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        background: rgba(42, 77, 136, 0.85);
-        color: #fff;
-        font-size: 8px;
-        font-family: "DM Mono", monospace;
-        padding: 2px 6px;
-        border-radius: 4px;
-        pointer-events: none;
-      }
-
-      /* ═══ 우측 메모 패널 ═══ */
-      .rsp {
-        width: 0;
-        overflow: hidden;
-        border-left: none;
-        background: var(--wh);
-        display: flex;
-        flex-direction: column;
-        flex-shrink: 0;
-        transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-      .rsp.open {
-        width: var(--rsp);
-        border-left: 1px solid var(--bd);
-      }
-      .rsp-tabs {
-        display: flex;
-        border-bottom: 1px solid var(--bd);
-        flex-shrink: 0;
-        background: var(--pa);
-      }
-      .rsp-tab {
-        padding: 8px 10px;
-        font-size: 10px;
-        font-family: "DM Mono", monospace;
-        color: var(--gh);
-        cursor: pointer;
-        white-space: nowrap;
-        border-bottom: 2px solid transparent;
-        margin-bottom: -1px;
-      }
-      .rsp-tab:hover {
-        color: var(--i2);
-      }
-      .rsp-tab.on {
-        color: var(--db);
-        border-bottom-color: var(--db);
-        background: var(--wh);
-      }
-      .rsp-bd {
-        flex: 1;
-        overflow-y: auto;
-        padding: 12px;
-      }
-      .rsp-bd::-webkit-scrollbar {
-        width: 4px;
-      }
-      .rsp-bd::-webkit-scrollbar-thumb {
-        background: var(--co);
-        border-radius: 2px;
-      }
-      .rsp-sec {
-        margin-bottom: 10px;
-      }
-      .rsp-sec-hd {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 5px 8px;
-        border-radius: 5px;
-        cursor: pointer;
-        color: var(--oc);
-        font-size: 10px;
-        font-family: "DM Mono", monospace;
-      }
-      .rsp-sec-hd:hover {
-        background: var(--pa);
-      }
-      .rsp-arrow {
-        font-size: 8px;
-        color: var(--gh);
-      }
-      .rsp-mi {
-        background: var(--pa);
-        border-radius: 6px;
-        padding: 7px 9px;
-        margin-bottom: 4px;
-        border: 1px solid transparent;
-      }
-      .rsp-mi:hover {
-        border-color: var(--bd2);
-      }
-      .rsp-mi.on {
-        border-color: var(--db);
-        background: #eef1f7;
-      }
-      .rsp-mi-lbl {
-        font-size: 8px;
-        font-family: "DM Mono", monospace;
-        color: var(--gh);
-        margin-bottom: 2px;
-        text-transform: uppercase;
-      }
-      .rsp-mi-txt {
-        font-size: 10px;
-        color: var(--i2);
-        line-height: 1.5;
-      }
-      .rsp-mi-txt.empty {
-        color: var(--gh);
-        font-style: italic;
-      }
-      .rsp-ci {
-        display: flex;
-        align-items: flex-start;
-        gap: 6px;
-        background: var(--pa);
-        border-radius: 5px;
-        padding: 6px 8px;
-        margin-bottom: 3px;
-        cursor: pointer;
-        border: 1px solid transparent;
-      }
-      .rsp-ci:hover {
-        border-color: var(--bd2);
-      }
-      .rsp-ci.on {
-        border-color: var(--db);
-        background: #eef1f7;
-      }
-      .rsp-cn {
-        font-size: 9px;
-        font-family: "DM Mono", monospace;
-        color: var(--gh);
-        min-width: 22px;
-        flex-shrink: 0;
-      }
-      .rsp-ct {
-        font-size: 10px;
-        color: var(--i2);
-        line-height: 1.4;
-      }
-      .rsp-ct.empty {
-        color: var(--gh);
-        font-style: italic;
-      }
-      .rsp-ta {
-        width: 100%;
-        background: var(--pa);
-        border: 1px solid var(--bd);
-        border-radius: 5px;
-        padding: 6px 9px;
-        font-size: 10px;
-        font-family: inherit;
-        color: var(--i2);
-        resize: none;
-        outline: none;
-        line-height: 1.6;
-      }
-      .rsp-ta:focus {
-        border-color: var(--oc);
-        box-shadow: 0 0 0 3px rgba(42, 77, 136, 0.08);
-      }
-      .rsp-add {
-        width: 100%;
-        background: transparent;
-        border: 1px dashed var(--bd2);
-        border-radius: 5px;
-        padding: 5px;
-        font-size: 9px;
-        color: var(--gh);
-        cursor: pointer;
-        margin-top: 3px;
-        font-family: inherit;
-      }
-      .rsp-add:hover {
-        border-color: var(--oc);
-        color: var(--db);
-      }
-
-      /* ═══ FLOATING TOOLBAR (하단) ═══ */
-      .ftb {
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        background: var(--wh);
-        border: 1px solid var(--bd2);
-        border-radius: 10px;
-        padding: 4px 6px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.14);
-        z-index: 20;
-        white-space: nowrap;
-      }
-      .ftb-grp {
-        display: flex;
-        align-items: center;
-        gap: 1px;
-      }
-      .ftb-sep {
-        width: 1px;
-        height: 20px;
-        background: var(--bd);
-        margin: 0 4px;
-      }
-      .fb {
-        width: 32px;
-        height: 32px;
-        border-radius: 7px;
-        border: none;
-        background: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 15px;
-        color: var(--i2);
-        cursor: pointer;
-      }
-      .fb:hover {
-        background: var(--pa);
-      }
-      .fb.on {
-        background: #eef1f7;
-        color: var(--db);
-      }
-      .fb.danger:hover {
-        background: #ffeaea;
-        color: #c93a3a;
-      }
-    </style>
+    <link rel="stylesheet" href="proto-sidebar.css" />
+    <link rel="stylesheet" href="proto-search.css" />
+    <link rel="stylesheet" href="proto-memopanel.css" />
+    <link rel="stylesheet" href="proto-cut.css" />
   </head>
   <body>
-    <!-- ═══ SIDEBAR (rail 기본) ═══ -->
-    <aside class="sb rail" id="sb">
-      <!-- LOGO + COLLAPSE -->
+    <!-- ═══ SIDEBAR (컷 화면: p.03 .on, rail nav 컷 .on) ═══ -->
+    <aside class="sb" id="sb">
       <div class="sb-logo">
-        <div class="sb-mk" onclick="tglSb()">
-          <svg viewBox="0 0 14 14">
-            <rect x="1" y="1" width="4" height="12" rx="1" />
-            <rect x="7" y="1" width="4" height="7" rx="1" opacity=".6" />
-            <rect x="7" y="10" width="4" height="3" rx="1" opacity=".4" />
+        <div class="sb-mk" onclick="tglSb()" title="사이드바 펼치기">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+            />
           </svg>
         </div>
         <span class="sb-logo-txt sb-exp">plotnote</span>
-        <button class="sb-collapse sb-exp" onclick="tglSb()" title="사이드바 접기">
-          <img src="../../src/assets/images/keyboard_double_arrow_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+        <button
+          class="sb-collapse sb-exp"
+          onclick="tglSb()"
+          title="사이드바 접기"
+        >
+          <img
+            src="../../src/assets/images/keyboard_double_arrow_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt="접기"
+          />
         </button>
       </div>
 
-      <!-- SEARCH -->
       <div class="sb-search sb-exp">
-        <div class="sb-srch" onclick="openS()">
-          <img src="../../src/assets/images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+        <div class="sb-srch" onclick="openSearch()">
+          <img
+            src="../../src/assets/images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt="검색"
+          />
           <span>검색...</span>
         </div>
       </div>
 
-      <!-- TREE -->
       <div class="sb-tree sb-exp">
-        <!-- 즐겨찾기 (closed) -->
-        <div class="sb-grp closed" id="grp-fav">
+        <!-- 즐겨찾기 -->
+        <div class="sb-grp" id="grp-fav">
           <div class="sb-grp-hd" onclick="tglGrp('grp-fav')">
-            <span class="ic"><img src="../../src/assets/images/bookmark_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+            <span class="ic"
+              ><img
+                src="../../src/assets/images/bookmark_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
             <span class="lbl">즐겨찾기</span>
-            <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
-          </div>
-          <div class="sb-grp-bd"></div>
-        </div>
-
-        <!-- 나의 책장 (open) -->
-        <div class="sb-grp" id="grp-my">
-          <div class="sb-grp-hd" onclick="tglGrp('grp-my')">
-            <span class="ic"><img src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
-            <span class="lbl">나의 책장</span>
-            <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+            <span class="chv"
+              ><img
+                src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
           </div>
           <div class="sb-grp-bd">
-            <!-- 고양이와 강아지 (open) -->
-            <div class="tn" id="tn-pj1">
-              <div class="tn-row" style="--indent: 12px" onclick="tglTn('tn-pj1')">
-                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+            <div class="tn" id="fav-pj1">
+              <div
+                class="tn-row"
+                style="--indent: 16px"
+                onclick="tglTn('fav-pj1')"
+              >
+                <span class="tn-chv"
+                  ><img
+                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                /></span>
                 <span class="tn-ic">
-                  <img class="ic-c" src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
-                  <img class="ic-o" src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                  <img
+                    class="ic-c"
+                    src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
+                  <img
+                    class="ic-o"
+                    src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
                 </span>
                 <span class="tn-lbl">고양이와 강아지</span>
+                <span class="tn-cnt">4</span>
+              </div>
+              <div class="tn-kids">
+                <div class="tn-empty" style="--indent: 28px">
+                  에피소드를 펼쳐보세요
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 나의 책장 -->
+        <div class="sb-grp" id="grp-my">
+          <div class="sb-grp-hd" onclick="tglGrp('grp-my')">
+            <span class="ic"
+              ><img
+                src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
+            <span class="lbl">나의 책장</span>
+            <span class="chv"
+              ><img
+                src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
+          </div>
+          <div class="sb-grp-bd">
+            <!-- 프로젝트: 고양이와 강아지 (열림) -->
+            <div class="tn" id="tn-pj1">
+              <div
+                class="tn-row"
+                style="--indent: 16px"
+                onclick="tglTn('tn-pj1')"
+              >
+                <span class="tn-chv"
+                  ><img
+                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                /></span>
+                <span class="tn-ic">
+                  <img
+                    class="ic-c"
+                    src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
+                  <img
+                    class="ic-o"
+                    src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
+                </span>
+                <span class="tn-lbl">고양이와 강아지</span>
+                <span class="tn-cnt">4</span>
               </div>
               <div class="tn-kids">
                 <!-- ep.1 (closed) -->
                 <div class="tn closed" id="tn-ep1">
-                  <div class="tn-row" style="--indent: 24px" onclick="tglTn('tn-ep1')">
-                    <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                  <div
+                    class="tn-row"
+                    style="--indent: 24px"
+                    onclick="tglTn('tn-ep1')"
+                  >
+                    <span class="tn-chv"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
                     <span class="tn-ic">
-                      <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
-                      <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
                     </span>
                     <span class="tn-lbl">ep.1 첫 만남</span>
                   </div>
@@ -586,110 +180,178 @@
                 </div>
                 <!-- ep.2 (closed) -->
                 <div class="tn closed" id="tn-ep2">
-                  <div class="tn-row" style="--indent: 24px" onclick="tglTn('tn-ep2')">
-                    <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                  <div
+                    class="tn-row"
+                    style="--indent: 24px"
+                    onclick="tglTn('tn-ep2')"
+                  >
+                    <span class="tn-chv"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
                     <span class="tn-ic">
-                      <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
-                      <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
                     </span>
                     <span class="tn-lbl">ep.2 공원의 하루</span>
                   </div>
                   <div class="tn-kids"></div>
                 </div>
-                <!-- ep.3 (open) — 현재 에피소드 -->
+                <!-- ep.3 (열림, 페이지 표시) -->
                 <div class="tn" id="tn-ep3">
-                  <div class="tn-row" style="--indent: 24px" onclick="tglTn('tn-ep3')">
-                    <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                  <div
+                    class="tn-row"
+                    style="--indent: 24px"
+                    onclick="tglTn('tn-ep3')"
+                  >
+                    <span class="tn-chv"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
                     <span class="tn-ic">
-                      <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
-                      <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
                     </span>
                     <span class="tn-lbl">ep.3 이웃 친구들</span>
+                    <span class="tn-cnt">24</span>
                   </div>
                   <div class="tn-kids">
-                    <!-- p.01 (closed) -->
-                    <div class="tn closed" id="tn-pg1">
-                      <div class="tn-row" style="--indent: 36px" onclick="tglTn('tn-pg1')">
-                        <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                    <div class="tn leaf" id="tn-pg1">
+                      <div class="tn-row" style="--indent: 36px">
+                        <span class="tn-chv leaf"
+                          ><img
+                            src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                            alt=""
+                        /></span>
                         <span class="tn-ic">
-                          <img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt="" />
-                          <img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt="" />
+                          <img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt=""
+                          />
+                          <img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt=""
+                          />
                         </span>
                         <span class="tn-lbl">p.01</span>
                       </div>
-                      <div class="tn-kids"></div>
                     </div>
-                    <!-- p.02 (closed) -->
-                    <div class="tn closed" id="tn-pg2">
-                      <div class="tn-row" style="--indent: 36px" onclick="tglTn('tn-pg2')">
-                        <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                    <div class="tn leaf" id="tn-pg2">
+                      <div class="tn-row" style="--indent: 36px">
+                        <span class="tn-chv leaf"
+                          ><img
+                            src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                            alt=""
+                        /></span>
                         <span class="tn-ic">
-                          <img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt="" />
-                          <img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt="" />
+                          <img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt=""
+                          />
+                          <img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt=""
+                          />
                         </span>
                         <span class="tn-lbl">p.02</span>
                       </div>
-                      <div class="tn-kids"></div>
                     </div>
-                    <!-- p.03 (open) — 현재 페이지 -->
-                    <div class="tn" id="tn-pg3">
-                      <div class="tn-row" style="--indent: 36px" onclick="tglTn('tn-pg3')">
-                        <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                    <!-- p.03 현재 선택 -->
+                    <div class="tn leaf" id="tn-pg3">
+                      <div class="tn-row on" style="--indent: 36px">
+                        <span class="tn-chv leaf"
+                          ><img
+                            src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                            alt=""
+                        /></span>
                         <span class="tn-ic">
-                          <img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt="" />
-                          <img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt="" />
+                          <img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt=""
+                          />
+                          <img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt=""
+                          />
                         </span>
                         <span class="tn-lbl">p.03</span>
                       </div>
-                      <div class="tn-kids">
-                        <!-- cut 1 (active) -->
-                        <div class="tn leaf" id="tn-cut1">
-                          <div class="tn-row on" style="--indent: 48px" onclick="tglLeaf('tn-cut1')">
-                            <span class="tn-chv leaf"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
-                            <span class="tn-ic">
-                              <img class="ic-c" src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
-                              <img class="ic-o" src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
-                            </span>
-                            <span class="tn-lbl">cut 1</span>
-                          </div>
-                        </div>
-                        <!-- cut 2 -->
-                        <div class="tn leaf" id="tn-cut2">
-                          <div class="tn-row" style="--indent: 48px" onclick="tglLeaf('tn-cut2')">
-                            <span class="tn-chv leaf"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
-                            <span class="tn-ic">
-                              <img class="ic-c" src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
-                              <img class="ic-o" src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
-                            </span>
-                            <span class="tn-lbl">cut 2</span>
-                          </div>
-                        </div>
-                        <!-- cut 3 -->
-                        <div class="tn leaf" id="tn-cut3">
-                          <div class="tn-row" style="--indent: 48px" onclick="tglLeaf('tn-cut3')">
-                            <span class="tn-chv leaf"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
-                            <span class="tn-ic">
-                              <img class="ic-c" src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
-                              <img class="ic-o" src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
-                            </span>
-                            <span class="tn-lbl">cut 3</span>
-                          </div>
-                        </div>
-                      </div>
                     </div>
-                    <!-- p.04 (closed) -->
-                    <div class="tn closed" id="tn-pg4">
-                      <div class="tn-row" style="--indent: 36px" onclick="tglTn('tn-pg4')">
-                        <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+                    <div class="tn leaf" id="tn-pg4">
+                      <div class="tn-row" style="--indent: 36px">
+                        <span class="tn-chv leaf"
+                          ><img
+                            src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                            alt=""
+                        /></span>
                         <span class="tn-ic">
-                          <img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt="" />
-                          <img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt="" />
+                          <img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt=""
+                          />
+                          <img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt=""
+                          />
                         </span>
                         <span class="tn-lbl">p.04</span>
                       </div>
-                      <div class="tn-kids"></div>
                     </div>
                   </div>
+                </div>
+                <!-- ep.4 (closed) -->
+                <div class="tn closed" id="tn-ep4">
+                  <div
+                    class="tn-row"
+                    style="--indent: 24px"
+                    onclick="tglTn('tn-ep4')"
+                  >
+                    <span class="tn-chv"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
+                    <span class="tn-ic">
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                    </span>
+                    <span class="tn-lbl">ep.4 비 오는 날</span>
+                  </div>
+                  <div class="tn-kids"></div>
                 </div>
               </div>
             </div>
@@ -699,39 +361,63 @@
         <!-- 공유 책장 (closed) -->
         <div class="sb-grp closed" id="grp-shared">
           <div class="sb-grp-hd" onclick="tglGrp('grp-shared')">
-            <span class="ic"><img src="../../src/assets/images/diversity_3_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+            <span class="ic"
+              ><img
+                src="../../src/assets/images/diversity_3_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
             <span class="lbl">공유 책장</span>
-            <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></span>
+            <span class="chv"
+              ><img
+                src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
           </div>
           <div class="sb-grp-bd"></div>
         </div>
       </div>
 
-      <!-- RAIL NAV: 컷 화면 — note_stack(on) -->
+      <!-- RAIL NAV: 컷 화면 — 5계층 (홈→프로젝트→에피소드→페이지→컷.on) -->
       <div class="sb-rail-nav" id="rail-nav">
         <div class="rn-item" title="책장">
-          <img src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+          <img
+            src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt=""
+          />
           <div class="rn-pop">
             <div class="rn-pop-hd">나의 책장</div>
             <div class="rn-pop-i">고양이와 강아지</div>
+            <div class="rn-pop-i">여름 단편</div>
           </div>
         </div>
         <div class="rn-item" title="프로젝트">
-          <img src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+          <img
+            src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt=""
+          />
           <div class="rn-pop">
             <div class="rn-pop-hd">고양이와 강아지</div>
+            <div class="rn-pop-i">ep.1 첫 만남</div>
+            <div class="rn-pop-i">ep.2 공원의 하루</div>
             <div class="rn-pop-i on">ep.3 이웃 친구들</div>
+            <div class="rn-pop-i">ep.4 비 오는 날</div>
           </div>
         </div>
         <div class="rn-item" title="에피소드">
-          <img src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+          <img
+            src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt=""
+          />
           <div class="rn-pop">
             <div class="rn-pop-hd">ep.3 이웃 친구들</div>
             <div class="rn-pop-i">24 페이지</div>
           </div>
         </div>
         <div class="rn-item" title="페이지">
-          <img src="../../src/assets/images/page-svgrepo-com.svg" alt="" />
+          <img
+            src="../../src/assets/images/page-svgrepo-com.svg"
+            alt=""
+          />
           <div class="rn-pop">
             <div class="rn-pop-hd">페이지 목록</div>
             <div class="rn-pop-i">p.01</div>
@@ -741,12 +427,13 @@
           </div>
         </div>
         <div class="rn-item on" title="컷">
-          <img src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+          <img
+            src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt=""
+          />
           <div class="rn-pop">
-            <div class="rn-pop-hd">p.03 컷 목록</div>
-            <div class="rn-pop-i on">cut 1</div>
-            <div class="rn-pop-i">cut 2</div>
-            <div class="rn-pop-i">cut 3</div>
+            <div class="rn-pop-hd">p.03 컷</div>
+            <div class="rn-pop-i on">4개 컷</div>
           </div>
         </div>
       </div>
@@ -758,354 +445,501 @@
       </div>
     </aside>
 
-    <!-- MAIN -->
-    <div class="main">
-      <!-- 상단 컨텍스트 바: ep명 + 페이지(양면시 둘다) + 이전/다음 + zoom -->
-      <div class="ctx-bar">
-        <span class="ctx-ep">ep.3 이웃 친구들</span>
-        <span class="ctx-sep">›</span>
-        <span class="ctx-pg" id="ctx-pg1">p.01</span>
-        <span class="ctx-pg" id="ctx-pg2" style="margin-left: -2px"
-          >, p.02</span
-        >
-
-        <div class="pg-nav">
-          <div class="pg-nav-grp">
-            <button class="pn-btn" onclick="navPage(-1)">
-              <img
-                src="../../src/assets/images/split_scene_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                alt=""
-              />
-            </button>
-            <span class="pn-lbl">이전</span>
-          </div>
-          <div class="pg-nav-grp">
-            <span class="pn-lbl">다음</span>
-            <button class="pn-btn" onclick="navPage(1)">
-              <img
-                src="../../src/assets/images/splitscreen_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                alt=""
-              />
-            </button>
-          </div>
-        </div>
-
-        <!-- 클로드용 주석 -->
-        <!-- 이 zoom-ctl 하단 toolbar의 오른쪽에 새로운 toolbar를 만들어서 그 안에서 관리 -->
-        <div class="zoom-ctl">
-          <button class="z-btn" onclick="zoom(-10)">−</button>
-          <span class="z-pct" id="z-pct">100%</span>
-          <button
-            class="fb-full"
-            onclick="toggleFullPage()"
-            id="full-btn"
-            title="전체 페이지"
+    <!-- ═══ MAIN WORKSPACE ═══ -->
+    <div class="main ct-workspace">
+      <!-- §6-1 워크스페이스 헤더 -->
+      <div class="ws-hd">
+        <div class="ws-hd-top">
+          <span class="ct-ep-num">3화</span>
+          <span
+            class="ct-ep-link"
+            onclick="alert('→ 에피소드 화면')"
+            >이웃 친구들</span
           >
-            <img
-              src="../../src/assets/images/fit_screen_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-              alt=""
-            />
-          </button>
-          <button class="z-btn" onclick="zoom(10)">+</button>
-          <button class="hbtn" onclick="tglMM()" title="메모 패널">⋯</button>
+          <span class="ct-pg-num">1p, 2p</span>
+          <div class="ws-hd-r">
+            <!-- ◁▷ 페이지 이동 -->
+            <div class="ct-pg-nav">
+              <button class="hbtn" disabled title="이전 페이지 (첫 페이지)">
+                <img
+                  src="../../src/assets/images/splitscreen_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                  alt="이전"
+                />
+              </button>
+              <button class="hbtn" onclick="navPage(1)" title="다음 페이지">
+                <img
+                  src="../../src/assets/images/splitscreen_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                  alt="다음"
+                />
+              </button>
+            </div>
+            <!-- 전체 미리보기 (Phase 2 구현 예정 — disabled) -->
+            <!--
+              [Phase 2] 전체 페이지 미리보기 구현 계획:
+              클릭 시 현재 편집 중인 페이지를 중심으로 위아래로 전체 페이지가 세로 스크롤로 표시.
+              무한 스크롤 방식(IntersectionObserver)으로 api 호출하여 페이지를 lazy-load.
+              현재 편집 중인 페이지: $ocean border, 나머지 페이지: $paper 배경 + disabled 느낌.
+              [Phase 3] 크로스 페이지 드래그: 컷 메모/세부 메모를 다른 페이지로 드래그 이동 가능.
+            -->
+            <button class="hbtn" disabled title="전체 미리보기 (준비중)">
+              <img
+                src="../../src/assets/images/fit_screen_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt="전체 미리보기"
+              />
+            </button>
+            <!-- 메모 패널 -->
+            <button class="hbtn" onclick="tglMM()" title="메모 패널">
+              <img
+                src="../../src/assets/images/more_horiz_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt="메모"
+              />
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- 디자인 관련 주석 -->
-      <!-- 실제 페이지처럼 보이게 만드는 그림자같은거 필요 없음 -->
-      <!-- 전체 외곽 shadow는 조금만 -->
-      <!-- Canvas + RSP -->
-      <div class="canvas-area">
-        <div class="canvas-scroll">
-          <div class="cut-canvas-wrap" id="cut-canvas-wrap"></div>
-        </div>
+      <!-- 페이지 메모 프리뷰 -->
+      <div class="ct-memo-preview" onclick="tglMM()">
+        두 동물이 어색하게 주변을 돌아다님
+      </div>
 
-        <!-- 우측 메모 패널 (Design1 Paper) -->
-        <div class="rsp" id="rsp">
-          <div class="rsp-tabs">
-            <div class="rsp-tab on">p.01</div>
-            <div class="rsp-tab">p.02</div>
-          </div>
-          <div class="rsp-bd">
-            <div class="rsp-sec">
-              <div class="rsp-sec-hd">
-                <span><img src="../../src/assets/images/content_cut_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" style="width:13px;height:13px;vertical-align:middle;margin-right:4px;opacity:0.6"> 컷별 메모</span
-                ><span class="rsp-arrow" style="transform: rotate(90deg)"
-                  ><img
-                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                    alt=""
-                /></span>
+      <!-- §6-2~6-5 좌우 분할 바디 (캔버스 + 우측패널) -->
+      <div class="ws-bd">
+        <!-- ── ③ 중앙 캔버스 ── -->
+        <div class="ct-canvas-wrap" id="ct-canvas-wrap">
+          <div class="ct-zoom-area" id="ct-zoom-area">
+            <!-- 양면 스프레드 (RTL: 우=p.01, 좌=p.02) -->
+            <div class="ct-spread rtl">
+
+              <!-- PAGE 1 (우측 = 낮은 페이지) -->
+              <div class="ct-page" id="ct-page-1">
+                <div class="ct-guideline">
+                  <div class="ct-bleed"></div>
+                </div>
+                <!-- 내곽선 + 컷 그리드 (2x2 4분할) -->
+                <div class="ct-inner"></div>
+                <div class="ct-grid layout-2x2">
+                  <div class="ct-cell on" onclick="selCut(this, 0)">
+                    <span class="ct-cell-num">1</span>
+                    <span class="ct-cell-emoji">😾</span>
+                    <div class="ct-cell-memo">건물 전경, 폭발이 일어남</div>
+                    <div class="ct-cell-add" onclick="event.stopPropagation()">+ 세부 메모</div>
+                  </div>
+                  <div class="ct-cell" onclick="selCut(this, 1)">
+                    <span class="ct-cell-num">2</span>
+                    <div class="ct-cell-memo">고양이가 놀란 표정</div>
+                    <div class="ct-cell-add" onclick="event.stopPropagation()">+ 세부 메모</div>
+                  </div>
+                  <div class="ct-cell" onclick="selCut(this, 2)">
+                    <span class="ct-cell-num">3</span>
+                    <span class="ct-cell-emoji">🐕</span>
+                    <div class="ct-cell-memo">강아지 등장</div>
+                    <div class="ct-cell-add" onclick="event.stopPropagation()">+ 세부 메모</div>
+                  </div>
+                  <div class="ct-cell" onclick="selCut(this, 3)">
+                    <span class="ct-cell-num">4</span>
+                    <div class="ct-cell-memo"></div>
+                    <div class="ct-cell-add" onclick="event.stopPropagation()">+ 세부 메모</div>
+                  </div>
+                </div>
               </div>
-              <div>
-                <div class="rsp-ci on">
-                  <!-- 클로드용 주석 -->
-                  <!-- 여기도 drag-h 왼쪽에 필요 -->
-                  <span class="rsp-cn">1</span
-                  ><span class="rsp-ct">공원 입구 전경</span>
-                  <!-- 클로드용 주석(주석) -->
-                  <!-- 각 rsp-ci 에 cutNotes 입력할 수 있어야 함 -->
-                  <!-- cutMemo랑 cutNotes랑 다른거임 -->
-                  <!-- 지금 localStorage에는 cutNotes밖에 없는데, -->
-                  <!-- 이것도 다른거랑 동일하게 cutMemo가 있고 cutDetailMemo가 있는 구조 -->
-                  <!-- 이 rsp-ci를 드래그해서 cut-cell에 놓으면 해당 cut-cell이랑 cutMemo+cutDetailMemo가 연동 -->
+
+              <!-- PAGE 2 (좌측 = 높은 페이지) -->
+              <div class="ct-page" id="ct-page-2">
+                <div class="ct-guideline">
+                  <div class="ct-bleed"></div>
                 </div>
-                <div class="rsp-ci">
-                  <span class="rsp-cn">2</span
-                  ><span class="rsp-ct">고양이 발 클로즈업</span>
+                <div class="ct-inner"></div>
+                <div class="ct-grid layout-2x2">
+                  <div class="ct-cell" onclick="selCut(this, 4)">
+                    <span class="ct-cell-num">1</span>
+                    <div class="ct-cell-memo">두 동물이 마주봄</div>
+                    <div class="ct-cell-add" onclick="event.stopPropagation()">+ 세부 메모</div>
+                  </div>
+                  <div class="ct-cell" onclick="selCut(this, 5)">
+                    <span class="ct-cell-num">2</span>
+                    <span class="ct-cell-emoji">💭</span>
+                    <div class="ct-cell-memo">서로 경계하는 장면</div>
+                    <div class="ct-cell-add" onclick="event.stopPropagation()">+ 세부 메모</div>
+                  </div>
+                  <div class="ct-cell" onclick="selCut(this, 6)">
+                    <span class="ct-cell-num">3</span>
+                    <div class="ct-cell-memo"></div>
+                    <div class="ct-cell-add" onclick="event.stopPropagation()">+ 세부 메모</div>
+                  </div>
+                  <div class="ct-cell" onclick="selCut(this, 7)">
+                    <span class="ct-cell-num">4</span>
+                    <div class="ct-cell-memo">어색한 인사</div>
+                    <div class="ct-cell-add" onclick="event.stopPropagation()">+ 세부 메모</div>
+                  </div>
                 </div>
-                <div class="rsp-ci">
-                  <span class="rsp-cn">3</span
-                  ><span class="rsp-ct empty">메모 없음</span>
-                </div>
-                <div class="rsp-ci">
-                  <span class="rsp-cn">4</span
-                  ><span class="rsp-ct">강아지 등장</span>
-                </div>
-                <div class="rsp-ci">
-                  <span class="rsp-cn">5</span
-                  ><span class="rsp-ct empty">메모 없음</span>
-                </div>
-                <div class="rsp-ci">
-                  <span class="rsp-cn">6</span
-                  ><span class="rsp-ct">두 눈이 마주침</span>
-                </div>
-                <button class="rsp-add">+ 컷 메모 추가</button>
               </div>
+
             </div>
           </div>
         </div>
 
-        <!-- ═══ Floating Toolbar ═══ -->
-        <div class="ftb" id="ftb">
-          <!-- undo/redo -->
-          <div class="ftb-grp">
-            <button class="fb" onclick="undo()" title="되돌리기">
-              <img src="../../src/assets/images/undo_20dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.svg" alt="되돌리기" />
-            </button>
-            <button class="fb" onclick="redo()" title="다시하기">
-              <img src="../../src/assets/images/redo_20dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.svg" alt="다시하기" />
-            </button>
-          </div>
-          <div class="ftb-sep"></div>
-          <!-- 컷 분할 모드 -->
-          <div class="ftb-grp">
-            <button
-              class="fb"
-              id="edit-mode-btn"
-              onclick="togEditMode()"
-              title="컷 분할 모드"
-            >
-              <img src="../../src/assets/images/content_cut_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="컷 분할 모드" />
+        <!-- ── ⑤ 우측 사이드 패널 (320px) ── -->
+        <!--
+          [드래그 배정] 섹션A의 컷 메모 행을 캔버스의 컷 영역으로 드래그하여 배정.
+          배정되면 unassigned → assigned 스타일 전환.
+          배정된 메모를 컷 바깥으로 드래그 앤 드롭하면 배정 해제.
+          현재 프로토타입에서는 드래그 시뮬레이션 없이 시각적 상태만 더미 표시.
+        -->
+        <div class="ct-side" id="ct-side">
+          <div class="ct-side-hd">
+            <span class="ct-side-hd-t">컷 메모</span>
+            <button class="ic-btn-sm" onclick="tglSide()" title="패널 접기">
+              <img src="../../src/assets/images/keyboard_double_arrow_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="접기" style="transform:rotate(180deg)" />
             </button>
           </div>
-          <div class="ftb-sep"></div>
-          <!-- 선택 컷 삭제 -->
-          <button class="fb danger" title="선택 컷 삭제" onclick="delCut()">
-            <img src="../../src/assets/images/delete_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="선택 컷 삭제" />
-          </button>
-          <div class="ftb-sep"></div>
-          <!-- 컷 초기화 -->
-          <button
-            class="fb danger"
-            title="컷 초기화 (모양만 삭제)"
-            onclick="resetCuts()"
-          >
-            <img src="../../src/assets/images/restart_alt_20dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.svg" alt="컷 초기화" />
-          </button>
+
+          <div class="ct-side-bd" id="ct-side-bd">
+
+            <!-- ══ PAGE 1 — 컷 1 (선택됨) ══ -->
+            <div class="ct-sec on" id="ct-sec-0" onclick="selCutFromPanel(0)">
+              <div class="ct-sec-a">
+                <div class="ct-sec-a-hd">
+                  <span class="ct-sec-a-num">컷 1</span>
+                  <span class="ct-sec-a-ttl">건물 전경, 폭발이 일어남</span>
+                  <span class="ct-sec-a-emoji">😾</span>
+                </div>
+                <div class="ct-memo-row assigned">
+                  <div class="ct-memo-row-grab"><span></span><span></span><span></span></div>
+                  <span class="ct-memo-row-num">1</span>
+                  <input class="ct-memo-row-text" value="건물 전경, 폭발이 일어남" spellcheck="false" />
+                  <button class="ct-memo-row-del" title="삭제">×</button>
+                </div>
+              </div>
+              <div class="ct-sec-b open" id="ct-acc-0">
+                <div class="ct-sec-b-hd" onclick="event.stopPropagation();tglAcc('ct-acc-0')">
+                  <span class="ct-sec-b-chv">▶</span>
+                  <span>세부 메모</span>
+                  <span class="ct-sec-b-cnt">2</span>
+                </div>
+                <div class="ct-sec-b-bd">
+                  <div class="ct-detail-item">
+                    <div class="ct-detail-bar dialog"></div>
+                    <div class="ct-detail-body">
+                      <div class="ct-detail-top">
+                        <span class="ct-detail-type dialog">대사</span>
+                        <span class="ct-detail-char">고양이</span>
+                      </div>
+                      <input class="ct-detail-text" value="뭐야 저건?!" spellcheck="false" />
+                    </div>
+                    <div class="ct-detail-acts">
+                      <span class="ct-detail-act-btn" title="삭제">×</span>
+                    </div>
+                  </div>
+                  <div class="ct-detail-item">
+                    <div class="ct-detail-bar direction"></div>
+                    <div class="ct-detail-body">
+                      <div class="ct-detail-top">
+                        <span class="ct-detail-type direction">연출</span>
+                      </div>
+                      <input class="ct-detail-text" value="폭발 이펙트, 화면 전체를 채우는 연기" spellcheck="false" />
+                    </div>
+                    <div class="ct-detail-acts">
+                      <span class="ct-detail-act-btn" title="삭제">×</span>
+                    </div>
+                  </div>
+                  <div class="ct-detail-add" onclick="event.stopPropagation()">+ 세부 메모 추가</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ══ PAGE 1 — 컷 2 ══ -->
+            <div class="ct-sec" id="ct-sec-1" onclick="selCutFromPanel(1)">
+              <div class="ct-sec-a">
+                <div class="ct-sec-a-hd">
+                  <span class="ct-sec-a-num">컷 2</span>
+                  <span class="ct-sec-a-ttl">고양이가 놀란 표정</span>
+                </div>
+                <div class="ct-memo-row assigned">
+                  <div class="ct-memo-row-grab"><span></span><span></span><span></span></div>
+                  <span class="ct-memo-row-num">2</span>
+                  <input class="ct-memo-row-text" value="고양이가 놀란 표정" spellcheck="false" />
+                  <button class="ct-memo-row-del" title="삭제">×</button>
+                </div>
+              </div>
+              <div class="ct-sec-b" id="ct-acc-1">
+                <div class="ct-sec-b-hd" onclick="event.stopPropagation();tglAcc('ct-acc-1')">
+                  <span class="ct-sec-b-chv">▶</span>
+                  <span>세부 메모</span>
+                  <span class="ct-sec-b-cnt">1</span>
+                </div>
+                <div class="ct-sec-b-bd">
+                  <div class="ct-detail-item">
+                    <div class="ct-detail-bar dialog"></div>
+                    <div class="ct-detail-body">
+                      <div class="ct-detail-top">
+                        <span class="ct-detail-type dialog">대사</span>
+                        <span class="ct-detail-char">고양이</span>
+                      </div>
+                      <input class="ct-detail-text" value="으악!" spellcheck="false" />
+                    </div>
+                    <div class="ct-detail-acts">
+                      <span class="ct-detail-act-btn" title="삭제">×</span>
+                    </div>
+                  </div>
+                  <div class="ct-detail-add" onclick="event.stopPropagation()">+ 세부 메모 추가</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ══ PAGE 1 — 컷 3 ══ -->
+            <div class="ct-sec" id="ct-sec-2" onclick="selCutFromPanel(2)">
+              <div class="ct-sec-a">
+                <div class="ct-sec-a-hd">
+                  <span class="ct-sec-a-num">컷 3</span>
+                  <span class="ct-sec-a-ttl">강아지 등장</span>
+                  <span class="ct-sec-a-emoji">🐕</span>
+                </div>
+                <div class="ct-memo-row assigned">
+                  <div class="ct-memo-row-grab"><span></span><span></span><span></span></div>
+                  <span class="ct-memo-row-num">3</span>
+                  <input class="ct-memo-row-text" value="강아지 등장" spellcheck="false" />
+                  <button class="ct-memo-row-del" title="삭제">×</button>
+                </div>
+              </div>
+              <div class="ct-sec-b" id="ct-acc-2">
+                <div class="ct-sec-b-hd" onclick="event.stopPropagation();tglAcc('ct-acc-2')">
+                  <span class="ct-sec-b-chv">▶</span>
+                  <span>세부 메모</span>
+                  <span class="ct-sec-b-cnt">1</span>
+                </div>
+                <div class="ct-sec-b-bd">
+                  <div class="ct-detail-item">
+                    <div class="ct-detail-bar narration"></div>
+                    <div class="ct-detail-body">
+                      <div class="ct-detail-top">
+                        <span class="ct-detail-type narration">나레이션</span>
+                      </div>
+                      <input class="ct-detail-text" value="그때, 골목 끝에서 한 마리가 나타났다." spellcheck="false" />
+                    </div>
+                    <div class="ct-detail-acts">
+                      <span class="ct-detail-act-btn" title="삭제">×</span>
+                    </div>
+                  </div>
+                  <div class="ct-detail-add" onclick="event.stopPropagation()">+ 세부 메모 추가</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ══ PAGE 1 — 컷 4 (미배정) ══ -->
+            <div class="ct-sec" id="ct-sec-3" onclick="selCutFromPanel(3)">
+              <div class="ct-sec-a">
+                <div class="ct-sec-a-hd">
+                  <span class="ct-sec-a-num">컷 4</span>
+                  <span class="ct-sec-a-ttl" style="color:var(--gh);font-style:italic">미배정</span>
+                </div>
+                <div class="ct-memo-row unassigned">
+                  <div class="ct-memo-row-grab"><span></span><span></span><span></span></div>
+                  <span class="ct-memo-row-num">4</span>
+                  <input class="ct-memo-row-text" value="" placeholder="컷 메모를 입력하세요..." spellcheck="false" />
+                  <button class="ct-memo-row-del" title="삭제">×</button>
+                </div>
+                <div class="ct-memo-add" onclick="event.stopPropagation()">+ 컷 메모 추가</div>
+              </div>
+              <div class="ct-sec-b" id="ct-acc-3">
+                <div class="ct-sec-b-hd" onclick="event.stopPropagation();tglAcc('ct-acc-3')">
+                  <span class="ct-sec-b-chv">▶</span>
+                  <span>세부 메모</span>
+                  <span class="ct-sec-b-cnt">0</span>
+                </div>
+                <div class="ct-sec-b-bd">
+                  <div class="ct-detail-add" onclick="event.stopPropagation()">+ 세부 메모 추가</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ══ PAGE 2 — 컷 1~4 (간략) ══ -->
+            <div class="ct-sec" id="ct-sec-4" onclick="selCutFromPanel(4)">
+              <div class="ct-sec-a">
+                <div class="ct-sec-a-hd">
+                  <span class="ct-sec-a-num">컷 1</span>
+                  <span class="ct-sec-a-ttl">두 동물이 마주봄</span>
+                </div>
+                <div class="ct-memo-row assigned">
+                  <div class="ct-memo-row-grab"><span></span><span></span><span></span></div>
+                  <span class="ct-memo-row-num">1</span>
+                  <input class="ct-memo-row-text" value="두 동물이 마주봄" spellcheck="false" />
+                  <button class="ct-memo-row-del" title="삭제">×</button>
+                </div>
+              </div>
+              <div class="ct-sec-b" id="ct-acc-4">
+                <div class="ct-sec-b-hd" onclick="event.stopPropagation();tglAcc('ct-acc-4')">
+                  <span class="ct-sec-b-chv">▶</span>
+                  <span>세부 메모</span>
+                  <span class="ct-sec-b-cnt">0</span>
+                </div>
+                <div class="ct-sec-b-bd">
+                  <div class="ct-detail-add" onclick="event.stopPropagation()">+ 세부 메모 추가</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ct-sec" id="ct-sec-5" onclick="selCutFromPanel(5)">
+              <div class="ct-sec-a">
+                <div class="ct-sec-a-hd">
+                  <span class="ct-sec-a-num">컷 2</span>
+                  <span class="ct-sec-a-ttl">서로 경계하는 장면</span>
+                  <span class="ct-sec-a-emoji">💭</span>
+                </div>
+                <div class="ct-memo-row assigned">
+                  <div class="ct-memo-row-grab"><span></span><span></span><span></span></div>
+                  <span class="ct-memo-row-num">2</span>
+                  <input class="ct-memo-row-text" value="서로 경계하는 장면" spellcheck="false" />
+                  <button class="ct-memo-row-del" title="삭제">×</button>
+                </div>
+              </div>
+              <div class="ct-sec-b" id="ct-acc-5">
+                <div class="ct-sec-b-hd" onclick="event.stopPropagation();tglAcc('ct-acc-5')">
+                  <span class="ct-sec-b-chv">▶</span>
+                  <span>세부 메모</span>
+                  <span class="ct-sec-b-cnt">1</span>
+                </div>
+                <div class="ct-sec-b-bd">
+                  <div class="ct-detail-item">
+                    <div class="ct-detail-bar dialog"></div>
+                    <div class="ct-detail-body">
+                      <div class="ct-detail-top">
+                        <span class="ct-detail-type dialog">대사</span>
+                        <span class="ct-detail-char">강아지</span>
+                      </div>
+                      <input class="ct-detail-text" value="(경계하며 으르렁)" spellcheck="false" />
+                    </div>
+                    <div class="ct-detail-acts">
+                      <span class="ct-detail-act-btn" title="삭제">×</span>
+                    </div>
+                  </div>
+                  <div class="ct-detail-add" onclick="event.stopPropagation()">+ 세부 메모 추가</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ct-sec" id="ct-sec-6" onclick="selCutFromPanel(6)">
+              <div class="ct-sec-a">
+                <div class="ct-sec-a-hd">
+                  <span class="ct-sec-a-num">컷 3</span>
+                  <span class="ct-sec-a-ttl" style="color:var(--gh);font-style:italic">미배정</span>
+                </div>
+                <div class="ct-memo-row unassigned">
+                  <div class="ct-memo-row-grab"><span></span><span></span><span></span></div>
+                  <span class="ct-memo-row-num">3</span>
+                  <input class="ct-memo-row-text" value="" placeholder="컷 메모를 입력하세요..." spellcheck="false" />
+                  <button class="ct-memo-row-del" title="삭제">×</button>
+                </div>
+                <div class="ct-memo-add" onclick="event.stopPropagation()">+ 컷 메모 추가</div>
+              </div>
+              <div class="ct-sec-b" id="ct-acc-6">
+                <div class="ct-sec-b-hd" onclick="event.stopPropagation();tglAcc('ct-acc-6')">
+                  <span class="ct-sec-b-chv">▶</span>
+                  <span>세부 메모</span>
+                  <span class="ct-sec-b-cnt">0</span>
+                </div>
+                <div class="ct-sec-b-bd">
+                  <div class="ct-detail-add" onclick="event.stopPropagation()">+ 세부 메모 추가</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ct-sec" id="ct-sec-7" onclick="selCutFromPanel(7)">
+              <div class="ct-sec-a">
+                <div class="ct-sec-a-hd">
+                  <span class="ct-sec-a-num">컷 4</span>
+                  <span class="ct-sec-a-ttl">어색한 인사</span>
+                </div>
+                <div class="ct-memo-row assigned">
+                  <div class="ct-memo-row-grab"><span></span><span></span><span></span></div>
+                  <span class="ct-memo-row-num">4</span>
+                  <input class="ct-memo-row-text" value="어색한 인사" spellcheck="false" />
+                  <button class="ct-memo-row-del" title="삭제">×</button>
+                </div>
+              </div>
+              <div class="ct-sec-b" id="ct-acc-7">
+                <div class="ct-sec-b-hd" onclick="event.stopPropagation();tglAcc('ct-acc-7')">
+                  <span class="ct-sec-b-chv">▶</span>
+                  <span>세부 메모</span>
+                  <span class="ct-sec-b-cnt">0</span>
+                </div>
+                <div class="ct-sec-b-bd">
+                  <div class="ct-detail-add" onclick="event.stopPropagation()">+ 세부 메모 추가</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- SEARCH MODAL -->
-    <div class="s-ov" id="s-ov" onclick="closeS(event)">
-      <div class="s-box" onclick="event.stopPropagation()">
-        <div class="s-in">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35" /></svg
-          ><input
-            type="text"
-            placeholder="검색어 입력 후 Enter..."
-            id="s-input"
-          />
-        </div>
-        <div class="s-tabs">
-          <div class="s-tab on">프로젝트</div>
-          <div class="s-tab">에피소드</div>
-          <div class="s-tab">페이지</div>
-          <div class="s-tab">컷</div>
-        </div>
-        <div class="s-bd">
-          <div class="s-hint">Enter를 눌러 검색을 시작하세요</div>
-        </div>
-        <div class="s-esc">esc 닫기</div>
-      </div>
-    </div>
-
-    <!-- FLOATING MEMO MODAL -->
-    <div class="mm" id="mm" style="top: 80px; right: 60px">
-      <div class="mm-hd" id="mm-hd">
-        <span class="mm-hd-t">메모</span>
-        <button class="mm-b" id="mm-pin" onclick="tglPin()" title="고정">
-          <img src="../../src/assets/images/pin-svgrepo-com.svg" alt="" />
+      <!-- §6-4 하단 플로팅 툴바 -->
+      <div class="ct-toolbar" id="ct-toolbar">
+        <!-- 좌측: undo / redo -->
+        <button class="ct-tb-btn" onclick="alert('Undo (Ctrl+Z) stub')" title="되돌리기 (Ctrl+Z)">
+          <img src="../../src/assets/images/undo_20dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.svg" alt="되돌리기" />
         </button>
-        <button class="mm-b" onclick="closeMM()" title="닫기">
-          <img src="../../src/assets/images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" />
+        <button class="ct-tb-btn" onclick="alert('Redo (Ctrl+Shift+Z) stub')" title="다시하기 (Ctrl+Shift+Z)">
+          <img src="../../src/assets/images/redo_20dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.svg" alt="다시하기" />
         </button>
+
+        <div class="ct-tb-sep"></div>
+
+        <!-- 컷 분할 모드 토글 -->
+        <!--
+          [Phase 2] 분할 모드 활성 시:
+          - 마우스 커서가 컷 분할 아이콘으로 변경 (cursor: url(...))
+          - 캔버스 컷 위를 드래그하면 드래그 방향에 따라 수직/수평/대각 분할
+          - 분할 중 $amber 점선으로 분할선 프리뷰 실시간 표시
+          - ESC 또는 재클릭으로 분할 모드 해제
+        -->
+        <button class="ct-tb-btn" id="split-btn" onclick="tglSplit()" title="컷 분할 모드 (✂)">
+          <img src="../../src/assets/images/content_cut_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="분할" />
+        </button>
+
+        <!-- 선택 컷 삭제 -->
+        <button class="ct-tb-btn" onclick="alert('선택된 컷 삭제 (Delete) stub')" title="선택 컷 삭제 (Delete)">
+          <img src="../../src/assets/images/delete_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="삭제" />
+        </button>
+
+        <!-- 컷 초기화 -->
+        <button class="ct-tb-btn" onclick="resetCuts()" title="컷 초기화">
+          <img src="../../src/assets/images/restart_alt_20dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.svg" alt="초기화" />
+        </button>
+
+        <div class="ct-tb-sep"></div>
+
+        <!-- 우측: 줌 컨트롤 -->
+        <div class="ct-tb-zoom">
+          <button class="ct-tb-btn" onclick="ctZoomCtl(-10)" title="축소 (Ctrl+-)">
+            <img src="../../src/assets/images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="축소" />
+          </button>
+          <span class="ct-tb-zoom-pct" id="ct-zoom-pct">100%</span>
+          <button class="ct-tb-btn" onclick="ctZoomCtl(10)" title="확대 (Ctrl++)">
+            <img src="../../src/assets/images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="확대" />
+          </button>
+          <button class="ct-tb-btn" onclick="ctZoomFit()" title="화면 맞춤">
+            <img src="../../src/assets/images/fit_screen_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="맞춤" />
+          </button>
+        </div>
       </div>
-      <div class="mm-tabs">
-        <div class="mm-tab">프로젝트</div>
-        <div class="mm-tab">에피소드</div>
-        <div class="mm-tab on">p.01</div>
-      </div>
-      <div class="mm-bd">
-        <div class="mm-item">
-          <div class="mm-lbl">프로젝트 메모</div>
-          <div class="mm-txt">고양이와 강아지가 처음 만나는 이야기.</div>
-        </div>
-        <div class="mm-item">
-          <div class="mm-lbl">에피소드 메모</div>
-          <div class="mm-txt">공원에서의 첫 만남.</div>
-        </div>
-        <div class="mm-item">
-          <div class="mm-lbl">페이지 메모</div>
-          <div class="mm-txt">고양이가 공원에 들어오는 장면</div>
-        </div>
+
+      <!-- §7-2 토스트 (공통) -->
+      <div class="toast" id="toast">
+        <span class="toast-ic info">ⓘ</span>
+        <span class="toast-msg">저장되었습니다.</span>
       </div>
     </div>
 
+    <!-- ═══ SEARCH / MEMO SLOT ═══ -->
+    <div id="search-slot"></div>
+    <div id="memo-slot"></div>
+
+    <!-- ═══ JS ═══ -->
     <script>
-      let pageNum = 1,
-        totalPages = 24,
-        zoomPct = 100,
-        editMode = false;
-      let gridCols = 3,
-        gridRows = 2,
-        selCut = -1;
-      const B4_W = 238,
-        B4_H = 324,
-        SCALE_BASE = 1.6;
-      const cellMemos = [
-        "공원 입구 전경",
-        "고양이 발 클로즈업",
-        "",
-        "강아지 등장",
-        "",
-        "두 눈이 마주침",
-      ];
-
-      function renderCanvas() {
-        const wrap = document.getElementById("cut-canvas-wrap");
-        wrap.innerHTML = "";
-        const scale = (zoomPct / 100) * SCALE_BASE;
-        const pw = Math.round(B4_W * scale),
-          ph = Math.round(B4_H * scale);
-        // 양면: 2페이지
-        [pageNum, pageNum + 1].forEach((pn, pi) => {
-          if (pn > totalPages) return;
-          const page = document.createElement("div");
-          page.className = "cut-page";
-          page.style.cssText = `width:${pw}px;height:${ph}px;`;
-          const grid = document.createElement("div");
-          grid.className = "cut-grid";
-          grid.style.cssText = `grid-template-columns:repeat(${gridCols},1fr);grid-template-rows:repeat(${gridRows},1fr);width:100%;height:100%;`;
-          for (let i = 0; i < gridCols * gridRows; i++) {
-            const cell = document.createElement("div");
-            cell.className =
-              "cut-cell" + (selCut === i && pi === 0 ? " sel" : "");
-            cell.innerHTML = `<div class="cut-cell-n">${i + 1}</div>${cellMemos[i] ? `<div class="cut-cell-memo">${cellMemos[i]}</div>` : ""}`;
-            <!-- 클로드용 주석(중요) -->
-            <!-- 이부분 로직을 어떻게 하는게 좋으려나... -->
-            <!-- 컷 모양이랑 cutMemo+cutDetailMemo는 아예 별개로 두고 -->
-            <!-- 드래그앤드롭으로 지정이 되어야 서로 연계되는 형식 -->
-            <!-- 그리고 cut-cell-memo는 cutMemo인데, -->
-            <!-- cutDetailMemo도 여기에 표시될 것이며, -->
-            <!-- cutDetailMemo는 드래그앤드롭으로 다른 컷으로 이동 가능함 -->
-            <!-- 그리고 우측 패널에서만 내용을 수정할 수 있는게 아니라 cut-cell에서도 각각 수정이 가능함 -->
-            <!-- cutMemo는 제외, cutDetailMemo만 해당. -->
-            <!-- 디자인 관련 주석 -->
-            <!-- cut-cell 내부에서 cutMemo와 cutDetailMemo는 css처리를 다르게 해야겠지? -->
-            cell.addEventListener("click", () => {
-              selCut = i;
-              renderCanvas();
-            });
-            grid.appendChild(cell);
-          }
-          page.appendChild(grid);
-          const badge = document.createElement("div");
-          badge.className = "cut-count-badge";
-          badge.textContent = `p.${String(pn).padStart(2, "0")} · ${gridCols * gridRows}컷`;
-          <!-- 클로드용 주석 -->
-          <!-- 이거 여기에 있으면 페이지를 가리니까 삭제 -->
-          page.appendChild(badge);
-          wrap.appendChild(page);
-        });
-        // update ctx
-        document.getElementById("ctx-pg1").textContent =
-          `p.${String(pageNum).padStart(2, "0")}`;
-        document.getElementById("ctx-pg2").textContent =
-          `, p.${String(pageNum + 1).padStart(2, "0")}`;
-      }
-
-      function navPage(d) {
-        pageNum = Math.max(1, Math.min(totalPages - 1, pageNum + d * 2));
-        renderCanvas();
-      }
-      function zoom(d) {
-        zoomPct = Math.max(30, Math.min(300, zoomPct + d));
-        document.getElementById("z-pct").textContent = zoomPct + "%";
-        renderCanvas();
-      }
-      function toggleFullPage() {
-        const btn = document.getElementById("full-btn");
-        if (btn.classList.toggle("on")) {
-          zoomPct = 60;
-        } else {
-          zoomPct = 100;
-        }
-        document.getElementById("z-pct").textContent = zoomPct + "%";
-        renderCanvas();
-      }
-      function togEditMode() {
-        editMode = !editMode;
-        document
-          .getElementById("edit-mode-btn")
-          .classList.toggle("on", editMode);
-      }
-      function delCut() {
-        if (gridCols * gridRows > 1) {
-          if (gridRows > 1) gridRows--;
-          else gridCols--;
-          selCut = -1;
-          renderCanvas();
-        }
-      }
-      function resetCuts() {
-        gridCols = 1;
-        gridRows = 1;
-        selCut = -1;
-        renderCanvas();
-      }
-      function undo() {
-        if (gridCols * gridRows > 1) {
-          if (gridRows > 1) gridRows--;
-          else if (gridCols > 1) gridCols--;
-          renderCanvas();
-        }
-      }
-      function redo() {
-        gridRows++;
-        renderCanvas();
-      }
-
-      /* sidebar */
+      /* ═══════════════════════════════════════
+         사이드바
+      ═══════════════════════════════════════ */
       function tglSb() {
         document.getElementById("sb").classList.toggle("rail");
       }
@@ -1115,99 +949,177 @@
       function tglTn(id) {
         document.getElementById(id).classList.toggle("closed");
       }
-      function tglLeaf(id) {
-        const row = document.querySelector("#" + id + " .tn-row");
-        const wasOn = row.classList.contains("on");
-        document
-          .querySelectorAll(".tn.leaf .tn-row.on")
-          .forEach((r) => r.classList.remove("on"));
-        if (!wasOn) row.classList.add("on");
+
+      /* ─── 페이지 이동 stub ─── */
+      function navPage(dir) {
+        alert("페이지 이동: " + (dir > 0 ? "다음" : "이전") + " (stub)");
       }
 
-      /* rsp toggle via memo btn or directly */
-      function toggleRsp() {
-        document.getElementById("rsp").classList.toggle("open");
+      /* ═══════════════════════════════════════
+         검색 / 메모 모달 로드
+      ═══════════════════════════════════════ */
+      function openSearch() {
+        loadComponent("proto-search.html", "search-slot", function () {
+          var ov = document.getElementById("s-ov");
+          if (ov) ov.classList.add("open");
+        });
       }
 
-      /* search */
-      function openS() {
-        document.getElementById("s-ov").classList.add("open");
-        document.getElementById("s-input").focus();
-      }
-      function closeS(e) {
-        if (e && e.target !== document.getElementById("s-ov")) return;
-        document.getElementById("s-ov").classList.remove("open");
-      }
-
-      /* memo modal */
-      let mmOpen = false,
-        pinned = false,
-        drag = false,
-        ox = 0,
-        oy = 0;
+      var mmLoaded = false;
       function tglMM() {
-        const m = document.getElementById("mm");
-        mmOpen = !mmOpen;
-        m.classList.toggle("open", mmOpen);
-        if (mmOpen) {
-          m.style.top = "80px";
-          m.style.right = "60px";
-          m.style.left = "auto";
+        if (!mmLoaded) {
+          loadComponent("proto-memopanel.html", "memo-slot", function () {
+            mmLoaded = true;
+            var mm = document.getElementById("mm");
+            if (mm) mm.style.display = "";
+          });
+        } else {
+          var mm = document.getElementById("mm");
+          if (mm) mm.style.display = mm.style.display === "none" ? "" : "none";
         }
       }
-      function closeMM() {
-        mmOpen = false;
-        document.getElementById("mm").classList.remove("open");
-      }
-      function tglPin() {
-        pinned = !pinned;
-        document.getElementById("mm-pin").classList.toggle("pin", pinned);
-      }
-      document.getElementById("mm-hd").addEventListener("mousedown", (e) => {
-        drag = true;
-        const m = document.getElementById("mm"),
-          r = m.getBoundingClientRect();
-        m.style.left = r.left + "px";
-        m.style.top = r.top + "px";
-        m.style.right = "auto";
-        ox = e.clientX - r.left;
-        oy = e.clientY - r.top;
-      });
-      document.addEventListener("mousemove", (e) => {
-        if (!drag) return;
-        const m = document.getElementById("mm");
-        m.style.left = e.clientX - ox + "px";
-        m.style.top = e.clientY - oy + "px";
-      });
-      document.addEventListener("mouseup", () => {
-        drag = false;
-      });
-      document.addEventListener("mousedown", (e) => {
-        if (!mmOpen || pinned) return;
-        const m = document.getElementById("mm");
-        if (!m.contains(e.target) && !e.target.closest(".hbtn")) closeMM();
-      });
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          closeS({ target: document.getElementById("s-ov") });
-          if (!pinned) closeMM();
-        }
-      });
-      // ctrl+scroll zoom
-      document.addEventListener(
-        "wheel",
-        (e) => {
-          if (e.ctrlKey) {
-            e.preventDefault();
-            zoom(e.deltaY > 0 ? -10 : 10);
-          }
-        },
-        { passive: false },
-      );
 
-      // init
-      document.getElementById("rsp").classList.add("open");
-      renderCanvas();
+      function loadComponent(url, slotId, cb) {
+        var slot = document.getElementById(slotId);
+        if (!slot) return;
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            var wrap = document.createElement("div");
+            wrap.innerHTML = xhr.responseText;
+            var frag = document.createDocumentFragment();
+            while (wrap.firstChild) frag.appendChild(wrap.firstChild);
+            slot.innerHTML = "";
+            slot.appendChild(frag);
+            var scripts = slot.querySelectorAll("script");
+            scripts.forEach(function (s) {
+              var ns = document.createElement("script");
+              if (s.src) ns.src = s.src;
+              else ns.textContent = s.textContent;
+              document.body.appendChild(ns);
+            });
+            if (cb) cb();
+          }
+        };
+        xhr.send();
+      }
+
+      /* ─── 컷 선택 ─── */
+      var selectedCut = 0;
+      function selCut(el, idx) {
+        document.querySelectorAll(".ct-cell.on").forEach(function (c) {
+          c.classList.remove("on");
+        });
+        el.classList.add("on");
+        selectedCut = idx;
+        syncPanelSelection(idx);
+      }
+
+      /* 패널에서 컷 선택 → 캔버스 연동 */
+      function selCutFromPanel(idx) {
+        var cells = document.querySelectorAll(".ct-cell");
+        document.querySelectorAll(".ct-cell.on").forEach(function (c) {
+          c.classList.remove("on");
+        });
+        if (cells[idx]) cells[idx].classList.add("on");
+        selectedCut = idx;
+        syncPanelSelection(idx);
+      }
+
+      /* 패널 섹션 .on + 아코디언 자동 펼침 */
+      function syncPanelSelection(idx) {
+        document.querySelectorAll(".ct-sec").forEach(function (s, i) {
+          s.classList.toggle("on", i === idx);
+        });
+        var acc = document.getElementById("ct-acc-" + idx);
+        if (acc && !acc.classList.contains("open")) {
+          acc.classList.add("open");
+        }
+      }
+
+      /* ─── 아코디언 토글 ─── */
+      function tglAcc(id) {
+        document.getElementById(id).classList.toggle("open");
+      }
+
+      /* ─── 우측 패널 접기/펼치기 ─── */
+      function tglSide() {
+        document.getElementById("ct-side").classList.toggle("closed");
+      }
+
+      /* ─── Ctrl+스크롤 줌 ─── */
+      var ctZoom = 100;
+      var canvasWrap = document.getElementById("ct-canvas-wrap");
+      if (canvasWrap) {
+        canvasWrap.addEventListener(
+          "wheel",
+          function (e) {
+            if (e.ctrlKey) {
+              e.preventDefault();
+              ctZoomCtl(e.deltaY < 0 ? 10 : -10);
+            }
+          },
+          { passive: false }
+        );
+      }
+
+      function ctZoomCtl(delta) {
+        ctZoom = Math.max(50, Math.min(200, ctZoom + delta));
+        document.getElementById("ct-zoom-area").style.transform =
+          "scale(" + ctZoom / 100 + ")";
+        document.getElementById("ct-zoom-pct").textContent = ctZoom + "%";
+      }
+
+      function ctZoomFit() {
+        ctZoom = 100;
+        document.getElementById("ct-zoom-area").style.transform = "";
+        document.getElementById("ct-zoom-pct").textContent = "100%";
+      }
+
+      /* ─── 분할 모드 토글 ─── */
+      var splitMode = false;
+      function tglSplit() {
+        splitMode = !splitMode;
+        document.getElementById("split-btn").classList.toggle("split-on", splitMode);
+        document.getElementById("ct-canvas-wrap").style.cursor =
+          splitMode ? "crosshair" : "";
+      }
+
+      /* ─── 컷 초기화 ─── */
+      function resetCuts() {
+        if (confirm("컷 분할 작업을 초기화하시겠습니까?\n(세부 메모는 보존됩니다)")) {
+          alert("초기화 완료 (stub) — 모든 컷 분할이 사라지고 1컷 상태로 복원. 컷 메모는 미배정 UI로 전환.");
+        }
+      }
+
+      /* ─── 키보드 단축키 ─── */
+      document.addEventListener("keydown", function (e) {
+        if (e.ctrlKey && e.key === "z" && !e.shiftKey) {
+          e.preventDefault();
+          alert("Undo stub");
+        }
+        if (e.ctrlKey && e.shiftKey && (e.key === "z" || e.key === "Z")) {
+          e.preventDefault();
+          alert("Redo stub");
+        }
+        if (e.key === "Delete" || e.key === "Backspace") {
+          if (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA") return;
+          alert("선택 컷 삭제 stub");
+        }
+        if (e.ctrlKey && (e.key === "=" || e.key === "+")) {
+          e.preventDefault();
+          ctZoomCtl(10);
+        }
+        if (e.ctrlKey && e.key === "-") {
+          e.preventDefault();
+          ctZoomCtl(-10);
+        }
+        if (e.key === "PageUp") ctZoomCtl(10);
+        if (e.key === "PageDown") ctZoomCtl(-10);
+      });
+
+      /* ⚠ XSS 경고: 더미 데이터만 사용. 실제 구현 시 사용자 입력 sanitize 필수. */
     </script>
   </body>
 </html>
