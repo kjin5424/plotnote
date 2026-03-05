@@ -127,13 +127,15 @@ frontend/public/prototypes/
 - [x] `.rn-item.on::after` left-bar indicator
 - [x] navTo() 클릭 시 .on 이동 stub
 - [x] search/memo import 슬롯 + loadComponent() 헬퍼
+
+  > 결과물: proto-sidebar.html
+
   > **7. 통합 검수에서 추가 확인 필요 (추가됨: 2025-03-04):**
   >
   > - [ ] 마우스 터널링 현상 해결 (팝업 사라짐 지연 150~200ms)
   > - [ ] 에피소드 hover 시 페이지 리스트 표시 ("1p, 2p, 3p, ...")
   > - [ ] 페이지/컷 아이콘은 `.rn-pop` 없음 확인
   > - [ ] 로고 SVG 심볼 마크 적용
-  >       결과물: proto-sidebar.html
 
 ### ✅ 7-5. 검색 모달 (proto-search.html) — 완료
 
@@ -215,6 +217,7 @@ grep "## 3. Project 화면 (프로젝트)" `project_knowledge_search`를 통해 
   > - [ ] `.pj-detail-row` 좌측 드래그 핸들 추가
   > - [ ] `.sec-hd` 디자인 통일
   > - [ ] `.ep-row` 드래그 핸들 추가, `.ep-row-more` 가시성 개선
+  > - [ ] 다른 `proto-*.html`, `proto-*.css`와의 스타일 통일성
   >       결과물: proto-project.html, proto-project.css
 
 ---
@@ -359,10 +362,14 @@ grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto
 - [x] 우측 패널 (320px) 구현
 - [x] 고유 CSS 작성
 - [x] JS stub 작성
+
+  >       결과물: proto-cut.html, proto-cut.css
+
   > **7. 통합 검수에서 추가 확인 필요 (추가됨: 2025-03-04):**
   >
-  > - [ ] `.ct-pg-nav` 형식 변경: `[◀ 이전][다음 ▶]` 아이콘+텍스트
+  > - [ ] `.ct-pg-nav` 형식 변경: `[◐ 이전][다음 ◑]` 아이콘+텍스트
   > - [ ] `.hbtn`(전체 미리보기)와 `.ct-tb-btn`(화면 맞춤) 아이콘 구별
+  >       전체 미리보기: `pinboard_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`
   > - [ ] `.ct-side` 토글접기 시 동그란 아이콘으로 축소 애니메이션
   > - [ ] `.ct-sec-a-hd`와 `.ct-memo-row` 통합 — `.ct-memo-row`만 남기기
   > - [ ] `.ct-page` 테두리 dash → solid
@@ -375,7 +382,7 @@ grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto
   > - [ ] `.ct-toolbar` "컷 초기화" 기준 두 그룹 분리
   > - [ ] `.ct-tb-btn` → proto-page.html처럼 `-` `+` 표시
   > - [ ] 분할 모드 커서 변경 이슈 (👾: `cursor: crosshair !important` 적용)
-  >       결과물: proto-cut.html, proto-cut.css
+  >       (👽: `cursor:url('') 2 2, auto;` 형태로 아이콘 "✂️ 컷 분할 모드" 적용)
 
 ---
 
@@ -385,7 +392,7 @@ grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto
 - [ ] CSS 일관성: 5개 HTML 모두 proto-style.css 링크, 고유 스타일만 `proto-*.css`에 유지
 - [ ] 변수 일관성: 공통되는 부분은 인라인 `style` 하드코딩 없이 CSS 변수 사용
 - [ ] hover/선택 일관성: 모든 hover는 outline/box-shadow (border 변경 X → layout shift 방지)
-- [ ] 아이콘 정합성: icon-mapping.txt에 없는 아이콘 사용 여부 점검, 누락 아이콘 추가
+- [ ] 아이콘 정합성: icon-mapping.txt에 없는 아이콘 사용 여부 점검, 누락 아이콘 보고
 - [ ] 반응형 기본 점검: 최소 1024px 너비에서 레이아웃 깨짐 없는지 확인
 - [ ] 누락된 UI 요소 확인
 - [ ] 상호작용 스펙 일치 확인
@@ -422,6 +429,7 @@ grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto
 - [ ] `.mm-item` 디자인 개선
 - [ ] `.mm-item` 수정/삭제 기능 추가
 - [ ] 핀 아이콘 변경 (`keep_20dp_*.svg` → `pin-svgrepo-com.svg`)
+- [ ] 활성 화면 항목 중심으로 탭 이동 및 자동 스크롤 포커스 이동
 
 **8-4. 프로젝트**
 
