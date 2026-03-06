@@ -442,10 +442,11 @@ grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto
 
 **8-3. 메모패널**
 
-- [ ] `.mm-item` 디자인 개선
-- [ ] `.mm-item` 수정/삭제 기능 추가
-- [ ] 핀 아이콘 변경 (`keep_20dp_*.svg` → `pin-svgrepo-com.svg`)
-- [ ] 활성 화면 항목 중심으로 탭 이동 및 자동 스크롤 포커스 이동
+- [x] `.mm-item` 디자인 개선: `.mm-item-hd` 래퍼 추가(라벨+액션 flex row), position:relative, user-select:none
+- [x] `.mm-item` 수정/삭제 버튼: JS `initMmItemActs()`로 DOMContentLoaded 시 일괄 삽입, hover 시 opacity:1
+- [x] 핀 아이콘 변경: `keep_20dp_*.svg` → `pin-svgrepo-com.svg`
+- [x] 활성 항목 자동 스크롤: `focusActiveItem()` stub, `openMM()` 시 호출, `.mm-item--active` 클래스 기준
+- [x] 표기법 통일: "ep.N ─" → "N화 ─", "ep.3 &gt; p.0N" → "N화 &gt; Np" 전체 적용
 
 **8-4. 프로젝트**
 

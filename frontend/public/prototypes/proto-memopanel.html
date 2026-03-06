@@ -30,7 +30,7 @@
   <div class="mm-hd" id="mm-hd">
     <span class="mm-hd-t">메모</span>
     <div class="mm-b" id="mm-pin" onclick="tglPin()" title="핀 고정">
-      <img src="../../src/assets/images/keep_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="핀">
+      <img src="../../src/assets/images/pin-svgrepo-com.svg" alt="핀">
     </div>
     <div class="mm-b" id="mm-srch-btn" onclick="tglMmSearch()" title="메모 내 검색">
       <img src="../../src/assets/images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="검색">
@@ -77,15 +77,15 @@
     <!-- 에피소드 탭 -->
     <div class="mm-panel" data-panel="episode" style="display:none">
       <div class="mm-item">
-        <div class="mm-lbl">ep.1 &#8212; 에피소드 메모</div>
+        <div class="mm-lbl">1화 &#8212; 에피소드 메모</div>
         <div class="mm-txt">첫 만남 에피소드. 분위기는 봄. 벚꽃 떨어지는 장면으로 시작.</div>
       </div>
       <div class="mm-item">
-        <div class="mm-lbl">ep.2 &#8212; 에피소드 메모</div>
+        <div class="mm-lbl">2화 &#8212; 에피소드 메모</div>
         <div class="mm-txt">공원 에피소드. 비가 그친 직후, 무지개.</div>
       </div>
-      <div class="mm-item" style="background:var(--db-bg)">
-        <div class="mm-lbl" style="color:var(--db)">ep.3 &#8212; 에피소드 메모 (현재)</div>
+      <div class="mm-item mm-item--active" style="background:var(--db-bg)">
+        <div class="mm-lbl" style="color:var(--db)">3화 &#8212; 에피소드 메모 (현재)</div>
         <div class="mm-txt">이웃 동네 고양이들과 만남. 영역 다툼 &#8594; 화해 전개.</div>
         <div class="mm-acc-tgl" onclick="tglAcc(this)">&#9654; 세부 메모 (2)</div>
         <div class="mm-acc closed">
@@ -94,7 +94,7 @@
         </div>
       </div>
       <div class="mm-item">
-        <div class="mm-lbl">ep.4 &#8212; 에피소드 메모</div>
+        <div class="mm-lbl">4화 &#8212; 에피소드 메모</div>
         <div class="mm-txt">비 오는 날 에피소드. 아직 미정.</div>
       </div>
     </div>
@@ -102,19 +102,19 @@
     <!-- 페이지 탭 -->
     <div class="mm-panel" data-panel="page" style="display:none">
       <div class="mm-item">
-        <div class="mm-lbl">ep.3 &gt; p.01</div>
+        <div class="mm-lbl">3화 &gt; 1p</div>
         <div class="mm-txt">이웃 고양이 첫 등장. 옥상 위 실루엣.</div>
       </div>
       <div class="mm-item">
-        <div class="mm-lbl">ep.3 &gt; p.02</div>
+        <div class="mm-lbl">3화 &gt; 2p</div>
         <div class="mm-txt">주인공 고양이가 영역 표시를 발견하는 장면.</div>
       </div>
-      <div class="mm-item" style="background:var(--db-bg)">
-        <div class="mm-lbl" style="color:var(--db)">ep.3 &gt; p.03 (현재)</div>
+      <div class="mm-item mm-item--active" style="background:var(--db-bg)">
+        <div class="mm-lbl" style="color:var(--db)">3화 &gt; 3p (현재)</div>
         <div class="mm-txt">두 고양이가 마주치는 긴장감 있는 장면. 클로즈업 필요.</div>
       </div>
       <div class="mm-item">
-        <div class="mm-lbl">ep.3 &gt; p.04</div>
+        <div class="mm-lbl">3화 &gt; 4p</div>
         <div class="mm-txt empty">메모 없음</div>
       </div>
     </div>
@@ -122,11 +122,11 @@
     <!-- 컷 탭 -->
     <div class="mm-panel" data-panel="cut" style="display:none">
       <div class="mm-item">
-        <div class="mm-lbl">ep.3 &gt; p.03 &gt; 컷 1</div>
+        <div class="mm-lbl">3화 &gt; 3p &gt; 컷 1</div>
         <div class="mm-txt">골목길 전경. 두 고양이가 멀리서 마주보는 롱샷.</div>
       </div>
       <div class="mm-item">
-        <div class="mm-lbl">ep.3 &gt; p.03 &gt; 컷 2</div>
+        <div class="mm-lbl">3화 &gt; 3p &gt; 컷 2</div>
         <div class="mm-txt">주인공 고양이 눈 클로즈업. 동공 확대.</div>
         <div class="mm-acc-tgl" onclick="tglAcc(this)">&#9654; 세부 메모 (2)</div>
         <div class="mm-acc closed">
@@ -135,7 +135,7 @@
         </div>
       </div>
       <div class="mm-item">
-        <div class="mm-lbl">ep.3 &gt; p.03 &gt; 컷 3</div>
+        <div class="mm-lbl">3화 &gt; 3p &gt; 컷 3</div>
         <div class="mm-txt">이웃 고양이 반응 샷. 꼬리를 세움.</div>
       </div>
     </div>
@@ -178,9 +178,41 @@
   }
 })();
 
+/* ─── mm-item 수정/삭제 버튼 일괄 삽입 ─── */
+function initMmItemActs() {
+  document.querySelectorAll('.mm-item').forEach(function(item) {
+    var lbl = item.querySelector('.mm-lbl');
+    if (!lbl || lbl.parentElement.classList.contains('mm-item-hd')) return;
+    var hd = document.createElement('div');
+    hd.className = 'mm-item-hd';
+    var acts = document.createElement('div');
+    acts.className = 'mm-item-acts';
+    acts.innerHTML =
+      '<button class="mm-act-btn" title="수정" onclick="event.stopPropagation()">' +
+        '<img src="../../src/assets/images/edit_square_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="수정">' +
+      '</button>' +
+      '<button class="mm-act-btn mm-act-del" title="삭제" onclick="event.stopPropagation()">' +
+        '<img src="../../src/assets/images/delete_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="삭제">' +
+      '</button>';
+    item.insertBefore(hd, lbl);
+    hd.appendChild(lbl);
+    hd.appendChild(acts);
+  });
+}
+
+/* ─── 활성 항목 중심 자동 스크롤 ─── */
+function focusActiveItem() {
+  var bd = document.getElementById('mm-bd');
+  var active = bd ? bd.querySelector('.mm-item--active') : null;
+  if (active) {
+    active.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+}
+
 function openMM() {
   var mm = document.getElementById('mm');
   mm.classList.add('open');
+  focusActiveItem();
 }
 
 function closeMM() {
@@ -239,6 +271,10 @@ function tglAcc(trigger) {
     trigger.innerHTML = trigger.innerHTML.replace('&#9660;', '&#9654;').replace('\u25BC', '\u25B6');
   }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  initMmItemActs();
+});
 </script>
 
 <!-- 단독 테스트용 버튼 -->
