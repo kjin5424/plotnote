@@ -450,18 +450,17 @@ grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto
 
 **8-4. 프로젝트**
 
-- [ ] 헤더 `.ws-ttl`, `.ws-fav` 위치 통일
-- [ ] `.pj-memo-preview` 제거 → 탭 상단에 프로젝트 메모 textarea
-- [ ] 탭 구조: "프로젝트 설정" / "에피소드 목록"
-- [ ] `.pj-stat-row` → column 레이아웃
-- [ ] 공유/설정 버튼 아이콘화
-- [ ] `.pj-stepper`, `.pj-toggle` width 통일
-- [ ] `.pj-stepper-val` 클릭 시 직접 입력
-- [ ] `.pj-detail-row` 드래그 핸들 추가
-- [ ] `.sec-hd` 디자인 통일
-- [ ] `.ep-row` 드래그 핸들, `.ep-row-more` 가시성 개선
-- [ ] 사이드바 에피소드 아이콘 `docs_20dp` → `article_20dp` 교체 _(7. 통합검수 신규)_
-- [ ] `.ep-row` 드래그 핸들 아이콘 `drag_indicator_20dp` → `menu_20dp` 통일 _(7. 통합검수 신규)_
+- [x] 헤더 `.ws-ttl`, `.ws-fav` 위치 통일 — `.ws-hd-top` 패턴, input.ws-ttl 인라인 편집 스타일
+- [x] `.pj-memo-preview` 제거 → 탭 1 상단에 프로젝트 메모 textarea (`.pj-memo-ta`)
+- [x] 탭 구조: "프로젝트 설정" / "에피소드 목록" — `.pj-tabs` / `.pj-tab-pane` / `switchTab()`
+- [x] `.pj-stat-row` → column 레이아웃 (lbl 위, val 아래)
+- [x] 공유/설정 버튼 아이콘화 — 헤더에 `.hbtn` (handshake, setting-5)
+- [x] `.pj-stepper`, `.pj-toggle` width 통일 — `min-width: 96px`
+- [x] `.pj-stepper-val` input[type=number]으로 변경, 클릭 시 직접 입력 가능
+- [x] `.pj-detail-row` 드래그 핸들 추가 — `.drag-h` + `.drag-parent`
+- [x] `.sec-hd` 디자인 통일 — `.sec-hd-lbl`, `.cnt-badge`, `.sec-hd-acts` 구조 적용
+- [x] `.ep-row` 드래그 핸들 아이콘 `drag_indicator_20dp` → `menu_20dp` 통일
+- [x] 사이드바 에피소드 아이콘 이미 `article_20dp` 사용 중 (이전에 수정됨)
 
 **8-5. 에피소드**
 

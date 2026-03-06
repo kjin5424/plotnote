@@ -25,10 +25,10 @@
     <aside class="sb" id="sb">
       <div class="sb-logo">
         <div class="sb-mk" onclick="tglSb()" title="사이드바 펼치기">
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-            />
+          <svg viewBox="0 0 14 14">
+            <rect x="1" y="1" width="4" height="12" rx="1" />
+            <rect x="7" y="1" width="4" height="7" rx="1" opacity=".6" />
+            <rect x="7" y="10" width="4" height="3" rx="1" opacity=".4" />
           </svg>
         </div>
         <span class="sb-logo-txt sb-exp">plotnote</span>
@@ -330,23 +330,29 @@
 
     <!-- ═══ MAIN WORKSPACE ═══ -->
     <div class="main">
-      <!-- §3-1 헤더 (56px) -->
+      <!-- §3-1 헤더 (44px) -->
       <div class="ws-hd">
-        <div class="ws-tr">
+        <div class="ws-hd-top">
           <input class="ws-ttl" value="고양이와 강아지" spellcheck="false" />
-          <button
-            class="ws-fav on"
-            id="ws-fav"
-            onclick="tglFav()"
-            title="즐겨찾기"
-          >
+          <button class="ws-fav on" id="ws-fav" onclick="tglFav()" title="즐겨찾기">
             <img
               src="../../src/assets/images/bookmark_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
               alt=""
             />
           </button>
-          <div class="ws-acts">
-            <button class="abtn pri" onclick="addEp()">+ 에피소드 추가</button>
+          <div class="ws-hd-r">
+            <button class="hbtn" onclick="openShare()" title="공유">
+              <img
+                src="../../src/assets/images/handshake-svgrepo-com.svg"
+                alt=""
+              />
+            </button>
+            <button class="hbtn" onclick="tglSettings()" title="설정">
+              <img
+                src="../../src/assets/images/setting-5-svgrepo-com.svg"
+                alt=""
+              />
+            </button>
             <button class="hbtn" onclick="tglMM()" title="메모 패널">
               <img
                 src="../../src/assets/images/more_horiz_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
@@ -357,184 +363,149 @@
         </div>
       </div>
 
-      <!-- §3-1 프로젝트 메모 프리뷰 -->
-      <div class="pj-memo-preview">
-        <div
-          class="pj-memo-preview-inner"
-          id="pj-memo-preview"
-          onclick="
-            this.contentEditable = 'true';
-            this.focus();
-          "
-          onblur="this.contentEditable = 'false'"
-        >
-          고양이와 강아지가 처음 만나 함께 모험하는 이야기. 전체 12화 예정.
-        </div>
-      </div>
-
-      <!-- §3-2 / §3-3 프로젝트 바디 -->
+      <!-- §3-2 프로젝트 바디 -->
       <div class="pj-body">
-        <!-- ── 프로젝트 정보 영역 ── -->
-        <div class="pj-info-area">
-          <!-- Card A: 프로젝트 정보 -->
-          <div class="pj-card">
-            <div class="pj-card-hd">
-              <span class="pj-card-label">프로젝트 정보</span>
-            </div>
-            <div class="pj-stats">
-              <div class="pj-stat-row">
-                <span class="pj-stat-lbl">총 에피소드</span>
-                <span class="pj-stat-val" id="stat-ep">12화</span>
-              </div>
-              <div class="pj-stat-row">
-                <span class="pj-stat-lbl">총 페이지</span>
-                <span class="pj-stat-val" id="stat-pg">288p</span>
-              </div>
-              <div class="pj-stat-row">
-                <span class="pj-stat-lbl">마지막 작업</span>
-                <span class="pj-stat-val">3일 전</span>
-              </div>
-            </div>
-            <div class="pj-card-acts">
-              <button class="abtn outline" onclick="openShare()">공유</button>
-              <button class="abtn" onclick="tglSettings()">설정</button>
-            </div>
+        <!-- ── 탭 헤더 ── -->
+        <div class="pj-tabs">
+          <div class="pj-tab on" onclick="switchTab('settings', this)">프로젝트 설정</div>
+          <div class="pj-tab" onclick="switchTab('episodes', this)">에피소드 목록</div>
+        </div>
 
-            <!-- Card B: 프로젝트 설정 (확장 영역) -->
-            <div class="pj-settings" id="pj-settings">
-              <div class="pj-settings-label">프로젝트 설정</div>
-              <div class="pj-setting-row">
-                <span class="pj-setting-lbl">기본 페이지 수</span>
-                <div class="pj-stepper">
-                  <button class="pj-stepper-btn" onclick="stepPgCount(-1)">
-                    −
-                  </button>
-                  <span class="pj-stepper-val" id="pg-count">24</span>
-                  <button class="pj-stepper-btn" onclick="stepPgCount(1)">
-                    +
-                  </button>
-                </div>
-              </div>
-              <div class="pj-setting-row">
-                <span class="pj-setting-lbl">읽기 방향</span>
-                <div class="pj-toggle" id="tgl-dir">
-                  <span class="pj-toggle-opt on" onclick="tglOpt(this)"
-                    >RTL</span
-                  >
-                  <span class="pj-toggle-opt" onclick="tglOpt(this)">LTR</span>
-                </div>
-              </div>
-              <div class="pj-setting-row">
-                <span class="pj-setting-lbl">기본 뷰</span>
-                <div class="pj-toggle" id="tgl-view">
-                  <span
-                    class="pj-toggle-opt"
-                    onclick="
-                      tglOpt(this);
-                      tglStartPage();
-                    "
-                    >단면</span
-                  >
-                  <span
-                    class="pj-toggle-opt on"
-                    onclick="
-                      tglOpt(this);
-                      tglStartPage();
-                    "
-                    >양면</span
-                  >
-                </div>
-              </div>
-              <div class="pj-setting-row">
-                <span class="pj-setting-lbl">시작 페이지</span>
-                <div class="pj-toggle" id="tgl-start">
-                  <span class="pj-toggle-opt on" onclick="tglOpt(this)"
-                    >홀수</span
-                  >
-                  <span class="pj-toggle-opt" onclick="tglOpt(this)">짝수</span>
-                </div>
-              </div>
-            </div>
+        <!-- ── 탭 1: 프로젝트 설정 ── -->
+        <div class="pj-tab-pane" id="tab-settings">
+          <!-- 프로젝트 메모 -->
+          <div class="pj-memo-area">
+            <div class="m-sec-t">프로젝트 메모</div>
+            <textarea
+              class="pj-memo-ta"
+              placeholder="이 프로젝트의 전체 줄거리를 기록하세요..."
+            >고양이와 강아지가 처음 만나 함께 모험하는 이야기. 전체 12화 예정.</textarea>
           </div>
 
-          <!-- Card C: 프로젝트 세부 정보 (태그 기반) -->
-          <div class="pj-detail-card">
-            <div class="pj-detail-hd">
-              <span class="pj-card-label">프로젝트 세부 정보</span>
+          <!-- 프로젝트 정보 영역 -->
+          <div class="pj-info-area">
+            <!-- Card A: 프로젝트 정보 -->
+            <div class="pj-card">
+              <div class="pj-card-hd">
+                <span class="pj-card-label">프로젝트 정보</span>
+              </div>
+              <div class="pj-stats">
+                <div class="pj-stat-row">
+                  <span class="pj-stat-lbl">총 에피소드</span>
+                  <span class="pj-stat-val" id="stat-ep">12화</span>
+                </div>
+                <div class="pj-stat-row">
+                  <span class="pj-stat-lbl">총 페이지</span>
+                  <span class="pj-stat-val" id="stat-pg">288p</span>
+                </div>
+                <div class="pj-stat-row">
+                  <span class="pj-stat-lbl">마지막 작업</span>
+                  <span class="pj-stat-val">3일 전</span>
+                </div>
+              </div>
+
+              <!-- Card B: 프로젝트 설정 (확장 영역) -->
+              <div class="pj-settings" id="pj-settings">
+                <div class="pj-settings-label">프로젝트 설정</div>
+                <div class="pj-setting-row">
+                  <span class="pj-setting-lbl">기본 페이지 수</span>
+                  <div class="pj-stepper">
+                    <button class="pj-stepper-btn" onclick="stepPgCount(-1)">−</button>
+                    <input
+                      class="pj-stepper-val"
+                      id="pg-count"
+                      type="number"
+                      value="24"
+                      min="1"
+                      onclick="event.stopPropagation()"
+                    />
+                    <button class="pj-stepper-btn" onclick="stepPgCount(1)">+</button>
+                  </div>
+                </div>
+                <div class="pj-setting-row">
+                  <span class="pj-setting-lbl">읽기 방향</span>
+                  <div class="pj-toggle" id="tgl-dir">
+                    <span class="pj-toggle-opt on" onclick="tglOpt(this)">RTL</span>
+                    <span class="pj-toggle-opt" onclick="tglOpt(this)">LTR</span>
+                  </div>
+                </div>
+                <div class="pj-setting-row">
+                  <span class="pj-setting-lbl">기본 뷰</span>
+                  <div class="pj-toggle" id="tgl-view">
+                    <span class="pj-toggle-opt" onclick="tglOpt(this);tglStartPage()">단면</span>
+                    <span class="pj-toggle-opt on" onclick="tglOpt(this);tglStartPage()">양면</span>
+                  </div>
+                </div>
+                <div class="pj-setting-row">
+                  <span class="pj-setting-lbl">시작 페이지</span>
+                  <div class="pj-toggle" id="tgl-start">
+                    <span class="pj-toggle-opt on" onclick="tglOpt(this)">홀수</span>
+                    <span class="pj-toggle-opt" onclick="tglOpt(this)">짝수</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="pj-detail-list" id="pj-detail-list">
-              <div class="pj-detail-row">
-                <span class="pj-detail-tag">#장르</span>
-                <span class="pj-detail-content">SF</span>
-                <button
-                  class="pj-detail-del"
-                  onclick="this.parentElement.remove()"
-                >
-                  <img
-                    src="../../src/assets/images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                    alt="삭제"
-                  />
-                </button>
+
+            <!-- Card C: 프로젝트 세부 정보 (태그 기반) -->
+            <div class="pj-detail-card">
+              <div class="pj-detail-hd">
+                <span class="pj-card-label">프로젝트 세부 정보</span>
               </div>
-              <div class="pj-detail-row">
-                <span class="pj-detail-tag">#캐릭터</span>
-                <span class="pj-detail-content"
-                  >주인공, 이름 홍길동, 나이 18</span
-                >
-                <button
-                  class="pj-detail-del"
-                  onclick="this.parentElement.remove()"
-                >
-                  <img
-                    src="../../src/assets/images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                    alt="삭제"
-                  />
-                </button>
+              <div class="pj-detail-list" id="pj-detail-list">
+                <div class="pj-detail-row drag-parent">
+                  <div class="drag-h" title="드래그"><img src="../../src/assets/images/menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></div>
+                  <span class="pj-detail-tag">#장르</span>
+                  <span class="pj-detail-content">SF</span>
+                  <button class="pj-detail-del" onclick="this.closest('.pj-detail-row').remove()">
+                    <img src="../../src/assets/images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="삭제" />
+                  </button>
+                </div>
+                <div class="pj-detail-row drag-parent">
+                  <div class="drag-h" title="드래그"><img src="../../src/assets/images/menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></div>
+                  <span class="pj-detail-tag">#캐릭터</span>
+                  <span class="pj-detail-content">주인공, 이름 홍길동, 나이 18</span>
+                  <button class="pj-detail-del" onclick="this.closest('.pj-detail-row').remove()">
+                    <img src="../../src/assets/images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="삭제" />
+                  </button>
+                </div>
+                <div class="pj-detail-row drag-parent">
+                  <div class="drag-h" title="드래그"><img src="../../src/assets/images/menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></div>
+                  <span class="pj-detail-tag">#복선</span>
+                  <span class="pj-detail-content">아버지가 사실 진짜 친아버지이다</span>
+                  <button class="pj-detail-del" onclick="this.closest('.pj-detail-row').remove()">
+                    <img src="../../src/assets/images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="삭제" />
+                  </button>
+                </div>
+                <div class="pj-detail-row drag-parent">
+                  <div class="drag-h" title="드래그"><img src="../../src/assets/images/menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="" /></div>
+                  <span class="pj-detail-tag">#연재주기</span>
+                  <span class="pj-detail-content">주 1회</span>
+                  <button class="pj-detail-del" onclick="this.closest('.pj-detail-row').remove()">
+                    <img src="../../src/assets/images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="삭제" />
+                  </button>
+                </div>
               </div>
-              <div class="pj-detail-row">
-                <span class="pj-detail-tag">#복선</span>
-                <span class="pj-detail-content"
-                  >아버지가 사실 진짜 친아버지이다</span
-                >
-                <button
-                  class="pj-detail-del"
-                  onclick="this.parentElement.remove()"
-                >
-                  <img
-                    src="../../src/assets/images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                    alt="삭제"
-                  />
-                </button>
+              <div class="pj-detail-add" onclick="addDetail()">
+                <span class="pj-detail-add-ic">+</span> 세부 정보 추가
               </div>
-              <div class="pj-detail-row">
-                <span class="pj-detail-tag">#연재주기</span>
-                <span class="pj-detail-content">주 1회</span>
-                <button
-                  class="pj-detail-del"
-                  onclick="this.parentElement.remove()"
-                >
-                  <img
-                    src="../../src/assets/images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
-                    alt="삭제"
-                  />
-                </button>
-              </div>
-            </div>
-            <div class="pj-detail-add" onclick="addDetail()">
-              <span class="pj-detail-add-ic">+</span> 세부 정보 추가
             </div>
           </div>
         </div>
 
-        <!-- ── §3-3 에피소드 목록 영역 ── -->
-        <div class="ep-list-area">
+        <!-- ── 탭 2: 에피소드 목록 ── -->
+        <div class="pj-tab-pane hidden" id="tab-episodes">
           <div class="sec-hd">
-            <h2>에피소드 목록</h2>
-            <div class="sec-right">
-              <span class="sec-c" id="ep-count">7개</span>
-              <button class="sort-tgl" id="sort-tgl" onclick="tglSort()">
-                오름차순 ▾
+            <span class="sec-hd-lbl">에피소드 목록</span>
+            <span class="cnt-badge" id="ep-count">7</span>
+            <div class="sec-hd-acts">
+              <button class="sort-tgl" id="sort-tgl" onclick="tglSort()" title="정렬 순서 변경">
+                <img
+                  id="sort-ic"
+                  src="../../src/assets/images/sort-ascending-svgrepo-com.svg"
+                  alt=""
+                />
               </button>
+              <button class="abtn pri" onclick="addEp()">+ 에피소드 추가</button>
             </div>
           </div>
 
@@ -717,7 +688,7 @@
             alert("→ 에피소드 화면: " + e.t);
           };
           row.innerHTML =
-            '<div class="drag-h" title="드래그"><img src="../../src/assets/images/drag_indicator_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></div>' +
+            '<div class="drag-h" title="드래그"><img src="../../src/assets/images/menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></div>' +
             '<span class="ep-row-num">' +
             e.n +
             "</span>" +
@@ -752,7 +723,8 @@
             "</div>";
           list.appendChild(row);
         });
-        document.getElementById("ep-count").textContent = eps.length + "개";
+        var epCnt = document.getElementById("ep-count");
+        if (epCnt) epCnt.textContent = eps.length;
       }
 
       function tglDropdown(btn) {
@@ -783,8 +755,10 @@
 
       function tglSort() {
         sortAsc = !sortAsc;
-        document.getElementById("sort-tgl").textContent =
-          (sortAsc ? "오름차순" : "내림차순") + " ▾";
+        var ic = document.getElementById("sort-ic");
+        if (ic) ic.src = sortAsc
+          ? "../../src/assets/images/sort-ascending-svgrepo-com.svg"
+          : "../../src/assets/images/sort-descending-svgrepo-com.svg";
         renderEpList();
       }
 
@@ -800,9 +774,9 @@
 
       function stepPgCount(d) {
         var el = document.getElementById("pg-count");
-        var v = parseInt(el.textContent) + d;
+        var v = parseInt(el.value) + d;
         if (v < 1) v = 1;
-        el.textContent = v;
+        el.value = v;
       }
 
       function tglOpt(el) {
@@ -831,12 +805,22 @@
       function addDetail() {
         var list = document.getElementById("pj-detail-list");
         var row = document.createElement("div");
-        row.className = "pj-detail-row";
+        row.className = "pj-detail-row drag-parent";
         row.innerHTML =
+          '<div class="drag-h" title="드래그"><img src="../../src/assets/images/menu_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></div>' +
           '<span class="pj-detail-tag">#태그</span>' +
           '<span class="pj-detail-content" contenteditable="true" style="color:var(--co)">내용을 입력하세요</span>' +
-          '<button class="pj-detail-del" onclick="this.parentElement.remove()"><img src="../../src/assets/images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="삭제"></button>';
+          '<button class="pj-detail-del" onclick="this.closest(\'.pj-detail-row\').remove()"><img src="../../src/assets/images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="삭제"></button>';
         list.appendChild(row);
+      }
+
+      /* ─── 탭 전환 ─── */
+      function switchTab(name, el) {
+        document.querySelectorAll('.pj-tab').forEach(function(t) { t.classList.remove('on'); });
+        document.querySelectorAll('.pj-tab-pane').forEach(function(p) { p.classList.add('hidden'); });
+        if (el) el.classList.add('on');
+        var pane = document.getElementById('tab-' + name);
+        if (pane) pane.classList.remove('hidden');
       }
 
       /* ─── 설정 모달 ─── */
