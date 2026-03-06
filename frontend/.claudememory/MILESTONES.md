@@ -15,6 +15,11 @@
 - TRIM(재단선) 가이드라인 오버레이 미표시 확정, 내곽선 색상 Green→파란색(분할전)/검정색(분할후)로 수정
 - screen.md: B4 표기 H×W 명확화, 설정 상속 체인(§4-3), 권한 검증 시점(§4-4), 컷 초기화 토스트, 미배정 컷메모 UI 차별화 등 보강 완료 (유저 직접 편집)
 
+## 2026-03-06 (7. 통합 검수 완료)
+- 모든 proto HTML(project/episode/page/cut/sidebar) 파일을 proto-screen.md 명세와 대조 완료
+- 아이콘 오류 3종 신규 발견: `docs_20dp`(→`article_20dp`), `drag_indicator_20dp`(→`menu_20dp`), `icon-mapping.txt` "명시적 수정" 항목 잘못 기재
+- 미적용 항목 전체 8번 체크리스트에 통합 기입 완료 — 표기법("ep.1"→"1화", "p.01"→"1p") 오류 포함
+
 ## 2026-03-02 (Phase 1 HTML 프로토타입 완료)
 - Phase A~C 완료: proto-episode/page/cut.html proto-style.css 전환 + 신 사이드바 교체, 5단계 EpisodeStatus 적용, spread blank-cover 어포던스, ctx-bar flex-wrap 대응
 - 모든 이모지 아이콘(🗃↩↪🗑✂↺) → SVG 교체, XSS 경고 주석 추가, B4 비율 Known Issue 표현 정정

@@ -109,6 +109,7 @@ button {
   background: none;
   color: inherit;
   font-size: inherit;
+  user-select: none;
 }
 
 a {
@@ -127,6 +128,8 @@ select {
 img {
   display: block;
   max-width: 100%;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 /* ─── 2. 스크롤바 ─── */
@@ -182,6 +185,31 @@ img {
 }
 
 /* ─── 3. 유틸리티 ─── */
+
+/* 기본 focus outline 제거 — :focus-visible로 통일 */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid var(--oc);
+  outline-offset: 2px;
+}
+button:focus-visible,
+.hbtn:focus-visible,
+.ic-btn:focus-visible,
+.ic-btn-sm:focus-visible,
+.abtn:focus-visible,
+.sort-tgl:focus-visible,
+.cfg-btn:focus-visible {
+  outline: 2px solid var(--oc);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(124, 148, 184, 0.18);
+}
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+}
 
 /* hover 시 layout shift 방지: outline 사용 */
 .hover-outline {
@@ -372,6 +400,7 @@ img {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  user-select: none;
   transition:
     background var(--dur-sm),
     opacity var(--dur-sm);
@@ -400,6 +429,7 @@ img {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  user-select: none;
   transition:
     background var(--dur-sm),
     opacity var(--dur-sm);
@@ -435,6 +465,7 @@ img {
   align-items: center;
   justify-content: center;
   opacity: 0.55;
+  user-select: none;
   transition:
     background var(--dur-sm),
     opacity var(--dur-sm);
@@ -460,6 +491,7 @@ img {
   align-items: center;
   gap: 4px;
   white-space: nowrap;
+  user-select: none;
   transition:
     border-color var(--dur-sm),
     color var(--dur-sm),
@@ -533,6 +565,7 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
   transition: border-color var(--dur-sm);
 }
 .sort-tgl:hover {
@@ -663,6 +696,7 @@ img {
   display: flex;
   align-items: center;
   gap: 6px;
+  user-select: none;
 }
 .m-sec-t .cnt-badge {
   font-size: 8px;
@@ -757,6 +791,7 @@ img {
   font-size: 11px;
   border: 2px dashed var(--bd2);
   border-radius: var(--r-lg);
+  user-select: none;
   transition:
     background var(--dur-sm),
     color var(--dur-sm),
@@ -792,6 +827,7 @@ img {
   color: var(--gh);
   font-size: 11px;
   border-top: 1px dashed var(--bd2);
+  user-select: none;
   transition:
     background var(--dur-sm),
     color var(--dur-sm);
