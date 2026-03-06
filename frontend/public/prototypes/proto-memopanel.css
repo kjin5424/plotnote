@@ -65,6 +65,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  user-select: none;
   transition: background var(--dur-sm);
 }
 .mm-b img {
@@ -155,10 +156,67 @@
   padding: 8px 10px;
   margin-bottom: 6px;
   cursor: pointer;
+  position: relative;
+  user-select: none;
   transition: background var(--dur-sm);
 }
 .mm-item:hover {
   background: var(--db-bg);
+}
+
+/* 아이템 헤더 (라벨 + 액션 버튼 행) */
+.mm-item-hd {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 3px;
+}
+.mm-item-hd .mm-lbl {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+/* hover 시 수정/삭제 버튼 */
+.mm-item-acts {
+  display: flex;
+  gap: 1px;
+  opacity: 0;
+  flex-shrink: 0;
+  transition: opacity var(--dur-sm);
+}
+.mm-item:hover .mm-item-acts {
+  opacity: 1;
+}
+.mm-act-btn {
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: background var(--dur-xs);
+}
+.mm-act-btn img {
+  width: 13px;
+  height: 13px;
+  opacity: 0.45;
+  transition: opacity var(--dur-xs);
+}
+.mm-act-btn:hover {
+  background: rgba(0,0,0,0.06);
+}
+.mm-act-btn:hover img {
+  opacity: 0.8;
+}
+.mm-act-del:hover {
+  background: var(--err-bg);
+}
+.mm-act-del:hover img {
+  opacity: 1;
+  filter: brightness(0) saturate(100%) invert(26%) sepia(80%) saturate(600%) hue-rotate(330deg);
 }
 
 /* 메모 라벨 (ep.3 p.05 등) */
