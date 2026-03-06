@@ -1,13 +1,14 @@
 # Progress
 
 ## Current Status
-**단계:** React Phase H(Project 화면) 완료 — ⚠️ 디자인 프로토타입 전면 개편 예정, Phase I~K는 대기
-**브랜치:** `recover-plan`
-**마지막 작업:** EpisodeStatus 3단계 코드 반영 + Phase H Project 마이그레이션 (2026-03-02)
+**단계:** 8. 추가 요구사항 반영 — 8-4(프로젝트) 완료, 다음: 8-5(에피소드)
+**브랜치:** `kyoungjin`
+**마지막 작업:** proto-project.html/css 8-4 항목 전체 반영 (2026-03-06)
 
-> ⚠️ **다음 세션 주의:** 유저가 HTML 프로토타입을 직접 디자인 개편할 예정.
-> 개편 완료 후 `todo.md`/`progress.md` 다시 조정 → React Phase I(Episode) 진행 예정.
-> Phase I~K 착수 전 프로토타입 변경 내용 먼저 확인할 것.
+> **다음 세션 시작:**
+> 1. checklist.md §8-5(에피소드) 항목부터 진행
+> 2. 작업 대상: `proto-episode.html` + `proto-episode.css`
+> 3. 디자인 스펙: proto-screen.md §4 참조
 
 ### Phase 1 완료 항목 (2026-03-02)
 - **A-1~A-4**: proto-episode.html proto-style.css 전환 + 신 사이드바 인라인 복사 + 5단계 EpisodeStatus 적용
