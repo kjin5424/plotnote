@@ -15,6 +15,11 @@
 - TRIM(재단선) 가이드라인 오버레이 미표시 확정, 내곽선 색상 Green→파란색(분할전)/검정색(분할후)로 수정
 - screen.md: B4 표기 H×W 명확화, 설정 상속 체인(§4-3), 권한 검증 시점(§4-4), 컷 초기화 토스트, 미배정 컷메모 UI 차별화 등 보강 완료 (유저 직접 편집)
 
+## 2026-03-06 (8-4. 프로젝트 화면 추가 요구사항 반영)
+- 헤더를 `ws-hd-top` 패턴으로 통일, 공유·설정 버튼을 `.hbtn` 아이콘화, `pj-memo-preview` 제거
+- 탭 구조("프로젝트 설정" / "에피소드 목록") 도입, 탭 1 상단에 프로젝트 메모 textarea 배치
+- `pj-stat-row` column 레이아웃, `pj-stepper-val` input화, `pj-detail-row` 드래그 핸들, `ep-row` 핸들 아이콘 `menu_20dp`로 통일
+
 ## 2026-03-06 (7. 통합 검수 완료)
 - 모든 proto HTML(project/episode/page/cut/sidebar) 파일을 proto-screen.md 명세와 대조 완료
 - 아이콘 오류 3종 신규 발견: `docs_20dp`(→`article_20dp`), `drag_indicator_20dp`(→`menu_20dp`), `icon-mapping.txt` "명시적 수정" 항목 잘못 기재
