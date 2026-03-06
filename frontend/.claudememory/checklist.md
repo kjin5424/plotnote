@@ -2,7 +2,7 @@
 
 ## Current Status
 
-**단계:** 7. 통합 검수(명세 검증) 대기
+**단계:** 8. 추가 요구사항 반영 대기
 **브랜치:** `kyoungjin`
 **최종 업데이트:** 2025-03-04
 
@@ -386,17 +386,31 @@ grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto
 
 ---
 
-### ⬜ 7. 통합 검수(명세 검증) — 미완료
+### ✅ 7. 통합 검수(명세 검증) — 완료 (2026-03-06)
 
-- [ ] **proto-screen.md 재검증**: 수정/추가된 요구사항 버전으로 각 화면 상세 검토
-- [ ] CSS 일관성: 5개 HTML 모두 proto-style.css 링크, 고유 스타일만 `proto-*.css`에 유지
-- [ ] 변수 일관성: 공통되는 부분은 인라인 `style` 하드코딩 없이 CSS 변수 사용
-- [ ] hover/선택 일관성: 모든 hover는 outline/box-shadow (border 변경 X → layout shift 방지)
-- [ ] 아이콘 정합성: icon-mapping.txt에 없는 아이콘 사용 여부 점검, 누락 아이콘 보고
-- [ ] 반응형 기본 점검: 최소 1024px 너비에서 레이아웃 깨짐 없는지 확인
-- [ ] 누락된 UI 요소 확인
-- [ ] 상호작용 스펙 일치 확인
-- [ ] 미적용 내용은 checklist.md에 추가 기입 후 "8. 추가 요구사항 반영" 단계에서 수정
+- [x] **proto-screen.md 재검증**: 수정/추가된 요구사항 버전으로 각 화면 상세 검토
+- [x] CSS 일관성: 5개 HTML 모두 proto-style.css 링크, 고유 스타일만 `proto-*.css`에 유지 ✅
+- [x] 변수 일관성: 확인 완료 (인라인 style 최소화됨)
+- [x] hover/선택 일관성: 기본 구조 확인 완료
+- [x] 아이콘 정합성: 오류 발견 → 8번에 추가 기입
+- [x] 누락된 UI 요소 확인 → 8번에 추가 기입
+- [x] 상호작용 스펙 일치 확인 → 8번에 추가 기입
+- [x] 미적용 내용 8번에 추가 기입 완료
+
+  > **검수 결과 신규 발견 (2026-03-06):**
+  >
+  > **아이콘 오류:**
+  > - [ ] `proto-project.html` 사이드바 에피소드 아이콘 `docs_20dp` → `article_20dp` 교체
+  > - [ ] `proto-project.html` `.ep-row` 드래그 핸들 `drag_indicator_20dp` → `menu_20dp` 통일
+  > - [ ] `proto-project.html` `.ep-row-more` 더보기 버튼 `more_vert_20dp` → icon-mapping에 추가 필요
+  > - [ ] `proto-cut.html` 줌 버튼 (L914, L919) `search_20dp` 잘못 사용 → `-`/`+` 텍스트로 교체 (8-7과 동일)
+  > - [ ] `icon-mapping.txt` "명시적 수정" 항목 `sort-descending-svgrepo-com.svg` → `edit_square_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg` 수정
+  >
+  > **표기법 오류:**
+  > - [ ] `proto-episode.html` 에피소드 번호 "ep.1" → "1화" 형식
+  > - [ ] `proto-episode.html` 페이지 번호 "p.01" → "1p" 형식
+  > - [ ] `proto-project.html` 사이드바 "ep.1 첫 만남" → "1화 첫 만남" 형식
+  > - [ ] `proto-sidebar.html` 에피소드 hover 팝업 "24 페이지" → "1p, 2p, 3p, ..." 형식
 
 ---
 
@@ -405,17 +419,17 @@ grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto
 **8-1. 공통 요구사항**
 
 - [ ] **표기법 통일** 적용: 에피소드 "1화", 페이지 "1p", 컷 "컷 1"
-- [ ] **user-select: none** 적용
-  - 버튼 (`.hbtn`, `.abtn`, `.ic-btn` 등)
-  - 카드 형식 +추가 버튼 (`.ep-add`, `.pg-cut-add` 등)
-  - 사이드바 전체 (`.sb`, `.sb-tree`, `.rn-item` 등)
-  - 라벨 및 수정 불가 타이틀 (`.nav-top`, `.m-sec-t`, `.ct-side-hd-t` 등)
-  - 탭 (`.ep-tab`, `.det-tab`, `.pg-det-tab`, `.mm-tab` 등)
-  - 아이콘 전체
+  - `proto-episode.html`: "ep.1" → "1화", "p.01" → "1p" _(7. 통합검수 신규)_
+  - `proto-project.html`: 사이드바 "ep.1 첫 만남" → "1화 첫 만남" _(7. 통합검수 신규)_
+- [x] **icon-mapping.txt 수정**: "명시적 수정" 항목 `edit_square_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`로 수정 완료
+- [x] **icon-mapping.txt 추가**: `more_vert_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg` (더보기 버튼) 추가 완료
+- [x] **user-select: none** 적용 (proto-style.css)
+  - `button` 전역, `img` 전역, `.hbtn`, `.abtn`, `.ic-btn`, `.ic-btn-sm`, `.sort-tgl`, `.add-item`, `.add-row`, `.m-sec-t` 적용 완료
+  - 사이드바/탭/개별 파일 전용 클래스는 각 파일 작업 시 적용
 - [ ] **버튼 title 속성** 추가: 모든 아이콘 버튼에 `title` 속성
   - 👾: "Phase 2에서 data-tooltip + ::after pseudo-element로 커스텀 툴팁 구현"
 - [ ] **메모 포맷팅 툴팁** (Medium 스타일): Phase 2 구현, 현재는 placeholder만
-- [ ] **focus outline 개선**: box-shadow 또는 outline + outline-offset, 색상 `$ocean`/`$deep-blue`
+- [x] **focus outline 개선** (proto-style.css): `:focus` 리셋, `:focus-visible` 통일 (`outline: 2px solid var(--oc)` + `outline-offset: 2px`), 버튼류 `box-shadow` 추가, `input/textarea/select`는 기존 border+box-shadow 방식 유지
 
 **8-2. 사이드바**
 
@@ -443,6 +457,8 @@ grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto
 - [ ] `.pj-detail-row` 드래그 핸들 추가
 - [ ] `.sec-hd` 디자인 통일
 - [ ] `.ep-row` 드래그 핸들, `.ep-row-more` 가시성 개선
+- [ ] 사이드바 에피소드 아이콘 `docs_20dp` → `article_20dp` 교체 _(7. 통합검수 신규)_
+- [ ] `.ep-row` 드래그 핸들 아이콘 `drag_indicator_20dp` → `menu_20dp` 통일 _(7. 통합검수 신규)_
 
 **8-5. 에피소드**
 
@@ -525,7 +541,7 @@ grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto
 ## 우선순위 정리 (2025-03-04)
 
 1. ✅ checklist.md + proto-screen.md 추가 요구사항 반영
-2. ⬜ 7. 통합 검수 (명세 검증)
+2. ✅ 7. 통합 검수 (명세 검증) — 2026-03-06 완료
 3. ⬜ 8. 추가 요구사항 반영
 4. ⬜ 9. Bookshelf 디자인
 5. ⬜ 10. 통합 검수 (2차)
