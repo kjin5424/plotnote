@@ -12,6 +12,7 @@
   border-right: 1px solid var(--bd);
   display: flex;
   flex-direction: column;
+  user-select: none;
   transition:
     width var(--dur-lg) var(--ease),
     min-width var(--dur-lg) var(--ease);
@@ -58,6 +59,7 @@
   justify-content: center;
   flex-shrink: 0;
   cursor: pointer;
+  user-select: none;
 }
 .sb-mk svg {
   width: 12px;
@@ -114,6 +116,7 @@
   border-radius: var(--r-md);
   cursor: pointer;
   width: 100%;
+  user-select: none;
   transition: border-color var(--dur-sm);
 }
 .sb-srch:hover {
@@ -217,6 +220,7 @@
   color: var(--i2);
   position: relative;
   min-height: 26px;
+  user-select: none;
   transition: background var(--dur-sm);
 }
 .tn-row:hover {
@@ -348,6 +352,7 @@
   justify-content: center;
   cursor: pointer;
   position: relative;
+  user-select: none;
   transition: background var(--dur-sm);
 }
 .rn-item img {
@@ -410,7 +415,7 @@
   width: 8px;
   height: 100%;
 }
-.rn-item:hover .rn-pop {
+.rn-pop.visible {
   display: block;
 }
 .rn-pop-hd {
@@ -430,6 +435,7 @@
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
+  user-select: none;
   transition: background var(--dur-xs), color var(--dur-xs);
 }
 .rn-pop-i:hover {
@@ -450,6 +456,7 @@
   gap: 6px;
   cursor: pointer;
   flex-shrink: 0;
+  user-select: none;
   transition: background var(--dur-sm);
 }
 .sb-ft:hover {
