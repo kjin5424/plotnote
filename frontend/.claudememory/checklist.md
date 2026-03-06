@@ -433,10 +433,12 @@ grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto
 
 **8-2. 사이드바**
 
-- [ ] 마우스 터널링 현상 해결 (팝업 사라짐 지연 150~200ms)
-- [ ] 에피소드 hover 시 페이지 리스트 표시 ("1p, 2p, 3p, ...", max-height 초과 시 스크롤)
-- [ ] 페이지/컷 아이콘 `.rn-pop` 제거
-- [ ] 로고 SVG 심볼 마크 적용
+- [x] 마우스 터널링 현상 해결: CSS hover → JS `.rn-pop.visible` class 방식으로 전환, 180ms 지연 (`scheduleHide`) 적용
+- [x] 에피소드 hover 시 페이지 리스트 "1p, 2p, 3p..." 형식으로 표시 확인 (기존 구조 유지, 표기법 수정)
+- [x] 페이지 아이콘 `.rn-pop` 없음 확인 (이미 없었음) — 컷 아이콘은 rail nav에 미포함이므로 해당 없음
+- [x] 로고 SVG 심볼 마크 적용 (세 사각형 rect 구조)
+- [x] 표기법 통일: 에피소드 "ep.N 제목" → "N화 제목", 페이지 "p.0N" → "Np" 전체 적용
+- [x] `user-select: none`: `.sb`, `.sb-mk`, `.sb-srch`, `.tn-row`, `.rn-item`, `.rn-pop-i`, `.sb-ft` 적용
 
 **8-3. 메모패널**
 
