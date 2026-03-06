@@ -1,0 +1,24 @@
+# System Patterns
+
+- **Tech Stack:** React, TypeScript, SCSS, Axios
+- **Architecture:**
+  - **Component:** Functional Components with Hooks
+  - **State Management:** Context API + Hooks (Global), `useState`/`useReducer` (Local)
+  - **Styling:** SCSS (Global Variables + CSS Modules/BEM)
+- **Directory Structure:**
+  - `src/assets/`: 정적 자원 (`styles/`, `images/`)
+  - `src/components/`:
+    - `common/`: 재사용 가능한 공통 UI (Button, Modal, Loading 등)
+    - `screens/`: 화면 단위 컴포넌트 (Bookshelf, Project, Episode, Page, Cut)
+  - `src/config/`: 전역 설정 및 라이브러리 래퍼 (`axiosConfig.ts` 등)
+  - `src/hooks/`: 커스텀 훅 (`useAuth`, `useFetch` 등)
+  - `src/contexts/`: 전역 상태 Context (`ThemeContext` 등)
+  - `src/services/`: API 통신 로직
+  - `src/types/`: TypeScript 타입 정의 (`settings.ts` 등)
+  - `src/locales/`: 일본어, 영어 등 다국어 대응을 고려한 i18n 구조 설계용
+- **Coding Standards:**
+  - **React:** Functional Component와 Hooks 패턴을 준수한다.
+  - **Functions:** 컴포넌트 및 함수는 화살표 함수(`const Component = () => {}`)를 사용한다.
+  - **Styles:** 색상, 간격 등은 `variables.scss`의 CSS 변수(`var(--color-primary)`)를 적극 활용한다.
+  - **API:** `axiosConfig`에서 export된 메서드(`get`, `post` 등)를 사용하여 인터셉터 처리를 보장한다.
+  - **Data:** 모든 계층(Episode/Page/Cut)의 순서 관리는 인덱스가 아닌 유연한 정렬값(예: Lexosort 또는 별도 order 필드)을 사용한다.
