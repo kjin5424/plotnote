@@ -14,21 +14,30 @@ import "./guide.scss";
 // 탭 정의
 // ─────────────────────────────────────────────
 const TABS = [
-  { group: "디자인 토큰", items: [
-    { id: "colors",     label: "색상" },
-    { id: "typography", label: "타이포그래피" },
-    { id: "spacing",    label: "간격 & 반경" },
-  ]},
-  { group: "컴포넌트", items: [
-    { id: "buttons",    label: "버튼" },
-    { id: "tooltip",    label: "툴팁" },
-    { id: "animations", label: "애니메이션" },
-  ]},
-  { group: "로직", items: [
-    { id: "hooks",      label: "훅 (Hooks)" },
-    { id: "context",    label: "컨텍스트" },
-    { id: "scss",       label: "SCSS 구조" },
-  ]},
+  {
+    group: "디자인 토큰",
+    items: [
+      { id: "colors", label: "색상" },
+      { id: "typography", label: "타이포그래피" },
+      { id: "spacing", label: "간격 & 반경" },
+    ],
+  },
+  {
+    group: "컴포넌트",
+    items: [
+      { id: "buttons", label: "버튼" },
+      { id: "tooltip", label: "툴팁" },
+      { id: "animations", label: "애니메이션" },
+    ],
+  },
+  {
+    group: "로직",
+    items: [
+      { id: "hooks", label: "훅 (Hooks)" },
+      { id: "context", label: "컨텍스트" },
+      { id: "scss", label: "SCSS 구조" },
+    ],
+  },
 ];
 
 // ─────────────────────────────────────────────
@@ -38,42 +47,42 @@ const COLOR_GROUPS = [
   {
     label: "브랜드 (Deep Blue 계열)",
     colors: [
-      { name: "Deep Blue",   cssVar: "--color-primary",       hex: "#2A4D88" },
-      { name: "Ocean",       cssVar: "--color-primary-light", hex: "#7C94B8" },
-      { name: "Glacial",     cssVar: "--color-primary-muted", hex: "#B1BBC8" },
-      { name: "Concerto",    cssVar: "--color-primary-dim",   hex: "#D9D9D8" },
+      { name: "Deep Blue", cssVar: "--color-primary", hex: "#2A4D88" },
+      { name: "Ocean", cssVar: "--color-primary-light", hex: "#7C94B8" },
+      { name: "Glacial", cssVar: "--color-primary-muted", hex: "#B1BBC8" },
+      { name: "Concerto", cssVar: "--color-primary-dim", hex: "#D9D9D8" },
     ],
   },
   {
     label: "포인트 (Amber — 전체 UI의 ~5%)",
     colors: [
-      { name: "Amber",       cssVar: "--color-accent",        hex: "#fbc662" },
-      { name: "Amber Dark",  cssVar: "--color-accent-dark",   hex: "#e8a83c" },
-      { name: "Amber Light", cssVar: "--color-accent-light",  hex: "#fdd99b" },
+      { name: "Amber", cssVar: "--color-accent", hex: "#fbc662" },
+      { name: "Amber Dark", cssVar: "--color-accent-dark", hex: "#e8a83c" },
+      { name: "Amber Light", cssVar: "--color-accent-light", hex: "#fdd99b" },
     ],
   },
   {
     label: "배경",
     colors: [
-      { name: "Paper",       cssVar: "--bg-primary",          hex: "#f7f6f3" },
-      { name: "White",       cssVar: "--bg-secondary",        hex: "#fefefe" },
-      { name: "Hover BG",    cssVar: "--bg-tertiary",         hex: "#edede9" },
+      { name: "Paper", cssVar: "--bg-primary", hex: "#f7f6f3" },
+      { name: "White", cssVar: "--bg-secondary", hex: "#fefefe" },
+      { name: "Hover BG", cssVar: "--bg-tertiary", hex: "#edede9" },
     ],
   },
   {
     label: "텍스트",
     colors: [
-      { name: "Ink",         cssVar: "--text-primary",        hex: "#1a1a1a" },
-      { name: "Ink Soft",    cssVar: "--text-secondary",      hex: "#4a4a4a" },
-      { name: "Ink Ghost",   cssVar: "--text-tertiary",       hex: "#9a9a9a" },
+      { name: "Ink", cssVar: "--text-primary", hex: "#1a1a1a" },
+      { name: "Ink Soft", cssVar: "--text-secondary", hex: "#4a4a4a" },
+      { name: "Ink Ghost", cssVar: "--text-tertiary", hex: "#9a9a9a" },
     ],
   },
   {
     label: "상태",
     colors: [
-      { name: "Error",       cssVar: "--color-error",         hex: "#e05555" },
-      { name: "Success",     cssVar: "--color-success",       hex: "#52c787" },
-      { name: "Warning",     cssVar: "--color-warning",       hex: "#f5b841" },
+      { name: "Error", cssVar: "--color-error", hex: "#e05555" },
+      { name: "Success", cssVar: "--color-success", hex: "#52c787" },
+      { name: "Warning", cssVar: "--color-warning", hex: "#f5b841" },
     ],
   },
 ];
@@ -91,7 +100,10 @@ function ColorsSection() {
           <div className="guide-colors">
             {g.colors.map((c) => (
               <div key={c.cssVar} className="guide-swatch">
-                <div className="guide-swatch__preview" style={{ background: c.hex }} />
+                <div
+                  className="guide-swatch__preview"
+                  style={{ background: c.hex }}
+                />
                 <div className="guide-swatch__info">
                   <div className="swatch-name">{c.name}</div>
                   <div className="swatch-var">{c.cssVar}</div>
@@ -122,35 +134,75 @@ function TypographySection() {
     <div>
       <h2 className="guide-section-title">타이포그래피</h2>
       <p className="guide-section-desc">
-        Google Fonts — Noto Sans KR (기본) / Noto Serif KR (제목) / DM Mono (메타·코드)
+        Google Fonts — Noto Sans KR (기본) / Noto Serif KR (제목) / DM Mono
+        (메타·코드)
       </p>
 
       <div className="guide-section-sub">폰트 패밀리</div>
-      <div className="guide-demo-row" style={{ flexDirection: "column", alignItems: "flex-start", gap: 14 }}>
+      <div
+        className="guide-demo-row"
+        style={{ flexDirection: "column", alignItems: "flex-start", gap: 14 }}
+      >
         {[
-          { var: "--font-family-base",  label: "Noto Sans KR",  sample: "가나다 — UI 기본 텍스트" },
-          { var: "--font-family-serif", label: "Noto Serif KR", sample: "가나다 — 제목·컨텐츠 강조" },
-          { var: "--font-family-mono",  label: "DM Mono",       sample: "ep.01 · pg 01/24 — 메타·코드" },
+          {
+            var: "--font-family-base",
+            label: "Noto Sans KR",
+            sample: "가나다 — UI 기본 텍스트",
+          },
+          {
+            var: "--font-family-serif",
+            label: "Noto Serif KR",
+            sample: "가나다 — 제목·컨텐츠 강조",
+          },
+          {
+            var: "--font-family-mono",
+            label: "DM Mono",
+            sample: "1화 · pg 01/24 — 메타·코드",
+          },
         ].map((f) => (
-          <div key={f.var} style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
+          <div
+            key={f.var}
+            style={{ display: "flex", alignItems: "baseline", gap: 12 }}
+          >
             <code className="guide-code-inline">{f.var}</code>
-            <span style={{ fontFamily: `var(${f.var})`, fontSize: 15 }}>{f.sample}</span>
+            <span style={{ fontFamily: `var(${f.var})`, fontSize: 15 }}>
+              {f.sample}
+            </span>
           </div>
         ))}
       </div>
 
       <div className="guide-section-sub">사이즈 스케일</div>
       {[
-        { var: "--font-xs",   px: "12px", sample: "레이블, 메타, 배지 · 기본 xs" },
-        { var: "--font-sm",   px: "14px", sample: "기본 UI 텍스트 · body sm" },
+        {
+          var: "--font-xs",
+          px: "12px",
+          sample: "레이블, 메타, 배지 · 기본 xs",
+        },
+        { var: "--font-sm", px: "14px", sample: "기본 UI 텍스트 · body sm" },
         { var: "--font-base", px: "16px", sample: "본문 · base" },
-        { var: "--font-lg",   px: "18px", sample: "서브 제목 · lg" },
-        { var: "--font-xl",   px: "20px", sample: "섹션 제목 · xl" },
+        { var: "--font-lg", px: "18px", sample: "서브 제목 · lg" },
+        { var: "--font-xl", px: "20px", sample: "섹션 제목 · xl" },
       ].map((f) => (
         <div key={f.var} className="guide-type-row">
-          <code className="guide-code-inline" style={{ width: 130 }}>{f.var}</code>
-          <span style={{ width: 36, fontSize: 10, color: "var(--text-tertiary)", fontFamily: "var(--font-family-mono)" }}>{f.px}</span>
-          <span style={{ fontSize: `var(${f.var})`, color: "var(--text-primary)" }}>{f.sample}</span>
+          <code className="guide-code-inline" style={{ width: 130 }}>
+            {f.var}
+          </code>
+          <span
+            style={{
+              width: 36,
+              fontSize: 10,
+              color: "var(--text-tertiary)",
+              fontFamily: "var(--font-family-mono)",
+            }}
+          >
+            {f.px}
+          </span>
+          <span
+            style={{ fontSize: `var(${f.var})`, color: "var(--text-primary)" }}
+          >
+            {f.sample}
+          </span>
         </div>
       ))}
 
@@ -164,8 +216,18 @@ function TypographySection() {
           { w: 700, var: "--font-bold" },
         ].map((f) => (
           <div key={f.var} style={{ textAlign: "center" }}>
-            <div style={{ fontWeight: f.w, fontSize: 15, marginBottom: 2 }}>Aa 가나</div>
-            <code style={{ fontSize: 9, fontFamily: "var(--font-family-mono)", color: "var(--text-tertiary)" }}>{f.w}</code>
+            <div style={{ fontWeight: f.w, fontSize: 15, marginBottom: 2 }}>
+              Aa 가나
+            </div>
+            <code
+              style={{
+                fontSize: 9,
+                fontFamily: "var(--font-family-mono)",
+                color: "var(--text-tertiary)",
+              }}
+            >
+              {f.w}
+            </code>
           </div>
         ))}
       </div>
@@ -178,18 +240,18 @@ function TypographySection() {
 // ─────────────────────────────────────────────
 function SpacingSection() {
   const spacings = [
-    { var: "--spacing-xs",  px: 4 },
-    { var: "--spacing-sm",  px: 8 },
-    { var: "--spacing-md",  px: 16 },
-    { var: "--spacing-lg",  px: 24 },
-    { var: "--spacing-xl",  px: 32 },
+    { var: "--spacing-xs", px: 4 },
+    { var: "--spacing-sm", px: 8 },
+    { var: "--spacing-md", px: 16 },
+    { var: "--spacing-lg", px: 24 },
+    { var: "--spacing-xl", px: 32 },
     { var: "--spacing-2xl", px: 48 },
   ];
   const radii = [
-    { var: "--radius-sm",   label: "sm",   px: 4 },
-    { var: "--radius-md",   label: "md",   px: 8 },
-    { var: "--radius-lg",   label: "lg",   px: 12 },
-    { var: "--radius-xl",   label: "xl",   px: 20 },
+    { var: "--radius-sm", label: "sm", px: 4 },
+    { var: "--radius-md", label: "md", px: 8 },
+    { var: "--radius-lg", label: "lg", px: 12 },
+    { var: "--radius-xl", label: "xl", px: 20 },
     { var: "--radius-full", label: "full", px: 9999 },
   ];
 
@@ -200,41 +262,93 @@ function SpacingSection() {
       <div className="guide-section-sub">Spacing</div>
       {spacings.map((s) => (
         <div key={s.var} className="guide-spacing-bar">
-          <code className="bar-label" style={{ fontSize: 10, fontFamily: "var(--font-family-mono)", color: "var(--text-tertiary)", width: 130 }}>{s.var}</code>
+          <code
+            className="bar-label"
+            style={{
+              fontSize: 10,
+              fontFamily: "var(--font-family-mono)",
+              color: "var(--text-tertiary)",
+              width: 130,
+            }}
+          >
+            {s.var}
+          </code>
           <span className="bar-px">{s.px}px</span>
           <div className="bar-visual" style={{ width: s.px * 2 }} />
         </div>
       ))}
 
       <div className="guide-section-sub">Border Radius</div>
-      <div style={{ display: "flex", gap: 20, flexWrap: "wrap", alignItems: "flex-end" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: 20,
+          flexWrap: "wrap",
+          alignItems: "flex-end",
+        }}
+      >
         {radii.map((r) => (
           <div key={r.var} style={{ textAlign: "center" }}>
-            <div style={{
-              width: 48, height: 48,
-              background: "var(--color-primary)",
-              borderRadius: `var(${r.var})`,
-              opacity: 0.7,
-            }} />
-            <div style={{ fontSize: 10, fontFamily: "var(--font-family-mono)", color: "var(--text-tertiary)", marginTop: 6 }}>{r.label}</div>
-            <div style={{ fontSize: 9, fontFamily: "var(--font-family-mono)", color: "var(--text-tertiary)" }}>{r.px === 9999 ? "∞" : `${r.px}px`}</div>
+            <div
+              style={{
+                width: 48,
+                height: 48,
+                background: "var(--color-primary)",
+                borderRadius: `var(${r.var})`,
+                opacity: 0.7,
+              }}
+            />
+            <div
+              style={{
+                fontSize: 10,
+                fontFamily: "var(--font-family-mono)",
+                color: "var(--text-tertiary)",
+                marginTop: 6,
+              }}
+            >
+              {r.label}
+            </div>
+            <div
+              style={{
+                fontSize: 9,
+                fontFamily: "var(--font-family-mono)",
+                color: "var(--text-tertiary)",
+              }}
+            >
+              {r.px === 9999 ? "∞" : `${r.px}px`}
+            </div>
           </div>
         ))}
       </div>
 
       <div className="guide-section-sub">Shadow</div>
       <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-        {["--shadow-xs", "--shadow-sm", "--shadow-md", "--shadow-lg"].map((s) => (
-          <div key={s} style={{ textAlign: "center" }}>
-            <div style={{
-              width: 48, height: 48,
-              background: "var(--bg-secondary)",
-              borderRadius: 8,
-              boxShadow: `var(${s})`,
-            }} />
-            <code style={{ fontSize: 9, fontFamily: "var(--font-family-mono)", color: "var(--text-tertiary)", display: "block", marginTop: 6 }}>{s.replace("--shadow-", "")}</code>
-          </div>
-        ))}
+        {["--shadow-xs", "--shadow-sm", "--shadow-md", "--shadow-lg"].map(
+          (s) => (
+            <div key={s} style={{ textAlign: "center" }}>
+              <div
+                style={{
+                  width: 48,
+                  height: 48,
+                  background: "var(--bg-secondary)",
+                  borderRadius: 8,
+                  boxShadow: `var(${s})`,
+                }}
+              />
+              <code
+                style={{
+                  fontSize: 9,
+                  fontFamily: "var(--font-family-mono)",
+                  color: "var(--text-tertiary)",
+                  display: "block",
+                  marginTop: 6,
+                }}
+              >
+                {s.replace("--shadow-", "")}
+              </code>
+            </div>
+          ),
+        )}
       </div>
     </div>
   );
@@ -247,7 +361,9 @@ function ButtonsSection() {
   return (
     <div>
       <h2 className="guide-section-title">버튼</h2>
-      <p className="guide-section-desc">button.scss 정의. global.scss의 button 리셋 위에 추가.</p>
+      <p className="guide-section-desc">
+        button.scss 정의. global.scss의 button 리셋 위에 추가.
+      </p>
 
       <div className="guide-section-sub">Variants</div>
       <div className="guide-demo-row">
@@ -293,7 +409,9 @@ function ButtonsSection() {
         <button className="btn-add">+ 에피소드 추가</button>
       </div>
       <div style={{ padding: "4px 0" }}>
-        <button className="btn-add btn-add--accent">+ 중요 에피소드 (Accent)</button>
+        <button className="btn-add btn-add--accent">
+          + 중요 에피소드 (Accent)
+        </button>
       </div>
 
       <div className="guide-section-sub">이미지 아이콘 버튼 (.image-btn)</div>
@@ -316,8 +434,12 @@ function ButtonsSection() {
 
       <div className="guide-section-sub">Disabled</div>
       <div className="guide-demo-row">
-        <button className="btn btn--primary" disabled>Primary (disabled)</button>
-        <button className="btn btn--accent" disabled>Accent (disabled)</button>
+        <button className="btn btn--primary" disabled>
+          Primary (disabled)
+        </button>
+        <button className="btn btn--accent" disabled>
+          Accent (disabled)
+        </button>
       </div>
     </div>
   );
@@ -331,25 +453,67 @@ function TooltipSection() {
     <div>
       <h2 className="guide-section-title">툴팁</h2>
       <p className="guide-section-desc">
-        tooltip.scss에 3가지 방식 통합: (A) data-tooltip CSS · (B) .tooltip React 래퍼 · (C) .tooltip-portal Portal
+        tooltip.scss에 3가지 방식 통합: (A) data-tooltip CSS · (B) .tooltip
+        React 래퍼 · (C) .tooltip-portal Portal
       </p>
 
-      <div className="guide-section-sub">(A) data-tooltip — 순수 CSS 속성 기반</div>
+      <div className="guide-section-sub">
+        (A) data-tooltip — 순수 CSS 속성 기반
+      </div>
       <div className="guide-demo-row" style={{ paddingTop: 28 }}>
-        <button className="btn btn--outline" data-tooltip="top (기본)">top</button>
-        <button className="btn btn--outline" data-tooltip="bottom" data-tooltip-pos="bottom">bottom</button>
-        <button className="btn btn--outline" data-tooltip="right" data-tooltip-pos="right">right</button>
-        <button className="btn btn--outline" data-tooltip="left" data-tooltip-pos="left">left</button>
+        <button className="btn btn--outline" data-tooltip="top (기본)">
+          top
+        </button>
+        <button
+          className="btn btn--outline"
+          data-tooltip="bottom"
+          data-tooltip-pos="bottom"
+        >
+          bottom
+        </button>
+        <button
+          className="btn btn--outline"
+          data-tooltip="right"
+          data-tooltip-pos="right"
+        >
+          right
+        </button>
+        <button
+          className="btn btn--outline"
+          data-tooltip="left"
+          data-tooltip-pos="left"
+        >
+          left
+        </button>
       </div>
       <pre className="guide-code">{`<button data-tooltip="저장하기">버튼</button>
 <button data-tooltip="아래" data-tooltip-pos="bottom">버튼</button>
 // pos: top(기본) | bottom | left | right`}</pre>
 
-      <div className="guide-section-sub">(B) .tooltip 컴포넌트 래퍼 — HTML 내용 지원</div>
+      <div className="guide-section-sub">
+        (B) .tooltip 컴포넌트 래퍼 — HTML 내용 지원
+      </div>
       <div className="guide-demo-row">
-        <div className="tooltip tooltip--bottom" style={{ position: "relative" }}>
-          <button className="btn btn--outline tooltip__trigger">hover me</button>
-          <div className="tooltip__content" style={{ opacity: 1, transform: "none", pointerEvents: "auto", position: "absolute", top: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)", zIndex: 100 }}>
+        <div
+          className="tooltip tooltip--bottom"
+          style={{ position: "relative" }}
+        >
+          <button className="btn btn--outline tooltip__trigger">
+            hover me
+          </button>
+          <div
+            className="tooltip__content"
+            style={{
+              opacity: 1,
+              transform: "none",
+              pointerEvents: "auto",
+              position: "absolute",
+              top: "calc(100% + 8px)",
+              left: "50%",
+              transform: "translateX(-50%)",
+              zIndex: 100,
+            }}
+          >
             <div className="tooltip__content-title">저장하기</div>
             <div className="tooltip__content-desc">현재 작업을 저장합니다</div>
             <span className="tooltip__content-kbd">Ctrl+S</span>
@@ -369,11 +533,20 @@ function TooltipSection() {
 
       <div className="guide-section-sub">컨텍스트 메뉴 (.context-menu)</div>
       <div className="guide-demo-row">
-        <div className="context-menu" style={{ position: "relative", display: "inline-block" }}>
-          <div className="context-menu__item"><span>편집</span></div>
-          <div className="context-menu__item"><span>복사</span></div>
+        <div
+          className="context-menu"
+          style={{ position: "relative", display: "inline-block" }}
+        >
+          <div className="context-menu__item">
+            <span>편집</span>
+          </div>
+          <div className="context-menu__item">
+            <span>복사</span>
+          </div>
           <div className="context-menu__divider" />
-          <div className="context-menu__item danger"><span>삭제</span></div>
+          <div className="context-menu__item danger">
+            <span>삭제</span>
+          </div>
         </div>
       </div>
       <pre className="guide-code">{`<div className="context-menu">
@@ -390,9 +563,9 @@ function TooltipSection() {
 // 애니메이션 섹션
 // ─────────────────────────────────────────────
 const ANIM_CLASSES = [
-  { cls: "anim-fade-up",     desc: "페이지 진입, 카드 로드" },
-  { cls: "anim-slide-left",  desc: "사이드바, 리스트 항목" },
-  { cls: "anim-scale-in",    desc: "드롭다운, 모달 컨텐츠" },
+  { cls: "anim-fade-up", desc: "페이지 진입, 카드 로드" },
+  { cls: "anim-slide-left", desc: "사이드바, 리스트 항목" },
+  { cls: "anim-scale-in", desc: "드롭다운, 모달 컨텐츠" },
   { cls: "anim-tree-expand", desc: "트리 노드 펼칠 때" },
 ];
 
@@ -402,33 +575,68 @@ function AnimationsSection() {
   return (
     <div>
       <h2 className="guide-section-title">애니메이션</h2>
-      <p className="guide-section-desc">animations.scss의 @keyframes + 유틸 클래스. SCSS mixin도 제공.</p>
+      <p className="guide-section-desc">
+        animations.scss의 @keyframes + 유틸 클래스. SCSS mixin도 제공.
+      </p>
 
-      <button className="btn btn--outline btn--sm" style={{ marginBottom: 14 }} onClick={() => setKey((k) => k + 1)}>
+      <button
+        className="btn btn--outline btn--sm"
+        style={{ marginBottom: 14 }}
+        onClick={() => setKey((k) => k + 1)}
+      >
         ↺ 다시 재생
       </button>
 
       <div className="guide-section-sub">유틸 클래스</div>
       {ANIM_CLASSES.map((a) => (
-        <div key={`${a.cls}-${key}`} className="guide-demo-row" style={{ justifyContent: "space-between" }}>
+        <div
+          key={`${a.cls}-${key}`}
+          className="guide-demo-row"
+          style={{ justifyContent: "space-between" }}
+        >
           <div
             className={a.cls}
-            style={{ padding: "5px 10px", background: "var(--bg-secondary)", border: "1px solid var(--border-light)", borderRadius: "var(--radius-sm)" }}
+            style={{
+              padding: "5px 10px",
+              background: "var(--bg-secondary)",
+              border: "1px solid var(--border-light)",
+              borderRadius: "var(--radius-sm)",
+            }}
           >
-            <code style={{ fontSize: 11, fontFamily: "var(--font-family-mono)", color: "var(--color-primary)" }}>.{a.cls}</code>
+            <code
+              style={{
+                fontSize: 11,
+                fontFamily: "var(--font-family-mono)",
+                color: "var(--color-primary)",
+              }}
+            >
+              .{a.cls}
+            </code>
           </div>
-          <span style={{ fontSize: 11, color: "var(--text-tertiary)" }}>{a.desc}</span>
+          <span style={{ fontSize: 11, color: "var(--text-tertiary)" }}>
+            {a.desc}
+          </span>
         </div>
       ))}
 
       <div className="guide-section-sub">Stagger (.anim-stagger)</div>
       <div className="guide-demo-row">
-        <div className="anim-stagger" key={key} style={{ display: "flex", gap: 6 }}>
+        <div
+          className="anim-stagger"
+          key={key}
+          style={{ display: "flex", gap: 6 }}
+        >
           {[0.7, 0.75, 0.8, 0.85, 0.9].map((op, i) => (
             <div
               key={i}
               className="anim-fade-up"
-              style={{ width: 32, height: 32, background: "var(--color-primary)", borderRadius: "var(--radius-sm)", opacity: op }}
+              style={{
+                width: 32,
+                height: 32,
+                background: "var(--color-primary)",
+                borderRadius: "var(--radius-sm)",
+                opacity: op,
+              }}
             />
           ))}
         </div>
@@ -521,7 +729,8 @@ function HooksSection() {
     <div>
       <h2 className="guide-section-title">훅 (Hooks)</h2>
       <p className="guide-section-desc">
-        hooks/ 디렉토리의 공통 훅. 모두 순수 함수 기반으로 컴포넌트에서 상태 로직 분리.
+        hooks/ 디렉토리의 공통 훅. 모두 순수 함수 기반으로 컴포넌트에서 상태
+        로직 분리.
       </p>
       {HOOKS.map((h) => (
         <div key={h.name} className="guide-hook-card">
@@ -545,7 +754,8 @@ function ContextSection() {
     <div>
       <h2 className="guide-section-title">컨텍스트</h2>
       <p className="guide-section-desc">
-        contexts/ 디렉토리. React Context API 기반. App.tsx에서 전체 앱을 감싸고 있음.
+        contexts/ 디렉토리. React Context API 기반. App.tsx에서 전체 앱을 감싸고
+        있음.
       </p>
 
       <div className="guide-hook-card">
@@ -554,7 +764,8 @@ function ContextSection() {
           <span className="hook-path">contexts/DataContext</span>
         </div>
         <div className="guide-hook-card__desc">
-          메인 데이터 컨텍스트. 책장·프로젝트·에피소드·페이지·컷 데이터와 UI 상태 제공.
+          메인 데이터 컨텍스트. 책장·프로젝트·에피소드·페이지·컷 데이터와 UI
+          상태 제공.
         </div>
         <pre className="guide-code">{`const {
   isLoading,
@@ -578,9 +789,7 @@ function ContextSection() {
           <span className="hook-name">useAuth</span>
           <span className="hook-path">contexts/AuthContext</span>
         </div>
-        <div className="guide-hook-card__desc">
-          인증 상태 관리.
-        </div>
+        <div className="guide-hook-card__desc">인증 상태 관리.</div>
         <pre className="guide-code">{`const { user, login, logout, isAuthenticated } = useAuth();`}</pre>
       </div>
 
@@ -684,15 +893,15 @@ $amber:     #fbc662;
 // 메인 Guide 컴포넌트
 // ─────────────────────────────────────────────
 const SECTION_MAP: Record<string, JSX.Element> = {
-  colors:     <ColorsSection />,
+  colors: <ColorsSection />,
   typography: <TypographySection />,
-  spacing:    <SpacingSection />,
-  buttons:    <ButtonsSection />,
-  tooltip:    <TooltipSection />,
+  spacing: <SpacingSection />,
+  buttons: <ButtonsSection />,
+  tooltip: <TooltipSection />,
   animations: <AnimationsSection />,
-  hooks:      <HooksSection />,
-  context:    <ContextSection />,
-  scss:       <ScssSection />,
+  hooks: <HooksSection />,
+  context: <ContextSection />,
+  scss: <ScssSection />,
 };
 
 export default function Guide() {
@@ -715,7 +924,6 @@ export default function Guide() {
       {isOpen && (
         <div className="guide-overlay" onClick={() => setIsOpen(false)}>
           <div className="guide-panel" onClick={(e) => e.stopPropagation()}>
-
             {/* 헤더 */}
             <div className="guide-panel-header">
               <span className="guide-panel-header__title">
@@ -751,9 +959,7 @@ export default function Guide() {
               </nav>
 
               {/* 콘텐츠 */}
-              <div className="guide-content">
-                {SECTION_MAP[activeTab]}
-              </div>
+              <div className="guide-content">{SECTION_MAP[activeTab]}</div>
             </div>
           </div>
         </div>

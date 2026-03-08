@@ -20,14 +20,19 @@ export default function ProjectGrid() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const project = ui.currentProjectId ? store.projects[ui.currentProjectId] : null;
+  const project = ui.currentProjectId
+    ? store.projects[ui.currentProjectId]
+    : null;
   const episodes = project
     ? project.episodeOrder.map((id) => store.episodes[id]).filter(Boolean)
     : [];
 
   const handleAddEpisode = () => {
     if (!project) return;
-    dispatch({ type: "ADD_EPISODE", payload: { projectId: project.id, title: "새 에피소드" } });
+    dispatch({
+      type: "ADD_EPISODE",
+      payload: { projectId: project.id, title: "새 에피소드" },
+    });
   };
 
   return (
@@ -39,9 +44,11 @@ export default function ProjectGrid() {
         <div
           key={episode.id}
           className="project-ep-row"
-          onClick={() => navigate(`/project/${project!.id}/episode/${episode.id}`)}
+          onClick={() =>
+            navigate(`/project/${project!.id}/episode/${episode.id}`)
+          }
         >
-          <span className="project-ep-num">ep.{index + 1}</span>
+          <span className="project-ep-num">{index + 1}화</span>
           <div className="project-ep-body">
             <span className="project-ep-title">{episode.title}</span>
             <span className="project-ep-pg">{episode.pageOrder.length}p</span>
@@ -51,7 +58,10 @@ export default function ProjectGrid() {
           </span>
         </div>
       ))}
-      <div className="project-ep-row project-ep-row--add" onClick={handleAddEpisode}>
+      <div
+        className="project-ep-row project-ep-row--add"
+        onClick={handleAddEpisode}
+      >
         + 에피소드 추가
       </div>
     </div>

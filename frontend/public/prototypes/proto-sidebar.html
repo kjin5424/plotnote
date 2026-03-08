@@ -1,432 +1,962 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-<meta charset="UTF-8">
-<title>PlotNote — Sidebar Reference</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="proto-style.css">
-<link rel="stylesheet" href="proto-sidebar.css">
-<style>
-.demo-main { flex:1; display:flex; flex-direction:column; overflow:hidden; min-width:0 }
-.demo-hd { height:var(--hd-h); background:var(--wh); border-bottom:1px solid var(--bd); display:flex; align-items:center; padding:0 20px; gap:12px; flex-shrink:0 }
-.demo-hd-ttl { font-family:var(--ff-serif); font-size:15px; font-weight:600; color:var(--ink) }
-.demo-hd-sub { font-size:11px; color:var(--gh) }
-.demo-bd { flex:1; background:var(--pa); display:flex; align-items:center; justify-content:center; color:var(--gh); font-size:12px }
-</style>
-</head>
-<body>
-
-<!-- ═══════════════════════════════════════════
+  <head>
+    <meta charset="UTF-8" />
+    <title>PlotNote — Sidebar Reference</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&family=Noto+Serif+KR:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="proto-style.css" />
+    <link rel="stylesheet" href="proto-sidebar.css" />
+    <style>
+      .demo-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        min-width: 0;
+      }
+      .demo-hd {
+        height: var(--hd-h);
+        background: var(--wh);
+        border-bottom: 1px solid var(--bd);
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        gap: 12px;
+        flex-shrink: 0;
+      }
+      .demo-hd-ttl {
+        font-family: var(--ff-serif);
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--ink);
+      }
+      .demo-hd-sub {
+        font-size: 11px;
+        color: var(--gh);
+      }
+      .demo-bd {
+        flex: 1;
+        background: var(--pa);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gh);
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ═══════════════════════════════════════════
      SIDEBAR COMPONENT
      다른 화면에서 import 시: fetch('proto-sidebar.html')로 #sb 주입
      JS: initSidebar() 호출
 ═══════════════════════════════════════════ -->
-<aside class="sb" id="sb">
-
-  <!-- ── LOGO ── -->
-  <div class="sb-logo">
-    <div class="sb-mk" onclick="tglSb()" title="사이드바 펼치기">
-      <svg viewBox="0 0 14 14">
-        <rect x="1" y="1" width="4" height="12" rx="1" />
-        <rect x="7" y="1" width="4" height="7" rx="1" opacity=".6" />
-        <rect x="7" y="10" width="4" height="3" rx="1" opacity=".4" />
-      </svg>
-    </div>
-    <span class="sb-logo-txt sb-exp">plotnote</span>
-    <button class="sb-collapse sb-exp" onclick="tglSb()" title="사이드바 접기">
-      <img src="../../src/assets/images/keyboard_double_arrow_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="접기">
-    </button>
-  </div>
-
-  <!-- ── SEARCH ── -->
-  <div class="sb-search sb-exp">
-    <div class="sb-srch" onclick="openSearch()">
-      <img src="../../src/assets/images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="검색">
-      <span>검색...</span>
-    </div>
-  </div>
-
-  <!-- ── TREE ── -->
-  <div class="sb-tree sb-exp">
-
-    <!-- ★ 즐겨찾기 -->
-    <div class="sb-grp" id="grp-fav">
-      <div class="sb-grp-hd" onclick="tglGrp('grp-fav')">
-        <span class="ic"><img src="../../src/assets/images/bookmark_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-        <span class="lbl">즐겨찾기</span>
-        <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+    <aside class="sb" id="sb">
+      <!-- ── LOGO ── -->
+      <div class="sb-logo">
+        <div class="sb-mk" onclick="tglSb()" title="사이드바 펼치기">
+          <svg viewBox="0 0 14 14">
+            <rect x="1" y="1" width="4" height="12" rx="1" />
+            <rect x="7" y="1" width="4" height="7" rx="1" opacity=".6" />
+            <rect x="7" y="10" width="4" height="3" rx="1" opacity=".4" />
+          </svg>
+        </div>
+        <span class="sb-logo-txt sb-exp">plotnote</span>
+        <button
+          class="sb-collapse sb-exp"
+          onclick="tglSb()"
+          title="사이드바 접기"
+        >
+          <img
+            src="../../src/assets/images/keyboard_double_arrow_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt="접기"
+          />
+        </button>
       </div>
-      <div class="sb-grp-bd">
-        <div class="tn" id="fav-pj1">
-          <div class="tn-row" style="--indent:16px" onclick="tglTn('fav-pj1')">
-            <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-            <span class="tn-ic">
-              <img class="ic-c" src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-              <img class="ic-o" src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-            </span>
-            <span class="tn-lbl">고양이와 강아지</span>
-            <span class="tn-cnt">4</span>
-          </div>
-          <div class="tn-kids">
-            <div class="tn closed" id="fav-ep1">
-              <div class="tn-row" style="--indent:32px" onclick="tglTn('fav-ep1')">
-                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-                <span class="tn-ic">
-                  <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                  <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                </span>
-                <span class="tn-lbl">1화 첫 만남</span>
-              </div>
-              <div class="tn-kids">
-                <div class="tn leaf"><div class="tn-row" style="--indent:48px" onclick="navTo('page','fav-p01')"><span class="tn-chv leaf"></span><span class="tn-ic"><img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt=""><img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt=""></span><span class="tn-lbl">1p</span></div></div>
-                <div class="tn leaf"><div class="tn-row" style="--indent:48px" onclick="navTo('page','fav-p02')"><span class="tn-chv leaf"></span><span class="tn-ic"><img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt=""><img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt=""></span><span class="tn-lbl">2p</span></div></div>
-              </div>
-            </div>
-          </div>
+
+      <!-- ── SEARCH ── -->
+      <div class="sb-search sb-exp">
+        <div class="sb-srch" onclick="openSearch()">
+          <img
+            src="../../src/assets/images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt="검색"
+          />
+          <span>검색...</span>
         </div>
       </div>
-    </div>
 
-    <!-- 🏠 나의 책장 -->
-    <div class="sb-grp" id="grp-my">
-      <div class="sb-grp-hd" onclick="tglGrp('grp-my')">
-        <span class="ic"><img src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-        <span class="lbl">나의 책장</span>
-        <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-      </div>
-      <div class="sb-grp-bd">
-
-        <!-- 프로젝트: 고양이와 강아지 (활성, 펼쳐진 상태) -->
-        <div class="tn" id="pj-cat">
-          <div class="tn-row" style="--indent:16px" onclick="tglTn('pj-cat')">
-            <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-            <span class="tn-ic">
-              <img class="ic-c" src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-              <img class="ic-o" src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-            </span>
-            <span class="tn-lbl">고양이와 강아지</span>
-            <span class="tn-cnt">4</span>
+      <!-- ── TREE ── -->
+      <div class="sb-tree sb-exp">
+        <!-- ★ 즐겨찾기 -->
+        <div class="sb-grp" id="grp-fav">
+          <div class="sb-grp-hd" onclick="tglGrp('grp-fav')">
+            <span class="ic"
+              ><img
+                src="../../src/assets/images/bookmark_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
+            <span class="lbl">즐겨찾기</span>
+            <span class="chv"
+              ><img
+                src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
           </div>
-          <div class="tn-kids">
-
-            <!-- 1화 첫 만남 (닫힌 상태) -->
-            <div class="tn closed" id="ep-1">
-              <div class="tn-row" style="--indent:32px" onclick="tglTn('ep-1')">
-                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+          <div class="sb-grp-bd">
+            <div class="tn" id="fav-pj1">
+              <div
+                class="tn-row"
+                style="--indent: 16px"
+                onclick="tglTn('fav-pj1')"
+              >
+                <span class="tn-chv"
+                  ><img
+                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                /></span>
                 <span class="tn-ic">
-                  <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                  <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+                  <img
+                    class="ic-c"
+                    src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
+                  <img
+                    class="ic-o"
+                    src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
                 </span>
-                <span class="tn-lbl">1화 첫 만남</span>
+                <span class="tn-lbl">고양이와 강아지</span>
+                <span class="tn-cnt">4</span>
               </div>
               <div class="tn-kids">
-                <div class="tn leaf"><div class="tn-row" style="--indent:48px" onclick="navTo('page','e1-p01')"><span class="tn-chv leaf"></span><span class="tn-ic"><img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt=""><img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt=""></span><span class="tn-lbl">1p</span></div></div>
-                <div class="tn leaf"><div class="tn-row" style="--indent:48px" onclick="navTo('page','e1-p02')"><span class="tn-chv leaf"></span><span class="tn-ic"><img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt=""><img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt=""></span><span class="tn-lbl">2p</span></div></div>
-              </div>
-            </div>
-
-            <!-- 2화 공원의 하루 (닫힌 상태) -->
-            <div class="tn closed" id="ep-2">
-              <div class="tn-row" style="--indent:32px" onclick="tglTn('ep-2')">
-                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-                <span class="tn-ic">
-                  <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                  <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                </span>
-                <span class="tn-lbl">2화 공원의 하루</span>
-              </div>
-              <div class="tn-kids">
-                <div class="tn leaf"><div class="tn-row" style="--indent:48px" onclick="navTo('page','e2-p01')"><span class="tn-chv leaf"></span><span class="tn-ic"><img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt=""><img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt=""></span><span class="tn-lbl">1p</span></div></div>
-                <div class="tn leaf"><div class="tn-row" style="--indent:48px" onclick="navTo('page','e2-p02')"><span class="tn-chv leaf"></span><span class="tn-ic"><img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt=""><img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt=""></span><span class="tn-lbl">2p</span></div></div>
-                <div class="tn leaf"><div class="tn-row" style="--indent:48px" onclick="navTo('page','e2-p03')"><span class="tn-chv leaf"></span><span class="tn-ic"><img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt=""><img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt=""></span><span class="tn-lbl">3p</span></div></div>
-              </div>
-            </div>
-
-            <!-- 3화 이웃 친구들 (펼쳐진 상태, p.03 선택됨) -->
-            <div class="tn" id="ep-3">
-              <div class="tn-row" style="--indent:32px" onclick="tglTn('ep-3')">
-                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-                <span class="tn-ic">
-                  <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                  <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                </span>
-                <span class="tn-lbl">3화 이웃 친구들</span>
-              </div>
-              <div class="tn-kids">
-                <div class="tn leaf"><div class="tn-row" style="--indent:48px" onclick="navTo('page','e3-p01')"><span class="tn-chv leaf"></span><span class="tn-ic"><img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt=""><img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt=""></span><span class="tn-lbl">1p</span></div></div>
-                <div class="tn leaf"><div class="tn-row" style="--indent:48px" onclick="navTo('page','e3-p02')"><span class="tn-chv leaf"></span><span class="tn-ic"><img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt=""><img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt=""></span><span class="tn-lbl">2p</span></div></div>
-                <div class="tn leaf" id="pg-active"><div class="tn-row on" style="--indent:48px" onclick="navTo('page','e3-p03')"><span class="tn-chv leaf"></span><span class="tn-ic"><img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt=""><img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt=""></span><span class="tn-lbl">3p</span></div></div>
-                <div class="tn leaf"><div class="tn-row" style="--indent:48px" onclick="navTo('page','e3-p04')"><span class="tn-chv leaf"></span><span class="tn-ic"><img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt=""><img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt=""></span><span class="tn-lbl">4p</span></div></div>
-              </div>
-            </div>
-
-            <!-- 4화 비 오는 날 (닫힌 상태) -->
-            <div class="tn closed" id="ep-4">
-              <div class="tn-row" style="--indent:32px" onclick="tglTn('ep-4')">
-                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-                <span class="tn-ic">
-                  <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                  <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                </span>
-                <span class="tn-lbl">4화 비 오는 날</span>
-              </div>
-              <div class="tn-kids">
-                <div class="tn leaf"><div class="tn-row" style="--indent:48px" onclick="navTo('page','e4-p01')"><span class="tn-chv leaf"></span><span class="tn-ic"><img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt=""><img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt=""></span><span class="tn-lbl">1p</span></div></div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- 프로젝트: 우주 탐험대 (닫힌 상태) -->
-        <div class="tn closed" id="pj-space">
-          <div class="tn-row" style="--indent:16px" onclick="tglTn('pj-space')">
-            <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-            <span class="tn-ic">
-              <img class="ic-c" src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-              <img class="ic-o" src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-            </span>
-            <span class="tn-lbl">우주 탐험대</span>
-            <span class="tn-cnt">2</span>
-          </div>
-          <div class="tn-kids">
-            <div class="tn closed" id="sp-ep1">
-              <div class="tn-row" style="--indent:32px" onclick="tglTn('sp-ep1')">
-                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-                <span class="tn-ic">
-                  <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                  <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                </span>
-                <span class="tn-lbl">1화 발사 준비</span>
-              </div>
-              <div class="tn-kids">
-                <div class="tn leaf"><div class="tn-row" style="--indent:48px"><span class="tn-chv leaf"></span><span class="tn-ic"><img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt=""><img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt=""></span><span class="tn-lbl">1p</span></div></div>
-              </div>
-            </div>
-            <div class="tn closed" id="sp-ep2">
-              <div class="tn-row" style="--indent:32px" onclick="tglTn('sp-ep2')">
-                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-                <span class="tn-ic">
-                  <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                  <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                </span>
-                <span class="tn-lbl">2화 첫 비행</span>
-              </div>
-              <div class="tn-kids">
-                <div class="tn leaf"><div class="tn-row" style="--indent:48px"><span class="tn-chv leaf"></span><span class="tn-ic"><img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt=""><img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt=""></span><span class="tn-lbl">1p</span></div></div>
-                <div class="tn leaf"><div class="tn-row" style="--indent:48px"><span class="tn-chv leaf"></span><span class="tn-ic"><img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt=""><img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt=""></span><span class="tn-lbl">2p</span></div></div>
+                <div class="tn closed" id="fav-ep1">
+                  <div
+                    class="tn-row"
+                    style="--indent: 32px"
+                    onclick="tglTn('fav-ep1')"
+                  >
+                    <span class="tn-chv"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
+                    <span class="tn-ic">
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                    </span>
+                    <span class="tn-lbl">1화 첫 만남</span>
+                  </div>
+                  <div class="tn-kids">
+                    <div class="tn leaf">
+                      <div
+                        class="tn-row"
+                        style="--indent: 48px"
+                        onclick="navTo('page', 'fav-p01')"
+                      >
+                        <span class="tn-chv leaf"></span
+                        ><span class="tn-ic"
+                          ><img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt="" /><img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt="" /></span
+                        ><span class="tn-lbl">1p</span>
+                      </div>
+                    </div>
+                    <div class="tn leaf">
+                      <div
+                        class="tn-row"
+                        style="--indent: 48px"
+                        onclick="navTo('page', 'fav-p02')"
+                      >
+                        <span class="tn-chv leaf"></span
+                        ><span class="tn-ic"
+                          ><img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt="" /><img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt="" /></span
+                        ><span class="tn-lbl">2p</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-      </div>
-    </div>
-
-    <!-- 👥 공유 책장 -->
-    <div class="sb-grp" id="grp-shared">
-      <div class="sb-grp-hd" onclick="tglGrp('grp-shared')">
-        <span class="ic"><img src="../../src/assets/images/diversity_3_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-        <span class="lbl">공유 책장</span>
-        <span class="chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-      </div>
-      <div class="sb-grp-bd">
-        <div class="tn closed" id="sh-pj1">
-          <div class="tn-row" style="--indent:16px" onclick="tglTn('sh-pj1')">
-            <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-            <span class="tn-ic">
-              <img class="ic-c" src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-              <img class="ic-o" src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-            </span>
-            <span class="tn-lbl">친구의 프로젝트</span>
-            <span class="tn-cnt">1</span>
+        <!-- 🏠 나의 책장 -->
+        <div class="sb-grp" id="grp-my">
+          <div class="sb-grp-hd" onclick="tglGrp('grp-my')">
+            <span class="ic"
+              ><img
+                src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
+            <span class="lbl">나의 책장</span>
+            <span class="chv"
+              ><img
+                src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
           </div>
-          <div class="tn-kids">
-            <div class="tn closed" id="sh-ep1">
-              <div class="tn-row" style="--indent:32px" onclick="tglTn('sh-ep1')">
-                <span class="tn-chv"><img src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
+          <div class="sb-grp-bd">
+            <!-- 프로젝트: 고양이와 강아지 (활성, 펼쳐진 상태) -->
+            <div class="tn" id="pj-cat">
+              <div
+                class="tn-row"
+                style="--indent: 16px"
+                onclick="tglTn('pj-cat')"
+              >
+                <span class="tn-chv"
+                  ><img
+                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                /></span>
                 <span class="tn-ic">
-                  <img class="ic-c" src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-                  <img class="ic-o" src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
+                  <img
+                    class="ic-c"
+                    src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
+                  <img
+                    class="ic-o"
+                    src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
                 </span>
-                <span class="tn-lbl">1화 시작</span>
+                <span class="tn-lbl">고양이와 강아지</span>
+                <span class="tn-cnt">4</span>
               </div>
               <div class="tn-kids">
-                <div class="tn leaf"><div class="tn-row" style="--indent:48px"><span class="tn-chv leaf"></span><span class="tn-ic"><img class="ic-c" src="../../src/assets/images/page-svgrepo-com.svg" alt=""><img class="ic-o" src="../../src/assets/images/page-edit-svgrepo-com.svg" alt=""></span><span class="tn-lbl">1p</span></div></div>
+                <!-- 1화 첫 만남 (닫힌 상태) -->
+                <div class="tn closed" id="ep-1">
+                  <div
+                    class="tn-row"
+                    style="--indent: 32px"
+                    onclick="tglTn('ep-1')"
+                  >
+                    <span class="tn-chv"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
+                    <span class="tn-ic">
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                    </span>
+                    <span class="tn-lbl">1화 첫 만남</span>
+                  </div>
+                  <div class="tn-kids">
+                    <div class="tn leaf">
+                      <div
+                        class="tn-row"
+                        style="--indent: 48px"
+                        onclick="navTo('page', 'e1-p01')"
+                      >
+                        <span class="tn-chv leaf"></span
+                        ><span class="tn-ic"
+                          ><img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt="" /><img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt="" /></span
+                        ><span class="tn-lbl">1p</span>
+                      </div>
+                    </div>
+                    <div class="tn leaf">
+                      <div
+                        class="tn-row"
+                        style="--indent: 48px"
+                        onclick="navTo('page', 'e1-p02')"
+                      >
+                        <span class="tn-chv leaf"></span
+                        ><span class="tn-ic"
+                          ><img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt="" /><img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt="" /></span
+                        ><span class="tn-lbl">2p</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 2화 공원의 하루 (닫힌 상태) -->
+                <div class="tn closed" id="ep-2">
+                  <div
+                    class="tn-row"
+                    style="--indent: 32px"
+                    onclick="tglTn('ep-2')"
+                  >
+                    <span class="tn-chv"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
+                    <span class="tn-ic">
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                    </span>
+                    <span class="tn-lbl">2화 공원의 하루</span>
+                  </div>
+                  <div class="tn-kids">
+                    <div class="tn leaf">
+                      <div
+                        class="tn-row"
+                        style="--indent: 48px"
+                        onclick="navTo('page', 'e2-p01')"
+                      >
+                        <span class="tn-chv leaf"></span
+                        ><span class="tn-ic"
+                          ><img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt="" /><img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt="" /></span
+                        ><span class="tn-lbl">1p</span>
+                      </div>
+                    </div>
+                    <div class="tn leaf">
+                      <div
+                        class="tn-row"
+                        style="--indent: 48px"
+                        onclick="navTo('page', 'e2-p02')"
+                      >
+                        <span class="tn-chv leaf"></span
+                        ><span class="tn-ic"
+                          ><img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt="" /><img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt="" /></span
+                        ><span class="tn-lbl">2p</span>
+                      </div>
+                    </div>
+                    <div class="tn leaf">
+                      <div
+                        class="tn-row"
+                        style="--indent: 48px"
+                        onclick="navTo('page', 'e2-p03')"
+                      >
+                        <span class="tn-chv leaf"></span
+                        ><span class="tn-ic"
+                          ><img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt="" /><img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt="" /></span
+                        ><span class="tn-lbl">3p</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 3화 이웃 친구들 (펼쳐진 상태, 3p 선택됨) -->
+                <div class="tn" id="ep-3">
+                  <div
+                    class="tn-row"
+                    style="--indent: 32px"
+                    onclick="tglTn('ep-3')"
+                  >
+                    <span class="tn-chv"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
+                    <span class="tn-ic">
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                    </span>
+                    <span class="tn-lbl">3화 이웃 친구들</span>
+                  </div>
+                  <div class="tn-kids">
+                    <div class="tn leaf">
+                      <div
+                        class="tn-row"
+                        style="--indent: 48px"
+                        onclick="navTo('page', 'e3-p01')"
+                      >
+                        <span class="tn-chv leaf"></span
+                        ><span class="tn-ic"
+                          ><img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt="" /><img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt="" /></span
+                        ><span class="tn-lbl">1p</span>
+                      </div>
+                    </div>
+                    <div class="tn leaf">
+                      <div
+                        class="tn-row"
+                        style="--indent: 48px"
+                        onclick="navTo('page', 'e3-p02')"
+                      >
+                        <span class="tn-chv leaf"></span
+                        ><span class="tn-ic"
+                          ><img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt="" /><img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt="" /></span
+                        ><span class="tn-lbl">2p</span>
+                      </div>
+                    </div>
+                    <div class="tn leaf" id="pg-active">
+                      <div
+                        class="tn-row on"
+                        style="--indent: 48px"
+                        onclick="navTo('page', 'e3-p03')"
+                      >
+                        <span class="tn-chv leaf"></span
+                        ><span class="tn-ic"
+                          ><img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt="" /><img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt="" /></span
+                        ><span class="tn-lbl">3p</span>
+                      </div>
+                    </div>
+                    <div class="tn leaf">
+                      <div
+                        class="tn-row"
+                        style="--indent: 48px"
+                        onclick="navTo('page', 'e3-p04')"
+                      >
+                        <span class="tn-chv leaf"></span
+                        ><span class="tn-ic"
+                          ><img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt="" /><img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt="" /></span
+                        ><span class="tn-lbl">4p</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 4화 비 오는 날 (닫힌 상태) -->
+                <div class="tn closed" id="ep-4">
+                  <div
+                    class="tn-row"
+                    style="--indent: 32px"
+                    onclick="tglTn('ep-4')"
+                  >
+                    <span class="tn-chv"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
+                    <span class="tn-ic">
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                    </span>
+                    <span class="tn-lbl">4화 비 오는 날</span>
+                  </div>
+                  <div class="tn-kids">
+                    <div class="tn leaf">
+                      <div
+                        class="tn-row"
+                        style="--indent: 48px"
+                        onclick="navTo('page', 'e4-p01')"
+                      >
+                        <span class="tn-chv leaf"></span
+                        ><span class="tn-ic"
+                          ><img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt="" /><img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt="" /></span
+                        ><span class="tn-lbl">1p</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 프로젝트: 우주 탐험대 (닫힌 상태) -->
+            <div class="tn closed" id="pj-space">
+              <div
+                class="tn-row"
+                style="--indent: 16px"
+                onclick="tglTn('pj-space')"
+              >
+                <span class="tn-chv"
+                  ><img
+                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                /></span>
+                <span class="tn-ic">
+                  <img
+                    class="ic-c"
+                    src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
+                  <img
+                    class="ic-o"
+                    src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
+                </span>
+                <span class="tn-lbl">우주 탐험대</span>
+                <span class="tn-cnt">2</span>
+              </div>
+              <div class="tn-kids">
+                <div class="tn closed" id="sp-ep1">
+                  <div
+                    class="tn-row"
+                    style="--indent: 32px"
+                    onclick="tglTn('sp-ep1')"
+                  >
+                    <span class="tn-chv"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
+                    <span class="tn-ic">
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                    </span>
+                    <span class="tn-lbl">1화 발사 준비</span>
+                  </div>
+                  <div class="tn-kids">
+                    <div class="tn leaf">
+                      <div class="tn-row" style="--indent: 48px">
+                        <span class="tn-chv leaf"></span
+                        ><span class="tn-ic"
+                          ><img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt="" /><img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt="" /></span
+                        ><span class="tn-lbl">1p</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tn closed" id="sp-ep2">
+                  <div
+                    class="tn-row"
+                    style="--indent: 32px"
+                    onclick="tglTn('sp-ep2')"
+                  >
+                    <span class="tn-chv"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
+                    <span class="tn-ic">
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                    </span>
+                    <span class="tn-lbl">2화 첫 비행</span>
+                  </div>
+                  <div class="tn-kids">
+                    <div class="tn leaf">
+                      <div class="tn-row" style="--indent: 48px">
+                        <span class="tn-chv leaf"></span
+                        ><span class="tn-ic"
+                          ><img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt="" /><img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt="" /></span
+                        ><span class="tn-lbl">1p</span>
+                      </div>
+                    </div>
+                    <div class="tn leaf">
+                      <div class="tn-row" style="--indent: 48px">
+                        <span class="tn-chv leaf"></span
+                        ><span class="tn-ic"
+                          ><img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt="" /><img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt="" /></span
+                        ><span class="tn-lbl">2p</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 👥 공유 책장 -->
+        <div class="sb-grp" id="grp-shared">
+          <div class="sb-grp-hd" onclick="tglGrp('grp-shared')">
+            <span class="ic"
+              ><img
+                src="../../src/assets/images/diversity_3_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
+            <span class="lbl">공유 책장</span>
+            <span class="chv"
+              ><img
+                src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt=""
+            /></span>
+          </div>
+          <div class="sb-grp-bd">
+            <div class="tn closed" id="sh-pj1">
+              <div
+                class="tn-row"
+                style="--indent: 16px"
+                onclick="tglTn('sh-pj1')"
+              >
+                <span class="tn-chv"
+                  ><img
+                    src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                /></span>
+                <span class="tn-ic">
+                  <img
+                    class="ic-c"
+                    src="../../src/assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
+                  <img
+                    class="ic-o"
+                    src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                    alt=""
+                  />
+                </span>
+                <span class="tn-lbl">친구의 프로젝트</span>
+                <span class="tn-cnt">1</span>
+              </div>
+              <div class="tn-kids">
+                <div class="tn closed" id="sh-ep1">
+                  <div
+                    class="tn-row"
+                    style="--indent: 32px"
+                    onclick="tglTn('sh-ep1')"
+                  >
+                    <span class="tn-chv"
+                      ><img
+                        src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                    /></span>
+                    <span class="tn-ic">
+                      <img
+                        class="ic-c"
+                        src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                      <img
+                        class="ic-o"
+                        src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                        alt=""
+                      />
+                    </span>
+                    <span class="tn-lbl">1화 시작</span>
+                  </div>
+                  <div class="tn-kids">
+                    <div class="tn leaf">
+                      <div class="tn-row" style="--indent: 48px">
+                        <span class="tn-chv leaf"></span
+                        ><span class="tn-ic"
+                          ><img
+                            class="ic-c"
+                            src="../../src/assets/images/page-svgrepo-com.svg"
+                            alt="" /><img
+                            class="ic-o"
+                            src="../../src/assets/images/page-edit-svgrepo-com.svg"
+                            alt="" /></span
+                        ><span class="tn-lbl">1p</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-  </div>
+      <!-- ── RAIL NAV (접힌 상태에서만 표시) ── -->
+      <div class="sb-rail-nav">
+        <div class="rn-item" title="나의 책장">
+          <img
+            src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt=""
+          />
+          <div class="rn-pop">
+            <div class="rn-pop-hd">나의 책장</div>
+            <div class="rn-pop-i on">고양이와 강아지</div>
+            <div class="rn-pop-i">우주 탐험대</div>
+          </div>
+        </div>
+        <div class="rn-item" title="프로젝트">
+          <img
+            src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt=""
+          />
+          <div class="rn-pop">
+            <div class="rn-pop-hd">고양이와 강아지</div>
+            <div class="rn-pop-i">1화 첫 만남</div>
+            <div class="rn-pop-i">2화 공원의 하루</div>
+            <div class="rn-pop-i on">3화 이웃 친구들</div>
+            <div class="rn-pop-i">4화 비 오는 날</div>
+          </div>
+        </div>
+        <div class="rn-item on" title="에피소드">
+          <img
+            src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            alt=""
+          />
+          <div class="rn-pop">
+            <div class="rn-pop-hd">3화 이웃 친구들</div>
+            <div class="rn-pop-i">1p</div>
+            <div class="rn-pop-i">2p</div>
+            <div class="rn-pop-i on">3p</div>
+            <div class="rn-pop-i">4p</div>
+          </div>
+        </div>
+        <div class="rn-item" title="페이지">
+          <img src="../../src/assets/images/page-svgrepo-com.svg" alt="" />
+        </div>
+      </div>
 
-  <!-- ── RAIL NAV (접힌 상태에서만 표시) ── -->
-  <div class="sb-rail-nav">
-    <div class="rn-item" title="나의 책장">
-      <img src="../../src/assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-      <div class="rn-pop">
-        <div class="rn-pop-hd">나의 책장</div>
-        <div class="rn-pop-i on">고양이와 강아지</div>
-        <div class="rn-pop-i">우주 탐험대</div>
+      <!-- ── FOOTER ── -->
+      <div class="sb-ft">
+        <div class="sb-av">베</div>
+        <span class="sb-ft-name sb-exp">베베</span>
+      </div>
+    </aside>
+
+    <!-- ═══ DEMO MAIN (단독 테스트용) ═══ -->
+    <div class="demo-main">
+      <div class="demo-hd">
+        <span class="demo-hd-ttl">Sidebar Reference</span>
+        <span class="demo-hd-sub"
+          >펼침(220px) ↔ 접힘(44px rail) 토글 테스트</span
+        >
+      </div>
+      <div class="demo-bd">
+        메인 콘텐츠 영역 — 사이드바를 펼치거나 접어 보세요
       </div>
     </div>
-    <div class="rn-item" title="프로젝트">
-      <img src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-      <div class="rn-pop">
-        <div class="rn-pop-hd">고양이와 강아지</div>
-        <div class="rn-pop-i">1화 첫 만남</div>
-        <div class="rn-pop-i">2화 공원의 하루</div>
-        <div class="rn-pop-i on">3화 이웃 친구들</div>
-        <div class="rn-pop-i">4화 비 오는 날</div>
-      </div>
-    </div>
-    <div class="rn-item on" title="에피소드">
-      <img src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">
-      <div class="rn-pop">
-        <div class="rn-pop-hd">3화 이웃 친구들</div>
-        <div class="rn-pop-i">1p</div>
-        <div class="rn-pop-i">2p</div>
-        <div class="rn-pop-i on">3p</div>
-        <div class="rn-pop-i">4p</div>
-      </div>
-    </div>
-    <div class="rn-item" title="페이지">
-      <img src="../../src/assets/images/page-svgrepo-com.svg" alt="">
-    </div>
-  </div>
 
-  <!-- ── FOOTER ── -->
-  <div class="sb-ft">
-    <div class="sb-av">베</div>
-    <span class="sb-ft-name sb-exp">베베</span>
-  </div>
+    <!-- ═══ COMPONENT SLOTS (import용) ═══ -->
+    <div id="search-slot"></div>
+    <div id="memo-slot"></div>
 
-</aside>
+    <script>
+      /* ─── Sidebar toggle ─── */
+      function tglSb() {
+        document.getElementById("sb").classList.toggle("rail");
+      }
 
-<!-- ═══ DEMO MAIN (단독 테스트용) ═══ -->
-<div class="demo-main">
-  <div class="demo-hd">
-    <span class="demo-hd-ttl">Sidebar Reference</span>
-    <span class="demo-hd-sub">펼침(220px) ↔ 접힘(44px rail) 토글 테스트</span>
-  </div>
-  <div class="demo-bd">메인 콘텐츠 영역 — 사이드바를 펼치거나 접어 보세요</div>
-</div>
+      /* ─── Group toggle ─── */
+      function tglGrp(id) {
+        document.getElementById(id).classList.toggle("closed");
+      }
 
-<!-- ═══ COMPONENT SLOTS (import용) ═══ -->
-<div id="search-slot"></div>
-<div id="memo-slot"></div>
+      /* ─── Tree node toggle ─── */
+      function tglTn(id) {
+        document.getElementById(id).classList.toggle("closed");
+      }
 
-<script>
-/* ─── Sidebar toggle ─── */
-function tglSb() {
-  document.getElementById('sb').classList.toggle('rail');
-}
+      /* ─── Navigation stub ─── */
+      function navTo(type, id) {
+        document.querySelectorAll(".tn-row.on").forEach(function (el) {
+          el.classList.remove("on");
+        });
+        if (event && event.currentTarget) {
+          event.currentTarget.classList.add("on");
+        }
+        console.log("[nav]", type, id);
+      }
 
-/* ─── Group toggle ─── */
-function tglGrp(id) {
-  document.getElementById(id).classList.toggle('closed');
-}
+      /* ─── Search modal open stub ─── */
+      function openSearch() {
+        var ov = document.getElementById("s-ov");
+        if (ov) {
+          ov.classList.add("open");
+          var inp = ov.querySelector("input");
+          if (inp) inp.focus();
+          return;
+        }
+        console.log("[stub] search modal not loaded");
+      }
 
-/* ─── Tree node toggle ─── */
-function tglTn(id) {
-  document.getElementById(id).classList.toggle('closed');
-}
+      /* ─── Component import helper ─── */
+      function loadComponent(url, slotId, cb) {
+        var slot = document.getElementById(slotId);
+        if (!slot) return;
+        fetch(url)
+          .then(function (r) {
+            if (!r.ok) throw new Error(r.status);
+            return r.text();
+          })
+          .then(function (html) {
+            var wrap = document.createElement("div");
+            wrap.innerHTML = html;
+            slot.parentNode.replaceChild(wrap, slot);
+            var scripts = wrap.querySelectorAll("script");
+            scripts.forEach(function (s) {
+              var ns = document.createElement("script");
+              ns.textContent = s.textContent;
+              document.body.appendChild(ns);
+            });
+            if (cb) cb();
+          })
+          .catch(function (e) {
+            console.warn("[loadComponent]", url, e.message);
+          });
+      }
 
-/* ─── Navigation stub ─── */
-function navTo(type, id) {
-  document.querySelectorAll('.tn-row.on').forEach(function(el) {
-    el.classList.remove('on');
-  });
-  if (event && event.currentTarget) {
-    event.currentTarget.classList.add('on');
-  }
-  console.log('[nav]', type, id);
-}
+      /* ─── Rail nav hover (마우스 터널링 방지, 180ms 지연) ─── */
+      function initRailNav() {
+        var closeTimer = null;
+        var activePop = null;
 
-/* ─── Search modal open stub ─── */
-function openSearch() {
-  var ov = document.getElementById('s-ov');
-  if (ov) {
-    ov.classList.add('open');
-    var inp = ov.querySelector('input');
-    if (inp) inp.focus();
-    return;
-  }
-  console.log('[stub] search modal not loaded');
-}
+        function showPop(pop) {
+          if (closeTimer) {
+            clearTimeout(closeTimer);
+            closeTimer = null;
+          }
+          if (activePop && activePop !== pop) {
+            activePop.classList.remove("visible");
+          }
+          activePop = pop || null;
+          if (activePop) activePop.classList.add("visible");
+        }
 
-/* ─── Component import helper ─── */
-function loadComponent(url, slotId, cb) {
-  var slot = document.getElementById(slotId);
-  if (!slot) return;
-  fetch(url)
-    .then(function(r) {
-      if (!r.ok) throw new Error(r.status);
-      return r.text();
-    })
-    .then(function(html) {
-      var wrap = document.createElement('div');
-      wrap.innerHTML = html;
-      slot.parentNode.replaceChild(wrap, slot);
-      var scripts = wrap.querySelectorAll('script');
-      scripts.forEach(function(s) {
-        var ns = document.createElement('script');
-        ns.textContent = s.textContent;
-        document.body.appendChild(ns);
+        function scheduleHide() {
+          closeTimer = setTimeout(function () {
+            if (activePop) {
+              activePop.classList.remove("visible");
+              activePop = null;
+            }
+            closeTimer = null;
+          }, 180);
+        }
+
+        document.querySelectorAll(".rn-item").forEach(function (item) {
+          var pop = item.querySelector(".rn-pop");
+          item.addEventListener("mouseenter", function () {
+            showPop(pop || null);
+          });
+          item.addEventListener("mouseleave", function (e) {
+            if (pop && e.relatedTarget && pop.contains(e.relatedTarget)) return;
+            scheduleHide();
+          });
+          if (pop) {
+            pop.addEventListener("mouseenter", function () {
+              if (closeTimer) {
+                clearTimeout(closeTimer);
+                closeTimer = null;
+              }
+            });
+            pop.addEventListener("mouseleave", scheduleHide);
+          }
+        });
+      }
+
+      /* ─── Auto-load search & memo ─── */
+      document.addEventListener("DOMContentLoaded", function () {
+        initRailNav();
+        loadComponent("proto-search.html", "search-slot");
+        loadComponent("proto-memopanel.html", "memo-slot");
       });
-      if (cb) cb();
-    })
-    .catch(function(e) {
-      console.warn('[loadComponent]', url, e.message);
-    });
-}
-
-/* ─── Rail nav hover (마우스 터널링 방지, 180ms 지연) ─── */
-function initRailNav() {
-  var closeTimer = null;
-  var activePop = null;
-
-  function showPop(pop) {
-    if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
-    if (activePop && activePop !== pop) {
-      activePop.classList.remove('visible');
-    }
-    activePop = pop || null;
-    if (activePop) activePop.classList.add('visible');
-  }
-
-  function scheduleHide() {
-    closeTimer = setTimeout(function() {
-      if (activePop) { activePop.classList.remove('visible'); activePop = null; }
-      closeTimer = null;
-    }, 180);
-  }
-
-  document.querySelectorAll('.rn-item').forEach(function(item) {
-    var pop = item.querySelector('.rn-pop');
-    item.addEventListener('mouseenter', function() { showPop(pop || null); });
-    item.addEventListener('mouseleave', function(e) {
-      if (pop && e.relatedTarget && pop.contains(e.relatedTarget)) return;
-      scheduleHide();
-    });
-    if (pop) {
-      pop.addEventListener('mouseenter', function() {
-        if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
-      });
-      pop.addEventListener('mouseleave', scheduleHide);
-    }
-  });
-}
-
-/* ─── Auto-load search & memo ─── */
-document.addEventListener('DOMContentLoaded', function() {
-  initRailNav();
-  loadComponent('proto-search.html', 'search-slot');
-  loadComponent('proto-memopanel.html', 'memo-slot');
-});
-</script>
-
-</body>
+    </script>
+  </body>
 </html>

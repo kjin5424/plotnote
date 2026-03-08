@@ -8,176 +8,267 @@
 ═══════════════════════════════════════════════════════ -->
 
 <!-- ─── 단독 테스트 wrapper (import 시 무시됨) ─── -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-<meta charset="UTF-8">
-<title>PlotNote — Search Modal</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="proto-style.css">
-<link rel="stylesheet" href="proto-search.css">
-<style>
-.test-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999;display:flex;gap:8px}
-.test-bar button{padding:6px 14px;border-radius:6px;border:1px solid #d5d2cb;background:#fefefe;font-size:11px;color:#4a4a4a;cursor:pointer}
-.test-bar button:hover{border-color:#2a4d88;color:#2a4d88}
-</style>
-</head>
-<body style="background:#f7f6f3">
+  <head>
+    <meta charset="UTF-8" />
+    <title>PlotNote — Search Modal</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="proto-style.css" />
+    <link rel="stylesheet" href="proto-search.css" />
+    <style>
+      .test-bar {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 999;
+        display: flex;
+        gap: 8px;
+      }
+      .test-bar button {
+        padding: 6px 14px;
+        border-radius: 6px;
+        border: 1px solid #d5d2cb;
+        background: #fefefe;
+        font-size: 11px;
+        color: #4a4a4a;
+        cursor: pointer;
+      }
+      .test-bar button:hover {
+        border-color: #2a4d88;
+        color: #2a4d88;
+      }
+    </style>
+  </head>
+  <body style="background: #f7f6f3">
+    <!-- ═══ SEARCH MODAL COMPONENT START ═══ -->
+    <div class="s-ov" id="s-ov" onclick="closeSearch(event)">
+      <div class="s-box" onclick="event.stopPropagation()">
+        <!-- 검색 입력 -->
+        <div class="s-in">
+          <span class="s-in-ic">
+            <img
+              src="../../src/assets/images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+              alt="검색"
+            />
+          </span>
+          <input
+            type="text"
+            id="s-input"
+            placeholder="프로젝트, 에피소드, 페이지, 컷 검색..."
+            autocomplete="off"
+            onkeydown="if (event.key === 'Escape') closeSearch();"
+          />
+        </div>
 
-<!-- ═══ SEARCH MODAL COMPONENT START ═══ -->
-<div class="s-ov" id="s-ov" onclick="closeSearch(event)">
-  <div class="s-box" onclick="event.stopPropagation()">
+        <!-- 탭 바 -->
+        <div class="s-tabs" id="s-tabs">
+          <div class="s-tab on" data-tab="project" onclick="switchSTab(this)">
+            프로젝트
+          </div>
+          <div class="s-tab" data-tab="episode" onclick="switchSTab(this)">
+            에피소드
+          </div>
+          <div class="s-tab" data-tab="page" onclick="switchSTab(this)">
+            페이지
+          </div>
+          <div class="s-tab" data-tab="cut" onclick="switchSTab(this)">컷</div>
+        </div>
 
-    <!-- 검색 입력 -->
-    <div class="s-in">
-      <span class="s-in-ic">
-        <img src="../../src/assets/images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="검색">
-      </span>
-      <input type="text" id="s-input" placeholder="프로젝트, 에피소드, 페이지, 컷 검색..." autocomplete="off" onkeydown="if(event.key==='Escape')closeSearch()">
-    </div>
+        <!-- 결과 영역 -->
+        <div class="s-bd" id="s-bd">
+          <!-- 프로젝트 탭 결과 (기본 표시) -->
+          <div class="s-panel" data-panel="project">
+            <div class="s-row" onclick="closeSearch()">
+              <span class="s-row-ic"
+                ><img
+                  src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                  alt=""
+              /></span>
+              <div class="s-row-info">
+                <div class="s-row-title">
+                  <span class="s-hl">고양이</span>와 강아지
+                </div>
+                <div class="s-row-path">나의 책장</div>
+              </div>
+            </div>
+            <div class="s-row" onclick="closeSearch()">
+              <span class="s-row-ic"
+                ><img
+                  src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                  alt=""
+              /></span>
+              <div class="s-row-info">
+                <div class="s-row-title">우주 탐험대</div>
+                <div class="s-row-path">나의 책장</div>
+              </div>
+            </div>
+            <div class="s-row" onclick="closeSearch()">
+              <span class="s-row-ic"
+                ><img
+                  src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                  alt=""
+              /></span>
+              <div class="s-row-info">
+                <div class="s-row-title">친구의 프로젝트</div>
+                <div class="s-row-path">공유 책장</div>
+              </div>
+            </div>
+          </div>
 
-    <!-- 탭 바 -->
-    <div class="s-tabs" id="s-tabs">
-      <div class="s-tab on" data-tab="project" onclick="switchSTab(this)">프로젝트</div>
-      <div class="s-tab" data-tab="episode" onclick="switchSTab(this)">에피소드</div>
-      <div class="s-tab" data-tab="page" onclick="switchSTab(this)">페이지</div>
-      <div class="s-tab" data-tab="cut" onclick="switchSTab(this)">컷</div>
-    </div>
+          <!-- 에피소드 탭 결과 -->
+          <div class="s-panel" data-panel="episode" style="display: none">
+            <div class="s-row" onclick="closeSearch()">
+              <span class="s-row-ic"
+                ><img
+                  src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                  alt=""
+              /></span>
+              <div class="s-row-info">
+                <div class="s-row-title">1화 첫 만남</div>
+                <div class="s-row-path">
+                  <span class="s-hl">고양이</span>와 강아지
+                </div>
+              </div>
+            </div>
+            <div class="s-row" onclick="closeSearch()">
+              <span class="s-row-ic"
+                ><img
+                  src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                  alt=""
+              /></span>
+              <div class="s-row-info">
+                <div class="s-row-title">3화 이웃 친구들</div>
+                <div class="s-row-path">
+                  <span class="s-hl">고양이</span>와 강아지
+                </div>
+              </div>
+            </div>
+            <div class="s-row" onclick="closeSearch()">
+              <span class="s-row-ic"
+                ><img
+                  src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                  alt=""
+              /></span>
+              <div class="s-row-info">
+                <div class="s-row-title">1화 발사 준비</div>
+                <div class="s-row-path">우주 탐험대</div>
+              </div>
+            </div>
+          </div>
 
-    <!-- 결과 영역 -->
-    <div class="s-bd" id="s-bd">
+          <!-- 페이지 탭 결과 -->
+          <div class="s-panel" data-panel="page" style="display: none">
+            <div class="s-row" onclick="closeSearch()">
+              <span class="s-row-ic"
+                ><img src="../../src/assets/images/page-svgrepo-com.svg" alt=""
+              /></span>
+              <div class="s-row-info">
+                <div class="s-row-title">
+                  3p — "<span class="s-hl">고양이</span>가 처음 나오는 장면"
+                </div>
+                <div class="s-row-path">
+                  <span class="s-hl">고양이</span>와 강아지 &gt; 3화 이웃 친구들
+                </div>
+              </div>
+            </div>
+            <div class="s-row" onclick="closeSearch()">
+              <span class="s-row-ic"
+                ><img src="../../src/assets/images/page-svgrepo-com.svg" alt=""
+              /></span>
+              <div class="s-row-info">
+                <div class="s-row-title">1p — 표지</div>
+                <div class="s-row-path">
+                  <span class="s-hl">고양이</span>와 강아지 &gt; 1화 첫 만남
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <!-- 프로젝트 탭 결과 (기본 표시) -->
-      <div class="s-panel" data-panel="project">
-        <div class="s-row" onclick="closeSearch()">
-          <span class="s-row-ic"><img src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-          <div class="s-row-info">
-            <div class="s-row-title"><span class="s-hl">고양이</span>와 강아지</div>
-            <div class="s-row-path">나의 책장</div>
+          <!-- 컷 탭 결과 -->
+          <div class="s-panel" data-panel="cut" style="display: none">
+            <div class="s-row" onclick="closeSearch()">
+              <span class="s-row-ic"
+                ><img
+                  src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                  alt=""
+              /></span>
+              <div class="s-row-info">
+                <div class="s-row-title">
+                  컷 2 — "<span class="s-hl">고양이</span>의 눈 클로즈업"
+                </div>
+                <div class="s-row-path">
+                  <span class="s-hl">고양이</span>와 강아지 &gt; 3화 &gt; 3p
+                </div>
+              </div>
+            </div>
+            <div class="s-row" onclick="closeSearch()">
+              <span class="s-row-ic"
+                ><img
+                  src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                  alt=""
+              /></span>
+              <div class="s-row-info">
+                <div class="s-row-title">컷 1 — 전경 롱샷</div>
+                <div class="s-row-path">
+                  <span class="s-hl">고양이</span>와 강아지 &gt; 1화 &gt; 1p
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="s-row" onclick="closeSearch()">
-          <span class="s-row-ic"><img src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-          <div class="s-row-info">
-            <div class="s-row-title">우주 탐험대</div>
-            <div class="s-row-path">나의 책장</div>
-          </div>
-        </div>
-        <div class="s-row" onclick="closeSearch()">
-          <span class="s-row-ic"><img src="../../src/assets/images/book_open_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-          <div class="s-row-info">
-            <div class="s-row-title">친구의 프로젝트</div>
-            <div class="s-row-path">공유 책장</div>
-          </div>
+
+        <!-- 하단 단축키 힌트 -->
+        <div class="s-esc">
+          <kbd>Esc</kbd> 닫기 &nbsp;&nbsp; <kbd>↑↓</kbd> 이동 &nbsp;&nbsp;
+          <kbd>Enter</kbd> 선택
         </div>
       </div>
-
-      <!-- 에피소드 탭 결과 -->
-      <div class="s-panel" data-panel="episode" style="display:none">
-        <div class="s-row" onclick="closeSearch()">
-          <span class="s-row-ic"><img src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-          <div class="s-row-info">
-            <div class="s-row-title">ep.1 첫 만남</div>
-            <div class="s-row-path"><span class="s-hl">고양이</span>와 강아지</div>
-          </div>
-        </div>
-        <div class="s-row" onclick="closeSearch()">
-          <span class="s-row-ic"><img src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-          <div class="s-row-info">
-            <div class="s-row-title">ep.3 이웃 친구들</div>
-            <div class="s-row-path"><span class="s-hl">고양이</span>와 강아지</div>
-          </div>
-        </div>
-        <div class="s-row" onclick="closeSearch()">
-          <span class="s-row-ic"><img src="../../src/assets/images/library_books_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-          <div class="s-row-info">
-            <div class="s-row-title">ep.1 발사 준비</div>
-            <div class="s-row-path">우주 탐험대</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 페이지 탭 결과 -->
-      <div class="s-panel" data-panel="page" style="display:none">
-        <div class="s-row" onclick="closeSearch()">
-          <span class="s-row-ic"><img src="../../src/assets/images/page-svgrepo-com.svg" alt=""></span>
-          <div class="s-row-info">
-            <div class="s-row-title">p.03 — "<span class="s-hl">고양이</span>가 처음 나오는 장면"</div>
-            <div class="s-row-path"><span class="s-hl">고양이</span>와 강아지 &gt; ep.3 이웃 친구들</div>
-          </div>
-        </div>
-        <div class="s-row" onclick="closeSearch()">
-          <span class="s-row-ic"><img src="../../src/assets/images/page-svgrepo-com.svg" alt=""></span>
-          <div class="s-row-info">
-            <div class="s-row-title">p.01 — 표지</div>
-            <div class="s-row-path"><span class="s-hl">고양이</span>와 강아지 &gt; ep.1 첫 만남</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 컷 탭 결과 -->
-      <div class="s-panel" data-panel="cut" style="display:none">
-        <div class="s-row" onclick="closeSearch()">
-          <span class="s-row-ic"><img src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-          <div class="s-row-info">
-            <div class="s-row-title">컷 2 — "<span class="s-hl">고양이</span>의 눈 클로즈업"</div>
-            <div class="s-row-path"><span class="s-hl">고양이</span>와 강아지 &gt; ep.3 &gt; p.03</div>
-          </div>
-        </div>
-        <div class="s-row" onclick="closeSearch()">
-          <span class="s-row-ic"><img src="../../src/assets/images/note_stack_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt=""></span>
-          <div class="s-row-info">
-            <div class="s-row-title">컷 1 — 전경 롱샷</div>
-            <div class="s-row-path"><span class="s-hl">고양이</span>와 강아지 &gt; ep.1 &gt; p.01</div>
-          </div>
-        </div>
-      </div>
-
     </div>
+    <!-- ═══ SEARCH MODAL COMPONENT END ═══ -->
 
-    <!-- 하단 단축키 힌트 -->
-    <div class="s-esc">
-      <kbd>Esc</kbd> 닫기 &nbsp;&nbsp; <kbd>↑↓</kbd> 이동 &nbsp;&nbsp; <kbd>Enter</kbd> 선택
+    <script>
+      function closeSearch(e) {
+        if (e && e.target !== e.currentTarget) return;
+        var ov = document.getElementById("s-ov");
+        if (ov) ov.classList.remove("open");
+      }
+
+      function openSearch() {
+        var ov = document.getElementById("s-ov");
+        if (ov) {
+          ov.classList.add("open");
+          var inp = document.getElementById("s-input");
+          if (inp) {
+            inp.value = "";
+            inp.focus();
+          }
+        }
+      }
+
+      function switchSTab(el) {
+        document.querySelectorAll("#s-tabs .s-tab").forEach(function (t) {
+          t.classList.remove("on");
+        });
+        el.classList.add("on");
+        var tab = el.getAttribute("data-tab");
+        document.querySelectorAll("#s-bd .s-panel").forEach(function (p) {
+          p.style.display = p.getAttribute("data-panel") === tab ? "" : "none";
+        });
+      }
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closeSearch();
+      });
+    </script>
+
+    <!-- 단독 테스트용 버튼 -->
+    <div class="test-bar">
+      <button onclick="openSearch()">검색 모달 열기</button>
     </div>
-
-  </div>
-</div>
-<!-- ═══ SEARCH MODAL COMPONENT END ═══ -->
-
-<script>
-function closeSearch(e) {
-  if (e && e.target !== e.currentTarget) return;
-  var ov = document.getElementById('s-ov');
-  if (ov) ov.classList.remove('open');
-}
-
-function openSearch() {
-  var ov = document.getElementById('s-ov');
-  if (ov) {
-    ov.classList.add('open');
-    var inp = document.getElementById('s-input');
-    if (inp) { inp.value = ''; inp.focus(); }
-  }
-}
-
-function switchSTab(el) {
-  document.querySelectorAll('#s-tabs .s-tab').forEach(function(t) { t.classList.remove('on'); });
-  el.classList.add('on');
-  var tab = el.getAttribute('data-tab');
-  document.querySelectorAll('#s-bd .s-panel').forEach(function(p) {
-    p.style.display = p.getAttribute('data-panel') === tab ? '' : 'none';
-  });
-}
-
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeSearch();
-});
-</script>
-
-<!-- 단독 테스트용 버튼 -->
-<div class="test-bar">
-  <button onclick="openSearch()">검색 모달 열기</button>
-</div>
-
-</body>
+  </body>
 </html>

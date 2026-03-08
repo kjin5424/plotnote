@@ -103,7 +103,7 @@
   flex-shrink: 0;
 }
 
-/* RTL: 우측이 낮은 페이지 (p.01=우, p.02=좌) */
+/* RTL: 우측이 낮은 페이지 (1p=우, 2p=좌) */
 .ct-spread.rtl {
   direction: rtl;
 }
@@ -122,7 +122,7 @@
   aspect-ratio: 238 / 324;
   background: var(--wh);
   position: relative;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.10);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
 }
 
@@ -687,9 +687,15 @@
   flex-shrink: 0;
   align-self: stretch;
 }
-.ct-detail-bar.dialog  { background: var(--db); }
-.ct-detail-bar.narration { background: var(--oc); }
-.ct-detail-bar.direction { background: var(--am); }
+.ct-detail-bar.dialog {
+  background: var(--db);
+}
+.ct-detail-bar.narration {
+  background: var(--oc);
+}
+.ct-detail-bar.direction {
+  background: var(--am);
+}
 
 /* 세부 메모 바디 */
 .ct-detail-body {

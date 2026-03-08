@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="proto-episode.css" />
   </head>
   <body>
-    <!-- ═══ SIDEBAR (에피소드 화면: ep.3 .on) ═══ -->
+    <!-- ═══ SIDEBAR (에피소드 화면: 3화 .on) ═══ -->
     <aside class="sb" id="sb">
       <div class="sb-logo">
         <div class="sb-mk" onclick="tglSb()" title="사이드바 펼치기">
@@ -110,7 +110,7 @@
                         src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
                         alt=""
                     /></span>
-                    <span class="tn-lbl">ep.1 첫 만남</span>
+                    <span class="tn-lbl">1화 첫 만남</span>
                   </div>
                 </div>
               </div>
@@ -174,7 +174,7 @@
                         src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
                         alt=""
                     /></span>
-                    <span class="tn-lbl">ep.1 첫 만남</span>
+                    <span class="tn-lbl">1화 첫 만남</span>
                   </div>
                 </div>
                 <div class="tn leaf">
@@ -189,7 +189,7 @@
                         src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
                         alt=""
                     /></span>
-                    <span class="tn-lbl">ep.2 공원의 하루</span>
+                    <span class="tn-lbl">2화 공원의 하루</span>
                   </div>
                 </div>
                 <div class="tn leaf">
@@ -204,7 +204,7 @@
                         src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
                         alt=""
                     /></span>
-                    <span class="tn-lbl">ep.3 이웃 친구들</span>
+                    <span class="tn-lbl">3화 이웃 친구들</span>
                   </div>
                 </div>
                 <div class="tn leaf">
@@ -219,7 +219,7 @@
                         src="../../src/assets/images/article_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
                         alt=""
                     /></span>
-                    <span class="tn-lbl">ep.4 비 오는 날</span>
+                    <span class="tn-lbl">4화 비 오는 날</span>
                   </div>
                 </div>
               </div>
@@ -323,10 +323,10 @@
           />
           <div class="rn-pop">
             <div class="rn-pop-hd">고양이와 강아지</div>
-            <div class="rn-pop-i">ep.1 첫 만남</div>
-            <div class="rn-pop-i">ep.2 공원의 하루</div>
-            <div class="rn-pop-i on">ep.3 이웃 친구들</div>
-            <div class="rn-pop-i">ep.4 비 오는 날</div>
+            <div class="rn-pop-i">1화 첫 만남</div>
+            <div class="rn-pop-i">2화 공원의 하루</div>
+            <div class="rn-pop-i on">3화 이웃 친구들</div>
+            <div class="rn-pop-i">4화 비 오는 날</div>
           </div>
         </div>
         <div class="rn-item on" title="에피소드">
@@ -335,8 +335,19 @@
             alt=""
           />
           <div class="rn-pop">
-            <div class="rn-pop-hd">ep.3 이웃 친구들</div>
-            <div class="rn-pop-i">24 페이지</div>
+            <div class="rn-pop-hd">3화 이웃 친구들</div>
+            <div class="rn-pop-i">1p</div><div class="rn-pop-i">2p</div>
+            <div class="rn-pop-i">3p</div><div class="rn-pop-i">4p</div>
+            <div class="rn-pop-i">5p</div><div class="rn-pop-i">6p</div>
+            <div class="rn-pop-i">7p</div><div class="rn-pop-i">8p</div>
+            <div class="rn-pop-i">9p</div><div class="rn-pop-i">10p</div>
+            <div class="rn-pop-i">11p</div><div class="rn-pop-i">12p</div>
+            <div class="rn-pop-i">13p</div><div class="rn-pop-i">14p</div>
+            <div class="rn-pop-i">15p</div><div class="rn-pop-i">16p</div>
+            <div class="rn-pop-i">17p</div><div class="rn-pop-i">18p</div>
+            <div class="rn-pop-i">19p</div><div class="rn-pop-i">20p</div>
+            <div class="rn-pop-i">21p</div><div class="rn-pop-i">22p</div>
+            <div class="rn-pop-i">23p</div><div class="rn-pop-i">24p</div>
           </div>
         </div>
       </div>
@@ -359,6 +370,12 @@
           <span class="ep-hd-label">에피소드 리스트</span>
           <div class="ws-hd-r">
             <button class="abtn pri" onclick="addEp()">+ 에피소드 추가</button>
+            <button class="hbtn" onclick="alert('공유 stub')" title="공유">
+              <img
+                src="../../src/assets/images/handshake-svgrepo-com.svg"
+                alt="공유"
+              />
+            </button>
             <button class="hbtn" onclick="tglMM()" title="메모 패널">
               <img
                 src="../../src/assets/images/more_horiz_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
@@ -369,59 +386,77 @@
         </div>
       </div>
 
-      <!-- 에피소드 메모 프리뷰 -->
+      <!-- 프로젝트 메모 프리뷰 (§4-1: ep-memo-preview = 프로젝트 메모) -->
       <div class="ep-memo-preview" onclick="tglMM()">
-        이웃 친구들을 소개하는 에피소드. 고양이와 강아지의 동네 모험.
+        고양이와 강아지가 처음 만나 함께 모험하는 이야기. 전체 12화 예정.
       </div>
 
       <!-- §4-2 / §4-3 좌우 분할 바디 -->
       <div class="ws-bd">
         <!-- ── 좌측 에피소드 네비게이터 (35%) ── -->
-        <div class="ep-nav">
-          <div class="ep-nav-hd">
-            <div class="ep-nav-top">
-              <span class="ep-nav-ttl">에피소드</span>
-              <div class="ep-nav-acts">
-                <button
-                  class="sort-tgl"
-                  id="sort-tgl"
-                  onclick="tglSort()"
-                  title="정렬 순서 변경"
-                >
-                  <img
-                    id="sort-ic"
-                    src="../../src/assets/images/sort-ascending-svgrepo-com.svg"
-                    alt=""
-                  />
-                </button>
-              </div>
-            </div>
-            <div class="ep-tabs">
-              <div class="ep-tab on" onclick="filterTab(this, 'all')">
-                전체
-                <span class="ep-tab-count" id="cnt-all">7</span>
-              </div>
-              <div class="ep-tab" onclick="filterTab(this, 'inProgress')">
-                진행중
-                <span class="ep-tab-count" id="cnt-wip">2</span>
-              </div>
-              <div class="ep-tab" onclick="filterTab(this, 'done')">
-                완료
-                <span class="ep-tab-count" id="cnt-done">2</span>
-              </div>
-              <div class="ep-tab" onclick="filterTab(this, 'draft')">
-                예정
-                <span class="ep-tab-count" id="cnt-draft">3</span>
-              </div>
-            </div>
+        <div class="ep-nav" id="ep-nav">
+          <!-- 접힘 상태 미니 뷰 (44px) -->
+          <div class="ep-nav-mini" id="ep-nav-mini">
+            <button class="ep-nav-tgl" onclick="tglEpNav()" title="네비게이터 펼치기">
+              <img
+                src="../../src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt="펼치기"
+              />
+            </button>
+            <div class="ep-mini-list" id="ep-mini-list"></div>
           </div>
 
-          <div class="ep-list" id="ep-list"></div>
-
-          <div class="ep-add" onclick="addEp()">
-            <div class="ep-add-ic">+</div>
-            <span>에피소드 추가</span>
+          <!-- 펼침 상태 콘텐츠 -->
+          <div class="ep-nav-content" id="ep-nav-content">
+            <div class="ep-nav-hd">
+              <div class="ep-nav-top">
+                <span class="ep-nav-ttl">에피소드</span>
+                <div class="ep-nav-acts">
+                  <button
+                    class="sort-tgl"
+                    id="sort-tgl"
+                    onclick="tglSort()"
+                    title="정렬 순서 변경"
+                  >
+                    <img
+                      id="sort-ic"
+                      src="../../src/assets/images/sort-ascending-svgrepo-com.svg"
+                      alt=""
+                    />
+                  </button>
+                  <button class="ep-nav-tgl" onclick="tglEpNav()" title="네비게이터 접기">
+                    <img
+                      src="../../src/assets/images/keyboard_double_arrow_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                      alt="접기"
+                    />
+                  </button>
+                </div>
+              </div>
+              <div class="ep-tabs">
+                <div class="ep-tab on" onclick="filterTab(this, 'all')">
+                  전체
+                  <span class="ep-tab-count" id="cnt-all">7</span>
+                </div>
+                <div class="ep-tab" onclick="filterTab(this, 'inProgress')">
+                  진행중
+                  <span class="ep-tab-count" id="cnt-wip">2</span>
+                </div>
+                <div class="ep-tab" onclick="filterTab(this, 'done')">
+                  완료
+                  <span class="ep-tab-count" id="cnt-done">2</span>
+                </div>
+                <div class="ep-tab" onclick="filterTab(this, 'draft')">
+                  예정
+                  <span class="ep-tab-count" id="cnt-draft">3</span>
+                </div>
+              </div>
+            </div>
+            <!-- ep-add는 renderEpList()에서 sort 순서에 따라 삽입 -->
+            <div class="ep-list" id="ep-list"></div>
           </div>
+
+          <!-- 리사이즈 핸들 -->
+          <div class="ep-resize-h" onmousedown="startResize(event)"></div>
         </div>
 
         <!-- ── 우측 디테일 패널 (65%) ── -->
@@ -442,7 +477,7 @@
               <div class="det-hd-top">
                 <div class="det-hd-left">
                   <div class="det-ttl-row">
-                    <span class="det-ep-num" id="det-ep-n">ep.3</span>
+                    <span class="det-ep-num" id="det-ep-n">3화</span>
                     <input
                       class="det-ttl"
                       id="det-ttl"
@@ -451,25 +486,21 @@
                     />
                     <span class="det-pg-count" id="det-pg-c">24p</span>
                   </div>
-                  <div class="det-deadline">
-                    마감일
-                    <span class="det-deadline-val" id="det-deadline"
-                      >2025-04-15</span
-                    >
-                  </div>
                 </div>
                 <div class="det-hd-acts">
-                  <div
-                    class="det-status badge badge--wip"
+                  <select
+                    class="det-status-sel"
                     id="det-status"
-                    onclick="cycleStatus()"
-                    title="상태 변경"
+                    data-state="inProgress"
+                    onchange="changeStatus(this.value)"
                   >
-                    진행중
-                  </div>
+                    <option value="draft">예정</option>
+                    <option value="inProgress" selected>진행중</option>
+                    <option value="done">완료</option>
+                  </select>
                   <button
                     class="ep-cfg-btn"
-                    onclick="openCfg()"
+                    onclick="tglCfg()"
                     title="에피소드 개별 설정"
                   >
                     <img
@@ -494,22 +525,35 @@
                   </button>
                 </div>
               </div>
+
+              <!-- 인라인 설정 패널 (토글 확장) -->
+              <div class="ep-cfg-panel" id="ep-cfg-panel" style="display:none">
+                <div class="cfg-grid">
+                  <div class="cfg-card">
+                    <div class="cfg-card-l">기본 페이지수</div>
+                    <div class="cfg-card-v">24p</div>
+                  </div>
+                  <div class="cfg-card ov">
+                    <div class="cfg-card-l">시작 페이지</div>
+                    <div class="cfg-card-v">짝수</div>
+                    <div class="cfg-card-note">⚠ 프로젝트: 홀수</div>
+                  </div>
+                  <div class="cfg-card">
+                    <div class="cfg-card-l">읽기 방향</div>
+                    <div class="cfg-card-v">RTL</div>
+                  </div>
+                  <div class="cfg-card">
+                    <div class="cfg-card-l">기본 뷰</div>
+                    <div class="cfg-card-v">양면</div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <!-- 디테일 바디 -->
             <div class="det-bd" id="det-bd">
               <!-- ── 메모 탭 내용 ── -->
               <div id="tab-memo">
-                <!-- 상위 메모: 프로젝트 메모 (읽기전용 프리뷰) -->
-                <div
-                  class="parent-memo"
-                  onclick="alert('→ 프로젝트 메모로 이동')"
-                >
-                  <div class="parent-memo-lbl">project memo</div>
-                  고양이와 강아지가 처음 만나 함께 모험하는 이야기. 전체 12화
-                  예정.
-                </div>
-
                 <!-- 에피소드 메모 (SINGLE) -->
                 <div class="m-sec">
                   <div class="m-sec-t">에피소드 메모</div>
@@ -628,39 +672,6 @@
       </div>
     </div>
 
-    <!-- ═══ SETTINGS MODAL (에피소드 개별 설정, 2×2 그리드 + override) ═══ -->
-    <div class="cfg-ov" id="cfg-ov" onclick="closeCfg(event)">
-      <div class="cfg-box" onclick="event.stopPropagation()">
-        <div class="cfg-title">에피소드 개별 설정</div>
-        <div class="cfg-desc">
-          프로젝트 기본 설정과 다른 항목은 노란색으로 표시됩니다. 카드를
-          클릭하면 변경할 수 있습니다.
-        </div>
-        <div class="cfg-grid">
-          <div class="cfg-card">
-            <div class="cfg-card-l">기본 페이지수</div>
-            <div class="cfg-card-v">24p</div>
-          </div>
-          <div class="cfg-card ov">
-            <div class="cfg-card-l">시작 페이지</div>
-            <div class="cfg-card-v">짝수</div>
-            <div class="cfg-card-note">⚠ 프로젝트: 홀수</div>
-          </div>
-          <div class="cfg-card">
-            <div class="cfg-card-l">읽기 방향</div>
-            <div class="cfg-card-v">RTL</div>
-          </div>
-          <div class="cfg-card">
-            <div class="cfg-card-l">기본 뷰</div>
-            <div class="cfg-card-v">양면</div>
-          </div>
-        </div>
-        <div class="cfg-acts">
-          <button class="abtn" onclick="closeCfg()">닫기</button>
-        </div>
-      </div>
-    </div>
-
     <!-- ═══ COMPONENT SLOTS (import) ═══ -->
     <div id="search-slot"></div>
     <div id="memo-slot"></div>
@@ -671,7 +682,7 @@
       ═══════════════════════════════════════════ */
       var eps = [
         {
-          n: "ep.1",
+          n: "1화",
           t: "첫 만남",
           memo: "고양이와 강아지가 공원에서 처음 만남.",
           detail: "처음엔 어색하지만 점점 가까워짐. 벚꽃이 날리는 봄 배경.",
@@ -680,7 +691,7 @@
           grad: "erow-thumb--g1",
         },
         {
-          n: "ep.2",
+          n: "2화",
           t: "공원의 하루",
           memo: "함께 공원을 탐험.",
           detail: "",
@@ -689,7 +700,7 @@
           grad: "erow-thumb--g2",
         },
         {
-          n: "ep.3",
+          n: "3화",
           t: "이웃 친구들",
           memo: "동네 친구들 소개. 다양한 동물 캐릭터 등장.",
           detail: "이웃 고양이 미미 첫 등장. 몽타주 연출.",
@@ -698,7 +709,7 @@
           grad: "erow-thumb--g3",
         },
         {
-          n: "ep.4",
+          n: "4화",
           t: "비 오는 날",
           memo: "",
           detail: "",
@@ -707,7 +718,7 @@
           grad: "erow-thumb--g4",
         },
         {
-          n: "ep.5",
+          n: "5화",
           t: "여름의 시작",
           memo: "",
           detail: "",
@@ -716,7 +727,7 @@
           grad: "erow-thumb--g5",
         },
         {
-          n: "ep.6",
+          n: "6화",
           t: "바다 여행",
           memo: "",
           detail: "",
@@ -725,7 +736,7 @@
           grad: "erow-thumb--g6",
         },
         {
-          n: "ep.7",
+          n: "7화",
           t: "새 에피소드",
           memo: "",
           detail: "",
@@ -797,62 +808,55 @@
         list.innerHTML = "";
 
         var filtered = eps
-          .map(function (e, i) {
-            return { e: e, i: i };
-          })
+          .map(function (e, i) { return { e: e, i: i }; })
           .filter(function (item) {
             return curFilter === "all" || item.e.tag === curFilter;
           });
 
         if (!sortAsc) filtered.reverse();
 
+        /* ep-add: 내림차순이면 맨 위 */
+        var addDiv = document.createElement("div");
+        addDiv.className = "ep-add";
+        addDiv.onclick = addEp;
+        addDiv.innerHTML = '<div class="ep-add-ic">+</div><span>에피소드 추가</span>';
+        if (!sortAsc) list.appendChild(addDiv);
+
         filtered.forEach(function (item) {
           var e = item.e;
           var i = item.i;
           var row = document.createElement("div");
           row.className = "erow drag-parent" + (i === selectedIdx ? " on" : "");
-          row.onclick = function () {
-            selectEp(i);
-          };
-          row.ondblclick = function () {
-            alert("→ 페이지 화면: " + e.t);
-          };
+          row.onclick = function () { selectEp(i); };
+          row.ondblclick = function () { alert("→ 페이지 화면: " + e.t); };
           row.innerHTML =
-            '<div class="erow-thumb ' +
-            e.grad +
-            '"><span class="erow-thumb-num">' +
-            (i + 1) +
-            "</span></div>" +
+            '<div class="erow-drag drag-h" title="드래그">' +
+              '<span></span><span></span><span></span>' +
+            '</div>' +
+            '<div class="erow-thumb ' + e.grad + '">' +
+              '<span class="erow-thumb-num">' + (i + 1) + '</span>' +
+            '</div>' +
             '<div class="erow-body">' +
-            '<span class="erow-num">' +
-            e.n +
-            "</span>" +
-            '<span class="erow-ttl">' +
-            e.t +
-            "</span>" +
-            '<span class="erow-memo' +
-            (e.memo ? "" : " empty") +
-            '">' +
-            (e.memo || "메모 없음") +
-            "</span>" +
-            '<div class="erow-ft">' +
-            '<span class="badge ' +
-            tagCls[e.tag] +
-            '">' +
-            tagTxt[e.tag] +
-            "</span>" +
-            '<span class="erow-pg">' +
-            e.pg +
-            "p</span>" +
-            "</div>" +
-            "</div>" +
-            '<div class="erow-acts">' +
-            '<div class="drag-h" title="드래그"><span></span><span></span><span></span></div>' +
-            "</div>";
+              '<div class="erow-row1">' +
+                '<span class="erow-num">' + e.n + '</span>' +
+                '<span class="erow-pg">' + e.pg + 'p</span>' +
+              '</div>' +
+              '<div class="erow-row2">' +
+                '<span class="erow-ttl">' + e.t + '</span>' +
+                '<span class="badge ' + tagCls[e.tag] + '">' + tagTxt[e.tag] + '</span>' +
+              '</div>' +
+              '<div class="erow-memo' + (e.memo ? '' : ' empty') + '">' +
+                (e.memo || '메모 없음') +
+              '</div>' +
+            '</div>';
           list.appendChild(row);
         });
 
+        /* ep-add: 오름차순이면 맨 아래 */
+        if (sortAsc) list.appendChild(addDiv);
+
         updateTabCounts();
+        renderMiniList();
       }
 
       /* ─── 탭 카운트 업데이트 ─── */
@@ -880,28 +884,26 @@
         document.getElementById("det-ttl").value = e.t;
         document.getElementById("det-pg-c").textContent = e.pg + "p";
 
-        var statusEl = document.getElementById("det-status");
-        statusEl.className = "det-status badge " + tagCls[e.tag];
-        statusEl.textContent = tagTxt[e.tag];
+        var sel = document.getElementById("det-status");
+        sel.value = e.tag;
+        sel.dataset.state = e.tag;
 
         document.getElementById("ep-memo").value =
           e.memo + (e.detail ? "\n" + e.detail : "");
+
+        /* cfg 패널 닫기 */
+        document.getElementById("ep-cfg-panel").style.display = "none";
 
         renderPmList();
         renderEpList();
       }
 
-      /* ─── 상태 순환 (done → inProgress → draft → done) ─── */
-      function cycleStatus() {
+      /* ─── 상태 변경 (select onchange) ─── */
+      function changeStatus(val) {
         if (selectedIdx < 0) return;
-        var e = eps[selectedIdx];
-        var cycle = { done: "inProgress", inProgress: "draft", draft: "done" };
-        e.tag = cycle[e.tag];
-
-        var statusEl = document.getElementById("det-status");
-        statusEl.className = "det-status badge " + tagCls[e.tag];
-        statusEl.textContent = tagTxt[e.tag];
-
+        eps[selectedIdx].tag = val;
+        var sel = document.getElementById("det-status");
+        sel.dataset.state = val;
         renderEpList();
       }
 
@@ -914,17 +916,13 @@
           row.className = "pm-row";
           row.innerHTML =
             '<div class="pm-grab"><span></span><span></span><span></span></div>' +
-            '<span class="pm-num" onclick="alert(\'→ 페이지 ' +
-            (i + 1) +
-            " 화면')\">p." +
-            String(i + 1).padStart(2, "0") +
-            "</span>" +
-            '<input class="memo-input" value="' +
-            m +
-            '" placeholder="페이지 메모..." spellcheck="false">' +
+            '<span class="pm-num" onclick="alert(\'→ 페이지 ' + (i + 1) + " 화면')\">" +
+            String(i + 1) + 'p</span>' +
+            '<button class="pm-emoji" title="이모티콘 지정" onclick="alert(\'이모티콘 지정 stub\')">+</button>' +
+            '<input class="memo-input" value="' + m + '" placeholder="페이지 메모..." spellcheck="false">' +
             '<button class="ic-btn-sm" onclick="this.closest(\'.pm-row\').remove()" title="삭제">' +
             '<img src="../../src/assets/images/close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg" alt="">' +
-            "</button>";
+            '</button>';
           list.appendChild(row);
         });
         document.getElementById("pm-cnt").textContent = pageMemos.length;
@@ -934,7 +932,7 @@
       function addEp() {
         var num = eps.length + 1;
         eps.push({
-          n: "ep." + num,
+          n: num + "화",
           t: "새 에피소드",
           memo: "",
           detail: "",
@@ -985,19 +983,50 @@
           tab === "pages" ? "block" : "none";
       }
 
-      /* ─── 설정 모달 ─── */
-      function openCfg() {
-        document.getElementById("cfg-ov").classList.add("open");
+      /* ─── ep-nav 접기/펼치기 ─── */
+      function tglEpNav() {
+        document.getElementById("ep-nav").classList.toggle("collapsed");
+        renderMiniList();
       }
-      function closeCfg(e) {
-        if (
-          e &&
-          e.target &&
-          !e.target.classList.contains("cfg-ov") &&
-          !e.target.closest(".abtn")
-        )
-          return;
-        document.getElementById("cfg-ov").classList.remove("open");
+
+      /* ─── 미니 리스트 렌더 (접힌 상태용) ─── */
+      function renderMiniList() {
+        var mini = document.getElementById("ep-mini-list");
+        if (!mini) return;
+        mini.innerHTML = "";
+        eps.forEach(function (e, i) {
+          var btn = document.createElement("button");
+          btn.className = "ep-mini-badge" + (i === selectedIdx ? " on" : "");
+          btn.textContent = (i + 1);
+          btn.title = e.n + " " + e.t;
+          btn.onclick = function () { selectEp(i); };
+          mini.appendChild(btn);
+        });
+      }
+
+      /* ─── 리사이즈 핸들 ─── */
+      function startResize(e) {
+        e.preventDefault();
+        var nav = document.getElementById("ep-nav");
+        var startX = e.clientX;
+        var startW = nav.offsetWidth;
+        function onMove(ev) {
+          var newW = Math.max(44, Math.min(500, startW + ev.clientX - startX));
+          nav.style.width = newW + "px";
+          nav.style.minWidth = newW + "px";
+        }
+        function onUp() {
+          document.removeEventListener("mousemove", onMove);
+          document.removeEventListener("mouseup", onUp);
+        }
+        document.addEventListener("mousemove", onMove);
+        document.addEventListener("mouseup", onUp);
+      }
+
+      /* ─── 인라인 설정 토글 ─── */
+      function tglCfg() {
+        var panel = document.getElementById("ep-cfg-panel");
+        panel.style.display = panel.style.display === "none" ? "block" : "none";
       }
 
       /* ─── 사이드바 ─── */
@@ -1081,6 +1110,7 @@
         renderEpList();
         selectEp(2);
         renderPmList();
+        renderMiniList();
         loadComponent("proto-search.html", "search-slot");
         loadComponent("proto-memopanel.html", "memo-slot");
       });
