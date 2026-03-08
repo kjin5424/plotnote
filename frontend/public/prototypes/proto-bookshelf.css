@@ -1,0 +1,317 @@
+/* ═══════════════════════════════════════════
+   책장(Bookshelf) 화면 고유 스타일
+   공통: proto-style.css + proto-sidebar.css
+═══════════════════════════════════════════ */
+
+/* ─── NODE SECTION (즐겨찾기/나의책장/공유책장) ─── */
+.node {
+  margin-bottom: 10px;
+}
+.node-hd {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 8px;
+  outline: 1px solid transparent;
+  transition: outline-color var(--dur-fast), background var(--dur-fast);
+}
+.node-hd:hover {
+  outline-color: var(--bd2);
+  background: var(--wh);
+}
+.node-arrow {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.node-arrow img {
+  width: 16px;
+  height: 16px;
+  opacity: 0.5;
+  transition: transform 0.15s;
+}
+.node-arrow.open img {
+  transform: rotate(90deg);
+}
+.node-icon {
+  font-size: 13px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+.node-icon img {
+  width: 18px;
+  height: 18px;
+}
+.node-ttl {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.node-count {
+  font-size: 10px;
+  color: var(--oc);
+  font-family: var(--ff-mono);
+}
+.node.disabled .node-hd {
+  opacity: 0.5;
+  cursor: default;
+}
+.node.disabled .node-hd:hover {
+  outline-color: transparent;
+  background: transparent;
+}
+.node.disabled .node-ttl {
+  color: var(--gh);
+}
+.node-empty {
+  font-size: 11px;
+  color: var(--gh);
+  font-style: italic;
+  margin-left: 24px;
+}
+.node-bd {
+  padding-left: 0;
+  margin-top: 8px;
+}
+.node.disabled .node-bd {
+  display: none;
+}
+.node.closed .node-bd {
+  display: none;
+}
+.node.closed .node-arrow img {
+  transform: rotate(0deg);
+}
+
+/* ─── PROJECT CARD GRID ─── */
+.pgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 14px;
+}
+.pc {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  border: 1px solid var(--bd);
+  background: var(--wh);
+  cursor: pointer;
+  transition:
+    box-shadow 0.15s,
+    border-color 0.15s,
+    transform 0.15s;
+}
+.pc:hover {
+  box-shadow: 0 4px 16px rgba(42, 77, 136, 0.1);
+  border-color: var(--oc);
+  transform: translateY(-2px);
+}
+.pc-th {
+  width: 100%;
+  aspect-ratio: 16/10;
+  position: relative;
+  overflow: hidden;
+}
+.pc-info {
+  padding: 10px 12px 12px;
+}
+.pc-tr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.pc-ttl {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+.pc-fav {
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: none;
+  border-radius: 50%;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--co);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--dur-fast);
+}
+.pc-fav:hover {
+  color: var(--am);
+}
+.pc-fav.on {
+  color: var(--am);
+}
+.pc-fav img {
+  width: 16px;
+  height: 16px;
+}
+.pc-mt {
+  font-size: 10px;
+  color: var(--gh);
+  font-family: var(--ff-mono);
+  margin-top: 3px;
+}
+.pc-members {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+.pc-member {
+  font-size: 9px;
+  padding: 1px 7px;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+}
+
+/* ─── 역할 배지 ─── */
+.role-badge {
+  font-size: 9px;
+  padding: 1px 7px;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+}
+.role-owner {
+  background: var(--db-bg);
+  color: var(--db);
+  border: 1px solid rgba(42, 77, 136, 0.15);
+}
+.role-editor {
+  background: rgba(251, 198, 98, 0.15);
+  color: #966000;
+  border: 1px solid rgba(251, 198, 98, 0.5);
+}
+.role-viewer {
+  background: var(--pa);
+  color: var(--i2);
+  border: 1px solid var(--bd2);
+}
+
+/* ─── ADD PROJECT CARD ─── */
+.pc-add {
+  border: 2px dashed var(--bd2);
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--gh);
+  font-size: 11px;
+  min-height: 120px;
+  transition:
+    border-color var(--dur-fast),
+    color var(--dur-fast),
+    background var(--dur-fast);
+}
+.pc-add:hover {
+  border-color: var(--oc);
+  color: var(--db);
+  background: #f5f8ff;
+  box-shadow: none;
+  transform: none;
+}
+.pc-add-ic {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--bd2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: border-color var(--dur-fast);
+}
+.pc-add:hover .pc-add-ic {
+  border-color: var(--oc);
+}
+
+/* ─── SEARCH RESULT (bookshelf 고유) ─── */
+.s-res {
+  padding: 8px 10px;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: background var(--dur-fast);
+}
+.s-res:hover {
+  background: var(--pa);
+}
+.s-res-t {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.s-res-t mark,
+.s-res-m mark {
+  background: var(--am-bg);
+  color: var(--ink);
+  border-radius: 2px;
+  padding: 0 2px;
+}
+.s-res-p {
+  font-size: 10px;
+  color: var(--gh);
+  font-family: var(--ff-mono);
+}
+.s-res-m {
+  font-size: 11px;
+  color: var(--i2);
+  margin-top: 1px;
+}
+
+/* ─── TOOLTIP ─── */
+.tip {
+  position: relative;
+}
+.tip span {
+  display: none;
+}
+.tip:hover span {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: calc(100% + 4px);
+  z-index: 100;
+  background: var(--wh);
+  border: 1px solid var(--bd);
+  border-radius: var(--r-sm);
+  padding: 3px 8px;
+  font-size: 10px;
+  color: var(--i2);
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ─── CARD ANIMATION ─── */
+@keyframes bsCardIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.pc {
+  animation: bsCardIn 0.25s ease both;
+}
+.pc:nth-child(1) { animation-delay: 0.02s; }
+.pc:nth-child(2) { animation-delay: 0.05s; }
+.pc:nth-child(3) { animation-delay: 0.08s; }
+.pc:nth-child(4) { animation-delay: 0.11s; }
+.pc:nth-child(5) { animation-delay: 0.14s; }
