@@ -81,6 +81,17 @@
   pointer-events: none;
 }
 
+/* 아이콘+텍스트 혼합 버튼 */
+.ct-pg-nav .hbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 8px;
+  font-size: 11px;
+  color: var(--i2);
+  white-space: nowrap;
+}
+
 /* ═══════════════════════════════════════════════════════
    2. 중앙 캔버스 영역
 ═══════════════════════════════════════════════════════ */
@@ -99,7 +110,7 @@
 /* 스프레드 컨테이너 (양면 2페이지 나란히) */
 .ct-spread {
   display: flex;
-  gap: 2px;
+  gap: 0;
   flex-shrink: 0;
 }
 
@@ -111,16 +122,12 @@
   direction: ltr;
 }
 
-/* 단면 모드일 경우 1페이지만 */
-.ct-spread.single {
-  gap: 0;
-}
-
 /* ─── 2-1. B4 페이지 ─── */
 .ct-page {
   width: 357px;
   aspect-ratio: 238 / 324;
   background: var(--wh);
+  border: 1px solid var(--bd);
   position: relative;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
@@ -397,10 +404,64 @@
 }
 
 .ct-side.closed {
-  width: 0;
-  min-width: 0;
-  border-left: none;
+  width: 44px;
+  min-width: 44px;
+  border-left: 1px solid var(--bd);
   overflow: hidden;
+}
+
+/* 접힌 상태: 헤더 이외 콘텐츠 숨김 */
+.ct-side.closed .ct-side-bd {
+  display: none;
+}
+
+/* 접힌 상태: 헤더를 동그란 아이콘 스타일로 */
+.ct-side.closed .ct-side-hd {
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 10px 0;
+  gap: 0;
+}
+
+.ct-side.closed .ct-side-hd-t {
+  display: none;
+}
+
+/* 접기 토글 버튼 */
+.ct-side-toggle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background var(--dur-sm),
+    box-shadow var(--dur-sm);
+  flex-shrink: 0;
+}
+
+.ct-side-toggle:hover {
+  background: var(--pa);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.ct-side-toggle img {
+  width: 16px;
+  height: 16px;
+  opacity: 0.5;
+  transition:
+    opacity var(--dur-sm),
+    transform var(--dur-md) var(--ease);
+}
+
+.ct-side-toggle:hover img {
+  opacity: 0.85;
+}
+
+.ct-side.closed .ct-side-toggle img {
+  transform: rotate(180deg);
 }
 
 /* 패널 헤더 */
@@ -536,9 +597,11 @@
 .ct-memo-row-num {
   font-family: var(--ff-mono);
   font-size: 9px;
-  color: var(--gh);
-  min-width: 14px;
+  font-weight: 500;
+  color: var(--oc);
+  min-width: 28px;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .ct-memo-row-text {
@@ -552,6 +615,9 @@
   outline: none;
   font-family: inherit;
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   transition:
     border-color var(--dur-sm),
     background var(--dur-sm);
@@ -559,9 +625,17 @@
 .ct-memo-row-text:focus {
   border-color: var(--oc);
   background: var(--wh);
+  white-space: normal;
+  overflow: visible;
 }
 .ct-memo-row-text::placeholder {
   color: var(--co);
+}
+
+/* 이모지 표시 (ct-memo-row-text 옆) */
+.ct-memo-row-emoji {
+  font-size: 13px;
+  flex-shrink: 0;
 }
 
 .ct-memo-row-del {
@@ -793,18 +867,48 @@
   background: var(--err-bg);
 }
 
-/* 세부 메모 추가 */
+/* 세부 메모 추가 (ct-memo-add 디자인으로 통일) */
 .ct-detail-add {
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 0;
-  margin-top: 2px;
+  padding: 4px 8px;
+  margin-top: 4px;
   cursor: pointer;
   color: var(--gh);
   font-size: 10px;
-  transition: color var(--dur-sm);
+  border: 1px dashed var(--bd2);
+  border-radius: var(--r-sm);
+  transition:
+    background var(--dur-sm),
+    color var(--dur-sm),
+    border-color var(--dur-sm);
 }
 .ct-detail-add:hover {
+  background: #f5f8ff;
   color: var(--db);
+  border-color: var(--oc);
+}
+
+/* 툴바 두 그룹 분리용 gap 자동 배치 */
+.ct-toolbar .ct-tb-zoom {
+  margin-left: auto;
+}
+
+/* 툴바 텍스트 버튼 (줌 −/+) */
+.ct-tb-btn.text-btn {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--i2);
+}
+.ct-tb-btn.text-btn:hover {
+  color: var(--ink);
+}
+
+/* 분할 모드 활성 시 crosshair (JS로도 설정하지만 CSS로도 보강) */
+.ct-canvas-wrap.split-mode {
+  cursor: crosshair !important;
+}
+.ct-canvas-wrap.split-mode .ct-cell {
+  cursor: crosshair !important;
 }
