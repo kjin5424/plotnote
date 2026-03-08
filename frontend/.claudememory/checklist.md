@@ -171,23 +171,19 @@ frontend/public/prototypes/
   > - [ ] 핀 아이콘 변경 (`keep_20dp_*.svg` → `pin-svgrepo-com.svg`)
   >       결과물: proto-memopanel.html
 
-### ⬜ 2. Bookshelf 디자인 (proto-bookshelf.html) — 미완료 (스킵 중)
+### ✅ 2. Bookshelf 디자인 (proto-bookshelf.html) — 완료 (2026-03-08)
 
-grep "## 2. Bookshelf 화면 (책장)" `project_knowledge_search`를 통해 접근, proto-screen.md
-
-- [ ] proto-style.css 링크 전환
-- [ ] proto-bookshelf.css 작성 및 링크 연결
-- [ ] 통합 사이드바 적용 (proto-sidebar.html)
-- [ ] 프로젝트 카드 그리드 (`.node` 카드: 랜덤 그라디언트 썸네일, 제목, 즐겨찾기 토글, 메타데이터)
-- [ ] 3 섹션 구분: 즐겨찾기 / 나의 책장 / 공유 책장
-- [ ] 공유 책장 역할 배지 (editor/viewer : 권한에 따라 다르게 표현)
-- [ ] 새 프로젝트 모달: 다음과 같이 라벨과 input/button를 가로로 배치
-      | 프로젝트 이름 입력창 |
-      | 기본 페이지 수 입력창 |
-      | 읽기 방향 선택버튼 |
-- [ ] 시작 페이지: 단면을 선택한다고 안보이는 것이 아니라 홀수 선택 상태로 disabled 처리
-- [ ] node-hd hover: border → outline (layout shift 방지)
-- [ ] XSS 경고 주석 추가 (doS 함수)
+- [x] proto-style.css 링크 전환
+- [x] proto-bookshelf.css 작성 및 링크 연결 (proto-sidebar.css, proto-search.css, proto-memopanel.css 포함)
+- [x] 통합 사이드바 적용 (proto-sidebar.css 링크)
+- [x] 프로젝트 카드 그리드 (랜덤 그라디언트 썸네일, 제목, 즐겨찾기 토글, 메타데이터)
+- [x] 3 섹션 구분: 즐겨찾기 / 나의 책장 / 공유 책장
+- [x] 공유 책장 역할 배지 (.role-owner/.role-editor/.role-viewer CSS 추가)
+- [x] 새 프로젝트 모달: 가로 배치 (np-lbl | np-val 형식, proto-style.css .np-row/.stepper/.tgl-grp 활용)
+- [x] 시작 페이지: 단면 선택 시 홀수 selected + disabled 처리 (setView() JS)
+- [x] node-hd hover: outline (layout shift 방지) — 기존 구현 확인
+- [x] XSS 경고 주석 추가 (doS 함수)
+- [x] 중복 HTML 제거 (2768줄 → 602줄, 가비지 섹션 삭제)
 
 ### ✅ 3. Project 디자인 (proto-project.html) — 완료(7. 통합 검수에서 추가 확인 필요)
 
@@ -482,38 +478,39 @@ grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto
 
 **8-6. 페이지**
 
-- [ ] `.pg-spread-row` gap 제거, `.pcard-memo` gap 유지
-- [ ] `.pcard--blank` 점선만
-- [ ] 마지막에 "+페이지 추가 카드"
-- [ ] `.pg-nav` 접기/펼치기, 리사이즈 핸들
-- [ ] 단면보기 한 장씩/축소 시 두 장
-- [ ] 스크롤 위치 이슈
-- [ ] `.pg-memo-preview` = 에피소드 메모, `.parent-memo` 삭제
-- [ ] `.m-ta` 배경 `$white`
-- [ ] 페이지메모 이모티콘 영역
-- [ ] `.pg-detail-memo-item` 드래그 핸들 항상, x버튼 hover, border 추가
-- [ ] 탭 좌우2단/상하2단 (Phase 2/3)
-- [ ] `.pg-cut-item` 드래그 핸들 항상
-- [ ] `.pcard-num` 위치 변경
-- [ ] 미배정 경고 도트
-- [ ] hover 시 "컷 편집" 버튼
-- [ ] `.pg-cut.assign` → x버튼
+- [x] `.pg-spread-row` gap 제거 (`gap: 0`)
+- [x] `.pcard--blank` 점선만 (대각선 배경 제거, "속표지" 글씨 제거)
+- [x] 마지막에 "+페이지 추가 카드" (`makeAddCard()`)
+- [x] `.pg-nav` 접기/펼치기 (44px collapsed), 리사이즈 핸들
+- [ ] 단면보기 한 장씩/축소 시 두 장 (Phase 2/3 스킵)
+- [ ] 스크롤 위치 이슈 (Phase 2 스킵)
+- [x] `.pg-memo-preview` = 에피소드 메모 확인 _(기존 유지)_, `.parent-memo` 삭제
+- [x] `.m-ta` 배경 `$white` (`.pg-workspace .m-ta` 오버라이드)
+- [x] 페이지메모 이모티콘 영역 (`.pg-emoji` 버튼)
+- [x] `.pg-detail-memo-item` 드래그 핸들 항상, x버튼 hover, border 추가
+- [ ] 탭 좌우2단/상하2단 (Phase 2/3 스킵)
+- [x] `.pg-cut-item` 드래그 핸들 항상
+- [x] `.pcard-num` 위치 변경 (하단 좌측 "1p" + 우측 메모 미리보기)
+- [x] 미배정 경고 도트 (`.pcard-warning-dot`, `$amber` 6px)
+- [x] hover 시 "컷 편집" 버튼 (`.pcard-edit-btn`)
+- [x] `.pg-cut.assign` → x버튼 (`.pg-cut-del`)
 
 **8-7. 컷**
 
-- [ ] `.ct-pg-nav` `[◀ 이전][다음 ▶]`
-- [ ] 전체미리보기/화면맞춤 아이콘 구별
-- [ ] `.ct-side` 접기 → 동그란 아이콘 애니메이션
-- [ ] `.ct-sec-a-hd` + `.ct-memo-row` 통합
-- [ ] `.ct-page` solid 테두리, gap 제거
-- [ ] 초기 상태 내곽선 `$ocean` 실선
-- [ ] `.ct-cell` 내부 레이아웃
-- [ ] 기본 아코디언 닫힌 상태
-- [ ] `.ct-memo-add` 삭제, `.ct-detail-add` 디자인 변경
-- [ ] 컷메모/컷세부메모 디자인 차별화
-- [ ] `.ct-toolbar` 두 그룹 분리
-- [ ] `.ct-tb-btn` `-` `+` 표시
-- [ ] 분할 모드 커서 (👾: `cursor: crosshair !important`)
+- [x] `.ct-pg-nav` `[◀ 이전][다음 ▶]` 아이콘+텍스트 형식
+- [x] 전체미리보기 아이콘 `pinboard_20dp`로 교체 (화면맞춤은 `fit_screen` 유지)
+- [x] `.ct-side` 접기 → `ct-side-toggle` 동그란 아이콘, 접힌 상태 44px
+- [x] `.ct-sec-a-hd` 제거 → `.ct-memo-row`에 통합 (`ct-memo-row-num` = "컷 N", 이모지 = `ct-memo-row-emoji`)
+- [x] `.ct-page` solid border 추가, `.ct-spread` gap 제거
+- [x] 초기 상태 내곽선 `$ocean` 실선 _(CSS `.ct-inner.no-cuts` 이미 있음, HTML 클래스 추가 별도)_
+- [ ] `.ct-cell` 내부 헤더 구조 개선 (Phase 2 스킵 — 번호 표시 현재 유지)
+- [ ] 기본 아코디언 닫힌 상태 (Phase 1 기본 동작 유지 — JS `syncPanelSelection`이 선택 컷만 open)
+- [x] `.ct-memo-add` 삭제 (미배정 컷 섹션에서 제거)
+- [x] `.ct-detail-add` dashed border 스타일로 변경 (`.ct-memo-add` 디자인 통일)
+- [ ] 컷메모/컷세부메모 디자인 차별화 (Phase 2 — 현재 들여쓰기+컬러바로 기본 구분됨)
+- [x] `.ct-toolbar` 두 그룹 분리 (`.ct-tb-zoom { margin-left: auto }`)
+- [x] `.ct-tb-btn` `-` `+` 텍스트 표시 (`text-btn` 클래스)
+- [x] 분할 모드 커서 `split-mode` CSS class + `cursor: crosshair !important`
 
 **8-8. 👾 디자인 제안 필요 항목**
 
@@ -525,9 +522,9 @@ grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto
 
 ---
 
-### ⬜ 9. Bookshelf 디자인 (proto-bookshelf.html) — 미완료 (8번 완료 후 진행)
+### ✅ 9. Bookshelf 디자인 (proto-bookshelf.html) — 완료 (2026-03-08)
 
-> 2. Bookshelf 디자인과 동일. 8번 완료 후 전체 디자인에 맞춰 작업.
+> 8번 완료 후 "2. Bookshelf 디자인" 항목과 동일하게 작업 완료.
 
 ---
 
