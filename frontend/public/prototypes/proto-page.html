@@ -410,7 +410,10 @@
           />
           <div class="rn-pop">
             <div class="rn-pop-hd">3화 이웃 친구들</div>
-            <div class="rn-pop-i">24 페이지</div>
+            <div class="rn-pop-i on">1p</div>
+            <div class="rn-pop-i">2p</div>
+            <div class="rn-pop-i">3p</div>
+            <div class="rn-pop-i">4p</div>
           </div>
         </div>
         <div class="rn-item on" title="페이지">
@@ -463,7 +466,25 @@
       <!-- §5-2 / §5-4 좌우 분할 바디 -->
       <div class="ws-bd">
         <!-- ── 좌측 페이지 썸네일 그리드 (35%) ── -->
-        <div class="pg-nav">
+        <div class="pg-nav" id="pg-nav">
+          <!-- 상단 접기/펼치기 버튼바 -->
+          <div class="pg-nav-topbar">
+            <div
+              class="pg-nav-toggle"
+              onclick="tglPgNav()"
+              title="접기/펼치기"
+            >
+              <img
+                id="pg-nav-ic"
+                src="../../src/assets/images/keyboard_double_arrow_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                alt="접기"
+              />
+            </div>
+          </div>
+
+          <!-- 접힌 상태: 미니 번호 목록 (JS에서 renderMiniNav로 갱신) -->
+          <div class="pg-nav-mini" id="pg-nav-mini"></div>
+
           <div class="pg-grid-wrap" id="pg-grid-wrap">
             <div class="pg-grid" id="pg-grid">
               <!-- JS renderGrid()에서 생성 -->
@@ -501,6 +522,9 @@
             </div>
           </div>
         </div>
+
+        <!-- 리사이즈 핸들 -->
+        <div class="pg-resize-handle" id="pg-resize-handle"></div>
 
         <!-- ── 우측 페이지 상세 패널 (65%) ── -->
         <div class="pg-det" id="pg-det">
@@ -546,15 +570,12 @@
 
             <!-- 디테일 바디: 메모 탭 -->
             <div class="pg-det-bd" id="det-tab-memo">
-              <!-- 에피소드 메모 읽기전용 -->
-              <div class="parent-memo" onclick="tglMM()">
-                <div class="parent-memo-lbl">EPISODE MEMO</div>
-                이웃 친구들을 소개하는 에피소드. 고양이와 강아지의 동네 모험.
-              </div>
-
               <!-- 페이지 메모 (SINGLE) -->
               <div class="m-sec">
-                <div class="m-sec-t">페이지 메모</div>
+                <div class="m-sec-t">
+                  페이지 메모
+                  <button class="pg-emoji" title="이모티콘 지정">🎭</button>
+                </div>
                 <textarea
                   class="m-ta"
                   rows="3"
@@ -683,7 +704,13 @@
                       value="강아지 등장"
                       disabled
                     />
-                    <span class="pg-cut-assign">→ 컷 4</span>
+                    <button
+                      class="pg-cut-del"
+                      onclick="unassignCut(this)"
+                      title="배정 해제"
+                    >
+                      ×
+                    </button>
                   </div>
                   <div class="pg-cut-item unassigned drag-parent">
                     <div class="drag-h">
@@ -713,7 +740,13 @@
                       value="두 눈이 마주침"
                       disabled
                     />
-                    <span class="pg-cut-assign">→ 컷 6</span>
+                    <button
+                      class="pg-cut-del"
+                      onclick="unassignCut(this)"
+                      title="배정 해제"
+                    >
+                      ×
+                    </button>
                   </div>
                 </div>
                 <div class="pg-cut-add" onclick="addCutMemo()">
@@ -821,11 +854,44 @@
               grid.appendChild(row);
             }
           }
+
+          /* "+페이지 추가" 카드: 마지막 행에 공간 있으면 추가, 없으면 새 행 */
+          var addCard = makeAddCard();
+          var lastRow = grid.querySelector(".pg-spread-row:last-child");
+          if (lastRow && lastRow.children.length < 2) {
+            lastRow.appendChild(addCard);
+          } else {
+            var addRow = document.createElement("div");
+            addRow.className = "pg-spread-row rtl";
+            addRow.appendChild(addCard);
+            grid.appendChild(addRow);
+          }
         } else {
           grid.className = "pg-grid single";
           for (var i = 0; i < pageCount; i++) {
             grid.appendChild(makeCard(i));
           }
+          grid.appendChild(makeAddCard());
+        }
+
+        renderMiniNav();
+      }
+
+      function renderMiniNav() {
+        var mini = document.getElementById("pg-nav-mini");
+        if (!mini) return;
+        mini.innerHTML = "";
+        for (var i = 0; i < pageCount; i++) {
+          (function (idx) {
+            var btn = document.createElement("div");
+            btn.className =
+              "pg-nav-mini-btn" + (idx === selectedPage ? " on" : "");
+            btn.textContent = String(idx + 1) + "p";
+            btn.onclick = function () {
+              selectPage(idx);
+            };
+            mini.appendChild(btn);
+          })(i);
         }
       }
 
@@ -835,17 +901,30 @@
         card.onclick = function () {
           selectPage(idx);
         };
-        card.ondblclick = function () {
-          alert("→ 컷 화면: " + String(idx + 1) + "p");
-        };
 
         var thumb = document.createElement("div");
         thumb.className = "pcard-thumb";
 
-        var num = document.createElement("span");
-        num.className = "pcard-num";
-        num.textContent = String(idx + 1) + "p";
-        thumb.appendChild(num);
+        /* 미배정 경고 도트 (더미: 짝수 인덱스 + 메모 있는 경우) */
+        if (idx % 2 === 0 && pageMemos[idx]) {
+          var dot = document.createElement("span");
+          dot.className = "pcard-warning-dot";
+          dot.title = "미배정 컷 메모 있음";
+          thumb.appendChild(dot);
+        }
+
+        /* 컷 편집 hover 버튼 */
+        var editBtn = document.createElement("div");
+        editBtn.className = "pcard-edit-btn";
+        var editBtnInner = document.createElement("span");
+        editBtnInner.className = "pcard-edit-btn-inner";
+        editBtnInner.textContent = "컷 편집";
+        editBtnInner.onclick = function (e) {
+          e.stopPropagation();
+          alert("→ 컷 화면: " + String(idx + 1) + "p");
+        };
+        editBtn.appendChild(editBtnInner);
+        thumb.appendChild(editBtn);
 
         if (cutCounts[idx] > 1) {
           var lines = document.createElement("div");
@@ -869,14 +948,21 @@
 
         card.appendChild(thumb);
 
+        /* pcard-info: 번호(좌측) + 메모 미리보기(우측) */
         var info = document.createElement("div");
         info.className = "pcard-info";
+
+        var num = document.createElement("span");
+        num.className = "pcard-num";
+        num.textContent = String(idx + 1) + "p";
+        info.appendChild(num);
+
         var memo = document.createElement("div");
         memo.className = "pcard-memo" + (pageMemos[idx] ? "" : " empty");
         memo.textContent = pageMemos[idx] || "메모 없음";
         info.appendChild(memo);
-        card.appendChild(info);
 
+        card.appendChild(info);
         return card;
       }
 
@@ -885,10 +971,23 @@
         card.className = "pcard pcard--blank";
         var thumb = document.createElement("div");
         thumb.className = "pcard-thumb";
-        var lbl = document.createElement("div");
-        lbl.className = "pcard--blank-lbl";
-        lbl.textContent = "속표지";
-        thumb.appendChild(lbl);
+        card.appendChild(thumb);
+        var info = document.createElement("div");
+        info.className = "pcard-info";
+        card.appendChild(info);
+        return card;
+      }
+
+      function makeAddCard() {
+        var card = document.createElement("div");
+        card.className = "pcard pcard--add";
+        card.onclick = addPage;
+        var thumb = document.createElement("div");
+        thumb.className = "pcard-thumb";
+        var icon = document.createElement("span");
+        icon.className = "pcard-add-icon";
+        icon.textContent = "+";
+        thumb.appendChild(icon);
         card.appendChild(thumb);
         var info = document.createElement("div");
         info.className = "pcard-info";
@@ -977,6 +1076,47 @@
         document.querySelector(".pg-hd-count").textContent =
           "(" + pageCount + "p)";
       }
+
+      function tglPgNav() {
+        document.getElementById("pg-nav").classList.toggle("collapsed");
+      }
+
+      function unassignCut(btn) {
+        var item = btn.closest(".pg-cut-item");
+        if (item) {
+          item.classList.remove("assigned");
+          item.classList.add("unassigned");
+          var input = item.querySelector(".pg-cut-text");
+          if (input) input.disabled = false;
+          btn.remove();
+        }
+      }
+
+      /* 리사이즈 핸들 (stub) */
+      (function () {
+        var handle = document.getElementById("pg-resize-handle");
+        var nav = document.getElementById("pg-nav");
+        if (!handle || !nav) return;
+        var dragging = false;
+        handle.addEventListener("mousedown", function (e) {
+          dragging = true;
+          handle.classList.add("dragging");
+          e.preventDefault();
+        });
+        document.addEventListener("mousemove", function (e) {
+          if (!dragging) return;
+          var rect = nav.parentElement.getBoundingClientRect();
+          var newW = Math.max(200, Math.min(500, e.clientX - rect.left));
+          nav.style.width = newW + "px";
+          nav.style.minWidth = newW + "px";
+        });
+        document.addEventListener("mouseup", function () {
+          if (dragging) {
+            dragging = false;
+            handle.classList.remove("dragging");
+          }
+        });
+      })();
 
       function addCutMemo() {
         alert("컷 메모 추가 (stub)");
