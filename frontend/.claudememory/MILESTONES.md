@@ -1,5 +1,17 @@
 # Milestones
 
+## 2026-03-08 (9. Bookshelf 디자인 완성)
+
+- 인라인 CSS → proto-bookshelf.css 분리, proto-sidebar/search/memopanel.css 링크 추가, 가비지 중복 HTML 2768→602줄 정리
+- 새 프로젝트 모달: .cfg-r 구조 → np-row/np-lbl/np-val/stepper/tgl-grp (proto-style.css 공통 클래스) 가로 배치로 전면 교체
+- role-badge(.role-owner/.role-editor/.role-viewer) CSS 추가, 단면→홀수 시작페이지 disabled JS(setView) 구현
+
+## 2026-03-08 (8-6·8-7. 페이지·컷 화면 추가 요구사항 반영)
+
+- pg-nav 접기/펼치기(44px)·리사이즈 핸들, pcard-num 하단 좌측 이동, 미배정 경고 도트, 컷 편집 hover 버튼, +페이지 추가 카드, pg-detail-memo-item border, pg-cut-assign→x버튼
+- ct-pg-nav 아이콘+텍스트 형식, ct-side 접기 동그란 아이콘, ct-sec-a-hd 제거 후 ct-memo-row 통합(컷 N 형식·이모지 병렬), ct-memo-add 삭제, ct-detail-add dashed border 통일
+- ct-toolbar 컷 초기화 기준 두 그룹 분리, 줌 버튼 -/+ 텍스트화, ct-page solid border·gap 제거, crosshair split-mode CSS class 적용
+
 ## 2026-03-06 (8-4. 프로젝트 화면 추가 요구사항 반영)
 
 - 헤더를 `ws-hd-top` 패턴으로 통일, 공유·설정 버튼을 `.hbtn` 아이콘화, `pj-memo-preview` 제거
