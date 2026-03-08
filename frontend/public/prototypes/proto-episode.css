@@ -69,7 +69,97 @@
   flex-direction: column;
   overflow: hidden;
   flex-shrink: 0;
+  position: relative;
+  transition: width var(--dur-sm), min-width var(--dur-sm);
 }
+
+/* 접힘 상태 */
+.ep-nav.collapsed {
+  width: 44px;
+  min-width: 44px;
+}
+.ep-nav.collapsed .ep-nav-content { display: none; }
+.ep-nav.collapsed .ep-nav-mini { display: flex; }
+
+/* 펼침 콘텐츠 래퍼 */
+.ep-nav-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* 미니 뷰 (접힌 상태) */
+.ep-nav-mini {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 4px;
+  gap: 4px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* 접기/펼치기 토글 버튼 */
+.ep-nav-tgl {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  border-radius: var(--r-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background var(--dur-sm);
+  user-select: none;
+}
+.ep-nav-tgl:hover { background: var(--pa); }
+.ep-nav-tgl img { width: 16px; height: 16px; }
+
+/* 미니 에피소드 번호 배지 */
+.ep-mini-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-sm);
+  background: var(--pa);
+  border: 1px solid var(--bd);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-family: var(--ff-mono);
+  color: var(--i2);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background var(--dur-xs), color var(--dur-xs);
+  user-select: none;
+}
+.ep-mini-badge:hover { background: var(--db-bg); color: var(--db); }
+.ep-mini-badge.on { background: var(--db); color: var(--wh); border-color: var(--db); }
+
+/* 리사이즈 핸들 */
+.ep-resize-h {
+  position: absolute;
+  right: -4px;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: col-resize;
+  z-index: 10;
+}
+.ep-resize-h::after {
+  content: '';
+  position: absolute;
+  right: 3px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: transparent;
+  transition: background var(--dur-sm);
+}
+.ep-resize-h:hover::after { background: var(--oc); }
 
 /* 네비 헤더 (필터탭 + 정렬) */
 .ep-nav-hd {
@@ -209,10 +299,19 @@
   z-index: 10;
 }
 
-/* 썸네일 (작은 정사각) */
+/* 드래그 핸들 (좌측, hover 시 표시) */
+.erow-drag {
+  align-self: center;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity var(--dur-sm);
+}
+.erow:hover .erow-drag { opacity: 1; }
+
+/* 썸네일 (번호 표시용, 작게) */
 .erow-thumb {
-  width: 40px;
-  min-width: 40px;
+  width: 30px;
+  min-width: 30px;
   aspect-ratio: 1/1;
   border-radius: var(--r-sm);
   display: flex;
@@ -223,7 +322,7 @@
 
 .erow-thumb-num {
   font-family: var(--ff-mono);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.85);
 }
@@ -234,14 +333,35 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 2px;
 }
 
+/* 행 1: 화수 + 페이지수 */
+.erow-row1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
 .erow-num {
-  font-size: 9px;
+  font-size: 10px;
   font-family: var(--ff-mono);
   color: var(--gh);
+}
+
+.erow-pg {
+  font-size: 10px;
+  font-family: var(--ff-mono);
+  color: var(--gh);
+}
+
+/* 행 2: 제목 + 상태 뱃지 */
+.erow-row2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
 }
 
 .erow-ttl {
@@ -251,8 +371,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
   color: var(--ink);
+  flex: 1;
+  min-width: 0;
 }
 
+/* 행 3: 에피소드 메모 */
 .erow-memo {
   font-size: 10px;
   color: var(--i2);
@@ -267,35 +390,7 @@
   font-style: italic;
 }
 
-.erow-ft {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 1px;
-}
-
-.erow-pg {
-  font-size: 9px;
-  font-family: var(--ff-mono);
-  color: var(--gh);
-}
-
-/* 카드 우측 액션 (hover 시 표시) */
-.erow-acts {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 4px;
-  opacity: 0;
-  transition: opacity var(--dur-sm);
-  flex-shrink: 0;
-}
-
-.erow:hover .erow-acts {
-  opacity: 1;
-}
-
-/* 에피소드 추가 (dashed) */
+/* 에피소드 추가 (다른 행과 동일 취급, JS가 list에 삽입) */
 .ep-add {
   display: flex;
   align-items: center;
@@ -306,8 +401,9 @@
   color: var(--gh);
   font-size: 11px;
   border: 2px dashed var(--bd2);
-  margin: 8px 14px;
+  margin: 6px 10px;
   border-radius: var(--r-lg);
+  user-select: none;
   transition:
     background var(--dur-sm),
     color var(--dur-sm),
@@ -643,33 +739,88 @@
 }
 
 /* ═══════════════════════════════════════════════════════
-   5. 데드라인 표시
+   5. 상태 select + 인라인 cfg 패널
 ═══════════════════════════════════════════════════════ */
-.det-deadline {
+.det-status-sel {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 3px 22px 3px 10px;
+  border-radius: var(--r-pill);
+  border: none;
   font-size: 10px;
-  color: var(--gh);
-  font-family: var(--ff-mono);
-  margin-top: 6px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.det-deadline-val {
-  color: var(--i2);
+  font-weight: 500;
+  font-family: var(--ff-sans);
   cursor: pointer;
-  padding: 1px 6px;
-  border-radius: var(--r-xs);
-  border: 1px solid transparent;
-  transition:
-    border-color var(--dur-sm),
-    background var(--dur-sm);
+  background-color: var(--gl);
+  color: var(--i2);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 3.5l3 3 3-3' stroke='%239a9a9a' stroke-width='1.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+  transition: opacity var(--dur-sm);
+}
+.det-status-sel:hover { opacity: 0.8; }
+.det-status-sel[data-state="draft"] { background-color: var(--gl); color: var(--i2); }
+.det-status-sel[data-state="inProgress"] { background-color: var(--oc); color: var(--wh); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 3.5l3 3 3-3' stroke='%23fff' stroke-width='1.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); }
+.det-status-sel[data-state="done"] { background-color: var(--db); color: var(--wh); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 3.5l3 3 3-3' stroke='%23fff' stroke-width='1.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); }
+
+/* 인라인 설정 패널 */
+.ep-cfg-panel {
+  border-top: 1px solid var(--bd);
+  padding: 14px 22px;
+  background: var(--pa);
+  flex-shrink: 0;
 }
 
-.det-deadline-val:hover {
-  border-color: var(--bd2);
-  background: var(--pa);
+/* ═══════════════════════════════════════════════════════
+   6-0. 메모 영역 스타일 오버라이드
+═══════════════════════════════════════════════════════ */
+/* m-ta: white bg + border */
+.det-bd .m-ta {
+  background: var(--wh);
+  border: 1px solid var(--bd2);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+  resize: vertical;
 }
+
+/* pm-row: white bg + border */
+.det-bd .pm-row {
+  background: var(--wh);
+  border: 1px solid var(--bd2);
+  border-radius: var(--r-sm);
+  padding: 5px 8px;
+}
+.det-bd .pm-row:hover { background: var(--wh); }
+
+/* x버튼 hover 시에만 표시 */
+.det-bd .pm-row .ic-btn-sm {
+  opacity: 0;
+  transition: opacity var(--dur-sm);
+}
+.det-bd .pm-row:hover .ic-btn-sm { opacity: 1; }
+
+/* 태그 없는 세부메모: 좌측 컬러바 $glacial */
+#detail-memo-list .pm-row:not(:has(.tag)) {
+  border-left: 3px solid var(--gl);
+}
+
+/* 이모티콘 지정 버튼 */
+.pm-emoji {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--r-xs);
+  border: 1px dashed var(--bd2);
+  background: transparent;
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--gh);
+  flex-shrink: 0;
+  transition: border-color var(--dur-sm), color var(--dur-sm);
+}
+.pm-emoji:hover { border-color: var(--am); color: var(--am-dk); }
 
 /* ═══════════════════════════════════════════════════════
    6. 그라디언트 썸네일 (에피소드 카드용)

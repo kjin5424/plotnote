@@ -418,9 +418,9 @@ grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto
 
 **8-1. 공통 요구사항**
 
-- [ ] **표기법 통일** 적용: 에피소드 "1화", 페이지 "1p", 컷 "컷 1"
-  - `proto-episode.html`: "ep.1" → "1화", "p.01" → "1p" _(7. 통합검수 신규)_
-  - `proto-project.html`: 사이드바 "ep.1 첫 만남" → "1화 첫 만남" _(7. 통합검수 신규)_
+- [x] **표기법 통일** 적용: 에피소드 "1화", 페이지 "1p", 컷 "컷 1"
+  - `proto-episode.html`: 이미 "1화" 형식 적용 완료 _(확인됨)_
+  - `proto-project.html`: 이미 "1화" 형식 적용 완료 _(확인됨)_
 - [x] **icon-mapping.txt 수정**: "명시적 수정" 항목 `edit_square_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg`로 수정 완료
 - [x] **icon-mapping.txt 추가**: `more_vert_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg` (더보기 버튼) 추가 완료
 - [x] **user-select: none** 적용 (proto-style.css)
@@ -464,20 +464,21 @@ grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto
 
 **8-5. 에피소드**
 
-- [ ] `.ep-nav` 접기/펼치기 (44px), 리사이즈 핸들
-- [ ] `.erow` 드래그 핸들, 레이아웃 변경
-- [ ] `.ep-add` sticky 제거
-- [ ] `.det-deadline` 제거
-- [ ] 탭 좌우2단/상하2단 (Phase 2/3)
-- [ ] `.ep-memo-preview` = 프로젝트 메모 확인, `.parent-memo` 삭제
-- [ ] `.m-ta`, `.pm-row` 배경 `$white` + border
-- [ ] x버튼 hover 시에만 표시
-- [ ] 태그 없는 세부메모 디자인 (👾: 좌측 컬러바 `$glacial`)
-- [ ] 인스타그램 형식 처리 (👾: Phase 1 plain text, Phase 2 태그 파싱)
-- [ ] `.det-status` → 드롭다운
-- [ ] 페이지메모 이모티콘 영역
-- [ ] `.cfg-box` 토글 확장 형식
-- [ ] 서브헤더 공유버튼
+- [x] `.ep-nav` 접기/펼치기 (44px), 리사이즈 핸들
+- [x] `.erow` 드래그 핸들 좌측 이동, 레이아웃 변경 (1화|페이지수 / 제목|진행라벨 / 메모)
+- [x] `.ep-add` sticky 제거 → renderEpList()에서 sort 순서에 따라 삽입
+- [x] `.det-deadline` 제거
+- [ ] 탭 좌우2단/상하2단 (Phase 2/3 스킵)
+- [x] `.ep-memo-preview` = 프로젝트 메모 텍스트로 변경, `.parent-memo` 삭제
+- [x] `.m-ta`, `.pm-row` 배경 `$white` + border
+- [x] x버튼 hover 시에만 표시
+- [x] 태그 없는 세부메모: 좌측 컬러바 `$glacial` (`#detail-memo-list .pm-row:not(:has(.tag))`)
+- [x] 인스타그램 형식: Phase 1 plain text (기존 유지)
+- [x] `.det-status` → `<select>` 드롭다운 (data-state 기반 색상)
+- [x] 페이지메모 이모티콘 영역 (`.pm-emoji` 버튼)
+- [x] `.cfg-box` 오버레이 제거 → `.ep-cfg-panel` 인라인 토글 확장
+- [x] 서브헤더 공유버튼 (handshake icon) 추가
+- [x] rail nav 에피소드 rn-pop → "1p, 2p, ... 24p" 페이지 목록
 
 **8-6. 페이지**
 

@@ -206,7 +206,7 @@
   transition: opacity var(--dur-xs);
 }
 .mm-act-btn:hover {
-  background: rgba(0,0,0,0.06);
+  background: rgba(0, 0, 0, 0.06);
 }
 .mm-act-btn:hover img {
   opacity: 0.8;
@@ -216,10 +216,11 @@
 }
 .mm-act-del:hover img {
   opacity: 1;
-  filter: brightness(0) saturate(100%) invert(26%) sepia(80%) saturate(600%) hue-rotate(330deg);
+  filter: brightness(0) saturate(100%) invert(26%) sepia(80%) saturate(600%)
+    hue-rotate(330deg);
 }
 
-/* 메모 라벨 (ep.3 p.05 등) */
+/* 메모 라벨 (3화 5p 등) */
 .mm-lbl {
   font-size: 9px;
   font-family: var(--ff-mono);

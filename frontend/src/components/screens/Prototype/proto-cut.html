@@ -1,439 +1,1280 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-<meta charset="UTF-8">
-<title>PlotNote — 컷 편집</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
-<style>
-:root{--db:#2A4D88;--oc:#7C94B8;--gl:#B1BBC8;--co:#D9D9D8;--am:#fbc662;--am-bg:#fff8e6;--wh:#fefefe;--pa:#f7f6f3;--ink:#1a1a1a;--i2:#4a4a4a;--gh:#9a9a9a;--bd:#e8e6e0;--bd2:#d5d2cb;--sw:220px;--hh:48px;--rsp:280px;}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Noto Sans KR',sans-serif;background:var(--pa);color:var(--ink);height:100vh;overflow:hidden;display:flex;flex-direction:column;font-size:13px;}
-button{font-family:'Noto Sans KR',sans-serif;cursor:pointer;}
-.hd{height:var(--hh);background:var(--wh);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 16px;gap:8px;flex-shrink:0;z-index:30;}
-.hd-menu{width:28px;height:28px;border-radius:5px;border:none;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3.5px;}
-.hd-menu:hover{background:var(--pa);}
-.hd-menu span{display:block;height:1.5px;border-radius:1px;background:var(--gh);}
-.hd-menu span:nth-child(1){width:14px;}.hd-menu span:nth-child(2){width:10px;}.hd-menu span:nth-child(3){width:14px;}
-.bc{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--gh);}
-.bc a{color:var(--gh);text-decoration:none;cursor:pointer;}.bc a:hover{color:var(--db);}
-.bc .cur{color:var(--ink);font-weight:500;}.bc .sep{color:var(--co);}
-.hd-r{margin-left:auto;display:flex;gap:4px;align-items:center;}
-.hbtn{width:28px;height:28px;border-radius:5px;border:none;background:none;color:var(--gh);display:flex;align-items:center;justify-content:center;font-size:14px;}
-.hbtn:hover{background:var(--pa);}
-.hbtn.on{background:#eef1f7;color:var(--db);}
-.main{flex:1;display:flex;overflow:hidden;}
-.sb{width:var(--sw);min-width:var(--sw);height:100%;background:var(--wh);border-right:1px solid var(--bd);display:flex;flex-direction:column;}
-.sb-logo{padding:13px 16px 11px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:7px;}
-.sb-mk{width:24px;height:24px;background:var(--db);border-radius:5px;display:flex;align-items:center;justify-content:center;}
-.sb-mk svg{width:12px;height:12px;fill:#fff;}
-.sb-nm{font-family:'DM Mono',monospace;font-size:12px;}
-.sb-sec{padding:8px 8px 3px;}
-.sb-lbl{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--gh);padding:0 8px;margin-bottom:2px;}
-.si{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:5px;font-size:11px;color:var(--i2);cursor:pointer;}
-.si:hover{background:var(--pa);}
-.si.on{background:#eef1f7;color:var(--db);font-weight:500;}
-.si .d{width:5px;height:5px;border-radius:50%;background:var(--gl);flex-shrink:0;}
-.si.on .d{background:var(--db);}
-.sb-ft{margin-top:auto;padding:8px;border-top:1px solid var(--bd);}
-.sb-u{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:5px;cursor:pointer;}
-.sb-u:hover{background:var(--pa);}
-.av{width:22px;height:22px;border-radius:50%;background:var(--db);display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;font-weight:600;}
+  <head>
+    <meta charset="UTF-8" />
+    <title>PlotNote — 컷 편집</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&family=Noto+Serif+KR:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --db: #2a4d88;
+        --oc: #7c94b8;
+        --gl: #b1bbc8;
+        --co: #d9d9d8;
+        --am: #fbc662;
+        --am-bg: #fff8e6;
+        --wh: #fefefe;
+        --pa: #f7f6f3;
+        --ink: #1a1a1a;
+        --i2: #4a4a4a;
+        --gh: #9a9a9a;
+        --bd: #e8e6e0;
+        --bd2: #d5d2cb;
+        --sw: 220px;
+        --hh: 48px;
+        --rsp: 280px;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Noto Sans KR", sans-serif;
+        background: var(--pa);
+        color: var(--ink);
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        font-size: 13px;
+      }
+      button {
+        font-family: "Noto Sans KR", sans-serif;
+        cursor: pointer;
+      }
+      .hd {
+        height: var(--hh);
+        background: var(--wh);
+        border-bottom: 1px solid var(--bd);
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        gap: 8px;
+        flex-shrink: 0;
+        z-index: 30;
+      }
+      .hd-menu {
+        width: 28px;
+        height: 28px;
+        border-radius: 5px;
+        border: none;
+        background: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3.5px;
+      }
+      .hd-menu:hover {
+        background: var(--pa);
+      }
+      .hd-menu span {
+        display: block;
+        height: 1.5px;
+        border-radius: 1px;
+        background: var(--gh);
+      }
+      .hd-menu span:nth-child(1) {
+        width: 14px;
+      }
+      .hd-menu span:nth-child(2) {
+        width: 10px;
+      }
+      .hd-menu span:nth-child(3) {
+        width: 14px;
+      }
+      .bc {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        color: var(--gh);
+      }
+      .bc a {
+        color: var(--gh);
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .bc a:hover {
+        color: var(--db);
+      }
+      .bc .cur {
+        color: var(--ink);
+        font-weight: 500;
+      }
+      .bc .sep {
+        color: var(--co);
+      }
+      .hd-r {
+        margin-left: auto;
+        display: flex;
+        gap: 4px;
+        align-items: center;
+      }
+      .hbtn {
+        width: 28px;
+        height: 28px;
+        border-radius: 5px;
+        border: none;
+        background: none;
+        color: var(--gh);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+      }
+      .hbtn:hover {
+        background: var(--pa);
+      }
+      .hbtn.on {
+        background: #eef1f7;
+        color: var(--db);
+      }
+      .main {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+      }
+      .sb {
+        width: var(--sw);
+        min-width: var(--sw);
+        height: 100%;
+        background: var(--wh);
+        border-right: 1px solid var(--bd);
+        display: flex;
+        flex-direction: column;
+      }
+      .sb-logo {
+        padding: 13px 16px 11px;
+        border-bottom: 1px solid var(--bd);
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .sb-mk {
+        width: 24px;
+        height: 24px;
+        background: var(--db);
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .sb-mk svg {
+        width: 12px;
+        height: 12px;
+        fill: #fff;
+      }
+      .sb-nm {
+        font-family: "DM Mono", monospace;
+        font-size: 12px;
+      }
+      .sb-sec {
+        padding: 8px 8px 3px;
+      }
+      .sb-lbl {
+        font-size: 9px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--gh);
+        padding: 0 8px;
+        margin-bottom: 2px;
+      }
+      .si {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 8px;
+        border-radius: 5px;
+        font-size: 11px;
+        color: var(--i2);
+        cursor: pointer;
+      }
+      .si:hover {
+        background: var(--pa);
+      }
+      .si.on {
+        background: #eef1f7;
+        color: var(--db);
+        font-weight: 500;
+      }
+      .si .d {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--gl);
+        flex-shrink: 0;
+      }
+      .si.on .d {
+        background: var(--db);
+      }
+      .sb-ft {
+        margin-top: auto;
+        padding: 8px;
+        border-top: 1px solid var(--bd);
+      }
+      .sb-u {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 8px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .sb-u:hover {
+        background: var(--pa);
+      }
+      .av {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--db);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        color: #fff;
+        font-weight: 600;
+      }
 
-/* ── 워크스페이스 */
-.ws{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;}
-/* 상단 컨텍스트 바 (에피소드 + 페이지 네비) */
-.ctx-bar{flex-shrink:0;height:36px;background:var(--wh);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 16px;gap:10px;}
-.ctx-ep{font-size:11px;color:var(--gh);font-family:'DM Mono',monospace;}
-.ctx-sep{color:var(--co);}
-.ctx-pg{font-size:11px;font-weight:500;color:var(--ink);}
-.pg-nav{display:flex;align-items:center;gap:3px;margin-left:auto;}
-.pn-btn{width:24px;height:24px;border-radius:4px;border:1px solid var(--bd2);background:var(--wh);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--i2);cursor:pointer;}
-.pn-btn:hover{border-color:var(--oc);color:var(--db);}
-.pn-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--ink);min-width:50px;text-align:center;}
-/* 뷰 모드 토글 (단면/양면) */
-.view-tgl{display:flex;border:1px solid var(--bd2);border-radius:5px;overflow:hidden;margin-left:8px;}
-.vtb{padding:2px 8px;border:none;background:var(--wh);font-size:10px;color:var(--gh);cursor:pointer;}
-.vtb.on{background:#eef1f7;color:var(--db);}
-/* 줌 */
-.zoom-ctl{display:flex;align-items:center;gap:4px;margin-left:8px;}
-.z-btn{width:20px;height:20px;border-radius:4px;border:1px solid var(--bd2);background:var(--wh);font-size:13px;color:var(--i2);display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.z-btn:hover{border-color:var(--oc);}
-.z-pct{font-family:'DM Mono',monospace;font-size:10px;color:var(--ink);min-width:35px;text-align:center;}
+      /* ── 워크스페이스 */
+      .ws {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+      /* 상단 컨텍스트 바 (에피소드 + 페이지 네비) */
+      .ctx-bar {
+        flex-shrink: 0;
+        height: 36px;
+        background: var(--wh);
+        border-bottom: 1px solid var(--bd);
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        gap: 10px;
+      }
+      .ctx-ep {
+        font-size: 11px;
+        color: var(--gh);
+        font-family: "DM Mono", monospace;
+      }
+      .ctx-sep {
+        color: var(--co);
+      }
+      .ctx-pg {
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--ink);
+      }
+      .pg-nav {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        margin-left: auto;
+      }
+      .pn-btn {
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        border: 1px solid var(--bd2);
+        background: var(--wh);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        color: var(--i2);
+        cursor: pointer;
+      }
+      .pn-btn:hover {
+        border-color: var(--oc);
+        color: var(--db);
+      }
+      .pn-num {
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        color: var(--ink);
+        min-width: 50px;
+        text-align: center;
+      }
+      /* 뷰 모드 토글 (단면/양면) */
+      .view-tgl {
+        display: flex;
+        border: 1px solid var(--bd2);
+        border-radius: 5px;
+        overflow: hidden;
+        margin-left: 8px;
+      }
+      .vtb {
+        padding: 2px 8px;
+        border: none;
+        background: var(--wh);
+        font-size: 10px;
+        color: var(--gh);
+        cursor: pointer;
+      }
+      .vtb.on {
+        background: #eef1f7;
+        color: var(--db);
+      }
+      /* 줌 */
+      .zoom-ctl {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: 8px;
+      }
+      .z-btn {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        border: 1px solid var(--bd2);
+        background: var(--wh);
+        font-size: 13px;
+        color: var(--i2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .z-btn:hover {
+        border-color: var(--oc);
+      }
+      .z-pct {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        color: var(--ink);
+        min-width: 35px;
+        text-align: center;
+      }
 
-/* 캔버스 영역 */
-.canvas-area{flex:1;display:flex;overflow:hidden;position:relative;}
-.canvas-scroll{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;background:#d8d5ce;padding:40px 40px 100px;}
-.canvas-scroll::-webkit-scrollbar{width:6px;height:6px;}
-.canvas-scroll::-webkit-scrollbar-thumb{background:var(--co);border-radius:3px;}
-/* 페이지 캔버스 */
-.cut-canvas-wrap{display:flex;gap:0;flex-shrink:0;}
-.cut-page{background:var(--wh);border:1px solid var(--bd2);box-shadow:0 4px 20px rgba(0,0,0,.12);display:flex;flex-direction:column;overflow:hidden;position:relative;}
-/* 컷 그리드 (CSS Grid 방식) */
-.cut-grid{flex:1;display:grid;position:relative;}
-/* 컷 셀 */
-.cut-cell{border:1px solid #e0ddd8;position:relative;cursor:pointer;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.cut-cell:hover{background:rgba(42,77,136,.03);}
-.cut-cell.sel{background:rgba(42,77,136,.06);outline:2px solid var(--db);outline-offset:-2px;}
-.cut-cell-n{position:absolute;top:4px;left:5px;font-size:9px;font-family:'DM Mono',monospace;color:var(--gl);}
-.cut-cell-memo{position:absolute;top:18px;left:5px;right:5px;font-size:8px;color:var(--i2);line-height:1.4;overflow:hidden;max-height:28px;}
-/* 분할선 드래그 가이드 */
-.split-guide{position:absolute;background:rgba(42,77,136,.3);pointer-events:none;display:none;}
-.split-guide-h{height:2px;left:0;right:0;}
-.split-guide-v{width:2px;top:0;bottom:0;}
+      /* 캔버스 영역 */
+      .canvas-area {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+        position: relative;
+      }
+      .canvas-scroll {
+        flex: 1;
+        overflow: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #d8d5ce;
+        padding: 40px 40px 100px;
+      }
+      .canvas-scroll::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      .canvas-scroll::-webkit-scrollbar-thumb {
+        background: var(--co);
+        border-radius: 3px;
+      }
+      /* 페이지 캔버스 */
+      .cut-canvas-wrap {
+        display: flex;
+        gap: 0;
+        flex-shrink: 0;
+      }
+      .cut-page {
+        background: var(--wh);
+        border: 1px solid var(--bd2);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+      /* 컷 그리드 (CSS Grid 방식) */
+      .cut-grid {
+        flex: 1;
+        display: grid;
+        position: relative;
+      }
+      /* 컷 셀 */
+      .cut-cell {
+        border: 1px solid #e0ddd8;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .cut-cell:hover {
+        background: rgba(42, 77, 136, 0.03);
+      }
+      .cut-cell.sel {
+        background: rgba(42, 77, 136, 0.06);
+        outline: 2px solid var(--db);
+        outline-offset: -2px;
+      }
+      .cut-cell-n {
+        position: absolute;
+        top: 4px;
+        left: 5px;
+        font-size: 9px;
+        font-family: "DM Mono", monospace;
+        color: var(--gl);
+      }
+      .cut-cell-memo {
+        position: absolute;
+        top: 18px;
+        left: 5px;
+        right: 5px;
+        font-size: 8px;
+        color: var(--i2);
+        line-height: 1.4;
+        overflow: hidden;
+        max-height: 28px;
+      }
+      /* 분할선 드래그 가이드 */
+      .split-guide {
+        position: absolute;
+        background: rgba(42, 77, 136, 0.3);
+        pointer-events: none;
+        display: none;
+      }
+      .split-guide-h {
+        height: 2px;
+        left: 0;
+        right: 0;
+      }
+      .split-guide-v {
+        width: 2px;
+        top: 0;
+        bottom: 0;
+      }
 
-/* ── Floating Toolbar (하단 중앙) */
-/* 일반 도구 / 컷편집 도구 두 레이어 */
-.ftb{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:2px;background:var(--wh);border:1px solid var(--bd2);border-radius:10px;padding:4px 6px;box-shadow:0 4px 20px rgba(0,0,0,.14);z-index:20;white-space:nowrap;}
-.ftb-grp{display:flex;align-items:center;gap:1px;}
-.ftb-sep{width:1px;height:20px;background:var(--bd);margin:0 4px;}
-.fb{width:32px;height:32px;border-radius:7px;border:none;background:none;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--i2);cursor:pointer;position:relative;}
-.fb:hover{background:var(--pa);}
-.fb.on{background:#eef1f7;color:var(--db);}
-.fb.danger:hover{background:#ffeaea;color:#c93a3a;}
-.fb-lbl{font-size:9px;font-family:'DM Mono',monospace;color:var(--gh);}
-/* 컷 편집 모드일 때 추가 툴바 */
-.ftb-edit{position:absolute;bottom:66px;left:50%;transform:translateX(-50%);display:none;align-items:center;gap:2px;background:#1e2433;border:1px solid #2a3448;border-radius:10px;padding:4px 6px;box-shadow:0 4px 20px rgba(0,0,0,.22);z-index:20;}
-.ftb-edit.show{display:flex;}
-.fbe{width:32px;height:32px;border-radius:7px;border:none;background:none;display:flex;align-items:center;justify-content:center;font-size:14px;color:#8998b1;cursor:pointer;}
-.fbe:hover{background:#252d40;}
-.fbe.on{background:#1e2d4a;color:#a8c0f0;}
-.fbe-lbl{font-size:9px;font-family:'DM Mono',monospace;color:#4a5a7a;padding:0 2px;}
+      /* ── Floating Toolbar (하단 중앙) */
+      /* 일반 도구 / 컷편집 도구 두 레이어 */
+      .ftb {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        background: var(--wh);
+        border: 1px solid var(--bd2);
+        border-radius: 10px;
+        padding: 4px 6px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.14);
+        z-index: 20;
+        white-space: nowrap;
+      }
+      .ftb-grp {
+        display: flex;
+        align-items: center;
+        gap: 1px;
+      }
+      .ftb-sep {
+        width: 1px;
+        height: 20px;
+        background: var(--bd);
+        margin: 0 4px;
+      }
+      .fb {
+        width: 32px;
+        height: 32px;
+        border-radius: 7px;
+        border: none;
+        background: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        color: var(--i2);
+        cursor: pointer;
+        position: relative;
+      }
+      .fb:hover {
+        background: var(--pa);
+      }
+      .fb.on {
+        background: #eef1f7;
+        color: var(--db);
+      }
+      .fb.danger:hover {
+        background: #ffeaea;
+        color: #c93a3a;
+      }
+      .fb-lbl {
+        font-size: 9px;
+        font-family: "DM Mono", monospace;
+        color: var(--gh);
+      }
+      /* 컷 편집 모드일 때 추가 툴바 */
+      .ftb-edit {
+        position: absolute;
+        bottom: 66px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: none;
+        align-items: center;
+        gap: 2px;
+        background: #1e2433;
+        border: 1px solid #2a3448;
+        border-radius: 10px;
+        padding: 4px 6px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.22);
+        z-index: 20;
+      }
+      .ftb-edit.show {
+        display: flex;
+      }
+      .fbe {
+        width: 32px;
+        height: 32px;
+        border-radius: 7px;
+        border: none;
+        background: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: #8998b1;
+        cursor: pointer;
+      }
+      .fbe:hover {
+        background: #252d40;
+      }
+      .fbe.on {
+        background: #1e2d4a;
+        color: #a8c0f0;
+      }
+      .fbe-lbl {
+        font-size: 9px;
+        font-family: "DM Mono", monospace;
+        color: #4a5a7a;
+        padding: 0 2px;
+      }
 
-/* ── 우측 메모 패널 (Design 3 Ink) */
-.rsp{width:0;overflow:hidden;border-left:none;background:#1e2433;display:flex;flex-direction:column;flex-shrink:0;transition:width .2s cubic-bezier(.4,0,.2,1);}
-.rsp.open{width:var(--rsp);border-left:1px solid #2a3448;}
-.rsp-tabs{display:flex;flex-direction:row;border-bottom:1px solid #2a3448;flex-shrink:0;overflow-x:auto;}
-.rsp-tabs::-webkit-scrollbar{height:2px;}
-.rsp-tabs::-webkit-scrollbar-thumb{background:#3a4560;}
-.rsp-tab{padding:9px 10px;font-size:10px;font-family:'DM Mono',monospace;color:#6b7a98;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;}
-.rsp-tab:hover{color:#8998b1;}
-.rsp-tab.on{color:#a8c0f0;border-bottom-color:#4a7adc;}
-.rsp-bd{flex:1;overflow-y:auto;padding:10px;}
-.rsp-bd::-webkit-scrollbar{width:4px;}
-.rsp-bd::-webkit-scrollbar-thumb{background:#2a3448;border-radius:2px;}
-.rsp-sec{margin-bottom:8px;}
-.rsp-sec-hd{display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border-radius:5px;cursor:pointer;color:#8998b1;font-size:10px;font-family:'DM Mono',monospace;}
-.rsp-sec-hd:hover{background:#252d40;}
-.rsp-sec-hd.open .rsp-arrow{transform:rotate(90deg);}
-.rsp-arrow{font-size:8px;transition:transform .15s;}
-.rsp-sec-body{overflow:hidden;}
-.rsp-sec-body.closed{display:none;}
-.rsp-mi{background:#252d40;border-radius:6px;padding:7px 9px;margin-bottom:4px;cursor:pointer;border:1px solid transparent;}
-.rsp-mi:hover{border-color:#3a4560;}
-.rsp-mi.on{border-color:#4a7adc;background:#1e2d4a;}
-.rsp-mi-lbl{font-size:8px;font-family:'DM Mono',monospace;color:#4a5a7a;margin-bottom:2px;text-transform:uppercase;letter-spacing:.05em;}
-.rsp-mi-txt{font-size:10px;color:#c8d4e8;line-height:1.5;}
-.rsp-mi-txt.empty{color:#4a5a7a;font-style:italic;}
-.rsp-ci{display:flex;align-items:flex-start;gap:6px;background:#252d40;border-radius:5px;padding:6px 8px;margin-bottom:3px;cursor:pointer;border:1px solid transparent;}
-.rsp-ci:hover{border-color:#3a4560;}
-.rsp-ci.on{border-color:#4a7adc;}
-.rsp-cn{font-size:9px;font-family:'DM Mono',monospace;color:#4a5a7a;min-width:22px;flex-shrink:0;padding-top:1px;}
-.rsp-ct{font-size:10px;color:#c8d4e8;line-height:1.4;}
-.rsp-ct.empty{color:#4a5a7a;font-style:italic;}
-.rsp-ta{width:100%;background:#252d40;border:1px solid #2a3448;border-radius:5px;padding:6px 9px;font-size:10px;font-family:'Noto Sans KR',sans-serif;color:#c8d4e8;resize:none;outline:none;line-height:1.6;}
-.rsp-ta:focus{border-color:#4a7adc;}
-.rsp-ta::placeholder{color:#4a5a7a;}
-.rsp-add{width:100%;background:transparent;border:1px dashed #2a3448;border-radius:5px;padding:5px 9px;font-size:9px;color:#4a5a7a;cursor:pointer;margin-top:3px;font-family:'Noto Sans KR',sans-serif;}
-.rsp-add:hover{border-color:#3a4560;color:#8998b1;}
+      /* ── 우측 메모 패널 (Design 3 Ink) */
+      .rsp {
+        width: 0;
+        overflow: hidden;
+        border-left: none;
+        background: #1e2433;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .rsp.open {
+        width: var(--rsp);
+        border-left: 1px solid #2a3448;
+      }
+      .rsp-tabs {
+        display: flex;
+        flex-direction: row;
+        border-bottom: 1px solid #2a3448;
+        flex-shrink: 0;
+        overflow-x: auto;
+      }
+      .rsp-tabs::-webkit-scrollbar {
+        height: 2px;
+      }
+      .rsp-tabs::-webkit-scrollbar-thumb {
+        background: #3a4560;
+      }
+      .rsp-tab {
+        padding: 9px 10px;
+        font-size: 10px;
+        font-family: "DM Mono", monospace;
+        color: #6b7a98;
+        cursor: pointer;
+        white-space: nowrap;
+        border-bottom: 2px solid transparent;
+      }
+      .rsp-tab:hover {
+        color: #8998b1;
+      }
+      .rsp-tab.on {
+        color: #a8c0f0;
+        border-bottom-color: #4a7adc;
+      }
+      .rsp-bd {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+      }
+      .rsp-bd::-webkit-scrollbar {
+        width: 4px;
+      }
+      .rsp-bd::-webkit-scrollbar-thumb {
+        background: #2a3448;
+        border-radius: 2px;
+      }
+      .rsp-sec {
+        margin-bottom: 8px;
+      }
+      .rsp-sec-hd {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 5px 8px;
+        border-radius: 5px;
+        cursor: pointer;
+        color: #8998b1;
+        font-size: 10px;
+        font-family: "DM Mono", monospace;
+      }
+      .rsp-sec-hd:hover {
+        background: #252d40;
+      }
+      .rsp-sec-hd.open .rsp-arrow {
+        transform: rotate(90deg);
+      }
+      .rsp-arrow {
+        font-size: 8px;
+        transition: transform 0.15s;
+      }
+      .rsp-sec-body {
+        overflow: hidden;
+      }
+      .rsp-sec-body.closed {
+        display: none;
+      }
+      .rsp-mi {
+        background: #252d40;
+        border-radius: 6px;
+        padding: 7px 9px;
+        margin-bottom: 4px;
+        cursor: pointer;
+        border: 1px solid transparent;
+      }
+      .rsp-mi:hover {
+        border-color: #3a4560;
+      }
+      .rsp-mi.on {
+        border-color: #4a7adc;
+        background: #1e2d4a;
+      }
+      .rsp-mi-lbl {
+        font-size: 8px;
+        font-family: "DM Mono", monospace;
+        color: #4a5a7a;
+        margin-bottom: 2px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .rsp-mi-txt {
+        font-size: 10px;
+        color: #c8d4e8;
+        line-height: 1.5;
+      }
+      .rsp-mi-txt.empty {
+        color: #4a5a7a;
+        font-style: italic;
+      }
+      .rsp-ci {
+        display: flex;
+        align-items: flex-start;
+        gap: 6px;
+        background: #252d40;
+        border-radius: 5px;
+        padding: 6px 8px;
+        margin-bottom: 3px;
+        cursor: pointer;
+        border: 1px solid transparent;
+      }
+      .rsp-ci:hover {
+        border-color: #3a4560;
+      }
+      .rsp-ci.on {
+        border-color: #4a7adc;
+      }
+      .rsp-cn {
+        font-size: 9px;
+        font-family: "DM Mono", monospace;
+        color: #4a5a7a;
+        min-width: 22px;
+        flex-shrink: 0;
+        padding-top: 1px;
+      }
+      .rsp-ct {
+        font-size: 10px;
+        color: #c8d4e8;
+        line-height: 1.4;
+      }
+      .rsp-ct.empty {
+        color: #4a5a7a;
+        font-style: italic;
+      }
+      .rsp-ta {
+        width: 100%;
+        background: #252d40;
+        border: 1px solid #2a3448;
+        border-radius: 5px;
+        padding: 6px 9px;
+        font-size: 10px;
+        font-family: "Noto Sans KR", sans-serif;
+        color: #c8d4e8;
+        resize: none;
+        outline: none;
+        line-height: 1.6;
+      }
+      .rsp-ta:focus {
+        border-color: #4a7adc;
+      }
+      .rsp-ta::placeholder {
+        color: #4a5a7a;
+      }
+      .rsp-add {
+        width: 100%;
+        background: transparent;
+        border: 1px dashed #2a3448;
+        border-radius: 5px;
+        padding: 5px 9px;
+        font-size: 9px;
+        color: #4a5a7a;
+        cursor: pointer;
+        margin-top: 3px;
+        font-family: "Noto Sans KR", sans-serif;
+      }
+      .rsp-add:hover {
+        border-color: #3a4560;
+        color: #8998b1;
+      }
 
-/* 컷 카운트 뱃지 */
-.cut-count-badge{position:absolute;top:8px;right:8px;background:rgba(42,77,136,.85);color:#fff;font-size:8px;font-family:'DM Mono',monospace;padding:2px 6px;border-radius:4px;pointer-events:none;}
+      /* 컷 카운트 뱃지 */
+      .cut-count-badge {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: rgba(42, 77, 136, 0.85);
+        color: #fff;
+        font-size: 8px;
+        font-family: "DM Mono", monospace;
+        padding: 2px 6px;
+        border-radius: 4px;
+        pointer-events: none;
+      }
 
-/* 풀스크린 힌트 */
-.fs-hint{position:absolute;bottom:74px;right:20px;background:rgba(30,36,51,.9);color:#8998b1;font-size:10px;font-family:'DM Mono',monospace;padding:4px 10px;border-radius:5px;pointer-events:none;display:none;}
-</style>
-</head>
-<body>
-
-<div class="hd">
-  <button class="hd-menu"><span></span><span></span><span></span></button>
-  <div class="bc">
-    <a>고양이와 강아지</a><span class="sep">›</span>
-    <a>ep.1 첫 만남</a><span class="sep">›</span>
-    <a>페이지 목록</a><span class="sep">›</span>
-    <span class="cur">p.01 컷 편집</span>
-  </div>
-  <div class="hd-r">
-    <button class="hbtn" id="memo-btn" onclick="toggleRsp()" title="메모 패널">⋯</button>
-  </div>
-</div>
-
-<div class="main">
-  <div class="sb">
-    <div class="sb-logo">
-      <div class="sb-mk"><svg viewBox="0 0 14 14"><rect x="1" y="1" width="4" height="12" rx="1"/><rect x="7" y="1" width="4" height="7" rx="1" opacity=".6"/><rect x="7" y="10" width="4" height="3" rx="1" opacity=".4"/></svg></div>
-      <span class="sb-nm">plotnote</span>
-    </div>
-    <div class="sb-sec">
-      <div class="sb-lbl">ep.1 첫 만남</div>
-      <div class="si on"><div class="d"></div>p.01</div>
-      <div class="si"><div class="d"></div>p.02</div>
-      <div class="si"><div class="d"></div>p.03</div>
-      <div class="si" style="color:var(--gh);font-size:10px;padding-left:14px;">... 24p</div>
-    </div>
-    <div class="sb-ft">
-      <div class="sb-u"><div class="av">베</div><span style="font-size:11px;color:var(--i2);">베베</span></div>
-    </div>
-  </div>
-
-  <div class="ws">
-    <!-- 상단 컨텍스트 바 -->
-    <div class="ctx-bar">
-      <span class="ctx-ep">ep.1 첫 만남</span>
-      <span class="ctx-sep">›</span>
-      <span class="ctx-pg" id="ctx-pg-lbl">p.01</span>
-      <div class="pg-nav">
-        <button class="pn-btn" onclick="navPage(-1)">◀</button>
-        <span class="pn-num" id="pn-num">01 / 24</span>
-        <button class="pn-btn" onclick="navPage(1)">▶</button>
+      /* 풀스크린 힌트 */
+      .fs-hint {
+        position: absolute;
+        bottom: 74px;
+        right: 20px;
+        background: rgba(30, 36, 51, 0.9);
+        color: #8998b1;
+        font-size: 10px;
+        font-family: "DM Mono", monospace;
+        padding: 4px 10px;
+        border-radius: 5px;
+        pointer-events: none;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hd">
+      <button class="hd-menu"><span></span><span></span><span></span></button>
+      <div class="bc">
+        <a>고양이와 강아지</a><span class="sep">›</span> <a>1화 첫 만남</a
+        ><span class="sep">›</span> <a>페이지 목록</a><span class="sep">›</span>
+        <span class="cur">1p 컷 편집</span>
       </div>
-      <div class="view-tgl">
-        <button class="vtb on" onclick="swView('spread',this)">양면</button>
-        <button class="vtb" onclick="swView('single',this)">단면</button>
-      </div>
-      <div class="zoom-ctl">
-        <button class="z-btn" onclick="zoom(-10)">−</button>
-        <span class="z-pct" id="z-pct">100%</span>
-        <button class="z-btn" onclick="zoom(10)">+</button>
-        <button class="z-btn" onclick="fitZoom()" title="화면에 맞춤" style="font-size:10px;width:auto;padding:0 6px;font-family:'DM Mono',monospace;color:var(--gh)">fit</button>
+      <div class="hd-r">
+        <button
+          class="hbtn"
+          id="memo-btn"
+          onclick="toggleRsp()"
+          title="메모 패널"
+        >
+          ⋯
+        </button>
       </div>
     </div>
 
-    <!-- 캔버스 + 우측 패널 -->
-    <div class="canvas-area">
-      <div class="canvas-scroll" id="canvas-scroll">
-        <div class="cut-canvas-wrap" id="cut-canvas-wrap">
-          <!-- 페이지 캔버스 JS 렌더 -->
-        </div>
-      </div>
-
-      <!-- 우측 메모 패널 -->
-      <div class="rsp" id="rsp">
-        <div class="rsp-tabs">
-          <div class="rsp-tab">프로젝트</div>
-          <div class="rsp-tab">ep.1</div>
-          <div class="rsp-tab on">p.01</div>
-          <div class="rsp-tab">컷</div>
-        </div>
-        <div class="rsp-bd">
-          <div class="rsp-sec">
-            <div class="rsp-sec-hd" onclick="togSec(this)"><span>📁 프로젝트</span><span class="rsp-arrow">▶</span></div>
-            <div class="rsp-sec-body closed"><div class="rsp-mi"><div class="rsp-mi-txt">고양이와 강아지가 처음 만나는 이야기.</div></div></div>
+    <div class="main">
+      <div class="sb">
+        <div class="sb-logo">
+          <div class="sb-mk">
+            <svg viewBox="0 0 14 14">
+              <rect x="1" y="1" width="4" height="12" rx="1" />
+              <rect x="7" y="1" width="4" height="7" rx="1" opacity=".6" />
+              <rect x="7" y="10" width="4" height="3" rx="1" opacity=".4" />
+            </svg>
           </div>
-          <div class="rsp-sec">
-            <div class="rsp-sec-hd" onclick="togSec(this)"><span>📄 ep.1 첫 만남</span><span class="rsp-arrow">▶</span></div>
-            <div class="rsp-sec-body closed">
-              <div class="rsp-mi"><div class="rsp-mi-lbl">에피소드 메모</div><div class="rsp-mi-txt">공원에서의 첫 만남. 처음엔 어색하지만 점점 가까워짐.</div></div>
+          <span class="sb-nm">plotnote</span>
+        </div>
+        <div class="sb-sec">
+          <div class="sb-lbl">1화 첫 만남</div>
+          <div class="si on">
+            <div class="d"></div>
+            1p
+          </div>
+          <div class="si">
+            <div class="d"></div>
+            2p
+          </div>
+          <div class="si">
+            <div class="d"></div>
+            3p
+          </div>
+          <div
+            class="si"
+            style="color: var(--gh); font-size: 10px; padding-left: 14px"
+          >
+            ... 24p
+          </div>
+        </div>
+        <div class="sb-ft">
+          <div class="sb-u">
+            <div class="av">베</div>
+            <span style="font-size: 11px; color: var(--i2)">베베</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ws">
+        <!-- 상단 컨텍스트 바 -->
+        <div class="ctx-bar">
+          <span class="ctx-ep">1화 첫 만남</span>
+          <span class="ctx-sep">›</span>
+          <span class="ctx-pg" id="ctx-pg-lbl">1p</span>
+          <div class="pg-nav">
+            <button class="pn-btn" onclick="navPage(-1)">◀</button>
+            <span class="pn-num" id="pn-num">01 / 24</span>
+            <button class="pn-btn" onclick="navPage(1)">▶</button>
+          </div>
+          <div class="view-tgl">
+            <button class="vtb on" onclick="swView('spread', this)">
+              양면
+            </button>
+            <button class="vtb" onclick="swView('single', this)">단면</button>
+          </div>
+          <div class="zoom-ctl">
+            <button class="z-btn" onclick="zoom(-10)">−</button>
+            <span class="z-pct" id="z-pct">100%</span>
+            <button class="z-btn" onclick="zoom(10)">+</button>
+            <button
+              class="z-btn"
+              onclick="fitZoom()"
+              title="화면에 맞춤"
+              style="
+                font-size: 10px;
+                width: auto;
+                padding: 0 6px;
+                font-family: &quot;DM Mono&quot;, monospace;
+                color: var(--gh);
+              "
+            >
+              fit
+            </button>
+          </div>
+        </div>
+
+        <!-- 캔버스 + 우측 패널 -->
+        <div class="canvas-area">
+          <div class="canvas-scroll" id="canvas-scroll">
+            <div class="cut-canvas-wrap" id="cut-canvas-wrap">
+              <!-- 페이지 캔버스 JS 렌더 -->
             </div>
           </div>
-          <div class="rsp-sec">
-            <div class="rsp-sec-hd open" onclick="togSec(this)"><span>🗒 p.01</span><span class="rsp-arrow" style="transform:rotate(90deg)">▶</span></div>
-            <div class="rsp-sec-body">
-              <div class="rsp-mi" style="margin-bottom:6px;">
-                <div class="rsp-mi-lbl">페이지 메모</div>
-                <textarea class="rsp-ta" rows="3" placeholder="페이지 메모...">고양이가 공원에 들어오는 장면</textarea>
+
+          <!-- 우측 메모 패널 -->
+          <div class="rsp" id="rsp">
+            <div class="rsp-tabs">
+              <div class="rsp-tab">프로젝트</div>
+              <div class="rsp-tab">1화</div>
+              <div class="rsp-tab on">1p</div>
+              <div class="rsp-tab">컷</div>
+            </div>
+            <div class="rsp-bd">
+              <div class="rsp-sec">
+                <div class="rsp-sec-hd" onclick="togSec(this)">
+                  <span>📁 프로젝트</span><span class="rsp-arrow">▶</span>
+                </div>
+                <div class="rsp-sec-body closed">
+                  <div class="rsp-mi">
+                    <div class="rsp-mi-txt">
+                      고양이와 강아지가 처음 만나는 이야기.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="rsp-sec">
+                <div class="rsp-sec-hd" onclick="togSec(this)">
+                  <span>📄 1화 첫 만남</span><span class="rsp-arrow">▶</span>
+                </div>
+                <div class="rsp-sec-body closed">
+                  <div class="rsp-mi">
+                    <div class="rsp-mi-lbl">에피소드 메모</div>
+                    <div class="rsp-mi-txt">
+                      공원에서의 첫 만남. 처음엔 어색하지만 점점 가까워짐.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="rsp-sec">
+                <div class="rsp-sec-hd open" onclick="togSec(this)">
+                  <span>🗒 1p</span
+                  ><span class="rsp-arrow" style="transform: rotate(90deg)"
+                    >▶</span
+                  >
+                </div>
+                <div class="rsp-sec-body">
+                  <div class="rsp-mi" style="margin-bottom: 6px">
+                    <div class="rsp-mi-lbl">페이지 메모</div>
+                    <textarea
+                      class="rsp-ta"
+                      rows="3"
+                      placeholder="페이지 메모..."
+                    >
+고양이가 공원에 들어오는 장면</textarea
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="rsp-sec">
+                <div class="rsp-sec-hd open" onclick="togSec(this)">
+                  <span>✂ 컷 메모</span
+                  ><span class="rsp-arrow" style="transform: rotate(90deg)"
+                    >▶</span
+                  >
+                </div>
+                <div class="rsp-sec-body" id="cut-memo-list">
+                  <div class="rsp-ci on" onclick="selCutMemo(this, 1)">
+                    <span class="rsp-cn">c.1</span
+                    ><span class="rsp-ct">공원 입구 전경</span>
+                  </div>
+                  <div class="rsp-ci" onclick="selCutMemo(this, 2)">
+                    <span class="rsp-cn">c.2</span
+                    ><span class="rsp-ct">고양이 발 클로즈업</span>
+                  </div>
+                  <div class="rsp-ci" onclick="selCutMemo(this, 3)">
+                    <span class="rsp-cn">c.3</span
+                    ><span class="rsp-ct empty">메모 없음</span>
+                  </div>
+                  <div class="rsp-ci" onclick="selCutMemo(this, 4)">
+                    <span class="rsp-cn">c.4</span
+                    ><span class="rsp-ct">강아지 등장</span>
+                  </div>
+                  <div class="rsp-ci" onclick="selCutMemo(this, 5)">
+                    <span class="rsp-cn">c.5</span
+                    ><span class="rsp-ct empty">메모 없음</span>
+                  </div>
+                  <div class="rsp-ci" onclick="selCutMemo(this, 6)">
+                    <span class="rsp-cn">c.6</span
+                    ><span class="rsp-ct">두 눈이 마주침</span>
+                  </div>
+                  <button class="rsp-add">+ 컷 메모 추가</button>
+                </div>
               </div>
             </div>
           </div>
-          <div class="rsp-sec">
-            <div class="rsp-sec-hd open" onclick="togSec(this)"><span>✂ 컷 메모</span><span class="rsp-arrow" style="transform:rotate(90deg)">▶</span></div>
-            <div class="rsp-sec-body" id="cut-memo-list">
-              <div class="rsp-ci on" onclick="selCutMemo(this,1)"><span class="rsp-cn">c.1</span><span class="rsp-ct">공원 입구 전경</span></div>
-              <div class="rsp-ci" onclick="selCutMemo(this,2)"><span class="rsp-cn">c.2</span><span class="rsp-ct">고양이 발 클로즈업</span></div>
-              <div class="rsp-ci" onclick="selCutMemo(this,3)"><span class="rsp-cn">c.3</span><span class="rsp-ct empty">메모 없음</span></div>
-              <div class="rsp-ci" onclick="selCutMemo(this,4)"><span class="rsp-cn">c.4</span><span class="rsp-ct">강아지 등장</span></div>
-              <div class="rsp-ci" onclick="selCutMemo(this,5)"><span class="rsp-cn">c.5</span><span class="rsp-ct empty">메모 없음</span></div>
-              <div class="rsp-ci" onclick="selCutMemo(this,6)"><span class="rsp-cn">c.6</span><span class="rsp-ct">두 눈이 마주침</span></div>
-              <button class="rsp-add">+ 컷 메모 추가</button>
-            </div>
+        </div>
+
+        <!-- Floating Toolbar : 컷 편집 도구 (컷 편집 모드 ON일 때 위로) -->
+        <div class="ftb-edit" id="ftb-edit">
+          <div class="ftb-grp">
+            <span class="fbe-lbl">분할</span>
+            <button
+              class="fbe on"
+              id="split-h-btn"
+              onclick="selSplit('h')"
+              title="가로 분할 (상하)"
+            >
+              ⬛↕
+            </button>
+            <button
+              class="fbe"
+              id="split-v-btn"
+              onclick="selSplit('v')"
+              title="세로 분할 (좌우)"
+            >
+              ⬛↔
+            </button>
+          </div>
+          <div
+            style="width: 1px; height: 20px; background: #2a3448; margin: 0 4px"
+          ></div>
+          <div class="ftb-grp">
+            <span class="fbe-lbl">선택 컷</span>
+            <button
+              class="fbe danger"
+              onclick="delCut()"
+              title="컷 삭제"
+              style="color: #c93a3a"
+            >
+              ✕
+            </button>
+            <button class="fbe" onclick="mergeCut()" title="인접 컷과 병합">
+              ⊞
+            </button>
+          </div>
+        </div>
+
+        <!-- Floating Toolbar : 일반 도구 -->
+        <div class="ftb" id="ftb">
+          <!-- 되돌리기/다시하기 -->
+          <div class="ftb-grp">
+            <button class="fb" onclick="undo()" title="되돌리기">↩</button>
+            <button class="fb" onclick="redo()" title="다시하기">↪</button>
+          </div>
+          <div class="ftb-sep"></div>
+          <!-- 컷 편집 모드 토글 -->
+          <div class="ftb-grp">
+            <button
+              class="fb"
+              id="edit-mode-btn"
+              onclick="togEditMode()"
+              title="컷 편집 모드"
+            >
+              ✂
+            </button>
+            <span class="fb-lbl" id="edit-mode-lbl">편집</span>
+          </div>
+          <div class="ftb-sep"></div>
+          <!-- 보기 -->
+          <div class="ftb-grp">
+            <button class="fb" onclick="fitZoom()" title="화면에 맞춤">
+              ⊡
+            </button>
+            <button
+              class="fb"
+              onclick="toggleFullPage()"
+              title="전체 페이지"
+              id="full-btn"
+            >
+              ⛶
+            </button>
           </div>
         </div>
       </div>
+      <!-- ws -->
     </div>
+    <!-- main -->
 
-    <!-- Floating Toolbar : 컷 편집 도구 (컷 편집 모드 ON일 때 위로) -->
-    <div class="ftb-edit" id="ftb-edit">
-      <div class="ftb-grp">
-        <span class="fbe-lbl">분할</span>
-        <button class="fbe on" id="split-h-btn" onclick="selSplit('h')" title="가로 분할 (상하)">⬛↕</button>
-        <button class="fbe" id="split-v-btn" onclick="selSplit('v')" title="세로 분할 (좌우)">⬛↔</button>
-      </div>
-      <div style="width:1px;height:20px;background:#2a3448;margin:0 4px;"></div>
-      <div class="ftb-grp">
-        <span class="fbe-lbl">선택 컷</span>
-        <button class="fbe danger" onclick="delCut()" title="컷 삭제" style="color:#c93a3a;">✕</button>
-        <button class="fbe" onclick="mergeCut()" title="인접 컷과 병합">⊞</button>
-      </div>
-    </div>
+    <script>
+      // ── 상태
+      let pageNum = 1,
+        totalPages = 24,
+        viewMode = "spread",
+        zoomPct = 100;
+      let editMode = false,
+        splitDir = "h";
+      let cuts = [
+        [1, 1, 2, 2],
+        [1, 2, 2, 3],
+        [2, 1, 3, 2],
+        [2, 2, 3, 3],
+        [3, 1, 4, 2],
+        [3, 2, 4, 3],
+      ]; // [colStart,rowStart,colEnd,rowEnd]
+      // 단순 3x2 레이아웃으로 시작
+      let gridCols = 3,
+        gridRows = 2;
+      let selCut = -1;
 
-    <!-- Floating Toolbar : 일반 도구 -->
-    <div class="ftb" id="ftb">
-      <!-- 되돌리기/다시하기 -->
-      <div class="ftb-grp">
-        <button class="fb" onclick="undo()" title="되돌리기">↩</button>
-        <button class="fb" onclick="redo()" title="다시하기">↪</button>
-      </div>
-      <div class="ftb-sep"></div>
-      <!-- 컷 편집 모드 토글 -->
-      <div class="ftb-grp">
-        <button class="fb" id="edit-mode-btn" onclick="togEditMode()" title="컷 편집 모드">✂</button>
-        <span class="fb-lbl" id="edit-mode-lbl">편집</span>
-      </div>
-      <div class="ftb-sep"></div>
-      <!-- 보기 -->
-      <div class="ftb-grp">
-        <button class="fb" onclick="fitZoom()" title="화면에 맞춤">⊡</button>
-        <button class="fb" onclick="toggleFullPage()" title="전체 페이지" id="full-btn">⛶</button>
-      </div>
-    </div>
+      const B4_W = 238,
+        B4_H = 324;
+      const SCALE_BASE = 1.6;
 
-  </div><!-- ws -->
-</div><!-- main -->
+      function renderCanvas() {
+        const wrap = document.getElementById("cut-canvas-wrap");
+        wrap.innerHTML = "";
+        const scale = (zoomPct / 100) * SCALE_BASE;
+        const pw = Math.round(B4_W * scale),
+          ph = Math.round(B4_H * scale);
 
-<script>
-// ── 상태
-let pageNum=1, totalPages=24, viewMode='spread', zoomPct=100;
-let editMode=false, splitDir='h';
-let cuts=[[1,1,2,2],[1,2,2,3],[2,1,3,2],[2,2,3,3],[3,1,4,2],[3,2,4,3]]; // [colStart,rowStart,colEnd,rowEnd]
-// 단순 3x2 레이아웃으로 시작
-let gridCols=3, gridRows=2;
-let selCut=-1;
+        const pages =
+          viewMode === "spread" ? [pageNum, pageNum + 1] : [pageNum];
+        pages.forEach((pn, pi) => {
+          if (pn > totalPages) return;
+          const page = document.createElement("div");
+          page.className = "cut-page";
+          page.style.cssText = `width:${pw}px;height:${ph}px;`;
 
-const B4_W=238, B4_H=324;
-const SCALE_BASE=1.6;
-
-function renderCanvas(){
-  const wrap=document.getElementById('cut-canvas-wrap');
-  wrap.innerHTML='';
-  const scale=zoomPct/100*SCALE_BASE;
-  const pw=Math.round(B4_W*scale), ph=Math.round(B4_H*scale);
-
-  const pages=viewMode==='spread'?[pageNum, pageNum+1]:[pageNum];
-  pages.forEach((pn,pi)=>{
-    if(pn>totalPages)return;
-    const page=document.createElement('div');
-    page.className='cut-page';
-    page.style.cssText=`width:${pw}px;height:${ph}px;`;
-
-    // 컷 그리드
-    const grid=document.createElement('div');
-    grid.className='cut-grid';
-    grid.style.cssText=`
+          // 컷 그리드
+          const grid = document.createElement("div");
+          grid.className = "cut-grid";
+          grid.style.cssText = `
       grid-template-columns:repeat(${gridCols},1fr);
       grid-template-rows:repeat(${gridRows},1fr);
       width:100%;height:100%;
     `;
 
-    // 컷 셀 렌더 (현재 단순 고정 레이아웃)
-    const cellMemos=['공원 입구 전경','고양이 발 클로즈업','','강아지 등장','','두 눈이 마주침'];
-    for(let i=0;i<gridCols*gridRows;i++){
-      const cell=document.createElement('div');
-      cell.className='cut-cell'+(selCut===i?' sel':'');
-      cell.innerHTML=`<div class="cut-cell-n">c.${i+1}</div>${cellMemos[i]?`<div class="cut-cell-memo">${cellMemos[i]}</div>`:''}`;
-      cell.addEventListener('click',()=>{selCut=i;renderCanvas();});
-      if(editMode){
-        cell.addEventListener('click',e=>{
-          e.stopPropagation();selCut=i;renderCanvas();
+          // 컷 셀 렌더 (현재 단순 고정 레이아웃)
+          const cellMemos = [
+            "공원 입구 전경",
+            "고양이 발 클로즈업",
+            "",
+            "강아지 등장",
+            "",
+            "두 눈이 마주침",
+          ];
+          for (let i = 0; i < gridCols * gridRows; i++) {
+            const cell = document.createElement("div");
+            cell.className = "cut-cell" + (selCut === i ? " sel" : "");
+            cell.innerHTML = `<div class="cut-cell-n">c.${i + 1}</div>${cellMemos[i] ? `<div class="cut-cell-memo">${cellMemos[i]}</div>` : ""}`;
+            cell.addEventListener("click", () => {
+              selCut = i;
+              renderCanvas();
+            });
+            if (editMode) {
+              cell.addEventListener("click", (e) => {
+                e.stopPropagation();
+                selCut = i;
+                renderCanvas();
+              });
+            }
+            grid.appendChild(cell);
+          }
+
+          page.appendChild(grid);
+          page.innerHTML += `<div class="cut-count-badge">${String(pn)}p · ${gridCols * gridRows}컷</div>`;
+          // 페이지번호 추가 후 grid 다시 추가 (innerHTML이 날아가므로)
+          page.innerHTML = "";
+          page.appendChild(grid);
+          const badge = document.createElement("div");
+          badge.className = "cut-count-badge";
+          badge.textContent = `p.${String(pn)}p · ${gridCols * gridRows}컷`;
+          page.appendChild(badge);
+          wrap.appendChild(page);
         });
       }
-      grid.appendChild(cell);
-    }
 
-    page.appendChild(grid);
-    page.innerHTML+=`<div class="cut-count-badge">p.${String(pn).padStart(2,'0')} · ${gridCols*gridRows}컷</div>`;
-    // 페이지번호 추가 후 grid 다시 추가 (innerHTML이 날아가므로)
-    page.innerHTML='';
-    page.appendChild(grid);
-    const badge=document.createElement('div');badge.className='cut-count-badge';badge.textContent=`p.${String(pn).padStart(2,'0')} · ${gridCols*gridRows}컷`;
-    page.appendChild(badge);
-    wrap.appendChild(page);
-  });
-}
+      function navPage(d) {
+        pageNum = Math.max(
+          1,
+          Math.min(totalPages - (viewMode === "spread" ? 1 : 0), pageNum + d),
+        );
+        document.getElementById("pn-num").textContent =
+          `${String(pageNum)}p / ${totalPages}`;
+        document.getElementById("ctx-pg-lbl").textContent =
+          `p.${String(pageNum)}p`;
+        renderCanvas();
+      }
 
-function navPage(d){
-  pageNum=Math.max(1,Math.min(totalPages-(viewMode==='spread'?1:0),pageNum+d));
-  document.getElementById('pn-num').textContent=`${String(pageNum).padStart(2,'0')} / ${totalPages}`;
-  document.getElementById('ctx-pg-lbl').textContent=`p.${String(pageNum).padStart(2,'0')}`;
-  renderCanvas();
-}
+      function swView(id, el) {
+        viewMode = id;
+        document
+          .querySelectorAll(".vtb")
+          .forEach((b) => b.classList.remove("on"));
+        el.classList.add("on");
+        renderCanvas();
+      }
 
-function swView(id,el){
-  viewMode=id;
-  document.querySelectorAll('.vtb').forEach(b=>b.classList.remove('on'));
-  el.classList.add('on');
-  renderCanvas();
-}
+      function zoom(d) {
+        zoomPct = Math.max(30, Math.min(300, zoomPct + d));
+        document.getElementById("z-pct").textContent = zoomPct + "%";
+        renderCanvas();
+      }
+      function fitZoom() {
+        zoomPct = 100;
+        document.getElementById("z-pct").textContent = "100%";
+        renderCanvas();
+      }
 
-function zoom(d){
-  zoomPct=Math.max(30,Math.min(300,zoomPct+d));
-  document.getElementById('z-pct').textContent=zoomPct+'%';
-  renderCanvas();
-}
-function fitZoom(){zoomPct=100;document.getElementById('z-pct').textContent='100%';renderCanvas();}
+      function togEditMode() {
+        editMode = !editMode;
+        const btn = document.getElementById("edit-mode-btn");
+        const lbl = document.getElementById("edit-mode-lbl");
+        const ftbEdit = document.getElementById("ftb-edit");
+        btn.classList.toggle("on", editMode);
+        lbl.textContent = editMode ? "편집중" : "편집";
+        ftbEdit.classList.toggle("show", editMode);
+        renderCanvas();
+      }
 
-function togEditMode(){
-  editMode=!editMode;
-  const btn=document.getElementById('edit-mode-btn');
-  const lbl=document.getElementById('edit-mode-lbl');
-  const ftbEdit=document.getElementById('ftb-edit');
-  btn.classList.toggle('on',editMode);
-  lbl.textContent=editMode?'편집중':'편집';
-  ftbEdit.classList.toggle('show',editMode);
-  renderCanvas();
-}
+      function selSplit(dir) {
+        splitDir = dir;
+        document
+          .getElementById("split-h-btn")
+          .classList.toggle("on", dir === "h");
+        document
+          .getElementById("split-v-btn")
+          .classList.toggle("on", dir === "v");
+        if (selCut >= 0) {
+          if (dir === "h") gridRows++;
+          else gridCols++;
+          renderCanvas();
+        }
+      }
+      function delCut() {
+        if (gridCols * gridRows > 1) {
+          if (gridRows > 1) gridRows--;
+          else gridCols--;
+          renderCanvas();
+        }
+      }
+      function mergeCut() {
+        /* 단순화 */
+      }
+      function undo() {
+        if (gridCols * gridRows > 1) {
+          if (gridRows > 1) gridRows--;
+          else if (gridCols > 1) gridCols--;
+          renderCanvas();
+        }
+      }
+      function redo() {
+        gridRows++;
+        renderCanvas();
+      }
 
-function selSplit(dir){
-  splitDir=dir;
-  document.getElementById('split-h-btn').classList.toggle('on',dir==='h');
-  document.getElementById('split-v-btn').classList.toggle('on',dir==='v');
-  if(selCut>=0){
-    if(dir==='h')gridRows++;else gridCols++;
-    renderCanvas();
-  }
-}
-function delCut(){if(gridCols*gridRows>1){if(gridRows>1)gridRows--;else gridCols--;renderCanvas();}}
-function mergeCut(){/* 단순화 */}
-function undo(){if(gridCols*gridRows>1){if(gridRows>1)gridRows--;else if(gridCols>1)gridCols--;renderCanvas();}}
-function redo(){gridRows++;renderCanvas();}
+      function toggleRsp() {
+        const rsp = document.getElementById("rsp");
+        const btn = document.getElementById("memo-btn");
+        const open = rsp.classList.toggle("open");
+        btn.classList.toggle("on", open);
+      }
 
-function toggleRsp(){
-  const rsp=document.getElementById('rsp');
-  const btn=document.getElementById('memo-btn');
-  const open=rsp.classList.toggle('open');
-  btn.classList.toggle('on',open);
-}
+      function togSec(hd) {
+        hd.classList.toggle("open");
+        const body = hd.nextElementSibling;
+        body.classList.toggle("closed");
+        const arrow = hd.querySelector(".rsp-arrow");
+        arrow.style.transform = body.classList.contains("closed")
+          ? ""
+          : "rotate(90deg)";
+      }
 
-function togSec(hd){
-  hd.classList.toggle('open');
-  const body=hd.nextElementSibling;
-  body.classList.toggle('closed');
-  const arrow=hd.querySelector('.rsp-arrow');
-  arrow.style.transform=body.classList.contains('closed')?'':'rotate(90deg)';
-}
+      function selCutMemo(el, n) {
+        document
+          .querySelectorAll(".rsp-ci")
+          .forEach((c) => c.classList.remove("on"));
+        el.classList.add("on");
+        selCut = n - 1;
+        renderCanvas();
+      }
 
-function selCutMemo(el,n){
-  document.querySelectorAll('.rsp-ci').forEach(c=>c.classList.remove('on'));
-  el.classList.add('on');
-  selCut=n-1;renderCanvas();
-}
+      function toggleFullPage() {
+        const btn = document.getElementById("full-btn");
+        if (btn.classList.toggle("on")) {
+          zoomPct = 60;
+          document.getElementById("z-pct").textContent = "60%";
+        } else {
+          fitZoom();
+        }
+        renderCanvas();
+      }
 
-function toggleFullPage(){
-  const btn=document.getElementById('full-btn');
-  if(btn.classList.toggle('on')){
-    zoomPct=60;
-    document.getElementById('z-pct').textContent='60%';
-  } else {
-    fitZoom();
-  }
-  renderCanvas();
-}
+      // 스크롤 줌
+      document.addEventListener(
+        "wheel",
+        (e) => {
+          if (e.ctrlKey) {
+            e.preventDefault();
+            zoom(e.deltaY > 0 ? -10 : 10);
+          }
+        },
+        { passive: false },
+      );
 
-// 스크롤 줌
-document.addEventListener('wheel',e=>{
-  if(e.ctrlKey){e.preventDefault();zoom(e.deltaY>0?-10:10);}
-},{passive:false});
-
-renderCanvas();
-</script>
-</body>
+      renderCanvas();
+    </script>
+  </body>
 </html>

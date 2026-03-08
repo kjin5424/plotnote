@@ -1,232 +1,1013 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-<meta charset="UTF-8">
-<title>PlotNote — 책장</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
-<style>
-:root{--db:#2A4D88;--oc:#7C94B8;--gl:#B1BBC8;--co:#D9D9D8;--am:#fbc662;--am-bg:#fff8e6;--wh:#fefefe;--pa:#f7f6f3;--pa2:#f0ede8;--ink:#1a1a1a;--i2:#4a4a4a;--gh:#9a9a9a;--bd:#e8e6e0;--bd2:#d5d2cb;--sw:220px;--hh:48px;}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Noto Sans KR',sans-serif;background:var(--pa);color:var(--ink);height:100vh;overflow:hidden;display:flex;flex-direction:column;font-size:13px;}
-button{font-family:'Noto Sans KR',sans-serif;cursor:pointer;}
+  <head>
+    <meta charset="UTF-8" />
+    <title>PlotNote — 책장</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&family=Noto+Serif+KR:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --db: #2a4d88;
+        --oc: #7c94b8;
+        --gl: #b1bbc8;
+        --co: #d9d9d8;
+        --am: #fbc662;
+        --am-bg: #fff8e6;
+        --wh: #fefefe;
+        --pa: #f7f6f3;
+        --pa2: #f0ede8;
+        --ink: #1a1a1a;
+        --i2: #4a4a4a;
+        --gh: #9a9a9a;
+        --bd: #e8e6e0;
+        --bd2: #d5d2cb;
+        --sw: 220px;
+        --hh: 48px;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Noto Sans KR", sans-serif;
+        background: var(--pa);
+        color: var(--ink);
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        font-size: 13px;
+      }
+      button {
+        font-family: "Noto Sans KR", sans-serif;
+        cursor: pointer;
+      }
 
-/* Header */
-.hd{height:var(--hh);background:var(--wh);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 16px;gap:8px;flex-shrink:0;z-index:20;}
-.hd-menu{width:28px;height:28px;border-radius:5px;border:none;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3.5px;}
-.hd-menu:hover{background:var(--pa);}
-.hd-menu span{display:block;height:1.5px;border-radius:1px;background:var(--gh);}
-.hd-menu span:nth-child(1){width:14px;} .hd-menu span:nth-child(2){width:10px;} .hd-menu span:nth-child(3){width:14px;}
-.bc{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--gh);}
-.bc .cur{color:var(--ink);font-weight:500;}
-.hd-r{margin-left:auto;display:flex;gap:6px;align-items:center;}
-.sb-w{padding:6px 12px;background:var(--wh);border:1px solid var(--bd2);border-radius:7px;display:flex;align-items:center;gap:7px;width:180px;}
-.sb-w:focus-within{border-color:var(--oc);box-shadow:0 0 0 3px rgba(42,77,136,.08);}
-.sb-w input{border:none;outline:none;font-size:11px;color:var(--ink);background:transparent;width:100%;font-family:inherit;}
-.sb-w input::placeholder{color:var(--gh);}
-.h-usr{display:flex;align-items:center;gap:5px;padding:3px 8px;border-radius:5px;cursor:pointer;}
-.h-usr:hover{background:var(--pa);}
-.av{width:22px;height:22px;border-radius:50%;background:var(--db);display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;font-weight:600;}
+      /* Header */
+      .hd {
+        height: var(--hh);
+        background: var(--wh);
+        border-bottom: 1px solid var(--bd);
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        gap: 8px;
+        flex-shrink: 0;
+        z-index: 20;
+      }
+      .hd-menu {
+        width: 28px;
+        height: 28px;
+        border-radius: 5px;
+        border: none;
+        background: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3.5px;
+      }
+      .hd-menu:hover {
+        background: var(--pa);
+      }
+      .hd-menu span {
+        display: block;
+        height: 1.5px;
+        border-radius: 1px;
+        background: var(--gh);
+      }
+      .hd-menu span:nth-child(1) {
+        width: 14px;
+      }
+      .hd-menu span:nth-child(2) {
+        width: 10px;
+      }
+      .hd-menu span:nth-child(3) {
+        width: 14px;
+      }
+      .bc {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        color: var(--gh);
+      }
+      .bc .cur {
+        color: var(--ink);
+        font-weight: 500;
+      }
+      .hd-r {
+        margin-left: auto;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .sb-w {
+        padding: 6px 12px;
+        background: var(--wh);
+        border: 1px solid var(--bd2);
+        border-radius: 7px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        width: 180px;
+      }
+      .sb-w:focus-within {
+        border-color: var(--oc);
+        box-shadow: 0 0 0 3px rgba(42, 77, 136, 0.08);
+      }
+      .sb-w input {
+        border: none;
+        outline: none;
+        font-size: 11px;
+        color: var(--ink);
+        background: transparent;
+        width: 100%;
+        font-family: inherit;
+      }
+      .sb-w input::placeholder {
+        color: var(--gh);
+      }
+      .h-usr {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 8px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .h-usr:hover {
+        background: var(--pa);
+      }
+      .av {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--db);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        color: #fff;
+        font-weight: 600;
+      }
 
-/* Layout */
-.main{flex:1;display:flex;overflow:hidden;}
-.sb{width:var(--sw);min-width:var(--sw);height:100%;background:var(--wh);border-right:1px solid var(--bd);display:flex;flex-direction:column;}
-.ws{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-.ws-hd{flex-shrink:0;padding:16px 24px 0;background:var(--wh);border-bottom:1px solid var(--bd);}
-.ws-bd{flex:1;overflow-y:auto;padding:22px 24px;}
+      /* Layout */
+      .main {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+      }
+      .sb {
+        width: var(--sw);
+        min-width: var(--sw);
+        height: 100%;
+        background: var(--wh);
+        border-right: 1px solid var(--bd);
+        display: flex;
+        flex-direction: column;
+      }
+      .ws {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .ws-hd {
+        flex-shrink: 0;
+        padding: 16px 24px 0;
+        background: var(--wh);
+        border-bottom: 1px solid var(--bd);
+      }
+      .ws-bd {
+        flex: 1;
+        overflow-y: auto;
+        padding: 22px 24px;
+      }
 
-/* Sidebar */
-.sb-logo{padding:13px 16px 11px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:7px;}
-.sb-mk{width:24px;height:24px;background:var(--db);border-radius:5px;display:flex;align-items:center;justify-content:center;}
-.sb-mk svg{width:12px;height:12px;fill:#fff;}
-.sb-nm{font-family:'DM Mono',monospace;font-size:12px;}
-.sb-sec{padding:8px 8px 3px;}
-.sb-lbl{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--gh);padding:0 8px;margin-bottom:2px;}
-.si{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:5px;font-size:11px;color:var(--i2);cursor:pointer;transition:background .1s;}
-.si:hover{background:var(--pa);}
-.si.on{background:#eef1f7;color:var(--db);font-weight:500;}
-.si .d{width:5px;height:5px;border-radius:50%;background:var(--gl);flex-shrink:0;}
-.si.on .d{background:var(--db);}
-.si .bdg{margin-left:auto;font-size:9px;background:var(--db);color:#fff;padding:1px 5px;border-radius:9px;font-family:'DM Mono',monospace;}
-.sb-ft{margin-top:auto;padding:8px 8px;border-top:1px solid var(--bd);}
-.sb-u{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:5px;cursor:pointer;}
-.sb-u:hover{background:var(--pa);}
+      /* Sidebar */
+      .sb-logo {
+        padding: 13px 16px 11px;
+        border-bottom: 1px solid var(--bd);
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .sb-mk {
+        width: 24px;
+        height: 24px;
+        background: var(--db);
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .sb-mk svg {
+        width: 12px;
+        height: 12px;
+        fill: #fff;
+      }
+      .sb-nm {
+        font-family: "DM Mono", monospace;
+        font-size: 12px;
+      }
+      .sb-sec {
+        padding: 8px 8px 3px;
+      }
+      .sb-lbl {
+        font-size: 9px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--gh);
+        padding: 0 8px;
+        margin-bottom: 2px;
+      }
+      .si {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 8px;
+        border-radius: 5px;
+        font-size: 11px;
+        color: var(--i2);
+        cursor: pointer;
+        transition: background 0.1s;
+      }
+      .si:hover {
+        background: var(--pa);
+      }
+      .si.on {
+        background: #eef1f7;
+        color: var(--db);
+        font-weight: 500;
+      }
+      .si .d {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--gl);
+        flex-shrink: 0;
+      }
+      .si.on .d {
+        background: var(--db);
+      }
+      .si .bdg {
+        margin-left: auto;
+        font-size: 9px;
+        background: var(--db);
+        color: #fff;
+        padding: 1px 5px;
+        border-radius: 9px;
+        font-family: "DM Mono", monospace;
+      }
+      .sb-ft {
+        margin-top: auto;
+        padding: 8px 8px;
+        border-top: 1px solid var(--bd);
+      }
+      .sb-u {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 8px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .sb-u:hover {
+        background: var(--pa);
+      }
 
-/* WS Header */
-.wh-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.wh-title{font-family:'Noto Serif KR',serif;font-size:19px;font-weight:600;letter-spacing:-.02em;}
-.wh-acts{display:flex;gap:6px;}
-.abtn{padding:5px 12px;border-radius:6px;border:1px solid var(--bd2);background:var(--wh);font-size:11px;color:var(--i2);display:flex;align-items:center;gap:4px;}
-.abtn:hover{border-color:var(--db);color:var(--db);}
-.abtn.pri{background:var(--db);color:#fff;border-color:var(--db);}
-.abtn.pri:hover{background:#1e3d73;}
-.tabs{display:flex;gap:0;border-bottom:2px solid var(--bd);margin:0 -24px;padding:0 24px;}
-.tab{padding:7px 14px;font-size:12px;color:var(--gh);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .12s;}
-.tab:hover{color:var(--i2);}
-.tab.on{color:var(--db);border-bottom-color:var(--db);font-weight:500;}
-.fbar{display:flex;align-items:center;gap:7px;margin-bottom:16px;flex-wrap:wrap;}
-.chip{padding:3px 10px;border-radius:999px;border:1px solid var(--bd2);background:var(--wh);font-size:11px;color:var(--i2);cursor:pointer;}
-.chip:hover{border-color:var(--oc);}
-.chip.on{background:#eef1f7;color:var(--db);border-color:var(--oc);}
-.sort{margin-left:auto;padding:3px 10px;border-radius:5px;border:1px solid var(--bd);background:var(--wh);font-size:10px;color:var(--gh);cursor:pointer;font-family:'DM Mono',monospace;}
+      /* WS Header */
+      .wh-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+      .wh-title {
+        font-family: "Noto Serif KR", serif;
+        font-size: 19px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+      .wh-acts {
+        display: flex;
+        gap: 6px;
+      }
+      .abtn {
+        padding: 5px 12px;
+        border-radius: 6px;
+        border: 1px solid var(--bd2);
+        background: var(--wh);
+        font-size: 11px;
+        color: var(--i2);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .abtn:hover {
+        border-color: var(--db);
+        color: var(--db);
+      }
+      .abtn.pri {
+        background: var(--db);
+        color: #fff;
+        border-color: var(--db);
+      }
+      .abtn.pri:hover {
+        background: #1e3d73;
+      }
+      .tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 2px solid var(--bd);
+        margin: 0 -24px;
+        padding: 0 24px;
+      }
+      .tab {
+        padding: 7px 14px;
+        font-size: 12px;
+        color: var(--gh);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+        transition: all 0.12s;
+      }
+      .tab:hover {
+        color: var(--i2);
+      }
+      .tab.on {
+        color: var(--db);
+        border-bottom-color: var(--db);
+        font-weight: 500;
+      }
+      .fbar {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+      .chip {
+        padding: 3px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--bd2);
+        background: var(--wh);
+        font-size: 11px;
+        color: var(--i2);
+        cursor: pointer;
+      }
+      .chip:hover {
+        border-color: var(--oc);
+      }
+      .chip.on {
+        background: #eef1f7;
+        color: var(--db);
+        border-color: var(--oc);
+      }
+      .sort {
+        margin-left: auto;
+        padding: 3px 10px;
+        border-radius: 5px;
+        border: 1px solid var(--bd);
+        background: var(--wh);
+        font-size: 10px;
+        color: var(--gh);
+        cursor: pointer;
+        font-family: "DM Mono", monospace;
+      }
 
-/* Section */
-.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;margin-top:2px;}
-.sec-hd h2{font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--gh);}
-.sec-more{font-size:11px;color:var(--oc);cursor:pointer;font-family:'DM Mono',monospace;}
+      /* Section */
+      .sec-hd {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        margin-top: 2px;
+      }
+      .sec-hd h2 {
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--gh);
+      }
+      .sec-more {
+        font-size: 11px;
+        color: var(--oc);
+        cursor: pointer;
+        font-family: "DM Mono", monospace;
+      }
 
-/* Project grid */
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:26px;}
-.pc{border-radius:8px;overflow:hidden;border:1px solid var(--bd);background:var(--wh);cursor:pointer;}
-.pc:hover{box-shadow:0 4px 16px rgba(42,77,136,.1);}
-.pc-th{width:100%;aspect-ratio:3/4;position:relative;}
-.pc-fav{position:absolute;top:6px;right:6px;width:21px;height:21px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;border:none;}
-.pc-fav.on{background:rgba(251,198,98,.9);}
-.pc-info{padding:8px 10px 10px;}
-.pc-ttl{font-size:11px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.pc-mt{font-size:10px;color:var(--gh);font-family:'DM Mono',monospace;margin-top:2px;}
-.pc-tag{display:inline-block;margin-top:4px;font-size:9px;padding:1px 6px;border-radius:999px;}
-.t-mine{background:#eef1f7;color:var(--db);border:1px solid rgba(42,77,136,.15);}
-.t-shr{background:var(--am-bg);color:#8a6200;border:1px solid rgba(251,198,98,.4);}
-.pc-add{border:2px dashed var(--bd2);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;aspect-ratio:3/4;color:var(--gh);font-size:11px;}
-.pc-add:hover{border-color:var(--oc);color:var(--db);background:#f5f8ff;}
-.pc-add-ic{width:28px;height:28px;border-radius:50%;border:1.5px dashed var(--bd2);display:flex;align-items:center;justify-content:center;font-size:16px;}
+      /* Project grid */
+      .pgrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 12px;
+        margin-bottom: 26px;
+      }
+      .pc {
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--bd);
+        background: var(--wh);
+        cursor: pointer;
+      }
+      .pc:hover {
+        box-shadow: 0 4px 16px rgba(42, 77, 136, 0.1);
+      }
+      .pc-th {
+        width: 100%;
+        aspect-ratio: 3/4;
+        position: relative;
+      }
+      .pc-fav {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 21px;
+        height: 21px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        cursor: pointer;
+        border: none;
+      }
+      .pc-fav.on {
+        background: rgba(251, 198, 98, 0.9);
+      }
+      .pc-info {
+        padding: 8px 10px 10px;
+      }
+      .pc-ttl {
+        font-size: 11px;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .pc-mt {
+        font-size: 10px;
+        color: var(--gh);
+        font-family: "DM Mono", monospace;
+        margin-top: 2px;
+      }
+      .pc-tag {
+        display: inline-block;
+        margin-top: 4px;
+        font-size: 9px;
+        padding: 1px 6px;
+        border-radius: 999px;
+      }
+      .t-mine {
+        background: #eef1f7;
+        color: var(--db);
+        border: 1px solid rgba(42, 77, 136, 0.15);
+      }
+      .t-shr {
+        background: var(--am-bg);
+        color: #8a6200;
+        border: 1px solid rgba(251, 198, 98, 0.4);
+      }
+      .pc-add {
+        border: 2px dashed var(--bd2);
+        background: transparent;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        aspect-ratio: 3/4;
+        color: var(--gh);
+        font-size: 11px;
+      }
+      .pc-add:hover {
+        border-color: var(--oc);
+        color: var(--db);
+        background: #f5f8ff;
+      }
+      .pc-add-ic {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 1.5px dashed var(--bd2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+      }
 
-/* Shared list */
-.slist{display:flex;flex-direction:column;gap:6px;margin-bottom:24px;}
-.si2{background:var(--wh);border:1px solid var(--bd);border-radius:8px;padding:11px 14px;display:flex;align-items:center;gap:11px;cursor:pointer;}
-.si2:hover{border-color:var(--oc);}
-.si2-th{width:38px;height:52px;border-radius:4px;overflow:hidden;flex-shrink:0;}
-.si2-body{flex:1;min-width:0;}
-.si2-ttl{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.si2-mt{font-size:10px;color:var(--gh);font-family:'DM Mono',monospace;margin-top:2px;}
-.perm{font-size:10px;padding:2px 7px;border-radius:4px;flex-shrink:0;}
-.p-ed{background:#e8f5ee;color:#2a7a50;border:1px solid #b6dfc8;}
-.p-ro{background:var(--pa);color:var(--gh);border:1px solid var(--bd2);}
-</style>
-</head>
-<body>
-
-<div class="hd">
-  <button class="hd-menu"><span></span><span></span><span></span></button>
-  <div class="bc"><span class="cur">책장</span></div>
-  <div class="hd-r">
-    <div class="sb-w"><svg width="12" height="12" viewBox="0 0 24 24" fill="#9a9a9a"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><input placeholder="프로젝트 검색..."></div>
-    <div class="h-usr"><div class="av">베</div><span style="font-size:11px;color:var(--i2);">베베</span></div>
-  </div>
-</div>
-
-<div class="main">
-  <div class="sb">
-    <div class="sb-logo">
-      <div class="sb-mk"><svg viewBox="0 0 14 14"><rect x="1" y="1" width="4" height="12" rx="1"/><rect x="7" y="1" width="4" height="7" rx="1" opacity=".6"/><rect x="7" y="10" width="4" height="3" rx="1" opacity=".4"/></svg></div>
-      <span class="sb-nm">plotnote</span>
-    </div>
-    <div class="sb-sec">
-      <div class="sb-lbl">즐겨찾기</div>
-      <div class="si"><div class="d"></div>고양이와 강아지<span class="bdg">ep.7</span></div>
-      <div class="si"><div class="d"></div>여름 단편</div>
-    </div>
-    <div class="sb-sec">
-      <div class="sb-lbl">내 책장</div>
-      <div class="si on"><div class="d"></div>베베의 작업실</div>
-      <div class="si"><div class="d"></div>습작 보관함</div>
-    </div>
-    <div class="sb-sec">
-      <div class="sb-lbl">공유됨</div>
-      <div class="si"><div class="d"></div>팀 프로젝트</div>
-    </div>
-    <div class="sb-ft">
-      <div class="sb-u"><div class="av">베</div><span style="font-size:11px;color:var(--i2);">베베</span></div>
-    </div>
-  </div>
-
-  <div class="ws">
-    <div class="ws-hd">
-      <div class="wh-top">
-        <div class="wh-title">베베의 작업실</div>
-        <div class="wh-acts">
-          <button class="abtn">⊞ 목록형</button>
-          <button class="abtn pri" onclick="document.getElementById('nm').style.display='flex'">+ 새 프로젝트</button>
+      /* Shared list */
+      .slist {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 24px;
+      }
+      .si2 {
+        background: var(--wh);
+        border: 1px solid var(--bd);
+        border-radius: 8px;
+        padding: 11px 14px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        cursor: pointer;
+      }
+      .si2:hover {
+        border-color: var(--oc);
+      }
+      .si2-th {
+        width: 38px;
+        height: 52px;
+        border-radius: 4px;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      .si2-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .si2-ttl {
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .si2-mt {
+        font-size: 10px;
+        color: var(--gh);
+        font-family: "DM Mono", monospace;
+        margin-top: 2px;
+      }
+      .perm {
+        font-size: 10px;
+        padding: 2px 7px;
+        border-radius: 4px;
+        flex-shrink: 0;
+      }
+      .p-ed {
+        background: #e8f5ee;
+        color: #2a7a50;
+        border: 1px solid #b6dfc8;
+      }
+      .p-ro {
+        background: var(--pa);
+        color: var(--gh);
+        border: 1px solid var(--bd2);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hd">
+      <button class="hd-menu"><span></span><span></span><span></span></button>
+      <div class="bc"><span class="cur">책장</span></div>
+      <div class="hd-r">
+        <div class="sb-w">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#9a9a9a">
+            <path
+              d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+            /></svg
+          ><input placeholder="프로젝트 검색..." />
+        </div>
+        <div class="h-usr">
+          <div class="av">베</div>
+          <span style="font-size: 11px; color: var(--i2)">베베</span>
         </div>
       </div>
-      <div class="tabs">
-        <div class="tab on" onclick="sw('all',this)">전체</div>
-        <div class="tab" onclick="sw('rec',this)">최근 작업</div>
-        <div class="tab" onclick="sw('fav',this)">즐겨찾기</div>
-        <div class="tab" onclick="sw('shr',this)">공유됨</div>
+    </div>
+
+    <div class="main">
+      <div class="sb">
+        <div class="sb-logo">
+          <div class="sb-mk">
+            <svg viewBox="0 0 14 14">
+              <rect x="1" y="1" width="4" height="12" rx="1" />
+              <rect x="7" y="1" width="4" height="7" rx="1" opacity=".6" />
+              <rect x="7" y="10" width="4" height="3" rx="1" opacity=".4" />
+            </svg>
+          </div>
+          <span class="sb-nm">plotnote</span>
+        </div>
+        <div class="sb-sec">
+          <div class="sb-lbl">즐겨찾기</div>
+          <div class="si">
+            <div class="d"></div>
+            고양이와 강아지<span class="bdg">7화</span>
+          </div>
+          <div class="si">
+            <div class="d"></div>
+            여름 단편
+          </div>
+        </div>
+        <div class="sb-sec">
+          <div class="sb-lbl">내 책장</div>
+          <div class="si on">
+            <div class="d"></div>
+            베베의 작업실
+          </div>
+          <div class="si">
+            <div class="d"></div>
+            습작 보관함
+          </div>
+        </div>
+        <div class="sb-sec">
+          <div class="sb-lbl">공유됨</div>
+          <div class="si">
+            <div class="d"></div>
+            팀 프로젝트
+          </div>
+        </div>
+        <div class="sb-ft">
+          <div class="sb-u">
+            <div class="av">베</div>
+            <span style="font-size: 11px; color: var(--i2)">베베</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ws">
+        <div class="ws-hd">
+          <div class="wh-top">
+            <div class="wh-title">베베의 작업실</div>
+            <div class="wh-acts">
+              <button class="abtn">⊞ 목록형</button>
+              <button
+                class="abtn pri"
+                onclick="document.getElementById('nm').style.display = 'flex'"
+              >
+                + 새 프로젝트
+              </button>
+            </div>
+          </div>
+          <div class="tabs">
+            <div class="tab on" onclick="sw('all', this)">전체</div>
+            <div class="tab" onclick="sw('rec', this)">최근 작업</div>
+            <div class="tab" onclick="sw('fav', this)">즐겨찾기</div>
+            <div class="tab" onclick="sw('shr', this)">공유됨</div>
+          </div>
+        </div>
+
+        <div class="ws-bd">
+          <div id="t-all">
+            <div class="fbar">
+              <div class="chip on">전체</div>
+              <div class="chip">진행중</div>
+              <div class="chip">완료</div>
+              <div class="chip">보류</div>
+              <button class="sort">최근 수정순 ▾</button>
+            </div>
+            <div class="sec-hd"><h2>즐겨찾기</h2></div>
+            <div class="pgrid">
+              <div class="pc">
+                <div
+                  class="pc-th"
+                  style="background: linear-gradient(140deg, #8998b1, #4e5d7f)"
+                >
+                  <button class="pc-fav on">★</button>
+                </div>
+                <div class="pc-info">
+                  <div class="pc-ttl">고양이와 강아지</div>
+                  <div class="pc-mt">7화 · 168p</div>
+                  <span class="pc-tag t-mine">내 작업</span>
+                </div>
+              </div>
+              <div class="pc">
+                <div
+                  class="pc-th"
+                  style="background: linear-gradient(140deg, #b89fe8, #8998b1)"
+                >
+                  <button class="pc-fav on">★</button>
+                </div>
+                <div class="pc-info">
+                  <div class="pc-ttl">여름 단편</div>
+                  <div class="pc-mt">1화 · 24p</div>
+                  <span class="pc-tag t-mine">내 작업</span>
+                </div>
+              </div>
+            </div>
+            <div class="sec-hd">
+              <h2>모든 프로젝트</h2>
+              <span class="sec-more">4개</span>
+            </div>
+            <div class="pgrid">
+              <div class="pc">
+                <div
+                  class="pc-th"
+                  style="background: linear-gradient(140deg, #8998b1, #4e5d7f)"
+                >
+                  <button class="pc-fav on">★</button>
+                </div>
+                <div class="pc-info">
+                  <div class="pc-ttl">고양이와 강아지</div>
+                  <div class="pc-mt">3일 전</div>
+                  <span class="pc-tag t-mine">내 작업</span>
+                </div>
+              </div>
+              <div class="pc">
+                <div
+                  class="pc-th"
+                  style="background: linear-gradient(140deg, #b89fe8, #8998b1)"
+                >
+                  <button class="pc-fav on">★</button>
+                </div>
+                <div class="pc-info">
+                  <div class="pc-ttl">여름 단편</div>
+                  <div class="pc-mt">1주 전</div>
+                  <span class="pc-tag t-mine">내 작업</span>
+                </div>
+              </div>
+              <div class="pc">
+                <div
+                  class="pc-th"
+                  style="background: linear-gradient(140deg, #7c94b8, #5a7aaa)"
+                >
+                  <button class="pc-fav">☆</button>
+                </div>
+                <div class="pc-info">
+                  <div class="pc-ttl">겨울 연작</div>
+                  <div class="pc-mt">2주 전</div>
+                  <span class="pc-tag t-mine">내 작업</span>
+                </div>
+              </div>
+              <div class="pc">
+                <div
+                  class="pc-th"
+                  style="background: linear-gradient(140deg, #fbc662, #e8a83c)"
+                >
+                  <button class="pc-fav">☆</button>
+                </div>
+                <div class="pc-info">
+                  <div class="pc-ttl">팀 프로젝트 A</div>
+                  <div class="pc-mt">1달 전</div>
+                  <span class="pc-tag t-shr">공유됨</span>
+                </div>
+              </div>
+              <div
+                class="pc pc-add"
+                style="border-radius: 8px; cursor: pointer"
+              >
+                <div class="pc-add-ic">+</div>
+                <span>새 프로젝트</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="t-rec" style="display: none">
+            <div class="sec-hd"><h2>최근 7일</h2></div>
+            <div class="pgrid">
+              <div class="pc">
+                <div
+                  class="pc-th"
+                  style="background: linear-gradient(140deg, #8998b1, #4e5d7f)"
+                >
+                  <button class="pc-fav on">★</button>
+                </div>
+                <div class="pc-info">
+                  <div class="pc-ttl">고양이와 강아지</div>
+                  <div class="pc-mt">오늘 14:23</div>
+                </div>
+              </div>
+              <div class="pc">
+                <div
+                  class="pc-th"
+                  style="background: linear-gradient(140deg, #b89fe8, #8998b1)"
+                >
+                  <button class="pc-fav on">★</button>
+                </div>
+                <div class="pc-info">
+                  <div class="pc-ttl">여름 단편</div>
+                  <div class="pc-mt">어제</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="t-fav" style="display: none">
+            <div class="pgrid">
+              <div class="pc">
+                <div
+                  class="pc-th"
+                  style="background: linear-gradient(140deg, #8998b1, #4e5d7f)"
+                >
+                  <button class="pc-fav on">★</button>
+                </div>
+                <div class="pc-info">
+                  <div class="pc-ttl">고양이와 강아지</div>
+                  <div class="pc-mt">7화 · 168p</div>
+                </div>
+              </div>
+              <div class="pc">
+                <div
+                  class="pc-th"
+                  style="background: linear-gradient(140deg, #b89fe8, #8998b1)"
+                >
+                  <button class="pc-fav on">★</button>
+                </div>
+                <div class="pc-info">
+                  <div class="pc-ttl">여름 단편</div>
+                  <div class="pc-mt">1화 · 24p</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="t-shr" style="display: none">
+            <div class="sec-hd">
+              <h2>공유된 프로젝트</h2>
+              <span class="sec-more">1개</span>
+            </div>
+            <div class="slist">
+              <div class="si2">
+                <div
+                  class="si2-th"
+                  style="background: linear-gradient(140deg, #fbc662, #e8a83c)"
+                ></div>
+                <div class="si2-body">
+                  <div class="si2-ttl">팀 프로젝트 A</div>
+                  <div class="si2-mt">by 김작가 · 1달 전</div>
+                </div>
+                <span class="perm p-ed">편집 가능</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="ws-bd">
-      <div id="t-all">
-        <div class="fbar">
-          <div class="chip on">전체</div><div class="chip">진행중</div><div class="chip">완료</div><div class="chip">보류</div>
-          <button class="sort">최근 수정순 ▾</button>
+    <!-- 새 프로젝트 모달 -->
+    <div
+      id="nm"
+      style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 999;
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <div
+        style="
+          background: var(--wh);
+          border-radius: 12px;
+          padding: 24px;
+          width: 340px;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        "
+      >
+        <div
+          style="
+            font-family: &quot;Noto Serif KR&quot;, serif;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 14px;
+          "
+        >
+          새 프로젝트
         </div>
-        <div class="sec-hd"><h2>즐겨찾기</h2></div>
-        <div class="pgrid">
-          <div class="pc"><div class="pc-th" style="background:linear-gradient(140deg,#8998b1,#4e5d7f)"><button class="pc-fav on">★</button></div><div class="pc-info"><div class="pc-ttl">고양이와 강아지</div><div class="pc-mt">ep.7 · 168p</div><span class="pc-tag t-mine">내 작업</span></div></div>
-          <div class="pc"><div class="pc-th" style="background:linear-gradient(140deg,#b89fe8,#8998b1)"><button class="pc-fav on">★</button></div><div class="pc-info"><div class="pc-ttl">여름 단편</div><div class="pc-mt">ep.1 · 24p</div><span class="pc-tag t-mine">내 작업</span></div></div>
+        <div style="margin-bottom: 10px">
+          <div
+            style="
+              font-size: 10px;
+              color: var(--gh);
+              margin-bottom: 4px;
+              text-transform: uppercase;
+              letter-spacing: 0.05em;
+            "
+          >
+            제목
+          </div>
+          <input
+            style="
+              width: 100%;
+              padding: 7px 11px;
+              border: 1px solid var(--bd2);
+              border-radius: 6px;
+              font-size: 12px;
+              outline: none;
+              font-family: inherit;
+            "
+            placeholder="프로젝트 이름..."
+          />
         </div>
-        <div class="sec-hd"><h2>모든 프로젝트</h2><span class="sec-more">4개</span></div>
-        <div class="pgrid">
-          <div class="pc"><div class="pc-th" style="background:linear-gradient(140deg,#8998b1,#4e5d7f)"><button class="pc-fav on">★</button></div><div class="pc-info"><div class="pc-ttl">고양이와 강아지</div><div class="pc-mt">3일 전</div><span class="pc-tag t-mine">내 작업</span></div></div>
-          <div class="pc"><div class="pc-th" style="background:linear-gradient(140deg,#b89fe8,#8998b1)"><button class="pc-fav on">★</button></div><div class="pc-info"><div class="pc-ttl">여름 단편</div><div class="pc-mt">1주 전</div><span class="pc-tag t-mine">내 작업</span></div></div>
-          <div class="pc"><div class="pc-th" style="background:linear-gradient(140deg,#7C94B8,#5a7aaa)"><button class="pc-fav">☆</button></div><div class="pc-info"><div class="pc-ttl">겨울 연작</div><div class="pc-mt">2주 전</div><span class="pc-tag t-mine">내 작업</span></div></div>
-          <div class="pc"><div class="pc-th" style="background:linear-gradient(140deg,#fbc662,#e8a83c)"><button class="pc-fav">☆</button></div><div class="pc-info"><div class="pc-ttl">팀 프로젝트 A</div><div class="pc-mt">1달 전</div><span class="pc-tag t-shr">공유됨</span></div></div>
-          <div class="pc pc-add" style="border-radius:8px;cursor:pointer;"><div class="pc-add-ic">+</div><span>새 프로젝트</span></div>
+        <div style="margin-bottom: 14px">
+          <div
+            style="
+              font-size: 10px;
+              color: var(--gh);
+              margin-bottom: 6px;
+              text-transform: uppercase;
+              letter-spacing: 0.05em;
+            "
+          >
+            기본 설정
+          </div>
+          <div style="display: flex; gap: 7px">
+            <div
+              style="
+                flex: 1;
+                padding: 7px 10px;
+                border: 1px solid var(--bd2);
+                border-radius: 6px;
+                font-size: 11px;
+              "
+            >
+              <div style="color: var(--gh); margin-bottom: 2px">
+                기본 페이지수
+              </div>
+              <select
+                style="
+                  border: none;
+                  outline: none;
+                  font-size: 11px;
+                  color: var(--ink);
+                  background: transparent;
+                  width: 100%;
+                "
+              >
+                <option>24p</option>
+                <option>32p</option>
+                <option>16p</option>
+              </select>
+            </div>
+            <div
+              style="
+                flex: 1;
+                padding: 7px 10px;
+                border: 1px solid var(--bd2);
+                border-radius: 6px;
+                font-size: 11px;
+              "
+            >
+              <div style="color: var(--gh); margin-bottom: 2px">읽기 방향</div>
+              <select
+                style="
+                  border: none;
+                  outline: none;
+                  font-size: 11px;
+                  color: var(--ink);
+                  background: transparent;
+                  width: 100%;
+                "
+              >
+                <option>RTL (→←)</option>
+                <option>LTR (←→)</option>
+              </select>
+            </div>
+          </div>
         </div>
-      </div>
-
-      <div id="t-rec" style="display:none">
-        <div class="sec-hd"><h2>최근 7일</h2></div>
-        <div class="pgrid">
-          <div class="pc"><div class="pc-th" style="background:linear-gradient(140deg,#8998b1,#4e5d7f)"><button class="pc-fav on">★</button></div><div class="pc-info"><div class="pc-ttl">고양이와 강아지</div><div class="pc-mt">오늘 14:23</div></div></div>
-          <div class="pc"><div class="pc-th" style="background:linear-gradient(140deg,#b89fe8,#8998b1)"><button class="pc-fav on">★</button></div><div class="pc-info"><div class="pc-ttl">여름 단편</div><div class="pc-mt">어제</div></div></div>
-        </div>
-      </div>
-
-      <div id="t-fav" style="display:none">
-        <div class="pgrid">
-          <div class="pc"><div class="pc-th" style="background:linear-gradient(140deg,#8998b1,#4e5d7f)"><button class="pc-fav on">★</button></div><div class="pc-info"><div class="pc-ttl">고양이와 강아지</div><div class="pc-mt">ep.7 · 168p</div></div></div>
-          <div class="pc"><div class="pc-th" style="background:linear-gradient(140deg,#b89fe8,#8998b1)"><button class="pc-fav on">★</button></div><div class="pc-info"><div class="pc-ttl">여름 단편</div><div class="pc-mt">ep.1 · 24p</div></div></div>
-        </div>
-      </div>
-
-      <div id="t-shr" style="display:none">
-        <div class="sec-hd"><h2>공유된 프로젝트</h2><span class="sec-more">1개</span></div>
-        <div class="slist">
-          <div class="si2"><div class="si2-th" style="background:linear-gradient(140deg,#fbc662,#e8a83c)"></div><div class="si2-body"><div class="si2-ttl">팀 프로젝트 A</div><div class="si2-mt">by 김작가 · 1달 전</div></div><span class="perm p-ed">편집 가능</span></div>
+        <div style="display: flex; gap: 7px; justify-content: flex-end">
+          <button
+            onclick="document.getElementById('nm').style.display = 'none'"
+            style="
+              padding: 6px 14px;
+              border-radius: 6px;
+              border: 1px solid var(--bd2);
+              background: none;
+              font-size: 12px;
+              font-family: inherit;
+            "
+          >
+            취소
+          </button>
+          <button
+            style="
+              padding: 6px 14px;
+              border-radius: 6px;
+              border: none;
+              background: var(--db);
+              color: #fff;
+              font-size: 12px;
+              font-family: inherit;
+            "
+          >
+            만들기
+          </button>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- 새 프로젝트 모달 -->
-<div id="nm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:999;align-items:center;justify-content:center;">
-  <div style="background:var(--wh);border-radius:12px;padding:24px;width:340px;box-shadow:0 20px 60px rgba(0,0,0,.2);">
-    <div style="font-family:'Noto Serif KR',serif;font-size:16px;font-weight:600;margin-bottom:14px;">새 프로젝트</div>
-    <div style="margin-bottom:10px;"><div style="font-size:10px;color:var(--gh);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em;">제목</div><input style="width:100%;padding:7px 11px;border:1px solid var(--bd2);border-radius:6px;font-size:12px;outline:none;font-family:inherit;" placeholder="프로젝트 이름..."></div>
-    <div style="margin-bottom:14px;"><div style="font-size:10px;color:var(--gh);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">기본 설정</div>
-      <div style="display:flex;gap:7px;">
-        <div style="flex:1;padding:7px 10px;border:1px solid var(--bd2);border-radius:6px;font-size:11px;"><div style="color:var(--gh);margin-bottom:2px;">기본 페이지수</div><select style="border:none;outline:none;font-size:11px;color:var(--ink);background:transparent;width:100%;"><option>24p</option><option>32p</option><option>16p</option></select></div>
-        <div style="flex:1;padding:7px 10px;border:1px solid var(--bd2);border-radius:6px;font-size:11px;"><div style="color:var(--gh);margin-bottom:2px;">읽기 방향</div><select style="border:none;outline:none;font-size:11px;color:var(--ink);background:transparent;width:100%;"><option>RTL (→←)</option><option>LTR (←→)</option></select></div>
-      </div>
-    </div>
-    <div style="display:flex;gap:7px;justify-content:flex-end;">
-      <button onclick="document.getElementById('nm').style.display='none'" style="padding:6px 14px;border-radius:6px;border:1px solid var(--bd2);background:none;font-size:12px;font-family:inherit;">취소</button>
-      <button style="padding:6px 14px;border-radius:6px;border:none;background:var(--db);color:#fff;font-size:12px;font-family:inherit;">만들기</button>
-    </div>
-  </div>
-</div>
-
-<script>
-function sw(id,el){
-  ['all','rec','fav','shr'].forEach(t=>document.getElementById('t-'+t).style.display=t===id?'':'none');
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  el.classList.add('on');
-}
-</script>
-</body>
+    <script>
+      function sw(id, el) {
+        ["all", "rec", "fav", "shr"].forEach(
+          (t) =>
+            (document.getElementById("t-" + t).style.display =
+              t === id ? "" : "none"),
+        );
+        document
+          .querySelectorAll(".tab")
+          .forEach((t) => t.classList.remove("on"));
+        el.classList.add("on");
+      }
+    </script>
+  </body>
 </html>

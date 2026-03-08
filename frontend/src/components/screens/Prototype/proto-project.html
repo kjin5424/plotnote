@@ -1,276 +1,1056 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-<meta charset="UTF-8">
-<title>PlotNote — 프로젝트</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
-<style>
-:root{--db:#2A4D88;--oc:#7C94B8;--gl:#B1BBC8;--co:#D9D9D8;--am:#fbc662;--am-bg:#fff8e6;--wh:#fefefe;--pa:#f7f6f3;--ink:#1a1a1a;--i2:#4a4a4a;--gh:#9a9a9a;--bd:#e8e6e0;--bd2:#d5d2cb;--sw:220px;--hh:48px;}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Noto Sans KR',sans-serif;background:var(--pa);color:var(--ink);height:100vh;overflow:hidden;display:flex;flex-direction:column;font-size:13px;}
-button{font-family:'Noto Sans KR',sans-serif;cursor:pointer;}
-/* Header */
-.hd{height:var(--hh);background:var(--wh);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 16px;gap:8px;flex-shrink:0;}
-.hd-menu{width:28px;height:28px;border-radius:5px;border:none;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3.5px;}
-.hd-menu:hover{background:var(--pa);}
-.hd-menu span{display:block;height:1.5px;border-radius:1px;background:var(--gh);}
-.hd-menu span:nth-child(1){width:14px;}.hd-menu span:nth-child(2){width:10px;}.hd-menu span:nth-child(3){width:14px;}
-.bc{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--gh);}
-.bc a{color:var(--gh);text-decoration:none;cursor:pointer;}.bc a:hover{color:var(--db);}
-.bc .cur{color:var(--ink);font-weight:500;}.bc .sep{color:var(--co);}
-.hd-r{margin-left:auto;display:flex;gap:4px;}
-.hbtn{width:28px;height:28px;border-radius:5px;border:none;background:none;color:var(--gh);display:flex;align-items:center;justify-content:center;font-size:15px;}
-.hbtn:hover{background:var(--pa);}
-/* Layout */
-.main{flex:1;display:flex;overflow:hidden;}
-.sb{width:var(--sw);min-width:var(--sw);height:100%;background:var(--wh);border-right:1px solid var(--bd);display:flex;flex-direction:column;}
-.ws{flex:1;display:flex;overflow:hidden;}
-/* Sidebar */
-.sb-logo{padding:13px 16px 11px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:7px;}
-.sb-mk{width:24px;height:24px;background:var(--db);border-radius:5px;display:flex;align-items:center;justify-content:center;}
-.sb-mk svg{width:12px;height:12px;fill:#fff;}
-.sb-nm{font-family:'DM Mono',monospace;font-size:12px;}
-.sb-sec{padding:8px 8px 3px;}
-.sb-lbl{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--gh);padding:0 8px;margin-bottom:2px;}
-.si{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:5px;font-size:11px;color:var(--i2);cursor:pointer;transition:background .1s;}
-.si:hover{background:var(--pa);}
-.si.on{background:#eef1f7;color:var(--db);font-weight:500;}
-.si .d{width:5px;height:5px;border-radius:50%;background:var(--gl);flex-shrink:0;}
-.si.on .d{background:var(--db);}
-.si-sub{padding-left:22px;font-size:11px;color:var(--gh);}
-.si-sub.on{color:var(--db);}
-.sb-ft{margin-top:auto;padding:8px;border-top:1px solid var(--bd);}
-.sb-u{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:5px;cursor:pointer;}
-.sb-u:hover{background:var(--pa);}
-.av{width:22px;height:22px;border-radius:50%;background:var(--db);display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;font-weight:600;}
+  <head>
+    <meta charset="UTF-8" />
+    <title>PlotNote — 프로젝트</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=DM+Mono:wght@400;500&family=Noto+Serif+KR:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --db: #2a4d88;
+        --oc: #7c94b8;
+        --gl: #b1bbc8;
+        --co: #d9d9d8;
+        --am: #fbc662;
+        --am-bg: #fff8e6;
+        --wh: #fefefe;
+        --pa: #f7f6f3;
+        --ink: #1a1a1a;
+        --i2: #4a4a4a;
+        --gh: #9a9a9a;
+        --bd: #e8e6e0;
+        --bd2: #d5d2cb;
+        --sw: 220px;
+        --hh: 48px;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Noto Sans KR", sans-serif;
+        background: var(--pa);
+        color: var(--ink);
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        font-size: 13px;
+      }
+      button {
+        font-family: "Noto Sans KR", sans-serif;
+        cursor: pointer;
+      }
+      /* Header */
+      .hd {
+        height: var(--hh);
+        background: var(--wh);
+        border-bottom: 1px solid var(--bd);
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      .hd-menu {
+        width: 28px;
+        height: 28px;
+        border-radius: 5px;
+        border: none;
+        background: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3.5px;
+      }
+      .hd-menu:hover {
+        background: var(--pa);
+      }
+      .hd-menu span {
+        display: block;
+        height: 1.5px;
+        border-radius: 1px;
+        background: var(--gh);
+      }
+      .hd-menu span:nth-child(1) {
+        width: 14px;
+      }
+      .hd-menu span:nth-child(2) {
+        width: 10px;
+      }
+      .hd-menu span:nth-child(3) {
+        width: 14px;
+      }
+      .bc {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        color: var(--gh);
+      }
+      .bc a {
+        color: var(--gh);
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .bc a:hover {
+        color: var(--db);
+      }
+      .bc .cur {
+        color: var(--ink);
+        font-weight: 500;
+      }
+      .bc .sep {
+        color: var(--co);
+      }
+      .hd-r {
+        margin-left: auto;
+        display: flex;
+        gap: 4px;
+      }
+      .hbtn {
+        width: 28px;
+        height: 28px;
+        border-radius: 5px;
+        border: none;
+        background: none;
+        color: var(--gh);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+      }
+      .hbtn:hover {
+        background: var(--pa);
+      }
+      /* Layout */
+      .main {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+      }
+      .sb {
+        width: var(--sw);
+        min-width: var(--sw);
+        height: 100%;
+        background: var(--wh);
+        border-right: 1px solid var(--bd);
+        display: flex;
+        flex-direction: column;
+      }
+      .ws {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+      }
+      /* Sidebar */
+      .sb-logo {
+        padding: 13px 16px 11px;
+        border-bottom: 1px solid var(--bd);
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .sb-mk {
+        width: 24px;
+        height: 24px;
+        background: var(--db);
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .sb-mk svg {
+        width: 12px;
+        height: 12px;
+        fill: #fff;
+      }
+      .sb-nm {
+        font-family: "DM Mono", monospace;
+        font-size: 12px;
+      }
+      .sb-sec {
+        padding: 8px 8px 3px;
+      }
+      .sb-lbl {
+        font-size: 9px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--gh);
+        padding: 0 8px;
+        margin-bottom: 2px;
+      }
+      .si {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 8px;
+        border-radius: 5px;
+        font-size: 11px;
+        color: var(--i2);
+        cursor: pointer;
+        transition: background 0.1s;
+      }
+      .si:hover {
+        background: var(--pa);
+      }
+      .si.on {
+        background: #eef1f7;
+        color: var(--db);
+        font-weight: 500;
+      }
+      .si .d {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--gl);
+        flex-shrink: 0;
+      }
+      .si.on .d {
+        background: var(--db);
+      }
+      .si-sub {
+        padding-left: 22px;
+        font-size: 11px;
+        color: var(--gh);
+      }
+      .si-sub.on {
+        color: var(--db);
+      }
+      .sb-ft {
+        margin-top: auto;
+        padding: 8px;
+        border-top: 1px solid var(--bd);
+      }
+      .sb-u {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 8px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .sb-u:hover {
+        background: var(--pa);
+      }
+      .av {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--db);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        color: #fff;
+        font-weight: 600;
+      }
 
-/* ── 좌측 프로젝트 패널 */
-.prj-panel{width:260px;min-width:260px;height:100%;background:var(--wh);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow-y:auto;}
-.prj-cover{width:100%;aspect-ratio:16/9;background:linear-gradient(140deg,#8998b1 0%,#4e5d7f 100%);position:relative;flex-shrink:0;display:flex;align-items:flex-end;}
-.prj-cover-txt{padding:14px 16px;background:linear-gradient(transparent,rgba(20,30,50,.6));width:100%;}
-.prj-cover-ttl{font-family:'Noto Serif KR',serif;font-size:16px;font-weight:600;color:#fff;line-height:1.3;}
-.prj-cover-sub{font-size:10px;color:rgba(255,255,255,.65);font-family:'DM Mono',monospace;margin-top:2px;}
-.prj-meta{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bd);border-bottom:1px solid var(--bd);}
-.prj-meta-cell{background:var(--wh);padding:10px 14px;}
-.prj-meta-val{font-family:'DM Mono',monospace;font-size:16px;font-weight:500;color:var(--ink);letter-spacing:-.02em;}
-.prj-meta-key{font-size:9px;color:var(--gh);text-transform:uppercase;letter-spacing:.06em;margin-top:1px;}
-.prj-sec{padding:14px 16px 6px;}
-.prj-sec-ttl{font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--gh);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--bd);}
-.prj-memo{font-size:12px;color:var(--i2);line-height:1.6;background:var(--pa);border-radius:6px;padding:10px 12px;min-height:60px;cursor:text;outline:none;}
-.prj-memo:focus{box-shadow:0 0 0 2px rgba(42,77,136,.15);}
-/* 설정 행 */
-.cfg-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--bd);}
-.cfg-row:last-child{border:none;}
-.cfg-lbl{font-size:11px;color:var(--i2);}
-.cfg-val{font-size:10px;font-family:'DM Mono',monospace;background:#eef1f7;color:var(--db);padding:2px 7px;border-radius:4px;cursor:pointer;border:1px solid rgba(42,77,136,.12);}
-.cfg-val:hover{background:#e0e8f5;}
+      /* ── 좌측 프로젝트 패널 */
+      .prj-panel {
+        width: 260px;
+        min-width: 260px;
+        height: 100%;
+        background: var(--wh);
+        border-right: 1px solid var(--bd);
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+      }
+      .prj-cover {
+        width: 100%;
+        aspect-ratio: 16/9;
+        background: linear-gradient(140deg, #8998b1 0%, #4e5d7f 100%);
+        position: relative;
+        flex-shrink: 0;
+        display: flex;
+        align-items: flex-end;
+      }
+      .prj-cover-txt {
+        padding: 14px 16px;
+        background: linear-gradient(transparent, rgba(20, 30, 50, 0.6));
+        width: 100%;
+      }
+      .prj-cover-ttl {
+        font-family: "Noto Serif KR", serif;
+        font-size: 16px;
+        font-weight: 600;
+        color: #fff;
+        line-height: 1.3;
+      }
+      .prj-cover-sub {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.65);
+        font-family: "DM Mono", monospace;
+        margin-top: 2px;
+      }
+      .prj-meta {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1px;
+        background: var(--bd);
+        border-bottom: 1px solid var(--bd);
+      }
+      .prj-meta-cell {
+        background: var(--wh);
+        padding: 10px 14px;
+      }
+      .prj-meta-val {
+        font-family: "DM Mono", monospace;
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--ink);
+        letter-spacing: -0.02em;
+      }
+      .prj-meta-key {
+        font-size: 9px;
+        color: var(--gh);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-top: 1px;
+      }
+      .prj-sec {
+        padding: 14px 16px 6px;
+      }
+      .prj-sec-ttl {
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--gh);
+        margin-bottom: 8px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid var(--bd);
+      }
+      .prj-memo {
+        font-size: 12px;
+        color: var(--i2);
+        line-height: 1.6;
+        background: var(--pa);
+        border-radius: 6px;
+        padding: 10px 12px;
+        min-height: 60px;
+        cursor: text;
+        outline: none;
+      }
+      .prj-memo:focus {
+        box-shadow: 0 0 0 2px rgba(42, 77, 136, 0.15);
+      }
+      /* 설정 행 */
+      .cfg-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 5px 0;
+        border-bottom: 1px solid var(--bd);
+      }
+      .cfg-row:last-child {
+        border: none;
+      }
+      .cfg-lbl {
+        font-size: 11px;
+        color: var(--i2);
+      }
+      .cfg-val {
+        font-size: 10px;
+        font-family: "DM Mono", monospace;
+        background: #eef1f7;
+        color: var(--db);
+        padding: 2px 7px;
+        border-radius: 4px;
+        cursor: pointer;
+        border: 1px solid rgba(42, 77, 136, 0.12);
+      }
+      .cfg-val:hover {
+        background: #e0e8f5;
+      }
 
-/* ── 우측 에피소드 목록 */
-.ep-area{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
-.ep-hd{flex-shrink:0;padding:16px 20px 0;background:var(--wh);border-bottom:1px solid var(--bd);}
-.ep-hd-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.ep-ttl{font-family:'Noto Serif KR',serif;font-size:17px;font-weight:600;letter-spacing:-.02em;}
-.ep-acts{display:flex;gap:6px;}
-.abtn{padding:5px 12px;border-radius:6px;border:1px solid var(--bd2);background:var(--wh);font-size:11px;color:var(--i2);display:flex;align-items:center;gap:4px;}
-.abtn:hover{border-color:var(--db);color:var(--db);}
-.abtn.pri{background:var(--db);color:#fff;border-color:var(--db);}
-.abtn.pri:hover{background:#1e3d73;}
-/* 뷰 토글 */
-.view-tgl{display:flex;border:1px solid var(--bd2);border-radius:6px;overflow:hidden;}
-.vbtn{padding:4px 10px;border:none;background:var(--wh);font-size:11px;color:var(--gh);cursor:pointer;}
-.vbtn.on{background:#eef1f7;color:var(--db);}
-/* 탭 */
-.tabs{display:flex;gap:0;border-bottom:2px solid var(--bd);margin:0 -20px;padding:0 20px;}
-.tab{padding:6px 13px;font-size:12px;color:var(--gh);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;}
-.tab:hover{color:var(--i2);}
-.tab.on{color:var(--db);border-bottom-color:var(--db);font-weight:500;}
-/* 에피소드 리스트 */
-.ep-bd{flex:1;overflow-y:auto;padding:16px 20px;}
-.ep-list{display:flex;flex-direction:column;gap:1px;background:var(--bd);border-radius:8px;overflow:hidden;}
-.ep-item{background:var(--wh);display:flex;align-items:stretch;gap:14px;padding:12px 14px;cursor:pointer;position:relative;}
-.ep-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;}
-.ep-item:hover{background:#f8f9fc;}
-.ep-item:hover::before{background:var(--gl);}
-.ep-item.on{background:#eef1f7;}
-.ep-item.on::before{background:var(--db);}
-.ep-th{width:46px;min-width:46px;aspect-ratio:238/324;border-radius:3px;background:linear-gradient(150deg,var(--gl),var(--oc));display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.ep-th-n{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:rgba(255,255,255,.85);}
-.ep-body{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:3px;}
-.ep-num{font-size:10px;font-family:'DM Mono',monospace;color:var(--gh);}
-.ep-ttl2{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.ep-memo{font-size:11px;color:var(--i2);line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;}
-.ep-memo.empty{color:var(--gh);font-style:italic;}
-.ep-ft{display:flex;align-items:center;gap:6px;margin-top:2px;}
-.ep-pg{font-size:10px;font-family:'DM Mono',monospace;color:var(--gh);}
-.ep-tag{font-size:9px;padding:1px 6px;border-radius:999px;}
-.t-wip{background:var(--am-bg);color:#8a6200;border:1px solid rgba(251,198,98,.4);}
-.t-done{background:#e8f5ee;color:#2a7a50;border:1px solid #b6dfc8;}
-.t-todo{background:var(--pa);color:var(--gh);border:1px solid var(--bd2);}
-.ep-r{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;flex-shrink:0;opacity:0;}
-.ep-item:hover .ep-r{opacity:1;}
-.ep-drag{display:flex;flex-direction:column;gap:2px;cursor:grab;padding:4px 2px;}
-.ep-drag span{display:block;width:10px;height:1.5px;background:var(--gl);border-radius:1px;}
-.ep-more{width:20px;height:20px;border-radius:4px;border:none;background:none;color:var(--gh);font-size:14px;display:flex;align-items:center;justify-content:center;}
-.ep-more:hover{background:var(--pa);}
-/* 추가 행 */
-.ep-add{background:var(--wh);display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;cursor:pointer;color:var(--gh);font-size:11px;border:2px dashed var(--bd2);border-top:none;border-radius:0 0 8px 8px;}
-.ep-add:hover{background:#f5f8ff;color:var(--db);border-color:var(--oc);}
-/* 확장 패널 */
-.ep-detail{background:#f5f8ff;padding:12px 14px 12px calc(46px + 28px);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);}
-.ep-d-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:var(--gh);margin-bottom:6px;}
-.ep-d-memo{width:100%;background:var(--wh);border:1px solid var(--bd2);border-radius:6px;padding:8px 11px;font-size:11px;font-family:'Noto Sans KR',sans-serif;color:var(--ink);resize:none;min-height:60px;outline:none;line-height:1.6;}
-.ep-d-memo:focus{border-color:var(--oc);}
-.ep-d-chips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
-.ep-d-chip{padding:3px 10px;border-radius:999px;font-size:10px;border:1px solid var(--bd2);background:var(--wh);cursor:pointer;display:flex;align-items:center;gap:4px;}
-.ep-d-chip:hover{border-color:var(--oc);background:#eef1f7;}
-.ep-d-chip span{color:var(--gh);font-size:9px;font-family:'DM Mono',monospace;}
-.ep-d-chip.ov{background:var(--am-bg);border-color:rgba(251,198,98,.5);color:#8a6200;}
-.ep-d-chip.ov span{color:#8a6200;}
-/* 타임라인 뷰 */
-.tl-list{display:flex;flex-direction:column;gap:0;}
-.tl-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd);}
-.tl-n{font-family:'DM Mono',monospace;font-size:11px;color:var(--gh);min-width:40px;}
-.tl-bar-wrap{flex:1;background:var(--pa);border-radius:4px;height:22px;position:relative;overflow:hidden;}
-.tl-bar{height:100%;border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:10px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tl-status{font-size:10px;font-family:'DM Mono',monospace;color:var(--gh);min-width:60px;text-align:right;}
-</style>
-</head>
-<body>
-
-<div class="hd">
-  <button class="hd-menu"><span></span><span></span><span></span></button>
-  <div class="bc">
-    <a>책장</a><span class="sep">›</span>
-    <span class="cur">고양이와 강아지</span>
-  </div>
-  <div class="hd-r">
-    <button class="hbtn" title="설정">⚙</button>
-    <button class="hbtn" title="공유">⋯</button>
-  </div>
-</div>
-
-<div class="main">
-  <!-- 좌측 글로벌 사이드바 -->
-  <div class="sb">
-    <div class="sb-logo">
-      <div class="sb-mk"><svg viewBox="0 0 14 14"><rect x="1" y="1" width="4" height="12" rx="1"/><rect x="7" y="1" width="4" height="7" rx="1" opacity=".6"/><rect x="7" y="10" width="4" height="3" rx="1" opacity=".4"/></svg></div>
-      <span class="sb-nm">plotnote</span>
+      /* ── 우측 에피소드 목록 */
+      .ep-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        min-width: 0;
+      }
+      .ep-hd {
+        flex-shrink: 0;
+        padding: 16px 20px 0;
+        background: var(--wh);
+        border-bottom: 1px solid var(--bd);
+      }
+      .ep-hd-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+      .ep-ttl {
+        font-family: "Noto Serif KR", serif;
+        font-size: 17px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+      .ep-acts {
+        display: flex;
+        gap: 6px;
+      }
+      .abtn {
+        padding: 5px 12px;
+        border-radius: 6px;
+        border: 1px solid var(--bd2);
+        background: var(--wh);
+        font-size: 11px;
+        color: var(--i2);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .abtn:hover {
+        border-color: var(--db);
+        color: var(--db);
+      }
+      .abtn.pri {
+        background: var(--db);
+        color: #fff;
+        border-color: var(--db);
+      }
+      .abtn.pri:hover {
+        background: #1e3d73;
+      }
+      /* 뷰 토글 */
+      .view-tgl {
+        display: flex;
+        border: 1px solid var(--bd2);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .vbtn {
+        padding: 4px 10px;
+        border: none;
+        background: var(--wh);
+        font-size: 11px;
+        color: var(--gh);
+        cursor: pointer;
+      }
+      .vbtn.on {
+        background: #eef1f7;
+        color: var(--db);
+      }
+      /* 탭 */
+      .tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 2px solid var(--bd);
+        margin: 0 -20px;
+        padding: 0 20px;
+      }
+      .tab {
+        padding: 6px 13px;
+        font-size: 12px;
+        color: var(--gh);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+      }
+      .tab:hover {
+        color: var(--i2);
+      }
+      .tab.on {
+        color: var(--db);
+        border-bottom-color: var(--db);
+        font-weight: 500;
+      }
+      /* 에피소드 리스트 */
+      .ep-bd {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px 20px;
+      }
+      .ep-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        background: var(--bd);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .ep-item {
+        background: var(--wh);
+        display: flex;
+        align-items: stretch;
+        gap: 14px;
+        padding: 12px 14px;
+        cursor: pointer;
+        position: relative;
+      }
+      .ep-item::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: transparent;
+      }
+      .ep-item:hover {
+        background: #f8f9fc;
+      }
+      .ep-item:hover::before {
+        background: var(--gl);
+      }
+      .ep-item.on {
+        background: #eef1f7;
+      }
+      .ep-item.on::before {
+        background: var(--db);
+      }
+      .ep-th {
+        width: 46px;
+        min-width: 46px;
+        aspect-ratio: 238/324;
+        border-radius: 3px;
+        background: linear-gradient(150deg, var(--gl), var(--oc));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .ep-th-n {
+        font-family: "DM Mono", monospace;
+        font-size: 13px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.85);
+      }
+      .ep-body {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 3px;
+      }
+      .ep-num {
+        font-size: 10px;
+        font-family: "DM Mono", monospace;
+        color: var(--gh);
+      }
+      .ep-ttl2 {
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .ep-memo {
+        font-size: 11px;
+        color: var(--i2);
+        line-height: 1.4;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+      }
+      .ep-memo.empty {
+        color: var(--gh);
+        font-style: italic;
+      }
+      .ep-ft {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 2px;
+      }
+      .ep-pg {
+        font-size: 10px;
+        font-family: "DM Mono", monospace;
+        color: var(--gh);
+      }
+      .ep-tag {
+        font-size: 9px;
+        padding: 1px 6px;
+        border-radius: 999px;
+      }
+      .t-wip {
+        background: var(--am-bg);
+        color: #8a6200;
+        border: 1px solid rgba(251, 198, 98, 0.4);
+      }
+      .t-done {
+        background: #e8f5ee;
+        color: #2a7a50;
+        border: 1px solid #b6dfc8;
+      }
+      .t-todo {
+        background: var(--pa);
+        color: var(--gh);
+        border: 1px solid var(--bd2);
+      }
+      .ep-r {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: space-between;
+        flex-shrink: 0;
+        opacity: 0;
+      }
+      .ep-item:hover .ep-r {
+        opacity: 1;
+      }
+      .ep-drag {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        cursor: grab;
+        padding: 4px 2px;
+      }
+      .ep-drag span {
+        display: block;
+        width: 10px;
+        height: 1.5px;
+        background: var(--gl);
+        border-radius: 1px;
+      }
+      .ep-more {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        border: none;
+        background: none;
+        color: var(--gh);
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .ep-more:hover {
+        background: var(--pa);
+      }
+      /* 추가 행 */
+      .ep-add {
+        background: var(--wh);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px;
+        cursor: pointer;
+        color: var(--gh);
+        font-size: 11px;
+        border: 2px dashed var(--bd2);
+        border-top: none;
+        border-radius: 0 0 8px 8px;
+      }
+      .ep-add:hover {
+        background: #f5f8ff;
+        color: var(--db);
+        border-color: var(--oc);
+      }
+      /* 확장 패널 */
+      .ep-detail {
+        background: #f5f8ff;
+        padding: 12px 14px 12px calc(46px + 28px);
+        border-top: 1px solid var(--bd);
+        border-bottom: 1px solid var(--bd);
+      }
+      .ep-d-lbl {
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--gh);
+        margin-bottom: 6px;
+      }
+      .ep-d-memo {
+        width: 100%;
+        background: var(--wh);
+        border: 1px solid var(--bd2);
+        border-radius: 6px;
+        padding: 8px 11px;
+        font-size: 11px;
+        font-family: "Noto Sans KR", sans-serif;
+        color: var(--ink);
+        resize: none;
+        min-height: 60px;
+        outline: none;
+        line-height: 1.6;
+      }
+      .ep-d-memo:focus {
+        border-color: var(--oc);
+      }
+      .ep-d-chips {
+        display: flex;
+        gap: 6px;
+        margin-top: 8px;
+        flex-wrap: wrap;
+      }
+      .ep-d-chip {
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 10px;
+        border: 1px solid var(--bd2);
+        background: var(--wh);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .ep-d-chip:hover {
+        border-color: var(--oc);
+        background: #eef1f7;
+      }
+      .ep-d-chip span {
+        color: var(--gh);
+        font-size: 9px;
+        font-family: "DM Mono", monospace;
+      }
+      .ep-d-chip.ov {
+        background: var(--am-bg);
+        border-color: rgba(251, 198, 98, 0.5);
+        color: #8a6200;
+      }
+      .ep-d-chip.ov span {
+        color: #8a6200;
+      }
+      /* 타임라인 뷰 */
+      .tl-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .tl-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--bd);
+      }
+      .tl-n {
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        color: var(--gh);
+        min-width: 40px;
+      }
+      .tl-bar-wrap {
+        flex: 1;
+        background: var(--pa);
+        border-radius: 4px;
+        height: 22px;
+        position: relative;
+        overflow: hidden;
+      }
+      .tl-bar {
+        height: 100%;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
+        font-size: 10px;
+        color: #fff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .tl-status {
+        font-size: 10px;
+        font-family: "DM Mono", monospace;
+        color: var(--gh);
+        min-width: 60px;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hd">
+      <button class="hd-menu"><span></span><span></span><span></span></button>
+      <div class="bc">
+        <a>책장</a><span class="sep">›</span>
+        <span class="cur">고양이와 강아지</span>
+      </div>
+      <div class="hd-r">
+        <button class="hbtn" title="설정">⚙</button>
+        <button class="hbtn" title="공유">⋯</button>
+      </div>
     </div>
-    <div class="sb-sec">
-      <div class="sb-lbl">즐겨찾기</div>
-      <div class="si on"><div class="d"></div>고양이와 강아지</div>
-      <div class="si"><div class="d"></div>여름 단편</div>
-    </div>
-    <div class="sb-sec">
-      <div class="sb-lbl">내 책장</div>
-      <div class="si"><div class="d"></div>베베의 작업실</div>
-    </div>
-    <div class="sb-ft">
-      <div class="sb-u"><div class="av">베</div><span style="font-size:11px;color:var(--i2);">베베</span></div>
-    </div>
-  </div>
 
-  <div class="ws">
-    <!-- 프로젝트 패널 -->
-    <div class="prj-panel">
-      <div class="prj-cover">
-        <div class="prj-cover-txt">
-          <div class="prj-cover-ttl">고양이와 강아지</div>
-          <div class="prj-cover-sub">RTL · 24p 기본</div>
+    <div class="main">
+      <!-- 좌측 글로벌 사이드바 -->
+      <div class="sb">
+        <div class="sb-logo">
+          <div class="sb-mk">
+            <svg viewBox="0 0 14 14">
+              <rect x="1" y="1" width="4" height="12" rx="1" />
+              <rect x="7" y="1" width="4" height="7" rx="1" opacity=".6" />
+              <rect x="7" y="10" width="4" height="3" rx="1" opacity=".4" />
+            </svg>
+          </div>
+          <span class="sb-nm">plotnote</span>
+        </div>
+        <div class="sb-sec">
+          <div class="sb-lbl">즐겨찾기</div>
+          <div class="si on">
+            <div class="d"></div>
+            고양이와 강아지
+          </div>
+          <div class="si">
+            <div class="d"></div>
+            여름 단편
+          </div>
+        </div>
+        <div class="sb-sec">
+          <div class="sb-lbl">내 책장</div>
+          <div class="si">
+            <div class="d"></div>
+            베베의 작업실
+          </div>
+        </div>
+        <div class="sb-ft">
+          <div class="sb-u">
+            <div class="av">베</div>
+            <span style="font-size: 11px; color: var(--i2)">베베</span>
+          </div>
         </div>
       </div>
-      <div class="prj-meta">
-        <div class="prj-meta-cell"><div class="prj-meta-val">7</div><div class="prj-meta-key">에피소드</div></div>
-        <div class="prj-meta-cell"><div class="prj-meta-val">168</div><div class="prj-meta-key">총 페이지</div></div>
-        <div class="prj-meta-cell"><div class="prj-meta-val">312</div><div class="prj-meta-key">총 컷</div></div>
-        <div class="prj-meta-cell"><div class="prj-meta-val">ep.4</div><div class="prj-meta-key">최근 작업</div></div>
-      </div>
-      <div class="prj-sec">
-        <div class="prj-sec-ttl">프로젝트 메모</div>
-        <div class="prj-memo" contenteditable="true">고양이와 강아지가 처음 만나는 이야기. 1화는 공원에서의 만남으로 시작.</div>
-      </div>
-      <div class="prj-sec">
-        <div class="prj-sec-ttl">기본 설정</div>
-        <div class="cfg-row"><span class="cfg-lbl">기본 페이지수</span><span class="cfg-val" onclick="">24p</span></div>
-        <div class="cfg-row"><span class="cfg-lbl">읽기 방향</span><span class="cfg-val">RTL</span></div>
-        <div class="cfg-row"><span class="cfg-lbl">시작 페이지</span><span class="cfg-val">홀수</span></div>
-        <div class="cfg-row"><span class="cfg-lbl">기본 뷰</span><span class="cfg-val">양면</span></div>
-      </div>
-    </div>
 
-    <!-- 에피소드 영역 -->
-    <div class="ep-area">
-      <div class="ep-hd">
-        <div class="ep-hd-top">
-          <div class="ep-ttl">에피소드 목록</div>
-          <div class="ep-acts">
-            <div class="view-tgl">
-              <button class="vbtn on" onclick="swView('list',this)">≡ 목록</button>
-              <button class="vbtn" onclick="swView('tl',this)">∷ 타임라인</button>
+      <div class="ws">
+        <!-- 프로젝트 패널 -->
+        <div class="prj-panel">
+          <div class="prj-cover">
+            <div class="prj-cover-txt">
+              <div class="prj-cover-ttl">고양이와 강아지</div>
+              <div class="prj-cover-sub">RTL · 24p 기본</div>
             </div>
-            <button class="abtn pri" onclick="addEp()">+ 에피소드 추가</button>
+          </div>
+          <div class="prj-meta">
+            <div class="prj-meta-cell">
+              <div class="prj-meta-val">7</div>
+              <div class="prj-meta-key">에피소드</div>
+            </div>
+            <div class="prj-meta-cell">
+              <div class="prj-meta-val">168</div>
+              <div class="prj-meta-key">총 페이지</div>
+            </div>
+            <div class="prj-meta-cell">
+              <div class="prj-meta-val">312</div>
+              <div class="prj-meta-key">총 컷</div>
+            </div>
+            <div class="prj-meta-cell">
+              <div class="prj-meta-val">4화</div>
+              <div class="prj-meta-key">최근 작업</div>
+            </div>
+          </div>
+          <div class="prj-sec">
+            <div class="prj-sec-ttl">프로젝트 메모</div>
+            <div class="prj-memo" contenteditable="true">
+              고양이와 강아지가 처음 만나는 이야기. 1화는 공원에서의 만남으로
+              시작.
+            </div>
+          </div>
+          <div class="prj-sec">
+            <div class="prj-sec-ttl">기본 설정</div>
+            <div class="cfg-row">
+              <span class="cfg-lbl">기본 페이지수</span
+              ><span class="cfg-val" onclick="">24p</span>
+            </div>
+            <div class="cfg-row">
+              <span class="cfg-lbl">읽기 방향</span
+              ><span class="cfg-val">RTL</span>
+            </div>
+            <div class="cfg-row">
+              <span class="cfg-lbl">시작 페이지</span
+              ><span class="cfg-val">홀수</span>
+            </div>
+            <div class="cfg-row">
+              <span class="cfg-lbl">기본 뷰</span
+              ><span class="cfg-val">양면</span>
+            </div>
           </div>
         </div>
-        <div class="tabs">
-          <div class="tab on" onclick="swTab('all',this)">전체 <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--gh);">7</span></div>
-          <div class="tab" onclick="swTab('wip',this)">진행중</div>
-          <div class="tab" onclick="swTab('done',this)">완료</div>
-        </div>
-      </div>
 
-      <div class="ep-bd">
-        <!-- 목록 뷰 -->
-        <div id="v-list">
-          <div class="ep-list" id="ep-list">
-            <!-- ep items injected by JS -->
+        <!-- 에피소드 영역 -->
+        <div class="ep-area">
+          <div class="ep-hd">
+            <div class="ep-hd-top">
+              <div class="ep-ttl">에피소드 목록</div>
+              <div class="ep-acts">
+                <div class="view-tgl">
+                  <button class="vbtn on" onclick="swView('list', this)">
+                    ≡ 목록
+                  </button>
+                  <button class="vbtn" onclick="swView('tl', this)">
+                    ∷ 타임라인
+                  </button>
+                </div>
+                <button class="abtn pri" onclick="addEp()">
+                  + 에피소드 추가
+                </button>
+              </div>
+            </div>
+            <div class="tabs">
+              <div class="tab on" onclick="swTab('all', this)">
+                전체
+                <span
+                  style="
+                    font-family: &quot;DM Mono&quot;, monospace;
+                    font-size: 10px;
+                    color: var(--gh);
+                  "
+                  >7</span
+                >
+              </div>
+              <div class="tab" onclick="swTab('wip', this)">진행중</div>
+              <div class="tab" onclick="swTab('done', this)">완료</div>
+            </div>
           </div>
-          <div class="ep-add" onclick="addEp()"><span style="font-size:16px;line-height:1;">+</span> 에피소드 추가</div>
-        </div>
 
-        <!-- 타임라인 뷰 -->
-        <div id="v-tl" style="display:none;">
-          <div class="tl-list">
-            <div class="tl-row"><span class="tl-n">ep.1</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:100%;background:var(--db)">첫 만남</div></div><span class="tl-status" style="color:#2a7a50">완료</span></div>
-            <div class="tl-row"><span class="tl-n">ep.2</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:100%;background:var(--db)">공원의 하루</div></div><span class="tl-status" style="color:#2a7a50">완료</span></div>
-            <div class="tl-row"><span class="tl-n">ep.3</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:80%;background:var(--db)">이웃 친구들</div></div><span class="tl-status" style="color:#8a6200">진행중</span></div>
-            <div class="tl-row"><span class="tl-n">ep.4</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:30%;background:var(--am)">비 오는 날</div></div><span class="tl-status" style="color:#8a6200">진행중</span></div>
-            <div class="tl-row"><span class="tl-n">ep.5</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:5%;background:var(--co)"></div></div><span class="tl-status">예정</span></div>
-            <div class="tl-row"><span class="tl-n">ep.6</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:5%;background:var(--co)"></div></div><span class="tl-status">예정</span></div>
-            <div class="tl-row"><span class="tl-n">ep.7</span><div class="tl-bar-wrap"><div class="tl-bar" style="width:5%;background:var(--co)"></div></div><span class="tl-status">예정</span></div>
+          <div class="ep-bd">
+            <!-- 목록 뷰 -->
+            <div id="v-list">
+              <div class="ep-list" id="ep-list">
+                <!-- ep items injected by JS -->
+              </div>
+              <div class="ep-add" onclick="addEp()">
+                <span style="font-size: 16px; line-height: 1">+</span> 에피소드
+                추가
+              </div>
+            </div>
+
+            <!-- 타임라인 뷰 -->
+            <div id="v-tl" style="display: none">
+              <div class="tl-list">
+                <div class="tl-row">
+                  <span class="tl-n">1화</span>
+                  <div class="tl-bar-wrap">
+                    <div
+                      class="tl-bar"
+                      style="width: 100%; background: var(--db)"
+                    >
+                      첫 만남
+                    </div>
+                  </div>
+                  <span class="tl-status" style="color: #2a7a50">완료</span>
+                </div>
+                <div class="tl-row">
+                  <span class="tl-n">2화</span>
+                  <div class="tl-bar-wrap">
+                    <div
+                      class="tl-bar"
+                      style="width: 100%; background: var(--db)"
+                    >
+                      공원의 하루
+                    </div>
+                  </div>
+                  <span class="tl-status" style="color: #2a7a50">완료</span>
+                </div>
+                <div class="tl-row">
+                  <span class="tl-n">3화</span>
+                  <div class="tl-bar-wrap">
+                    <div
+                      class="tl-bar"
+                      style="width: 80%; background: var(--db)"
+                    >
+                      이웃 친구들
+                    </div>
+                  </div>
+                  <span class="tl-status" style="color: #8a6200">진행중</span>
+                </div>
+                <div class="tl-row">
+                  <span class="tl-n">4화</span>
+                  <div class="tl-bar-wrap">
+                    <div
+                      class="tl-bar"
+                      style="width: 30%; background: var(--am)"
+                    >
+                      비 오는 날
+                    </div>
+                  </div>
+                  <span class="tl-status" style="color: #8a6200">진행중</span>
+                </div>
+                <div class="tl-row">
+                  <span class="tl-n">5화</span>
+                  <div class="tl-bar-wrap">
+                    <div
+                      class="tl-bar"
+                      style="width: 5%; background: var(--co)"
+                    ></div>
+                  </div>
+                  <span class="tl-status">예정</span>
+                </div>
+                <div class="tl-row">
+                  <span class="tl-n">6화</span>
+                  <div class="tl-bar-wrap">
+                    <div
+                      class="tl-bar"
+                      style="width: 5%; background: var(--co)"
+                    ></div>
+                  </div>
+                  <span class="tl-status">예정</span>
+                </div>
+                <div class="tl-row">
+                  <span class="tl-n">7화</span>
+                  <div class="tl-bar-wrap">
+                    <div
+                      class="tl-bar"
+                      style="width: 5%; background: var(--co)"
+                    ></div>
+                  </div>
+                  <span class="tl-status">예정</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<script>
-const eps=[
-  {n:'ep.1',t:'첫 만남',memo:'고양이와 강아지가 공원에서 처음 마주치는 장면.',pg:24,tag:'done'},
-  {n:'ep.2',t:'공원의 하루',memo:'함께 공원을 탐험하는 하루.',pg:24,tag:'done'},
-  {n:'ep.3',t:'이웃 친구들',memo:'동네 친구들을 소개받는 에피소드.',pg:24,tag:'wip'},
-  {n:'ep.4',t:'비 오는 날',memo:'',pg:24,tag:'wip'},
-  {n:'ep.5',t:'새 에피소드',memo:'',pg:24,tag:'todo'},
-  {n:'ep.6',t:'새 에피소드',memo:'',pg:24,tag:'todo'},
-  {n:'ep.7',t:'새 에피소드',memo:'',pg:24,tag:'todo'},
-];
-const tagMap={done:'완료',wip:'진행중',todo:'예정'};
-const tagCls={done:'t-done',wip:'t-wip',todo:'t-todo'};
-let openEp=-1;
+    <script>
+      const eps = [
+        {
+          n: "1화",
+          t: "첫 만남",
+          memo: "고양이와 강아지가 공원에서 처음 마주치는 장면.",
+          pg: 24,
+          tag: "done",
+        },
+        {
+          n: "2화",
+          t: "공원의 하루",
+          memo: "함께 공원을 탐험하는 하루.",
+          pg: 24,
+          tag: "done",
+        },
+        {
+          n: "3화",
+          t: "이웃 친구들",
+          memo: "동네 친구들을 소개받는 에피소드.",
+          pg: 24,
+          tag: "wip",
+        },
+        { n: "4화", t: "비 오는 날", memo: "", pg: 24, tag: "wip" },
+        { n: "5화", t: "새 에피소드", memo: "", pg: 24, tag: "todo" },
+        { n: "6화", t: "새 에피소드", memo: "", pg: 24, tag: "todo" },
+        { n: "7화", t: "새 에피소드", memo: "", pg: 24, tag: "todo" },
+      ];
+      const tagMap = { done: "완료", wip: "진행중", todo: "예정" };
+      const tagCls = { done: "t-done", wip: "t-wip", todo: "t-todo" };
+      let openEp = -1;
 
-function renderEps(){
-  const list=document.getElementById('ep-list');
-  list.innerHTML='';
-  eps.forEach((e,i)=>{
-    // item row
-    const div=document.createElement('div');
-    div.className='ep-item'+(openEp===i?' on':'');
-    div.innerHTML=`
-      <div class="ep-th"><span class="ep-th-n">${i+1}</span></div>
+      function renderEps() {
+        const list = document.getElementById("ep-list");
+        list.innerHTML = "";
+        eps.forEach((e, i) => {
+          // item row
+          const div = document.createElement("div");
+          div.className = "ep-item" + (openEp === i ? " on" : "");
+          div.innerHTML = `
+      <div class="ep-th"><span class="ep-th-n">${i + 1}</span></div>
       <div class="ep-body">
         <div class="ep-num">${e.n}</div>
         <div class="ep-ttl2">${e.t}</div>
-        <div class="ep-memo${e.memo?'':' empty'}">${e.memo||'메모 없음'}</div>
+        <div class="ep-memo${e.memo ? "" : " empty"}">${e.memo || "메모 없음"}</div>
         <div class="ep-ft">
           <span class="ep-pg">${e.pg}p</span>
           <span class="ep-tag ${tagCls[e.tag]}">${tagMap[e.tag]}</span>
@@ -280,51 +1060,66 @@ function renderEps(){
         <button class="ep-more">⋯</button>
         <div class="ep-drag"><span></span><span></span><span></span></div>
       </div>`;
-    div.addEventListener('click',()=>toggleEp(i));
-    list.appendChild(div);
+          div.addEventListener("click", () => toggleEp(i));
+          list.appendChild(div);
 
-    // detail panel
-    if(openEp===i){
-      const det=document.createElement('div');
-      det.className='ep-detail';
-      det.innerHTML=`
+          // detail panel
+          if (openEp === i) {
+            const det = document.createElement("div");
+            det.className = "ep-detail";
+            det.innerHTML = `
         <div class="ep-d-lbl">에피소드 메모</div>
         <textarea class="ep-d-memo" rows="3" placeholder="에피소드 메모...">${e.memo}</textarea>
         <div class="ep-d-chips">
           <div class="ep-d-chip"><span>페이지수</span> ${e.pg}p</div>
-          <div class="ep-d-chip ${e.tag==='wip'?'ov':''}"><span>상태</span> ${tagMap[e.tag]}</div>
+          <div class="ep-d-chip ${e.tag === "wip" ? "ov" : ""}"><span>상태</span> ${tagMap[e.tag]}</div>
           <div class="ep-d-chip"><span>읽기방향</span> RTL</div>
           <div class="ep-d-chip"><span>시작</span> 홀수</div>
         </div>
         <div style="display:flex;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bd);">
           <button class="abtn" style="font-size:11px;">페이지 관리 →</button>
         </div>`;
-      list.appendChild(det);
-    }
-  });
-}
+            list.appendChild(det);
+          }
+        });
+      }
 
-function toggleEp(i){openEp=openEp===i?-1:i;renderEps();}
+      function toggleEp(i) {
+        openEp = openEp === i ? -1 : i;
+        renderEps();
+      }
 
-function addEp(){
-  eps.push({n:`ep.${eps.length+1}`,t:'새 에피소드',memo:'',pg:24,tag:'todo'});
-  renderEps();
-}
+      function addEp() {
+        eps.push({
+          n: `${eps.length + 1}화`,
+          t: "새 에피소드",
+          memo: "",
+          pg: 24,
+          tag: "todo",
+        });
+        renderEps();
+      }
 
-function swView(id,el){
-  document.getElementById('v-list').style.display=id==='list'?'':'none';
-  document.getElementById('v-tl').style.display=id==='tl'?'':'none';
-  document.querySelectorAll('.vbtn').forEach(b=>b.classList.remove('on'));
-  el.classList.add('on');
-}
+      function swView(id, el) {
+        document.getElementById("v-list").style.display =
+          id === "list" ? "" : "none";
+        document.getElementById("v-tl").style.display =
+          id === "tl" ? "" : "none";
+        document
+          .querySelectorAll(".vbtn")
+          .forEach((b) => b.classList.remove("on"));
+        el.classList.add("on");
+      }
 
-function swTab(id,el){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  el.classList.add('on');
-  // TODO: filter by status
-}
+      function swTab(id, el) {
+        document
+          .querySelectorAll(".tab")
+          .forEach((t) => t.classList.remove("on"));
+        el.classList.add("on");
+        // TODO: filter by status
+      }
 
-renderEps();
-</script>
-</body>
+      renderEps();
+    </script>
+  </body>
 </html>
