@@ -105,13 +105,11 @@
   cursor: pointer;
   transition:
     box-shadow 0.15s,
-    border-color 0.15s,
-    transform 0.15s;
+    border-color 0.15s;
 }
 .pc:hover {
-  box-shadow: 0 4px 16px rgba(42, 77, 136, 0.1);
+  box-shadow: 0 6px 20px rgba(42, 77, 136, 0.15);
   border-color: var(--oc);
-  transform: translateY(-2px);
 }
 .pc-th {
   width: 100%;
