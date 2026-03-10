@@ -2,7 +2,7 @@ import Sidebar from "components/screens/Sidebar/Sidebar";
 import { useEffect, useState } from "react";
 import { startResize, updateWidth, endResize } from "hooks/ui/useResizeHandle";
 import { Outlet } from "react-router-dom";
-import useData from "contexts/DataContext";
+import { useUI } from "contexts/StoreContext";
 import Guide from "components/screens/guide/Guide";
 import PrototypeViewer from "components/screens/Prototype/PrototypeViewer";
 
@@ -10,8 +10,8 @@ import PrototypeViewer from "components/screens/Prototype/PrototypeViewer";
 export default function AppLayout() {
   const [isResizing, setIsResizing] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(200);
-  const { isLoading, uiState, toggleSidebar } = useData();
-  const isSidebarOpen = uiState.isSidebarOpen;
+  const { ui, toggleSidebar } = useUI();
+  const isSidebarOpen = ui.isSidebarOpen;
 
   useEffect(() => {
     if (!isResizing) return;
@@ -28,10 +28,6 @@ export default function AppLayout() {
       document.body.style.userSelect = "";
     };
   }, [isResizing]);
-
-  if (isLoading) {
-    return <div>데이터를 불러오는 중입니다</div>;
-  }
 
   return (
     <div className="app-layout">

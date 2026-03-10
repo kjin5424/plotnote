@@ -1,14 +1,12 @@
 # Progress
 
 ## Current Status
-**단계:** React Phase K — Cut 화면 마이그레이션 완료
+**단계:** Phase L — DataContext 완전 제거 완료
 **브랜치:** `kyoungjin`
-**마지막 작업:** K. Cut 화면 마이그레이션 완료 (2026-03-10)
+**마지막 작업:** DataContext/DataProvider 제거 + Sidebar/MainLayout useStore/useUI 전환 (2026-03-10)
 
-> **다음 세션 시작:**
-> 1. DataProvider/DataContext 제거 (K 완료)
-> 2. useCutNote.ts DataContext 의존성 → 미사용 상태 (정리 필요)
-> 3. 라우트 변경: Page=`/page`, Cut=`/page/:pageId` (2026-03-10 적용)
+> **다음 세션:**
+> - 새 기능 개발 or 통합 검수 진행
 
 ### 라우트 구조 (최종)
 - Page 화면: `/project/:projectId/episode/:episodeId/page`
@@ -64,7 +62,7 @@
 - [x] **I.** Episode 화면 — `EpisodeHeader`, `EpisodeList(Nav)`, `EpisodeItem`, `EpisodeDetail`, `index.tsx` 마이그레이션 완료
 - [x] **J.** Page 화면 — `PageHeader`, `PageBody(Nav)`, `PageCard`, `PageDetail`(신규), `index.tsx` 마이그레이션 완료
 - [x] **K.** Cut 화면 — `CutHeader`, `CutBody`, `CutCanvas`, `index.tsx`, `useCut.ts` 마이그레이션 완료
-- [ ] DataProvider/DataContext 제거 (K 완료 후)
+- [x] DataProvider/DataContext 제거 — Sidebar/MainLayout useStore/useUI 전환 완료
 
 ---
 

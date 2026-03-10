@@ -1,6 +1,5 @@
 import "assets/styles/index.scss";
 import { AuthProvider } from "./contexts/AuthContext";
-import { DataProvider } from "./contexts/DataContext";
 import { StoreProvider } from "./contexts/StoreContext";
 import { Navigate, Route, Routes } from "react-router-dom";
 import BookshelfManagement from "./components/screens/Bookshelf";
@@ -15,7 +14,6 @@ function App() {
   return (
     <AuthProvider>
       <StoreProvider>
-        <DataProvider>
           <Routes>
             <Route path="/" element={<MainLayout />}>
               <Route index element={<Navigate to="/bookshelf" replace />} />
@@ -26,7 +24,6 @@ function App() {
               <Route path="project/:projectId/episode/:episodeId/page/:pageId" element={<CutManagement />} />
             </Route>
           </Routes>
-        </DataProvider>
         <DbErrorToast />
       </StoreProvider>
     </AuthProvider>

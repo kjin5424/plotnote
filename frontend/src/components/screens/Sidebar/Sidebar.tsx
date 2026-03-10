@@ -1,8 +1,8 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { ResizeHandle } from "./ResizeHandle";
-import useData from "contexts/DataContext";
-import type { Project, Episode, Page } from "types/models";
+import { useStore, useUI } from "contexts/StoreContext";
+import type { Project, Episode, Page } from "types/entities";
 
 import LibraryIcon_house from "assets/images/house_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
 import ProjectIcon_bookClose from "assets/images/book_close_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
@@ -26,7 +26,7 @@ interface SidebarProps {
   toggleSidebar: () => void;
 }
 
-const INDENT = 16; // px per depth level
+const INDENT = 16;
 
 export default function Sidebar({
   isOpen,
@@ -37,48 +37,21 @@ export default function Sidebar({
 }: SidebarProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const {
-    currentUserId,
-    uiState,
-    bookshelves,
-    projects,
-    episodes,
-    pages,
-    userBookshelvesList,
-    navigateToProject,
-    navigateToEpisode,
-    navigateToPage,
-  } = useData();
+  const store = useStore();
+  const { ui, navigateToProject, navigateToEpisode, navigateToPage } = useUI();
+  const { currentProjectId, currentEpisodeId, currentPageId } = ui;
 
-  const { currentProjectId, currentEpisodeId, currentPageId } = uiState;
-
-  // ── 접기/펼치기 상태
-  const [expandedProjects, setExpandedProjects] = useState<Set<string>>(
-    new Set(),
-  );
-  const [expandedEpisodes, setExpandedEpisodes] = useState<Set<string>>(
-    new Set(),
-  );
+  const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
+  const [expandedEpisodes, setExpandedEpisodes] = useState<Set<string>>(new Set());
   const [expandedSections, setExpandedSections] = useState({
     favorites: false,
     myBookshelves: true,
-    sharedBookshelves: false,
   });
 
-  // workspace에서 선택 시 자동 펼침 + 해당 섹션 오픈
   useEffect(() => {
     if (!currentProjectId) return;
     setExpandedProjects((prev) => new Set([...prev, currentProjectId]));
-    if (
-      ownedProjectsRef.current.some((p) => p.projectId === currentProjectId)
-    ) {
-      setExpandedSections((prev) => ({ ...prev, myBookshelves: true }));
-    } else if (
-      sharedProjectsRef.current.some((p) => p.projectId === currentProjectId)
-    ) {
-      setExpandedSections((prev) => ({ ...prev, sharedBookshelves: true }));
-    }
-  }, [currentProjectId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentProjectId]);
 
   useEffect(() => {
     if (currentEpisodeId) {
@@ -109,115 +82,77 @@ export default function Sidebar({
   };
 
   // ── 데이터 구성
-  const userBsh = currentUserId ? userBookshelvesList[currentUserId] : null;
+  const allProjects: Project[] = Object.values(store.bookshelves).flatMap((shelf) =>
+    shelf.projectOrder.map((pid) => store.projects[pid]).filter(Boolean),
+  );
 
-  // 내 책장: owned 책장 프로젝트를 flat하게 (책장 타이틀 없이 바로 프로젝트)
-  const ownedProjects: Project[] = (userBsh?.owned ?? []).flatMap((id) => {
-    const shelf = bookshelves[id];
-    if (!shelf) return [];
-    return shelf.projectOrder.map((pid) => projects[pid]).filter(Boolean);
-  });
+  const favoritedProjects = allProjects.filter((p) => p.isFavorited);
 
-  // 공유책장: shared 책장 프로젝트 flat
-  const sharedProjects: Project[] = (userBsh?.shared ?? [])
-    .map((s) => bookshelves[s.bookshelfId])
-    .filter(Boolean)
-    .flatMap((shelf) =>
-      shelf.projectOrder.map((pid) => projects[pid]).filter(Boolean),
-    );
-
-  const favoritedProjects = ownedProjects.filter((p) => p.isFavorited);
-
-  // 최신 목록을 effect 안에서 참조하기 위한 ref
-  const ownedProjectsRef = useRef(ownedProjects);
-  ownedProjectsRef.current = ownedProjects;
-  const sharedProjectsRef = useRef(sharedProjects);
-  sharedProjectsRef.current = sharedProjects;
+  const allProjectsRef = useRef(allProjects);
+  allProjectsRef.current = allProjects;
 
   // ── 클릭 핸들러
 
-  // 섹션 헤더: 항상 책장화면으로 이동 + 섹션 토글
   const handleSectionClick = (key: keyof typeof expandedSections) => {
     navigate("/bookshelf");
     toggleSection(key);
   };
 
-  // 프로젝트: active면 토글만, 아니면 이동 + 펼침
   const handleProjectClick = (project: Project) => {
-    if (currentProjectId === project.projectId) {
-      toggleProject(project.projectId);
+    if (currentProjectId === project.id) {
+      toggleProject(project.id);
     } else {
-      navigateToProject(project.projectId);
-      setExpandedProjects((prev) => new Set([...prev, project.projectId]));
-      navigate("/project");
+      navigateToProject(project.id);
+      setExpandedProjects((prev) => new Set([...prev, project.id]));
+      navigate(`/project/${project.id}`);
     }
   };
 
-  // 에피소드: active면 토글만, 아니면 이동 + 펼침
   const handleEpisodeClick = (projectId: string, episode: Episode) => {
-    if (currentEpisodeId === episode.episodeId) {
-      toggleEpisode(episode.episodeId);
+    if (currentEpisodeId === episode.id) {
+      toggleEpisode(episode.id);
     } else {
-      navigateToEpisode(episode.episodeId);
-      setExpandedEpisodes((prev) => new Set([...prev, episode.episodeId]));
-      navigate(`/project/${projectId}/episode/${episode.episodeId}/page`);
+      navigateToEpisode(episode.id);
+      setExpandedEpisodes((prev) => new Set([...prev, episode.id]));
+      navigate(`/project/${projectId}/episode/${episode.id}`);
     }
   };
 
-  // 페이지: 항상 이동 (leaf)
-  const handlePageClick = (pageId: string) => {
+  const handlePageClick = (projectId: string, episodeId: string, pageId: string) => {
     navigateToPage(pageId);
-    navigate(`/pages/${pageId}`);
+    navigate(`/project/${projectId}/episode/${episodeId}/page/${pageId}`);
   };
 
   // ── 트리 렌더링
 
-  const renderEpisodeItem = (
-    projectId: string,
-    episode: Episode,
-    depth: number,
-  ) => {
-    const isExpanded = expandedEpisodes.has(episode.episodeId);
-    const isActive = currentEpisodeId === episode.episodeId;
+  const renderEpisodeItem = (projectId: string, episode: Episode, depth: number) => {
+    const isExpanded = expandedEpisodes.has(episode.id);
+    const isActive = currentEpisodeId === episode.id;
     const episodePages: Page[] = (episode.pageOrder ?? [])
-      .map((id) => pages[id])
+      .map((id) => store.pages[id])
       .filter(Boolean);
 
     return (
-      <div key={episode.episodeId}>
+      <div key={episode.id}>
         <button
           className={`sidebar-tree-row${isActive ? " sidebar-tree-row--active" : ""}`}
           style={{ paddingLeft: depth * INDENT }}
           onClick={() => handleEpisodeClick(projectId, episode)}
         >
-          <img
-            src={isExpanded ? arrowDownIcon : arrowRightIcon}
-            className="sidebar-tree-item-icon"
-            alt=""
-          />
-          <img
-            src={isExpanded ? EpisodeIcon_folderOpen : EpisodeIcon_folder}
-            className="sidebar-tree-item-icon"
-            alt=""
-          />
+          <img src={isExpanded ? arrowDownIcon : arrowRightIcon} className="sidebar-tree-item-icon" alt="" />
+          <img src={isExpanded ? EpisodeIcon_folderOpen : EpisodeIcon_folder} className="sidebar-tree-item-icon" alt="" />
           <span className="sidebar-tree-item-label">{episode.title}</span>
         </button>
         {isExpanded &&
           episodePages.map((page, index) => (
             <button
-              key={page.pageId}
-              className={`sidebar-tree-page${currentPageId === page.pageId ? " sidebar-tree-page--active" : ""}`}
+              key={page.id}
+              className={`sidebar-tree-page${currentPageId === page.id ? " sidebar-tree-page--active" : ""}`}
               style={{ paddingLeft: (depth + 2) * INDENT }}
-              onClick={() => handlePageClick(page.pageId)}
+              onClick={() => handlePageClick(projectId, episode.id, page.id)}
             >
-              <img
-                src={PageIcon_article}
-                className="sidebar-tree-item-icon"
-                alt=""
-              />
-              <span className="sidebar-tree-item-label">
-                페이지 {index + 1}
-              </span>
+              <img src={PageIcon_article} className="sidebar-tree-item-icon" alt="" />
+              <span className="sidebar-tree-item-label">페이지 {index + 1}</span>
             </button>
           ))}
       </div>
@@ -225,34 +160,26 @@ export default function Sidebar({
   };
 
   const renderProjectItem = (project: Project, depth: number) => {
-    const isExpanded = expandedProjects.has(project.projectId);
-    const isActive = currentProjectId === project.projectId;
+    const isExpanded = expandedProjects.has(project.id);
+    const isActive = currentProjectId === project.id;
     const projectEpisodes: Episode[] = (project.episodeOrder ?? [])
-      .map((id) => episodes[id])
+      .map((id) => store.episodes[id])
       .filter(Boolean);
 
     return (
-      <div key={project.projectId}>
+      <div key={project.id}>
         <button
           className={`sidebar-tree-row${isActive ? " sidebar-tree-row--active" : ""}`}
           style={{ paddingLeft: depth * INDENT }}
           onClick={() => handleProjectClick(project)}
         >
-          <img
-            src={isExpanded ? arrowDownIcon : arrowRightIcon}
-            className="sidebar-tree-item-icon"
-            alt=""
-          />
-          <img
-            src={isExpanded ? ProjectIcon_bookOpen : ProjectIcon_bookClose}
-            className="sidebar-tree-item-icon"
-            alt=""
-          />
+          <img src={isExpanded ? arrowDownIcon : arrowRightIcon} className="sidebar-tree-item-icon" alt="" />
+          <img src={isExpanded ? ProjectIcon_bookOpen : ProjectIcon_bookClose} className="sidebar-tree-item-icon" alt="" />
           <span className="sidebar-tree-item-label">{project.title}</span>
         </button>
         {isExpanded &&
           projectEpisodes.map((episode) =>
-            renderEpisodeItem(project.projectId, episode, depth + 1),
+            renderEpisodeItem(project.id, episode, depth + 1),
           )}
       </div>
     );
@@ -271,20 +198,19 @@ export default function Sidebar({
       icon: ProjectIcon_bookClose,
       iconActive: ProjectIcon_bookOpen,
       label: "프로젝트",
-      isActive: location.pathname === "/project",
+      isActive: currentProjectId != null && location.pathname.startsWith(`/project/${currentProjectId}`) && !location.pathname.includes("/episode"),
       enabled: !!currentProjectId,
-      onClick: () => currentProjectId && navigate("/project"),
+      onClick: () => currentProjectId && navigate(`/project/${currentProjectId}`),
     },
     {
       icon: EpisodeIcon_folder,
       iconActive: EpisodeIcon_folderOpen,
       label: "에피소드",
-      isActive:
-        location.pathname.includes("/episode") &&
-        !location.pathname.includes("/page"),
-      enabled: !!currentProjectId,
+      isActive: location.pathname.includes("/episode") && !location.pathname.includes("/page"),
+      enabled: !!currentProjectId && !!currentEpisodeId,
       onClick: () =>
-        currentProjectId && navigate(`/project/${currentProjectId}/episode`),
+        currentProjectId && currentEpisodeId &&
+        navigate(`/project/${currentProjectId}/episode/${currentEpisodeId}`),
     },
     {
       icon: PageIcon_article,
@@ -292,11 +218,8 @@ export default function Sidebar({
       isActive: location.pathname.includes("/page"),
       enabled: !!currentProjectId && !!currentEpisodeId,
       onClick: () =>
-        currentProjectId &&
-        currentEpisodeId &&
-        navigate(
-          `/project/${currentProjectId}/episode/${currentEpisodeId}/page`,
-        ),
+        currentProjectId && currentEpisodeId &&
+        navigate(`/project/${currentProjectId}/episode/${currentEpisodeId}/page`),
     },
   ];
 
@@ -310,33 +233,20 @@ export default function Sidebar({
         <div className="sidebar-header">
           {isOpen ? (
             <>
-              <img
-                src={SidebarLogoIconOpen_happy}
-                className="sidebar-logo-icon"
-                alt=""
-              />
+              <img src={SidebarLogoIconOpen_happy} className="sidebar-logo-icon" alt="" />
               <span className="sidebar-logo-text">PlotNote</span>
               <button className="sidebar-toggle" onClick={toggleSidebar}>
-                <img
-                  src={SidebarCloseIcon_doubleArrow}
-                  className="sidebar-toggle-icon"
-                  alt="사이드바 닫기"
-                />
+                <img src={SidebarCloseIcon_doubleArrow} className="sidebar-toggle-icon" alt="사이드바 닫기" />
               </button>
             </>
           ) : (
             <button className="sidebar-toggle" onClick={toggleSidebar}>
-              <img
-                src={SidebarLogoIconClose_calm}
-                className="sidebar-logo-icon"
-                alt="PlotNote"
-              />
+              <img src={SidebarLogoIconClose_calm} className="sidebar-logo-icon" alt="PlotNote" />
             </button>
           )}
         </div>
 
         {isOpen ? (
-          /* 열린 상태: 트리 네비게이션 */
           <nav className="sidebar-nav">
             <div className="sidebar-tree">
               {/* 즐겨찾기 */}
@@ -345,18 +255,10 @@ export default function Sidebar({
                   className="sidebar-tree-section-title"
                   onClick={() => handleSectionClick("favorites")}
                 >
-                  <img
-                    src={favoriteIcon}
-                    className="sidebar-tree-item-icon"
-                    alt=""
-                  />
+                  <img src={favoriteIcon} className="sidebar-tree-item-icon" alt="" />
                   즐겨찾기
                   <img
-                    src={
-                      expandedSections.favorites
-                        ? arrowDownIcon
-                        : arrowRightIcon
-                    }
+                    src={expandedSections.favorites ? arrowDownIcon : arrowRightIcon}
                     className="sidebar-tree-item-icon"
                     alt=""
                     style={{ marginLeft: "auto" }}
@@ -372,54 +274,21 @@ export default function Sidebar({
                   className="sidebar-tree-section-title"
                   onClick={() => handleSectionClick("myBookshelves")}
                 >
-                  <img
-                    src={LibraryIcon_house}
-                    className="sidebar-tree-item-icon"
-                    alt=""
-                  />
+                  <img src={LibraryIcon_house} className="sidebar-tree-item-icon" alt="" />
                   내 책장
                   <img
-                    src={
-                      expandedSections.myBookshelves
-                        ? arrowDownIcon
-                        : arrowRightIcon
-                    }
+                    src={expandedSections.myBookshelves ? arrowDownIcon : arrowRightIcon}
                     className="sidebar-tree-item-icon"
                     alt=""
                     style={{ marginLeft: "auto" }}
                   />
                 </button>
                 {expandedSections.myBookshelves &&
-                  ownedProjects.map((p) => renderProjectItem(p, 1))}
+                  allProjects.map((p) => renderProjectItem(p, 1))}
               </div>
-
-              {/* 공유책장 */}
-              {sharedProjects.length > 0 && (
-                <div className="sidebar-tree-section">
-                  <button
-                    className="sidebar-tree-section-title"
-                    onClick={() => handleSectionClick("sharedBookshelves")}
-                  >
-                    공유책장
-                    <img
-                      src={
-                        expandedSections.sharedBookshelves
-                          ? arrowDownIcon
-                          : arrowRightIcon
-                      }
-                      className="sidebar-tree-item-icon"
-                      alt=""
-                      style={{ marginLeft: "auto" }}
-                    />
-                  </button>
-                  {expandedSections.sharedBookshelves &&
-                    sharedProjects.map((p) => renderProjectItem(p, 1))}
-                </div>
-              )}
             </div>
           </nav>
         ) : (
-          /* 닫힌 상태: breadcrumb 아이콘 */
           <nav className="sidebar-breadcrumb">
             {breadcrumbs.map((crumb) => (
               <button
@@ -430,11 +299,7 @@ export default function Sidebar({
                 title={crumb.label}
               >
                 <img
-                  src={
-                    crumb.isActive && crumb.iconActive
-                      ? crumb.iconActive
-                      : crumb.icon
-                  }
+                  src={crumb.isActive && crumb.iconActive ? crumb.iconActive : crumb.icon}
                   className="sidebar-breadcrumb-icon"
                   alt={crumb.label}
                 />
@@ -446,11 +311,7 @@ export default function Sidebar({
         {/* 하단 설정 */}
         <div className="sidebar-footer">
           <button className="sidebar-nav-item" title="설정">
-            <img
-              src={settingsIcon}
-              alt="설정"
-              style={{ width: 20, height: 20, flexShrink: 0 }}
-            />
+            <img src={settingsIcon} alt="설정" style={{ width: 20, height: 20, flexShrink: 0 }} />
             {isOpen && <span className="sidebar-nav-label">설정</span>}
           </button>
         </div>
