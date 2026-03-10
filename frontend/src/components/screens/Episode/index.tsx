@@ -1,38 +1,40 @@
-import WorkspaceLayout from "components/layout/WorkspaceLayout";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useStore, useUI } from "contexts/StoreContext";
 import EpisodeHeader from "./EpisodeHeader";
-import EpisodeList from "./EpisodeList";
-import useData from "contexts/DataContext";
-import { useEpisode } from "hooks/data/useEpisode";
-import { useNavigate, useParams } from "react-router-dom";
+import EpisodeNav from "./EpisodeList";
+import EpisodeDetailPanel from "./EpisodeDetail";
 
 export default function EpisodeManagement() {
-  const { getCurrentProject, navigateToEpisode } = useData();
-  const { episodes, addEpisode } = useEpisode();
-  const navigate = useNavigate();
-  const { projectId } = useParams<{ projectId: string }>();
+  const { projectId, episodeId } = useParams<{
+    projectId: string;
+    episodeId: string;
+  }>();
+  const store = useStore();
+  const { navigateToEpisode } = useUI();
 
-  const project = getCurrentProject();
+  useEffect(() => {
+    if (episodeId) navigateToEpisode(episodeId);
+  }, [episodeId, navigateToEpisode]);
 
-  if (!project) {
-    return <div className="episode-no-selection">선택된 프로젝트가 없습니다.</div>;
+  if (!projectId || !store.projects[projectId]) {
+    return <div className="det-placeholder">프로젝트를 찾을 수 없습니다.</div>;
   }
-
-  const handleSelectEpisode = (episodeId: string) => {
-    navigateToEpisode(episodeId);
-    navigate(`/project/${projectId}/episode/${episodeId}/page`);
-  };
 
   return (
     <div className="management-container">
-      <WorkspaceLayout
-        header={
-          <EpisodeHeader
-            projectTitle={project.title}
-            onAddEpisode={addEpisode}
+      <div className="workspace-layout">
+        <div className="workspace-header">
+          <EpisodeHeader projectId={projectId} />
+        </div>
+        <div className="ep-workspace-body">
+          <EpisodeNav projectId={projectId} selectedId={episodeId ?? null} />
+          <EpisodeDetailPanel
+            episodeId={episodeId ?? null}
+            projectId={projectId}
           />
-        }
-        body={<EpisodeList episodes={episodes} onSelect={handleSelectEpisode} />}
-      />
+        </div>
+      </div>
     </div>
   );
 }
