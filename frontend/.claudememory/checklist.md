@@ -528,13 +528,15 @@ grep "## 6. Cut 화면 (컷)" `project_knowledge_search`를 통해 접근, proto
 
 ---
 
-### ⬜ 10. 통합 검수 (2차) — 미완료
+### ✅ 10. 통합 검수 (2차) — 완료 (2026-03-10)
 
-- [ ] 8번 추가 요구사항 반영 확인
-- [ ] 9번 Bookshelf 디자인 검수
-- [ ] 전체 화면 일관성 최종 확인
-- [ ] 아이콘 정합성 최종 확인
-- [ ] 반응형 최종 점검
+- [x] 8번 추가 요구사항 반영 확인
+- [x] 9번 Bookshelf 디자인 검수
+- [x] 전체 화면 일관성 최종 확인 (91/100)
+- [x] 아이콘 정합성 최종 확인
+- [x] 반응형 최종 점검
+- [x] P1: `det-status-sel:focus-visible` 추가, `.np-hd-t`/`.np-lbl` user-select CSS 통합
+- [x] P3: 카드 hover transform → box-shadow (CLS 제거)
 
 ---
 

@@ -1,5 +1,11 @@
 # Milestones
 
+## 2026-03-10 (10. 통합 검수 2차 완료)
+
+- design-specialist 관점 검수 결과 91/100 — P1 2건만 실수정: `det-status-sel:focus-visible` 추가(episode.css), `.np-hd-t`/`.np-lbl` CSS에 `user-select: none` 통합 후 bookshelf.html 인라인 스타일 6곳 제거
+- P2·P3 에이전트 오탐 3건 현장 검증으로 확인(ep-mini-badge/sidebar alt/cut toolbar title 모두 이미 구현됨)
+- P3: proto-bookshelf.css 카드 hover `transform: translateY(-2px)` → `box-shadow` 전환으로 CLS 원천 차단
+
 ## 2026-03-08 (9. Bookshelf 디자인 완성)
 
 - 인라인 CSS → proto-bookshelf.css 분리, proto-sidebar/search/memopanel.css 링크 추가, 가비지 중복 HTML 2768→602줄 정리

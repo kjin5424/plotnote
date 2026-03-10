@@ -1,14 +1,15 @@
 # Progress
 
 ## Current Status
-**단계:** 8. 추가 요구사항 반영 — 8-4(프로젝트) 완료, 다음: 8-5(에피소드)
+**단계:** Phase 1 HTML 프로토타입 전체 완료 — React Phase I(Episode) 대기
 **브랜치:** `kyoungjin`
-**마지막 작업:** proto-project.html/css 8-4 항목 전체 반영 (2026-03-06)
+**마지막 작업:** 10. 통합 검수 2차 완료 (2026-03-10)
 
 > **다음 세션 시작:**
-> 1. checklist.md §8-5(에피소드) 항목부터 진행
-> 2. 작업 대상: `proto-episode.html` + `proto-episode.css`
-> 3. 디자인 스펙: proto-screen.md §4 참조
+> 1. React Phase I — Episode 화면 마이그레이션
+> 2. 작업 대상: `src/screens/Episode/` 신규 생성
+> 3. 참조: `proto-episode.html`, `proto-episode.css`, `src/types/entities.ts`
+> 4. 패턴: Project 화면(`ProjectHeader`, `ProjectGrid`, `index.tsx`) 구조 그대로 踏襲
 
 ### Phase 1 완료 항목 (2026-03-02)
 - **A-1~A-4**: proto-episode.html proto-style.css 전환 + 신 사이드바 인라인 복사 + 5단계 EpisodeStatus 적용
