@@ -1,108 +1,236 @@
+import { useState } from "react";
+import type React from "react";
+import { useNavigate } from "react-router-dom";
+import { useStore, useDispatch } from "contexts/StoreContext";
+import type { SpreadStart } from "types/settings";
 import PageCard from "./PageCard";
 
-export default function PageBody({
-  pages,
-  onAddPage,
-  deletePage,
-  updatePageMemo,
-  reorderPages,
-  pageView,
-  spreadStart,
-  readingDirection,
-}) {
-  // 확인용
-  // pageView = "single";
-  // spreadStart = "even";
-  // readingDirection = "ltr";
+interface Props {
+  episodeId: string;
+  projectId: string;
+  selectedId: string | null;
+}
 
-  // pageView에 따른 렌더 함수
-  // 단면뷰(single)일 때
-  const renderSingleView = () => {
-    return pages.map((page) => (
-      <div className="page-grid" key={page.pageId}>
-        <PageCard
-          key={page.pageId}
-          page={page}
-          deletePage={deletePage}
-          updatePageMemo={updatePageMemo}
-        />
-      </div>
-    ));
+export default function PageNav({ episodeId, projectId, selectedId }: Props) {
+  const store = useStore();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const episode = store.episodes[episodeId];
+  const project = store.projects[projectId];
+
+  const effectivePageView =
+    episode?.settings?.pageView ??
+    project?.settings?.pageView ??
+    "spread";
+
+  const effectiveSpreadStart: SpreadStart =
+    (episode?.settings?.spreadStart ??
+    project?.settings?.spreadStart) ??
+    "odd";
+
+  const [viewMode, setViewMode] = useState<"spread" | "single">(effectivePageView);
+  const [zoom, setZoom] = useState(100);
+  const [collapsed, setCollapsed] = useState(false);
+
+  const pages = episode
+    ? episode.pageOrder.map((id) => store.pages[id]).filter(Boolean)
+    : [];
+
+  const handleSelect = (id: string) => {
+    navigate(`/project/${projectId}/episode/${episodeId}/page/${id}`);
   };
-  // 양면뷰(spread)일 떄
+
+  const handleAddPage = () => {
+    dispatch({ type: "ADD_PAGE", payload: { episodeId } });
+  };
+
+  const handleZoom = (delta: number) => {
+    setZoom((prev) => Math.min(200, Math.max(40, prev + delta)));
+  };
+
+  const getMemo = (pageId: string) => {
+    const memo = Object.values(store.memos).find(
+      (m) =>
+        m.parentId === pageId &&
+        m.parentType === "PAGE" &&
+        m.role === "SINGLE"
+    );
+    return memo?.content ?? "";
+  };
+
   const renderSpreadView = () => {
-    const spreads = [];
-    let currentIndex = 0;
+    const rows: React.ReactElement[] = [];
+    let i = 0;
 
-    // spreadStart가 odd일 때 첫 페이지 처리
-    if (spreadStart === "odd" && pages.length > 0) {
-      const firstPage = pages[0];
-      spreads.push(
-        <div className="spread-group" key="spread-first">
-          <div
-            className="page-grid spread"
-            data-reading-direction={readingDirection}
-          >
-            <div className="page-card">
-              <div className="page-item page-item--empty" />
-            </div>
-            <PageCard
-              key={firstPage.pageId}
-              page={firstPage}
-              deletePage={deletePage}
-              updatePageMemo={updatePageMemo}
-            />
-          </div>
-        </div>,
+    if (effectiveSpreadStart === "odd" && pages.length > 0) {
+      rows.push(
+        <div className="pg-spread-row" key="spread-cover">
+          <div className="pcard pcard--blank" />
+          <PageCard
+            key={pages[0].id}
+            page={pages[0]}
+            displayNum={1}
+            isSelected={pages[0].id === selectedId}
+            memoContent={getMemo(pages[0].id)}
+            projectId={projectId}
+            episodeId={episodeId}
+            onClick={() => handleSelect(pages[0].id)}
+          />
+        </div>
       );
-      currentIndex = 1;
+      i = 1;
     }
 
-    // 나머지 페이지들 2개씩 묶기
-    for (let i = currentIndex; i < pages.length; i += 2) {
-      const leftPage = pages[i];
-      const rightPage = pages[i + 1];
-
-      spreads.push(
-        <div className="spread-group" key={`spread-${i}`}>
-          <div
-            className="page-grid spread"
-            data-reading-direction={readingDirection}
-          >
+    for (; i < pages.length; i += 2) {
+      const left = pages[i];
+      const right = pages[i + 1];
+      rows.push(
+        <div className="pg-spread-row" key={`spread-${i}`}>
+          <PageCard
+            page={left}
+            displayNum={i + 1}
+            isSelected={left.id === selectedId}
+            memoContent={getMemo(left.id)}
+            projectId={projectId}
+            episodeId={episodeId}
+            onClick={() => handleSelect(left.id)}
+          />
+          {right ? (
             <PageCard
-              page={leftPage}
-              deletePage={deletePage}
-              updatePageMemo={updatePageMemo}
+              page={right}
+              displayNum={i + 2}
+              isSelected={right.id === selectedId}
+              memoContent={getMemo(right.id)}
+              projectId={projectId}
+              episodeId={episodeId}
+              onClick={() => handleSelect(right.id)}
             />
-            {rightPage ? (
-              <PageCard
-                page={rightPage}
-                deletePage={deletePage}
-                updatePageMemo={updatePageMemo}
-              />
-            ) : (
-              <div className="page-card">
-                <div className="page-item page-item--empty" />
-              </div>
-            )}
-          </div>
-        </div>,
+          ) : (
+            <div className="pcard pcard--blank" />
+          )}
+        </div>
       );
     }
 
-    return spreads;
-  };
-  // 드래그앤드롭으로 페이지 정렬바꾸기 로직
-  return (
-    <div className="page-body">
-      <div className="page-body-action">
-        <button onClick={onAddPage}>페이지 추가하기</button>
+    rows.push(
+      <div className="pcard pcard--add" key="add" onClick={handleAddPage}>
+        <div className="pcard-thumb">
+          <div className="pcard-add-icon">+</div>
+        </div>
+        <div className="pcard-info">페이지 추가</div>
       </div>
+    );
+
+    return rows;
+  };
+
+  const renderSingleView = () => (
+    <>
+      {pages.map((page, i) => (
+        <PageCard
+          key={page.id}
+          page={page}
+          displayNum={i + 1}
+          isSelected={page.id === selectedId}
+          memoContent={getMemo(page.id)}
+          projectId={projectId}
+          episodeId={episodeId}
+          onClick={() => handleSelect(page.id)}
+        />
+      ))}
+      <div className="pcard pcard--add" onClick={handleAddPage}>
+        <div className="pcard-thumb">
+          <div className="pcard-add-icon">+</div>
+        </div>
+        <div className="pcard-info">페이지 추가</div>
+      </div>
+    </>
+  );
+
+  return (
+    <div className={`pg-nav${collapsed ? " collapsed" : ""}`}>
+      <div className="pg-nav-topbar">
+        <div
+          className="pg-nav-toggle"
+          onClick={() => setCollapsed((v) => !v)}
+          title={collapsed ? "펼치기" : "접기"}
+        >
+          <img
+            src={
+              collapsed
+                ? "/src/assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+                : "/src/assets/images/keyboard_double_arrow_left_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+            }
+            alt={collapsed ? "펼치기" : "접기"}
+          />
+        </div>
+      </div>
+
+      <div className="pg-nav-mini">
+        {pages.map((page, i) => (
+          <button
+            key={page.id}
+            className={`pg-nav-mini-btn${page.id === selectedId ? " on" : ""}`}
+            title={`${i + 1}p`}
+            onClick={() => handleSelect(page.id)}
+          >
+            {i + 1}
+          </button>
+        ))}
+      </div>
+
       <div
-        className="page-body-content"
-        data-reading-direction={readingDirection}
+        className="pg-grid-wrap"
+        style={{ transform: zoom !== 100 ? `scale(${zoom / 100})` : undefined, transformOrigin: "top center" }}
       >
-        {pageView === "spread" ? renderSpreadView() : renderSingleView()}
+        <div className={`pg-grid${viewMode === "single" ? " single" : ""}`}>
+          {viewMode === "spread" ? renderSpreadView() : renderSingleView()}
+        </div>
+      </div>
+
+      <div className="pg-toolbar">
+        <div className="pg-view-tgl">
+          <button
+            className={`pg-view-btn${viewMode === "spread" ? " on" : ""}`}
+            onClick={() => setViewMode("spread")}
+          >
+            <img
+              src="/src/assets/images/view_column_2_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+              alt=""
+            />
+            양면
+          </button>
+          <button
+            className={`pg-view-btn${viewMode === "single" ? " on" : ""}`}
+            onClick={() => setViewMode("single")}
+          >
+            <img
+              src="/src/assets/images/grid_view_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+              alt=""
+            />
+            단면
+          </button>
+        </div>
+        <div className="pg-zoom">
+          <button className="pg-zoom-btn" onClick={() => handleZoom(-10)}>
+            −
+          </button>
+          <span className="pg-zoom-pct">{zoom}%</span>
+          <button className="pg-zoom-btn" onClick={() => handleZoom(10)}>
+            +
+          </button>
+          <button
+            className="pg-zoom-btn"
+            onClick={() => setZoom(100)}
+            title="맞춤"
+          >
+            <img
+              src="/src/assets/images/fit_screen_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"
+              alt=""
+            />
+          </button>
+        </div>
       </div>
     </div>
   );
