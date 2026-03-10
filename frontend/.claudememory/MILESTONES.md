@@ -1,5 +1,11 @@
 # Milestones
 
+## 2026-03-10 (L. DataContext 완전 제거 — React 마이그레이션 전체 완료)
+
+- `DataContext.tsx` / `DataProvider` 완전 삭제, `Sidebar.tsx`/`MainLayout.tsx` → `useStore()` + `useUI()` 전환
+- 미사용 데드코드(`usePage`, `useProject`, `useEpisode`, `useCutNote`, `ProjectSidebar`, `EpisodeSidebar`) 일괄 삭제
+- Sidebar 새 엔티티 ID 체계(`episode.id`, `project.id`, `page.id`) 적용, `userBookshelvesList` → 전체 bookshelves로 단순화
+
 ## 2026-03-10 (K. Cut 화면 마이그레이션 완료)
 
 - 라우트 재설계: Page=`/page`(pageId URL 제거), Cut=`/page/:pageId`로 변경 — Page 선택은 UI state(`currentPageId`)로만 관리
