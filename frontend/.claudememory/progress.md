@@ -1,15 +1,15 @@
 # Progress
 
 ## Current Status
-**단계:** Phase 1 HTML 프로토타입 전체 완료 — React Phase I(Episode) 대기
+**단계:** React Phase I — Episode 화면 마이그레이션 완료, Page 화면 대기
 **브랜치:** `kyoungjin`
-**마지막 작업:** 10. 통합 검수 2차 완료 (2026-03-10)
+**마지막 작업:** I. Episode 화면 마이그레이션 완료 (2026-03-10)
 
 > **다음 세션 시작:**
-> 1. React Phase I — Episode 화면 마이그레이션
-> 2. 작업 대상: `src/screens/Episode/` 신규 생성
-> 3. 참조: `proto-episode.html`, `proto-episode.css`, `src/types/entities.ts`
-> 4. 패턴: Project 화면(`ProjectHeader`, `ProjectGrid`, `index.tsx`) 구조 그대로 踏襲
+> 1. React Phase J — Page 화면 마이그레이션
+> 2. 작업 대상: `src/components/screens/Page/` (기존 파일 useData → useStore 교체)
+> 3. 참조: `proto-page.html`, `proto-page.css`, `src/types/entities.ts`
+> 4. 패턴: Episode 화면과 동일 패턴
 
 ### Phase 1 완료 항목 (2026-03-02)
 - **A-1~A-4**: proto-episode.html proto-style.css 전환 + 신 사이드바 인라인 복사 + 5단계 EpisodeStatus 적용
@@ -58,7 +58,7 @@
 ### 다음 작업 (G~K)
 - [x] **G.** Bookshelf 화면 — `BookshelfHeader`, `BookshelfList`, `index.tsx` 마이그레이션 완료
 - [x] **H.** Project 화면 — `ProjectHeader`, `ProjectGrid`, `index.tsx` 마이그레이션 완료
-- [ ] **I.** Episode 화면
+- [x] **I.** Episode 화면 — `EpisodeHeader`, `EpisodeList(Nav)`, `EpisodeItem`, `EpisodeDetail`, `index.tsx` 마이그레이션 완료
 - [ ] **J.** Page 화면
 - [ ] **K.** Cut 화면
 - [ ] DataProvider/DataContext 제거 (K 완료 후)
