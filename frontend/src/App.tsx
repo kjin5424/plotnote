@@ -22,8 +22,8 @@ function App() {
               <Route path="bookshelf" element={<BookshelfManagement />} />
               <Route path="project/:projectId" element={<ProjectManagement />} />
               <Route path="project/:projectId/episode/:episodeId" element={<EpisodeManagement />} />
-              <Route path="project/:projectId/episode/:episodeId/page/:pageId" element={<PageManagement />} />
-              <Route path="project/:projectId/episode/:episodeId/page/:pageId/cut/:cutId" element={<CutManagement />} />
+              <Route path="project/:projectId/episode/:episodeId/page" element={<PageManagement />} />
+              <Route path="project/:projectId/episode/:episodeId/page/:pageId" element={<CutManagement />} />
             </Route>
           </Routes>
         </DataProvider>

@@ -58,7 +58,7 @@ const calcPreview = (drag) => {
 export default function CutCanvas({ page }) {
   const svgRef = useRef(null);
   const [drag, setDrag] = useState(null); // { startX, startY, endX, endY, cutId }
-  const { cutList, currentCutId, selectCut, splitCut } = useCut(page.pageId);
+  const { cutList, currentCutId, selectCut, splitCut } = useCut(page.id);
 
   // 마우스 이벤트 → SVG 0-100 좌표 변환
   const toSVGCoords = useCallback((e) => {
@@ -133,19 +133,19 @@ export default function CutCanvas({ page }) {
 
         {/* 컷 목록 렌더링: gap layer + border layer 두 겹 */}
         {cutList.map((cut, idx) => {
-          const verts = cut.vertices || FULL_PAGE;
+          const verts = cut.frame?.vertices ?? FULL_PAGE;
           const c = centroid(verts);
-          const isSelected = cut.cutId === currentCutId;
+          const isSelected = cut.id === currentCutId;
           const pts = toPoints(verts);
           return (
-            <g key={cut.cutId}>
+            <g key={cut.id}>
               {/* gap layer: 흰 fill + 배경색 stroke (paint-order로 stroke가 외부에만 표시)
                   → 인접 컷 사이에 배경색 gap 생성 */}
               <polygon
                 points={pts}
                 className={`cut-polygon${isSelected ? " cut-polygon--selected" : ""}`}
-                onMouseDown={(e) => handleMouseDown(e, cut.cutId)}
-                onClick={() => selectCut(cut.cutId)}
+                onMouseDown={(e) => handleMouseDown(e, cut.id)}
+                onClick={() => selectCut(cut.id)}
               />
               {/* border layer: 검정 윤곽선, 이벤트 없음 */}
               <polygon

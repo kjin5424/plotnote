@@ -25,7 +25,7 @@ export default function PageCard({
   const handleEditClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     navigate(
-      `/project/${projectId}/episode/${episodeId}/page/${page.id}/cut`
+      `/project/${projectId}/episode/${episodeId}/page/${page.id}`
     );
   };
 

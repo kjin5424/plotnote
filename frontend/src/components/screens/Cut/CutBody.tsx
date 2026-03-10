@@ -1,16 +1,22 @@
-import CutHeader from "./CutHeader";
+import type React from "react";
 import CutCanvas from "./CutCanvas";
+import type { Page } from "types/entities";
 
-export default function CutBody({ pages, pageView }) {
+interface Props {
+  pages: Page[];
+  pageView: string;
+}
+
+export default function CutBody({ pages, pageView }: Props) {
   return (
     <div className="cut-body">
-      <div className="cut-body-header">
-        <CutHeader pages={pages} />
-      </div>
       <div className="cut-body-content">
-        <div className={`page-grid ${pageView}`}>
+        <div
+          className={`cut-grid`}
+          style={{ "--page-count": pages.length } as React.CSSProperties}
+        >
           {pages.map((page) => (
-            <div key={page.pageId} className="page-item">
+            <div key={page.id} className="cut-card">
               <CutCanvas page={page} />
             </div>
           ))}

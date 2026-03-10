@@ -1,7 +1,6 @@
 import { useState } from "react";
 import type React from "react";
-import { useNavigate } from "react-router-dom";
-import { useStore, useDispatch } from "contexts/StoreContext";
+import { useStore, useDispatch, useUI } from "contexts/StoreContext";
 import type { SpreadStart } from "types/settings";
 import PageCard from "./PageCard";
 
@@ -14,7 +13,7 @@ interface Props {
 export default function PageNav({ episodeId, projectId, selectedId }: Props) {
   const store = useStore();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { setCurrentPageId } = useUI();
 
   const episode = store.episodes[episodeId];
   const project = store.projects[projectId];
@@ -38,7 +37,7 @@ export default function PageNav({ episodeId, projectId, selectedId }: Props) {
     : [];
 
   const handleSelect = (id: string) => {
-    navigate(`/project/${projectId}/episode/${episodeId}/page/${id}`);
+    setCurrentPageId(id);
   };
 
   const handleAddPage = () => {
