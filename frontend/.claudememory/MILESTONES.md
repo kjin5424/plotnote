@@ -1,5 +1,11 @@
 # Milestones
 
+## 2026-03-10 (K. Cut 화면 마이그레이션 완료)
+
+- 라우트 재설계: Page=`/page`(pageId URL 제거), Cut=`/page/:pageId`로 변경 — Page 선택은 UI state(`currentPageId`)로만 관리
+- `useCut.ts` DataContext → StoreContext 전환: `splitCut`을 `dispatch(ADD_CUT/DELETE_CUT)` 기반으로 재작성, 신 Cut 타입(`id`, `frame.vertices`) 대응
+- G~K 전 화면 마이그레이션 완료 — DataProvider/DataContext 제거만 남음
+
 ## 2026-03-10 (10. 통합 검수 2차 완료)
 
 - design-specialist 관점 검수 결과 91/100 — P1 2건만 실수정: `det-status-sel:focus-visible` 추가(episode.css), `.np-hd-t`/`.np-lbl` CSS에 `user-select: none` 통합 후 bookshelf.html 인라인 스타일 6곳 제거
