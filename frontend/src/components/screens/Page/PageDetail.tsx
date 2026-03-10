@@ -154,7 +154,7 @@ export default function PageDetailPanel({ pageId, episodeId, projectId }: Props)
                 className="btn"
                 onClick={() =>
                   navigate(
-                    `/project/${projectId}/episode/${episodeId}/page/${page.id}/cut`
+                    `/project/${projectId}/episode/${episodeId}/page/${page.id}`
                   )
                 }
               >

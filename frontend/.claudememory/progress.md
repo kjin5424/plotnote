@@ -1,16 +1,18 @@
 # Progress
 
 ## Current Status
-**단계:** React Phase J — Page 화면 마이그레이션 완료, Cut 화면 대기
+**단계:** React Phase K — Cut 화면 마이그레이션 완료
 **브랜치:** `kyoungjin`
-**마지막 작업:** J. Page 화면 마이그레이션 완료 (2026-03-10)
+**마지막 작업:** K. Cut 화면 마이그레이션 완료 (2026-03-10)
 
 > **다음 세션 시작:**
-> 1. React Phase K — Cut 화면 마이그레이션
-> 2. 작업 대상: `src/components/screens/Cut/` (기존 파일 useData → useStore 교체)
-> 3. 참조: `proto-cut.html`, `proto-cut.css`, `src/types/entities.ts`
-> 4. 패턴: Episode/Page 화면과 동일 패턴
-> 5. K 완료 후: DataProvider/DataContext 제거
+> 1. DataProvider/DataContext 제거 (K 완료)
+> 2. useCutNote.ts DataContext 의존성 → 미사용 상태 (정리 필요)
+> 3. 라우트 변경: Page=`/page`, Cut=`/page/:pageId` (2026-03-10 적용)
+
+### 라우트 구조 (최종)
+- Page 화면: `/project/:projectId/episode/:episodeId/page`
+- Cut 화면: `/project/:projectId/episode/:episodeId/page/:pageId`
 
 ### Phase 1 완료 항목 (2026-03-02)
 - **A-1~A-4**: proto-episode.html proto-style.css 전환 + 신 사이드바 인라인 복사 + 5단계 EpisodeStatus 적용
@@ -61,7 +63,7 @@
 - [x] **H.** Project 화면 — `ProjectHeader`, `ProjectGrid`, `index.tsx` 마이그레이션 완료
 - [x] **I.** Episode 화면 — `EpisodeHeader`, `EpisodeList(Nav)`, `EpisodeItem`, `EpisodeDetail`, `index.tsx` 마이그레이션 완료
 - [x] **J.** Page 화면 — `PageHeader`, `PageBody(Nav)`, `PageCard`, `PageDetail`(신규), `index.tsx` 마이그레이션 완료
-- [ ] **K.** Cut 화면
+- [x] **K.** Cut 화면 — `CutHeader`, `CutBody`, `CutCanvas`, `index.tsx`, `useCut.ts` 마이그레이션 완료
 - [ ] DataProvider/DataContext 제거 (K 완료 후)
 
 ---
