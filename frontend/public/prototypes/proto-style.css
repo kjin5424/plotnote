@@ -1057,6 +1057,7 @@ select:focus-visible {
   font-family: var(--ff-serif);
   font-size: 15px;
   font-weight: 600;
+  user-select: none;
 }
 .np-bd {
   padding: 20px 24px;
@@ -1082,6 +1083,7 @@ select:focus-visible {
   color: var(--i2);
   min-width: 100px;
   flex-shrink: 0;
+  user-select: none;
 }
 .np-val {
   flex: 1;

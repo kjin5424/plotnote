@@ -759,6 +759,7 @@
   transition: opacity var(--dur-sm);
 }
 .det-status-sel:hover { opacity: 0.8; }
+.det-status-sel:focus-visible { outline: 2px solid var(--oc); outline-offset: 2px; }
 .det-status-sel[data-state="draft"] { background-color: var(--gl); color: var(--i2); }
 .det-status-sel[data-state="inProgress"] { background-color: var(--oc); color: var(--wh); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 3.5l3 3 3-3' stroke='%23fff' stroke-width='1.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); }
 .det-status-sel[data-state="done"] { background-color: var(--db); color: var(--wh); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 3.5l3 3 3-3' stroke='%23fff' stroke-width='1.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); }
