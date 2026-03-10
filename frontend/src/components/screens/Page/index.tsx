@@ -1,37 +1,46 @@
-import WorkspaceLayout from "components/layout/WorkspaceLayout";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useStore, useUI } from "contexts/StoreContext";
 import PageHeader from "./PageHeader";
-import useData from "contexts/DataContext";
-import { usePage } from "hooks/data/usePage";
-import PageBody from "./PageBody";
+import PageNav from "./PageBody";
+import PageDetailPanel from "./PageDetail";
 
 export default function PageManagement() {
-  const { getCurrentEpisode, getCurrentSettings } = useData();
-  const { pages, addPage, deletePage, updatePageMemo, reorderPages } =
-    usePage();
-  const currentEpisode = getCurrentEpisode();
-  const { pageView, readingDirection, spreadStart } = getCurrentSettings();
+  const { projectId, episodeId, pageId } = useParams<{
+    projectId: string;
+    episodeId: string;
+    pageId: string;
+  }>();
+  const store = useStore();
+  const { navigateToPage } = useUI();
 
-  if (!currentEpisode) {
-    return <div>선택된 에피소드가 없습니다.</div>;
+  useEffect(() => {
+    if (pageId) navigateToPage(pageId);
+  }, [pageId, navigateToPage]);
+
+  if (!episodeId || !store.episodes[episodeId]) {
+    return <div className="pg-det-placeholder">에피소드를 찾을 수 없습니다.</div>;
   }
 
   return (
     <div className="management-container">
-      <WorkspaceLayout
-        header={<PageHeader episode={currentEpisode} />}
-        body={
-          <PageBody
-            pages={pages}
-            onAddPage={addPage}
-            onDeletePage={deletePage}
-            onUpdateMemo={updatePageMemo}
-            reorderPages={reorderPages}
-            pageView={pageView}
-            spreadStart={spreadStart}
-            readingDirection={readingDirection}
+      <div className="workspace-layout">
+        <div className="workspace-header">
+          <PageHeader projectId={projectId!} episodeId={episodeId} />
+        </div>
+        <div className="pg-workspace-body">
+          <PageNav
+            episodeId={episodeId}
+            projectId={projectId!}
+            selectedId={pageId ?? null}
           />
-        }
-      />
+          <PageDetailPanel
+            pageId={pageId ?? null}
+            episodeId={episodeId}
+            projectId={projectId!}
+          />
+        </div>
+      </div>
     </div>
   );
 }
