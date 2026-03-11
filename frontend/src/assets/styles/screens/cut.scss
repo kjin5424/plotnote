@@ -236,6 +236,99 @@
   overflow: hidden;      // ⚠️ 컷이 캔버스 밖으로 나가지 않도록 — 변경 금지
 }
 
+// SVG 캔버스 요소 (CutCanvas.tsx)
+.cut-canvas-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+// SVG 배경 rect
+.cut-canvas-bg {
+  fill: var(--bg-secondary);
+}
+
+// 컷 폴리곤 (fill layer — gap 역할)
+.cut-polygon {
+  fill: var(--bg-secondary);
+  stroke: var(--bg-primary);
+  stroke-width: 3;
+  paint-order: stroke fill;
+  cursor: crosshair;
+  transition: fill 0.1s;
+
+  &--selected { fill: rgba(42, 77, 136, 0.05); }
+
+  &--empty {
+    fill: rgba(124, 148, 184, 0.08);
+    stroke: var(--color-primary-muted);
+    stroke-width: 2;
+    stroke-dasharray: 4 3;
+    cursor: crosshair;
+  }
+}
+
+// 컷 폴리곤 테두리 (border layer — pointer-events 없음)
+.cut-polygon-border {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.5);
+  stroke-width: 0.5;
+  pointer-events: none;
+
+  &--selected {
+    stroke: var(--color-primary);
+    stroke-width: 1.5;
+  }
+}
+
+// 컷 번호 텍스트 라벨 (SVG text)
+.cut-label {
+  font-size: 5px;
+  font-family: var(--font-family-mono);
+  fill: var(--text-tertiary);
+  pointer-events: none;
+  user-select: none;
+}
+
+// 분할 드래그 미리보기 선
+.cut-preview-line {
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  pointer-events: none;
+
+  &--horizontal { stroke: rgba(42, 77, 136, 0.7); }
+  &--vertical   { stroke: rgba(42, 77, 136, 0.7); }
+  &--diagonal   { stroke: rgba(251, 198, 98, 0.9); }
+}
+
+// CutHeader 브레드크럼 링크 (pg-ep-link 와 동일 스타일)
+.ct-ep-link {
+  font-family: var(--font-family-serif);
+  font-size: 14px;
+  font-weight: var(--font-semibold);
+  letter-spacing: -0.02em;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+
+  &:hover { color: var(--color-primary); }
+}
+
+// 컷 헤더 페이지 번호
+.ct-pg-num {
+  font-family: var(--font-family-mono);
+  font-size: 12px;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+// 이전/다음 버튼 그룹
+.ct-pg-nav {
+  display: flex;
+  gap: 4px;
+}
+
 
 // ─────────────────────────────────────────────
 // [7] 컷 아이템 (CutItem.js)
