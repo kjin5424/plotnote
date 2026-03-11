@@ -35,6 +35,7 @@ const TABS = [
     items: [
       { id: "hooks", label: "훅 (Hooks)" },
       { id: "context", label: "컨텍스트" },
+      { id: "utils", label: "유틸리티" },
       { id: "scss", label: "SCSS 구조" },
     ],
   },
@@ -505,7 +506,6 @@ function TooltipSection() {
             className="tooltip__content"
             style={{
               opacity: 1,
-              transform: "none",
               pointerEvents: "auto",
               position: "absolute",
               top: "calc(100% + 8px)",
@@ -667,60 +667,85 @@ function AnimationsSection() {
 // ─────────────────────────────────────────────
 // 훅 섹션
 // ─────────────────────────────────────────────
-const HOOKS = [
+const HOOK_GROUPS = [
   {
-    name: "useModal",
-    path: "hooks/ui/useModal",
-    desc: "모달 열기/닫기 상태 관리.",
-    usage: `const { isOpen, open, close } = useModal();
+    category: "data — 비즈니스 로직",
+    path: "hooks/data/",
+    hooks: [
+      {
+        name: "useCut",
+        status: "✅ 구현됨",
+        desc: "컷 분할 로직. SVG 폴리곤 기반 수평/수직/대각선 분할.",
+        usage: `const { cutList, currentCutId, selectCut, splitCut } = useCut(pageId);
 
-// JSX
+// 드래그 좌표로 컷 분할 (0-100 SVG 좌표계)
+splitCut(cutId, { startX, startY, endX, endY });
+// cutId가 null이면 빈 페이지 전체를 분할`,
+      },
+      {
+        name: "useSetting",
+        status: "⚠️ 빈 파일 — N-3에서 구현 예정",
+        desc: "설정 조회/변경. 상속 체계: Episode > Project > User > Default.",
+        usage: `// 구현 예정 API (settingsHelper.ts 활용)
+const { effectiveSettings, updateProjectSetting } = useSetting(projectId, episodeId);
+// effectiveSettings.spreadStart, readingDirection, pageView ...`,
+      },
+    ],
+  },
+  {
+    category: "ui — 인터랙션 / 레이아웃",
+    path: "hooks/ui/",
+    hooks: [
+      {
+        name: "useResizeHandle",
+        status: "✅ 구현됨 (유틸 함수, 훅 아님)",
+        desc: "사이드바 너비 드래그 리사이즈. Sidebar.tsx에서 사용.",
+        usage: `import { startResize, updateWidth, endResize } from "hooks/ui/useResizeHandle";
+
+// onMouseDown → startResize(e, setIsResizing)
+// document mousemove → updateWidth(e, setSidebarWidth)  [150px~400px 클램핑]
+// document mouseup  → endResize(setIsResizing)`,
+      },
+      {
+        name: "useTooltip / useSimpleTooltip",
+        status: "✅ 구현됨",
+        desc: "TooltipContext 기반 툴팁. 복잡한 HTML 내용은 useTooltip, 단순 텍스트는 useSimpleTooltip.",
+        usage: `// 1. JS 기반 — 위치 계산, HTML 지원
+const tooltip = useTooltip("저장하기", "top");
+const tooltip = useTooltip({ html: "<b>제목</b>", isHtml: true }, "bottom");
+const tooltip = useTooltip("삭제", "top", "danger"); // color variant
+<button {...tooltip.triggerProps}>버튼</button>
+
+// 2. CSS 전용 — data-attribute (JS 인프라 불필요)
+const attrs = useSimpleTooltip("텍스트", "top");
+<span {...attrs}>hover me</span>`,
+      },
+      {
+        name: "useModal",
+        status: "⚠️ 빈 파일 — N-1에서 구현 예정",
+        desc: "모달 열기/닫기 상태 관리.",
+        usage: `// 구현 예정 API
+const { isOpen, open, close } = useModal();
 <button onClick={open}>모달 열기</button>
-{isOpen && <ConfirmModal onClose={close}>...</ConfirmModal>}`,
-  },
-  {
-    name: "useZoom",
-    path: "hooks/ui/useZoom",
-    desc: "줌 레벨 제어. 컷 캔버스에서 Ctrl+스크롤로 동작.",
-    usage: `const { zoom, zoomIn, zoomOut, resetZoom } = useZoom();
-
-<div style={{ transform: \`scale(\${zoom})\` }}>캔버스</div>
-<button onClick={zoomIn}>+</button>
-<button onClick={zoomOut}>−</button>
-<span>{Math.round(zoom * 100)}%</span>`,
-  },
-  {
-    name: "useResizeHandle",
-    path: "hooks/ui/useResizeHandle",
-    desc: "사이드바 너비 드래그 리사이즈. MainLayout에서 사용 중.",
-    usage: `import { useResizeHandle, resizeEnd } from "hooks/ui/useResizeHandle";
-
-// div.resize-handle에 마우스 이벤트 바인딩
-// MainLayout.tsx 참고`,
-  },
-  {
-    name: "useDragAndDrop",
-    path: "hooks/ui/useDragAndDrop",
-    desc: "드래그 앤 드롭. 페이지 순서, 컷 메모 이동 등에 사용.",
-    usage: `const { dragHandlers, isDragging } = useDragAndDrop({
-  onDrop: (fromId, toId) => reorderItems(fromId, toId),
+{isOpen && <Modal onClose={close} />}`,
+      },
+      {
+        name: "useZoom",
+        status: "⚠️ 빈 파일",
+        desc: "줌 레벨 제어. PageBody의 인라인 useState로 임시 구현 중.",
+        usage: `// 구현 예정 API
+const { zoom, zoomIn, zoomOut, resetZoom } = useZoom();`,
+      },
+      {
+        name: "useDragAndDrop",
+        status: "⚠️ 빈 파일 — N-4에서 구현 예정",
+        desc: "에피소드/페이지 순서 DnD. orderManager.ts의 reorder()와 연동.",
+        usage: `// 구현 예정 API
+const { dragHandlers, isDragging } = useDragAndDrop({
+  onDrop: (fromId, toId) => dispatch({ type: 'REORDER_EPISODES', ... }),
 });`,
-  },
-  {
-    name: "useSetting",
-    path: "hooks/data/useSetting",
-    desc: "전역 설정 조회 및 변경. 읽기 방향, 뷰 모드 등.",
-    usage: `const { setting, updateSetting } = useSetting();
-
-// setting.readingDirection: 'ltr' | 'rtl'
-// setting.spreadView: boolean
-updateSetting({ readingDirection: 'rtl' });`,
-  },
-  {
-    name: "useCut",
-    path: "hooks/data/useCut",
-    desc: "컷 분할 로직. 컷 추가/삭제/리사이즈.",
-    usage: `const { cuts, addCut, removeCut, updateCut } = useCut(pageId);`,
+      },
+    ],
   },
 ];
 
@@ -729,17 +754,27 @@ function HooksSection() {
     <div>
       <h2 className="guide-section-title">훅 (Hooks)</h2>
       <p className="guide-section-desc">
-        hooks/ 디렉토리의 공통 훅. 모두 순수 함수 기반으로 컴포넌트에서 상태
-        로직 분리.
+        hooks/ 디렉토리. data/(비즈니스 로직)와 ui/(인터랙션)로 분리.
+        ⚠️ 빈 파일은 Phase N에서 순차 구현 예정.
       </p>
-      {HOOKS.map((h) => (
-        <div key={h.name} className="guide-hook-card">
-          <div className="guide-hook-card__header">
-            <span className="hook-name">{h.name}</span>
-            <span className="hook-path">{h.path}</span>
+      {HOOK_GROUPS.map((group) => (
+        <div key={group.category}>
+          <div className="guide-section-sub">
+            {group.category}
+            <span style={{ fontSize: 10, marginLeft: 8, color: "var(--text-tertiary)", fontFamily: "var(--font-family-mono)" }}>
+              {group.path}
+            </span>
           </div>
-          <div className="guide-hook-card__desc">{h.desc}</div>
-          <pre className="guide-code">{h.usage}</pre>
+          {group.hooks.map((h) => (
+            <div key={h.name} className="guide-hook-card">
+              <div className="guide-hook-card__header">
+                <span className="hook-name">{h.name}</span>
+                <span className="hook-path">{h.status}</span>
+              </div>
+              <div className="guide-hook-card__desc">{h.desc}</div>
+              <pre className="guide-code">{h.usage}</pre>
+            </div>
+          ))}
         </div>
       ))}
     </div>
@@ -754,51 +789,200 @@ function ContextSection() {
     <div>
       <h2 className="guide-section-title">컨텍스트</h2>
       <p className="guide-section-desc">
-        contexts/ 디렉토리. React Context API 기반. App.tsx에서 전체 앱을 감싸고
-        있음.
+        contexts/ 디렉토리. StoreProvider 하나가 Store + Dispatch + UI 세 컨텍스트를 묶어서 제공.
+        App.tsx 최상위에서 {"<StoreProvider>"} → {"<TooltipProvider>"} 순으로 감쌈.
       </p>
 
+      {/* StoreContext */}
+      <div className="guide-section-sub">StoreContext — 메인 데이터 (contexts/StoreContext.tsx)</div>
       <div className="guide-hook-card">
         <div className="guide-hook-card__header">
-          <span className="hook-name">useData</span>
-          <span className="hook-path">contexts/DataContext</span>
+          <span className="hook-name">useStore()</span>
+          <span className="hook-path">→ NormalizedStore (읽기 전용)</span>
         </div>
         <div className="guide-hook-card__desc">
-          메인 데이터 컨텍스트. 책장·프로젝트·에피소드·페이지·컷 데이터와 UI
-          상태 제공.
+          전체 앱 데이터. IndexedDB에 500ms debounce로 자동 저장.
         </div>
-        <pre className="guide-code">{`const {
-  isLoading,
-  bookshelves, selectedBookshelf,
-  projects,    selectedProject,
-  episodes,    selectedEpisode,
-  pages,       selectedPage,
-  cuts,        selectedCut,
-  uiState,           // { isSidebarOpen, viewMode, spreadStart, ... }
-  toggleSidebar,
-  selectBookshelf, createBookshelf,
-  selectProject,   createProject,
-  selectEpisode,   createEpisode,
-  selectPage,      createPage,
-  selectCut,       createCut,
-} = useData();`}</pre>
+        <pre className="guide-code">{`const store = useStore();
+
+// store 구조 — 모두 Record<string, T>
+store.bookshelves   // { [id]: Bookshelf }
+store.projects      // { [id]: Project }
+store.episodes      // { [id]: Episode }
+store.pages         // { [id]: Page }
+store.cuts          // { [id]: Cut }
+store.memos         // { [id]: Memo }
+store.scriptSnippets
+store.assets`}</pre>
       </div>
 
       <div className="guide-hook-card">
         <div className="guide-hook-card__header">
-          <span className="hook-name">useAuth</span>
-          <span className="hook-path">contexts/AuthContext</span>
+          <span className="hook-name">useDispatch()</span>
+          <span className="hook-path">→ Dispatch{"<Action>"}</span>
         </div>
-        <div className="guide-hook-card__desc">인증 상태 관리.</div>
-        <pre className="guide-code">{`const { user, login, logout, isAuthenticated } = useAuth();`}</pre>
+        <div className="guide-hook-card__desc">
+          상태 변경의 유일한 통로. 모든 Action은 불변성 보장.
+        </div>
+        <pre className="guide-code">{`const dispatch = useDispatch();
+
+// 주요 Action 타입
+dispatch({ type: 'ADD_BOOKSHELF',    payload: { title, ownerId } });
+dispatch({ type: 'ADD_PROJECT',      payload: { bookshelfId, title } });
+dispatch({ type: 'ADD_EPISODE',      payload: { projectId, title } });
+dispatch({ type: 'ADD_PAGE',         payload: { episodeId } });
+dispatch({ type: 'ADD_CUT',          payload: { pageId, frame } });
+dispatch({ type: 'ADD_MEMO',         payload: { parentId, parentType, role, content } });
+dispatch({ type: 'UPDATE_PROJECT',   payload: { id, title?, settings? } });
+dispatch({ type: 'DELETE_EPISODE',   payload: { id } }); // cascade 포함
+dispatch({ type: 'REORDER_EPISODES', payload: { projectId, newOrder: string[] } });
+dispatch({ type: 'ASSIGN_CUT_MEMO',  payload: { id, cutId } });`}</pre>
       </div>
 
-      <div className="guide-section-sub">uiState 구조</div>
-      <pre className="guide-code">{`uiState: {
-  isSidebarOpen: boolean,
-  viewMode:      'single' | 'spread',  // 단면 / 양면
-  spreadStart:   'left' | 'right',     // 양면 시작 방향
-}`}</pre>
+      <div className="guide-hook-card">
+        <div className="guide-hook-card__header">
+          <span className="hook-name">useUI()</span>
+          <span className="hook-path">→ UIContextValue</span>
+        </div>
+        <div className="guide-hook-card__desc">
+          현재 선택된 엔티티 ID + 사이드바 상태. 모든 setter는 useCallback 메모이제이션됨 (무한 루프 방지).
+        </div>
+        <pre className="guide-code">{`const { ui, dbError, clearDbError,
+        setCurrentBookshelfId, setCurrentProjectId,
+        setCurrentEpisodeId,  setCurrentPageId, setCurrentCutId,
+        toggleSidebar, setSidebarOpen,
+        navigateToProject, navigateToEpisode, navigateToPage,
+      } = useUI();
+
+// ui 구조 (types/ui.ts → UiState)
+ui.currentBookshelfId  // string | null
+ui.currentProjectId    // string | null
+ui.currentEpisodeId    // string | null
+ui.currentPageId       // string | null
+ui.currentCutId        // string | null
+ui.isSidebarOpen       // boolean
+
+// navigateTo* 는 하위 ID를 null로 리셋함
+// navigateToProject(id) → currentEpisodeId/PageId/CutId = null`}</pre>
+      </div>
+
+      {/* TooltipContext */}
+      <div className="guide-section-sub">TooltipContext (contexts/TooltipContext.tsx)</div>
+      <div className="guide-hook-card">
+        <div className="guide-hook-card__header">
+          <span className="hook-name">useTooltipStore()</span>
+          <span className="hook-path">→ 전역 단일 툴팁 인스턴스</span>
+        </div>
+        <div className="guide-hook-card__desc">
+          직접 사용보다 hooks/ui/useTooltip.ts를 통해 사용 권장.
+        </div>
+        <pre className="guide-code">{`const { state, show, hide, isHtmlContent, displayContent } = useTooltipStore();
+// 직접 사용보다 useTooltip() 훅을 통해 사용 권장`}</pre>
+      </div>
+
+      {/* AuthContext */}
+      <div className="guide-section-sub">AuthContext (contexts/AuthContext.tsx) — ⚠️ 서버 스텁</div>
+      <div className="guide-hook-card">
+        <div className="guide-hook-card__header">
+          <span className="hook-name">useUser()</span>
+          <span className="hook-path">서버 도입 전까지 미사용</span>
+        </div>
+        <div className="guide-hook-card__desc">
+          현재 /api/auth/login fetch 스텁만 있음. 권한 분기(owner/editor/readonly)는 서버 도입 시 활성화.
+        </div>
+        <pre className="guide-code">{`// 서버 도입 후 활성화 예정
+const { user, isAuthenticated, login, logout } = useUser();
+// user.role: 'owner' | 'editor' | 'comment' | 'readonly'`}</pre>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// 유틸리티 섹션
+// ─────────────────────────────────────────────
+function UtilsSection() {
+  return (
+    <div>
+      <h2 className="guide-section-title">유틸리티</h2>
+      <p className="guide-section-desc">
+        utils/helpers/ — 순수 함수. 컴포넌트/훅에 의존하지 않아서 어디서든 import 가능.
+        utils/constants/ — 공통 상수.
+      </p>
+
+      <div className="guide-section-sub">idGenerator.ts — 엔티티 ID 생성</div>
+      <div className="guide-hook-card">
+        <div className="guide-hook-card__desc">
+          nanoid 기반. 접두사로 엔티티 타입 식별 가능. 인덱스 기반 ID 절대 사용 금지.
+        </div>
+        <pre className="guide-code">{`import { generatePageId, generateCutId, generateEpisodeId,
+         generateProjectId, generateUserId } from "utils/helpers/idGenerator";
+
+generatePageId()    // "pg-AbC12345"
+generateCutId(pageId) // "pg-AbC12345-xY5f2a"  (부모 ID 포함)
+generateEpisodeId() // "ep-AbC12345"
+generateProjectId() // "pr-AbC12345"
+generateUserId()    // "usr-AbC1234567"`}</pre>
+      </div>
+
+      <div className="guide-section-sub">layoutUtils.ts — 컷 분할 기하 연산</div>
+      <div className="guide-hook-card">
+        <div className="guide-hook-card__desc">
+          SVG 0-100 좌표계 기반. 폴리곤을 선분으로 잘라 두 개의 폴리곤으로 분할.
+          useCut() 훅 내부에서 사용.
+        </div>
+        <pre className="guide-code">{`import { classifySplitAngle, splitPolygon,
+         getSnapLine, getDiagonalLine } from "utils/helpers/layoutUtils";
+
+// 드래그 방향 → 분할 타입 판별 (25° 미만: horizontal, 65° 초과: vertical)
+classifySplitAngle(dx, dy) // → 'horizontal' | 'vertical' | 'diagonal'
+
+// 수평/수직 분할선 (페이지 끝까지 뻗는 선분)
+getSnapLine('horizontal', midX, midY) // → [[0,y], [100,y]]
+
+// 대각선 분할선 (드래그 방향으로 300배 확장)
+getDiagonalLine(startX, startY, endX, endY) // → [[x1,y1], [x2,y2]]
+
+// 폴리곤 분할 — 선분 l1-l2로 vertices를 두 폴리곤으로 자름
+splitPolygon(vertices, l1, l2) // → [Vertex[], Vertex[]] | null`}</pre>
+      </div>
+
+      <div className="guide-section-sub">orderManager.ts — 배열 순서 관리</div>
+      <div className="guide-hook-card">
+        <div className="guide-hook-card__desc">
+          episodeOrder, pageOrder, cutOrder 등 ID 배열 조작. REORDER_* Action payload에 사용.
+        </div>
+        <pre className="guide-code">{`import { reorder, addToOrder, removeFromOrder } from "utils/helpers/orderManager";
+
+reorder(list, fromIndex, toIndex)    // DnD 결과 순서 변경
+addToOrder(list, newId)              // 맨 끝에 추가
+addToOrder(list, newId, position)    // 특정 위치에 삽입
+removeFromOrder(list, targetId)      // ID로 제거
+
+// 예: 에피소드 순서 변경
+const newOrder = reorder(project.episodeOrder, 0, 2);
+dispatch({ type: 'REORDER_EPISODES', payload: { projectId, newOrder } });`}</pre>
+      </div>
+
+      <div className="guide-section-sub">settingsHelper.ts — 설정 상속 체계</div>
+      <div className="guide-hook-card">
+        <div className="guide-hook-card__desc">
+          Rule 7-1: Episode → Project → User → Default 순으로 폴백. null이면 상위 값 사용.
+        </div>
+        <pre className="guide-code">{`import { getEffectiveSetting, getEffectiveSettings } from "utils/helpers/settingsHelper";
+
+// 단일 키 조회
+const spreadStart = getEffectiveSetting({
+  settingKey: 'spreadStart',
+  episode, project, user, defaultSettings,
+});
+
+// 전체 설정 키 일괄 조회
+// keys: defaultPageCount, readingDirection, spreadStart, pageView
+const settings = getEffectiveSettings({ episode, project, user, defaultSettings });
+
+// 상속 우선순위: episode.settings.key → project.settings.key → user.globalSettings.key → default`}</pre>
+      </div>
     </div>
   );
 }
@@ -901,6 +1085,7 @@ const SECTION_MAP: Record<string, JSX.Element> = {
   animations: <AnimationsSection />,
   hooks: <HooksSection />,
   context: <ContextSection />,
+  utils: <UtilsSection />,
   scss: <ScssSection />,
 };
 
