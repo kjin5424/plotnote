@@ -8,10 +8,10 @@ const STATUS_LABEL: Record<EpisodeStatus, string> = {
   done: "완료",
 };
 
-const STATUS_MOD: Record<EpisodeStatus, string> = {
-  draft: "project-ep-status--todo",
-  inProgress: "project-ep-status--wip",
-  done: "project-ep-status--done",
+const STATUS_BADGE: Record<EpisodeStatus, string> = {
+  draft: "badge badge--todo",
+  inProgress: "badge badge--wip",
+  done: "badge badge--done",
 };
 
 export default function ProjectGrid() {
@@ -37,6 +37,11 @@ export default function ProjectGrid() {
 
   return (
     <div className="project-ep-list">
+      <div className="project-tabs">
+        <button className="project-tab active">에피소드 목록</button>
+        <button className="project-tab" disabled>설정</button>
+      </div>
+
       {episodes.length === 0 && (
         <p className="project-ep-empty">에피소드가 없습니다.</p>
       )}
@@ -53,7 +58,7 @@ export default function ProjectGrid() {
             <span className="project-ep-title">{episode.title}</span>
             <span className="project-ep-pg">{episode.pageOrder.length}p</span>
           </div>
-          <span className={`project-ep-status ${STATUS_MOD[episode.status]}`}>
+          <span className={`project-ep-status ${STATUS_BADGE[episode.status]}`}>
             {STATUS_LABEL[episode.status]}
           </span>
         </div>

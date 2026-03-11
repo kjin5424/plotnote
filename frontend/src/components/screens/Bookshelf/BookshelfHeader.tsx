@@ -14,7 +14,7 @@ export default function BookshelfHeader() {
   return (
     <div className="bookshelf-header">
       <h2 className="bookshelf-header-title">
-        {bookshelf?.title ?? "책장"}
+        {bookshelf?.title ?? "나의 책장"}
       </h2>
       <div className="bookshelf-header-actions">
         <button className="btn btn--primary" onClick={handleAddProject}>
