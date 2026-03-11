@@ -17,6 +17,7 @@ import arrowDownIcon from "assets/images/keyboard_arrow_down_20dp_000000_FILL0_w
 import arrowRightIcon from "assets/images/keyboard_arrow_right_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
 import SidebarLogoIconClose_calm from "assets/images/sentiment_calm_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
 import SidebarLogoIconOpen_happy from "assets/images/sentiment_very_satisfied_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
+import searchIcon from "assets/images/search_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -233,21 +234,31 @@ export default function Sidebar({
         <div className="sidebar-header">
           {isOpen ? (
             <>
-              <img src={SidebarLogoIconOpen_happy} className="sidebar-logo-icon" alt="" />
-              <span className="sidebar-logo-text">PlotNote</span>
+              <div className="sidebar-logo-mark">
+                <img src={SidebarLogoIconOpen_happy} className="sidebar-logo-icon" alt="" />
+              </div>
+              <span className="sidebar-logo-text">plotnote</span>
               <button className="sidebar-toggle" onClick={toggleSidebar}>
                 <img src={SidebarCloseIcon_doubleArrow} className="sidebar-toggle-icon" alt="사이드바 닫기" />
               </button>
             </>
           ) : (
             <button className="sidebar-toggle" onClick={toggleSidebar}>
-              <img src={SidebarLogoIconClose_calm} className="sidebar-logo-icon" alt="PlotNote" />
+              <img src={SidebarLogoIconClose_calm} className="sidebar-logo-icon" alt="plotnote" />
             </button>
           )}
         </div>
 
         {isOpen ? (
           <nav className="sidebar-nav">
+            {/* 검색바 */}
+            <div className="sidebar-search">
+              <button className="sidebar-search-bar">
+                <img src={searchIcon} alt="" />
+                <span>검색...</span>
+              </button>
+            </div>
+
             <div className="sidebar-tree">
               {/* 즐겨찾기 */}
               <div className="sidebar-tree-section">
@@ -308,8 +319,14 @@ export default function Sidebar({
           </nav>
         )}
 
-        {/* 하단 설정 */}
+        {/* 하단 푸터 */}
         <div className="sidebar-footer">
+          {isOpen && (
+            <div className="sidebar-user-row">
+              <div className="sidebar-user-avatar">K</div>
+              <span className="sidebar-user-name">kyoungjin</span>
+            </div>
+          )}
           <button className="sidebar-nav-item" title="설정">
             <img src={settingsIcon} alt="설정" style={{ width: 20, height: 20, flexShrink: 0 }} />
             {isOpen && <span className="sidebar-nav-label">설정</span>}
