@@ -14,8 +14,8 @@
 |------|:----:|-----------|:----:|
 | M-0. 공통 기반 정비 | ✅ | `common/*.scss` | 1 |
 | M-1. Sidebar | ✅ | `common/layout.scss` | 1 |
-| M-2. Bookshelf | ⬜ | `screens/bookshelf.scss` | 2 |
-| M-3. Project | ⬜ | `screens/project.scss` | 2 |
+| M-2. Bookshelf | ✅ | `screens/bookshelf.scss` | 2 |
+| M-3. Project | ✅ | `screens/project.scss` | 2 |
 | M-5. Page | 🔶 (85%) | `screens/page.scss` | 3 |
 | M-6. Cut | 🔶 (85%) | `screens/cut.scss` | 3 |
 | M-4. Episode | ✅ (95%) | `screens/episode.scss` | 3 |
@@ -58,55 +58,29 @@
 
 ### M-2. Bookshelf (proto-bookshelf.css 대응)
 
-#### M-2-0. JSX 클래스명 정리 (선행 필수)
-- [ ] `BookshelfList.tsx`: `bookshelf-grid`/`bookshelf-card-*` → SCSS와 1:1 통일
-- [ ] `BookshelfHeader.tsx`: `bookshelf-header-title`/`bookshelf-header-actions` → SCSS와 통일
-
-#### M-2-1. 헤더
-- [ ] 제목 serif + 우측 버튼 수치 조정
-- 참조: `proto-style.css` `.ws-hd`
-
-#### M-2-2. 섹션 구조 (JSX 변경 필요)
-- [ ] `BookshelfList.tsx`에 섹션 그룹 추가 (즐겨찾기/나의 책장)
-- [ ] M-0-5 섹션 헤더 스타일 적용
-- [ ] 접기/펼치기 토글 (state 추가)
-- 참조: `proto-bookshelf.css` `.node`, `.node-hd`
-
-#### M-2-3. 프로젝트 카드 그리드
-- [ ] 그리드: `repeat(auto-fill, minmax(156px, 1fr))`
-- [ ] 카드 썸네일: 그래디언트 배경, `aspect-ratio: 3/4`
-- [ ] 카드 정보: 제목, 메타(페이지수, 수정일)
-- [ ] 즐겨찾기 북마크 아이콘
-- [ ] hover: box-shadow만 (translateY 금지)
-- 참조: `proto-bookshelf.css` `.pc`, `.pc-th`, `.pc-info`
-
-#### M-2-4. 새 프로젝트 추가 카드
-- [ ] dashed border, + 아이콘, hover 시 border-color 전환
-- 참조: `proto-bookshelf.css` `.pc-add`
+#### M-2. Bookshelf ✅ (2026-03-11 완료)
+- [x] `bookshelf.scss` 완전 재작성 — JSX className 1:1 기준
+- [x] `bookshelf-header-title` serif 19px, `bookshelf-header-actions` flex gap 6px
+- [x] `bookshelf-grid` minmax(190px) gap 14px, padding-top 16px
+- [x] `bookshelf-card` hover box-shadow만 (translateY 금지), `--active` select-ring
+- [x] `bookshelf-card-thumbnail` aspect-ratio 16/10, 그래디언트
+- [x] `bookshelf-card--add` dashed border, hover border+color 전환
+- [x] `bookshelf-card-add-icon` dashed circle + hover color
+- [x] bookshelfCardIn 애니메이션, nth-child delay
 
 ---
 
 ### M-3. Project (proto-project.css 대응)
 
-#### M-3-0. JSX 클래스명 정리 (선행 필수)
-- [ ] `ProjectHeader.tsx`: 클래스명 SCSS 일치 확인
-
-#### M-3-1. 헤더
-- [ ] 인라인 편집 input 스타일 (proto `input.ws-ttl`)
-- [ ] 즐겨찾기 토글 아이콘 (proto `.ws-fav`)
-- [ ] 헤더 아이콘 버튼 (`.btn-header` — M-0-2)
-- 참조: `proto-project.css` `input.ws-ttl`, `.ws-fav`
-
-#### M-3-2. 탭 구조 (JSX 변경 필요)
-- [ ] "에피소드 목록" 탭만 기본 활성 (설정 탭 보류)
-- [ ] `.project-tab`, `.project-tab.active` SCSS
-- 참조: `proto-project.css` `.pj-tabs`, `.pj-tab`
-
-#### M-3-3. 에피소드 목록
-- [ ] `.project-ep-row` 수치를 proto `.ep-row`와 맞춤
-- [ ] 상태 배지 → M-0-3 `.badge` 적용
-- [ ] 드래그 핸들 → M-0-4 `.drag-handle` 적용
-- 참조: `proto-project.css` `.ep-row`, `.ep-tag`
+#### M-3. Project ✅ (2026-03-11 완료)
+- [x] `.project-header-title` serif 19px 추가
+- [x] `.project-header-fav` flex-shrink 0, hover amber
+- [x] `.project-tabs`, `.project-tab`, `.project-tab.active` SCSS
+- [x] `ProjectGrid.tsx` 탭 껍데기 JSX 추가 (에피소드 목록 활성, 설정 disabled)
+- [x] `STATUS_BADGE` — badge badge--todo/wip/done 으로 변경
+- [x] `.project-ep-row` gap 10px, padding 10px 14px
+- [x] `.project-ep-num/title/pg` font-size 소형화 (12→12, mono)
+- [x] `.project-ep-status` → badge 클래스 위임
 
 ---
 

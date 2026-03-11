@@ -14,15 +14,23 @@
 // ═══════════════════════════════════════════
 
 // ─────────────────────────────────────────────
-// [1] 프로젝트 헤더 (ProjectHeader.js)
+// [1] 프로젝트 헤더 (ProjectHeader.tsx)
+//     workspace-header 안에서 100% 너비
 // ─────────────────────────────────────────────
 
-// 기존 .project-header 유지
 .project-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
+}
+
+.project-header-title {
+  font-family: var(--font-family-serif);
+  font-size: 19px;
+  font-weight: var(--font-semibold);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  @include text-ellipsis;
 }
 
 // ─────────────────────────────────────────────
@@ -46,6 +54,8 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+  flex: 1;
+  min-width: 0;
 }
 
 .project-header-fav {
@@ -54,45 +64,85 @@
   cursor: pointer;
   font-size: var(--font-lg);
   color: var(--text-tertiary);
-  padding: 0;
+  padding: 2px;
   line-height: 1;
+  flex-shrink: 0;
   transition: color var(--transition-fast);
 
-  &:hover { color: var(--color-accent); }
+  &:hover { color: var(--color-accent); background: none; }
   &.on { color: var(--color-accent); }
+}
+
+// ── 탭 구조 (M-3-2: 에피소드 목록 탭만 활성)
+.project-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+
+.project-tab {
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: var(--font-medium);
+  color: var(--text-tertiary);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+  user-select: none;
+
+  &:hover { color: var(--text-secondary); background: transparent; }
+
+  &.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+    background: transparent;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: transparent;
+  }
 }
 
 .project-ep-list {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  padding-top: 16px;
   animation: fadeUp var(--transition-slow) ease both;
 }
 
 .project-ep-empty {
   padding: var(--spacing-lg);
   color: var(--text-tertiary);
-  font-size: var(--font-sm);
+  font-size: 11px;
   text-align: center;
+  font-style: italic;
 }
 
+// proto .ep-row 수치 기준
 .project-ep-row {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
-  padding: 10px var(--spacing-md);
+  gap: 10px;
+  padding: 10px 14px;
   background: var(--bg-secondary);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: background var(--transition-fast);
+  transition: background var(--transition-fast), border-color var(--transition-fast);
 
-  &:hover { background: var(--bg-tertiary); }
+  &:hover {
+    background: var(--bg-primary);
+    border-color: var(--border-medium);
+  }
 
   &--add {
     justify-content: center;
     color: var(--text-tertiary);
-    font-size: var(--font-sm);
+    font-size: 11px;
     border-style: dashed;
     background: transparent;
 
@@ -106,9 +156,10 @@
 
 .project-ep-num {
   font-family: var(--font-family-mono);
-  font-size: var(--font-xs);
+  font-size: 11px;
   color: var(--text-tertiary);
-  min-width: 36px;
+  min-width: 32px;
+  flex-shrink: 0;
 }
 
 .project-ep-body {
@@ -120,42 +171,22 @@
 }
 
 .project-ep-title {
-  font-size: var(--font-sm);
+  font-size: 12px;
   font-weight: var(--font-medium);
   color: var(--text-primary);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  @include text-ellipsis;
 }
 
 .project-ep-pg {
   font-family: var(--font-family-mono);
-  font-size: var(--font-xs);
+  font-size: 10px;
   color: var(--text-tertiary);
   flex-shrink: 0;
 }
 
+// badge 클래스로 통합 (ProjectGrid.tsx에서 badge--todo/wip/done 사용)
 .project-ep-status {
-  font-size: var(--font-xs);
-  padding: 2px 8px;
-  border-radius: var(--radius-full);
-  font-weight: var(--font-medium);
   flex-shrink: 0;
-
-  &--todo {
-    background: var(--bg-tertiary);
-    color: var(--text-secondary);
-  }
-
-  &--wip {
-    background: rgba(42, 77, 136, 0.12);
-    color: var(--color-primary);
-  }
-
-  &--done {
-    background: rgba(82, 199, 135, 0.15);
-    color: #369060;
-  }
 }
 
 // ─────────────────────────────────────────────

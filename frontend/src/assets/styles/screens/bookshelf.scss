@@ -1,8 +1,7 @@
 // ============================================================
 //  screens/bookshelf.scss
-//  책장 화면 (BookshelfManagement → BookshelfList + BookshelfHeader)
-//  현재 컴포넌트가 stub 상태이므로 향후 확장 고려해 구조 미리 정의.
-//  design 1 Paper 기준.
+//  책장 화면 (BookshelfManagement → BookshelfHeader + BookshelfList)
+//  JSX className 1:1 대응. 프로토: proto-bookshelf.css
 // ============================================================
 
 @use '../common/variables' as *;
@@ -10,204 +9,153 @@
 
 
 // ─────────────────────────────────────────────
-// [1] 헤더 (BookshelfHeader.js)
+// [1] 헤더 (BookshelfHeader.tsx)
+//     workspace-header 안에서 100% 너비
 // ─────────────────────────────────────────────
 
-// 기존 .bookshelf-header 유지
 .bookshelf-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
+}
 
-  &__title {
-    font-family: var(--font-family-serif);
-    font-size: var(--font-xl);
-    font-weight: var(--font-semibold);
-    color: var(--text-primary);
-    letter-spacing: -0.02em;
-  }
+.bookshelf-header-title {
+  font-family: var(--font-family-serif);
+  font-size: 19px;
+  font-weight: var(--font-semibold);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  flex: 1;
+  @include text-ellipsis;
+}
 
-  &__meta {
-    font-size: var(--font-xs);
-    color: var(--text-tertiary);
-    font-family: var(--font-family-mono);
-    margin-top: 2px;
-  }
-
-  &__actions {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-  }
+.bookshelf-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
 
 // ─────────────────────────────────────────────
-// [2] 책장 리스트 (BookshelfList.js)
-//     프로젝트 카드 그리드
+// [2] 프로젝트 카드 그리드 (BookshelfList.tsx)
+//     proto: .pgrid — minmax(190px), gap 14px
 // ─────────────────────────────────────────────
 
-.bookshelf-list {
+.bookshelf-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: var(--spacing-lg);
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 14px;
+  padding-top: 16px;
   animation: fadeUp var(--transition-slow) ease both;
 }
 
 
 // ─────────────────────────────────────────────
-// [3] 프로젝트 섹션 그룹 (즐겨찾기 / 최근)
+// [3] 프로젝트 카드 (proto: .pc)
+//     hover: box-shadow만 — translateY 금지 (CLS 방지)
 // ─────────────────────────────────────────────
 
-.bookshelf-section {
-  &__label {
-    font-size: var(--font-xs);
-    font-weight: var(--font-medium);
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: var(--text-tertiary);
-    margin-bottom: var(--spacing-md);
-    padding-bottom: var(--spacing-sm);
-    border-bottom: 1px solid var(--border-light);
-
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-
-    // 즐겨찾기 섹션 레이블 옆 amber 아이콘
-    &.favorite::before {
-      content: '';
-      display: inline-block;
-      width: 12px; height: 12px;
-      background-image: var(--img-favorite);
-      background-repeat: no-repeat;
-      background-size: contain;
-      opacity: 0.7;
-    }
-  }
-}
-
-
-// ─────────────────────────────────────────────
-// [4] 프로젝트 카드 (BookshelfManagement에서 보여주는 카드)
-//     ProjectCard.js가 이 화면에도 재사용될 예정
-// ─────────────────────────────────────────────
-
-.project-card {
+.bookshelf-card {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  background: var(--bg-secondary);
   cursor: pointer;
+  animation: bookshelfCardIn 0.25s ease both;
   transition:
-    transform var(--transition-base),
-    box-shadow var(--transition-base);
+    box-shadow 0.15s,
+    border-color 0.15s;
 
   &:hover {
-    transform: translateY(-2px);        // hover-lift mixin과 동일
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 6px 20px rgba(42, 77, 136, 0.15);
+    border-color: var(--color-primary-light);
   }
 
-  // 썸네일 영역
-  &__thumb {
-    aspect-ratio: 3 / 4;
-    background: linear-gradient(135deg, var(--color-primary-muted) 0%, var(--color-primary-light) 100%);
-    border-radius: var(--radius-md) var(--radius-md) 0 0;
-    position: relative;
-    overflow: hidden;
+  &--active {
+    box-shadow: 0 0 0 2px var(--color-primary);
+    border-color: var(--color-primary);
+  }
 
-    // 썸네일 없을 때 패턴
-    &.empty {
-      background: repeating-linear-gradient(
-        45deg,
-        var(--bg-tertiary) 0px, var(--bg-tertiary) 1px,
-        transparent 1px, transparent 16px
-      );
-      border: 1px solid var(--border-light);
+  &--add {
+    border: 2px dashed var(--border-medium);
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--text-tertiary);
+    font-size: 11px;
+    min-height: 120px;
+
+    &:hover {
+      border-color: var(--color-primary-light);
+      color: var(--color-primary);
+      background: #f5f8ff;
+      box-shadow: none;
     }
   }
-
-  // 즐겨찾기 배지 — amber 포인트 활용
-  &__favorite-badge {
-    position: absolute;
-    top: 8px; right: 8px;
-    width: 20px; height: 20px;
-    background: var(--color-accent);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--shadow-amber);
-    animation: amberPulse 2s ease-in-out infinite;
-  }
-
-  // 카드 하단 정보
-  &__info {
-    padding: var(--spacing-sm) var(--spacing-md);
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-light);
-    border-top: none;
-    border-radius: 0 0 var(--radius-md) var(--radius-md);
-  }
-
-  &__title {
-    font-size: var(--font-sm);
-    font-weight: var(--font-medium);
-    color: var(--text-primary);
-    @include text-ellipsis;
-  }
-
-  &__meta {
-    font-size: 11px;
-    color: var(--text-tertiary);
-    margin-top: 2px;
-    font-family: var(--font-family-mono);
-  }
 }
 
-// 선택된 카드
-.project-card.selected .project-card__thumb {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+.bookshelf-card-thumbnail {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-muted) 0%,
+    var(--color-primary-light) 100%
+  );
 }
 
-// 새 프로젝트 추가 카드
-.project-card--add {
-  cursor: pointer;
+.bookshelf-card-star {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: var(--color-accent);
+  font-size: 14px;
+  line-height: 1;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
 
-  .project-card__thumb {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-    background: transparent;
-    border: 2px dashed var(--border-medium);
-    transition:
-      border-color var(--transition-fast),
-      background var(--transition-fast);
-  }
+.bookshelf-card-info {
+  padding: 10px 12px 12px;
+}
 
-  &:hover .project-card__thumb {
-    border-color: var(--color-primary);
-    background: #f5f8ff;
-  }
+.bookshelf-card-title {
+  font-size: 12px;
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+  @include text-ellipsis;
+}
 
-  .project-card__add-icon {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    background: var(--border-medium);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    color: white;
-    transition: background var(--transition-fast);
-  }
+.bookshelf-card-add-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--border-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--text-tertiary);
+  transition: border-color 0.15s;
+}
 
-  &:hover .project-card__add-icon {
-    background: var(--color-primary);
-  }
+.bookshelf-card--add:hover .bookshelf-card-add-icon {
+  border-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
 
-  .project-card__add-label {
-    font-size: 11px;
-    color: var(--text-tertiary);
-  }
+.bookshelf-card:nth-child(1) { animation-delay: 0.02s; }
+.bookshelf-card:nth-child(2) { animation-delay: 0.05s; }
+.bookshelf-card:nth-child(3) { animation-delay: 0.08s; }
+.bookshelf-card:nth-child(4) { animation-delay: 0.11s; }
+.bookshelf-card:nth-child(5) { animation-delay: 0.14s; }
+
+@keyframes bookshelfCardIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
