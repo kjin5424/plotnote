@@ -1,15 +1,43 @@
 # Progress
 
 ## Current Status
-**단계:** Phase L 완료 — React 전 화면 마이그레이션 + DataContext 완전 제거
+**단계:** Phase M — React SCSS 디자인 완성 (JSX className 정리 + 프로토타입 시각 동등성)
 **브랜치:** `kyoungjin`
-**마지막 작업:** DataContext/DataProvider 제거, Sidebar/MainLayout useStore/useUI 전환 (2026-03-10)
+**마지막 작업:** 3-에이전트 토론 → Phase M 계획 확정, .claudememory 문서 정비 (2026-03-11)
 
-> **다음 세션 시작 옵션 (우선순위 순):**
-> 1. **React 앱 통합 검수** — 화면 간 이동, CRUD, 사이드바 동작 실제 확인
-> 2. **메모(Memo) CRUD UI** — proto에 있지만 React 미구현
-> 3. **DnD** — 페이지/에피소드 순서 드래그앤드롭
-> 4. **b4Layout.ts 버그** — `B4_SPEC { w:324, h:238 }` w/h 역순 수정
+> **범위:** JSX className 정리 + SCSS 스타일 완성. 로직(상태관리, 이벤트) 변경 금지.
+> **네이밍:** kebab-case 기본, modifier만 `--` suffix. JSX와 SCSS 1:1 일치.
+> **CLS 방지:** hover 시 translateY 금지 → box-shadow만 사용.
+> **세션 계획:** 세션1(M-0+M-1) → 세션2(M-2+M-3) → 세션3(M-5+M-6+M-4)
+
+---
+
+## Phase M 작업 범위 — 화면별 SCSS 완성도
+
+| 화면 | 현재 완성도 | 주요 누락 | 참조 |
+|------|:-:|---|---|
+| **M-0 Common** | 40% | CSS 변수 통일, workspace 레이아웃, 버튼, 뱃지, 드래그 핸들 | `proto-style.css` |
+| **M-1 Sidebar** | 70% | SVG 로고, 검색바 껍데기, 트리 노드 수치, 푸터 | `proto-sidebar.css` |
+| **M-2 Bookshelf** | 60% | JSX 클래스 통일, 섹션 구조, 카드 그리드 | `proto-bookshelf.css` |
+| **M-3 Project** | 50% | JSX 클래스 통일, 헤더 편집, 탭(에피소드 목록만), 행 수치 | `proto-project.css` |
+| **M-4 Episode** | 95% | 리사이즈 핸들 | `proto-episode.css` |
+| **M-5 Page** | 85% | 뷰 토글, 줌, 리사이즈 핸들 | `proto-page.css` |
+| **M-6 Cut** | 85% | 가이드라인, 크로스헤어, 컷 추가 버튼 | `proto-cut.css` |
+
+### 토론으로 보류 확정된 항목
+- 새 프로젝트 모달 (기능 구현 선행 필요)
+- 공유 모달 (서버 없음)
+- 프로젝트 설정 탭 전체 (JSX/기능 없음)
+- Rail 호버 팝업 (JS 로직 필요)
+- 검색 모달 연동 (검색 기능 없음)
+
+---
+
+## 2026-03-11 버그 수정 내역
+
+1. **무한 루프 수정** — `StoreContext.tsx`의 `navigateToProject`/`navigateToEpisode`/`navigateToPage` 등 모든 UI setter를 `useCallback`으로 메모이제이션. 매 렌더마다 새 함수 참조 생성 → useEffect 의존성 배열에서 무한 루프 발생하던 문제 해결.
+2. **기본 책장 자동 생성** — `BookshelfManagement/index.tsx`에서 `bookshelves`가 비어있으면 `ADD_BOOKSHELF` 자동 dispatch. 첫 실행 시 빈 화면 문제 해결.
+3. **CRUD 버튼 추가** — `BookshelfHeader.tsx`에 "+ 새 프로젝트" 버튼, `BookshelfList.tsx`에 "+ 새 프로젝트" 카드 추가.
 
 ---
 
@@ -22,51 +50,17 @@
 
 ---
 
-## Phase 1: HTML 프로토타입
-
-### 완료
-- [x] `proto-sidebar.html` — 통합 사이드바 레퍼런스 완성
-- [x] `proto-bookshelf.html` — 통합 사이드바 적용
-- [x] `proto-project.html` — 통합 사이드바 적용
-- [x] `proto-episode.html` — 통합 사이드바 적용
-- [x] `proto-style.css` — 공통 CSS 분리
-
-### 미완료 (선택적)
-- [ ] `proto-page.html` — 통합 사이드바 + proto-style.css
-- [ ] `proto-cut.html` — 통합 사이드바 + proto-style.css
-- [ ] 각 HTML에서 proto-style.css로 이동된 CSS 제거 (bookshelf `.s-res*` 제외)
-
----
-
-## Phase 2: React 앱 구현 — 전체 완료 ✅
-
-- [x] **A.** 타입 정의 — `src/types/entities.ts`, `src/types/store.ts`
-- [x] **B.** B4 유틸리티 — `src/utils/b4Layout.ts`
-- [x] **C.** Context/Reducer — `src/contexts/StoreContext.tsx`
-- [x] **D.** 로컬 저장소 — `src/services/persistence.ts`
-- [x] **E.** 라우팅 — `src/App.tsx` (5단계 중첩 라우트, StoreProvider)
-- [x] **F.** 공통 컴포넌트 — Button, GuideLine, DbErrorToast, toast.scss
-- [x] **G.** Bookshelf 화면 — `BookshelfHeader`, `BookshelfList`, `index.tsx`
-- [x] **H.** Project 화면 — `ProjectHeader`, `ProjectGrid`, `index.tsx`
-- [x] **I.** Episode 화면 — `EpisodeHeader`, `EpisodeList(Nav)`, `EpisodeItem`, `EpisodeDetail`, `index.tsx`
-- [x] **J.** Page 화면 — `PageHeader`, `PageBody(Nav)`, `PageCard`, `PageDetail`, `index.tsx`
-- [x] **K.** Cut 화면 — `CutHeader`, `CutBody`, `CutCanvas`, `index.tsx`, `useCut.ts`
-- [x] **L.** DataContext 완전 제거 — Sidebar/MainLayout useStore/useUI 전환, 데드코드 삭제
-
----
-
 ## 핵심 아키텍처 결정 (불변)
 
 ### 데이터 모델
 - `NormalizedStore`: bookshelves/projects/episodes/pages/cuts/memos/scriptSnippets/assets — 모두 `Record<string, T>`
 - `EpisodeStatus`: `'draft' | 'inProgress' | 'done'` — 3단계
-- `Memo`: 모든 엔티티 메모를 단일 테이블 통합 (`parentId | null`, `parentType`, `role: SINGLE|DETAIL`)
-- `ScriptSnippet`: 미확정 보류 (cutId nullable, type/speakerId 포함 스키마 전체 재논의 필요)
 - `order: string` — Lexosort (DnD 재정렬)
-- 엔티티 ID 필드: 구 schema `episode.episodeId` → 신 schema `episode.id`
+- 엔티티 ID 필드: `entity.id` (nanoid)
 
 ### 컴포넌트 구조
 - 3-Context: `StoreContext`(데이터), `DispatchContext`(dispatch), `UIContext`(UI상태+dbError)
+- UI setter 함수들: 모두 `useCallback`으로 메모이제이션 (무한 루프 방지)
 - IndexedDB: debounced 500ms 저장, classifyDbError로 QuotaExceeded/Security 분류
 - Button variant → className 매핑: ghost=btn, primary=btn--primary, accent=btn--accent, outline=btn--outline, danger=btn--danger, icon=btn--icon, add=btn-add
 
@@ -86,14 +80,15 @@
 | 상태관리 | `src/contexts/StoreContext.tsx` |
 | 퍼시스턴스 | `src/services/persistence.ts` |
 | 진입점 | `src/App.tsx`, `src/index.tsx` |
-| 공통버튼 | `src/components/common/Button/Button.tsx` |
-| B4가이드 | `src/components/common/GuideLine/GuideLine.tsx` |
-| DB에러토스트 | `src/components/common/DbErrorToast/DbErrorToast.tsx` |
 | SCSS 진입점 | `src/assets/styles/index.scss` |
+| **프로토타입 CSS** | `public/prototypes/proto-*.css` |
+| **React SCSS** | `src/assets/styles/screens/*.scss`, `layout/*.scss`, `common/*.scss` |
 
 ---
 
 ## Known Issues
-- `vite-plugin-svgr` 미등록 → SVG를 React 컴포넌트로 사용 불가 (`vite.config.ts` 추가 필요)
-- `src/Setting/` 디렉토리 용도 불명확
+- `vite-plugin-svgr` 미등록 → SVG를 React 컴포넌트로 사용 불가 (현재 img src로 사용 중)
 - `b4Layout.ts`의 `B4_SPEC { w:324, h:238 }` — w/h 역순 표기 버그 (CSS는 올바름)
+- `src/Setting/` 디렉토리 용도 불명확
+- `src/components/screens/sample/` — Vue/Pinia 레퍼런스 코드, TS 에러 다수 (삭제 대상)
+- `src/components/screens/guide/Guide.tsx` — `transform` duplicate key 경고

@@ -1,5 +1,11 @@
 # Milestones
 
+## 2026-03-11 (Phase M 계획 확정 + 문서 정비)
+
+- 3-에이전트 토론(main/design/architect) → 사치 기능 5개 보류(모달·공유·설정탭·검색·Rail팝업), JSX className 정리를 Phase M 범위에 포함, CSS 변수 정합성(헤더 44px·font-size 13px·scrollbar-gutter) 신설
+- StoreContext `useCallback` 메모이제이션으로 무한 루프 해결, 기본 책장 자동 생성 + Bookshelf CRUD 버튼 추가
+- .claudememory 정비: HISTORY.md 신설(Phase 0-10+A-L 아카이빙), PLAN.md 삭제, checklist.md→HISTORY.md 이관, 에이전트 파일명 오류 수정
+
 ## 2026-03-10 (L. DataContext 완전 제거 — React 마이그레이션 전체 완료)
 
 - `DataContext.tsx` / `DataProvider` 완전 삭제, `Sidebar.tsx`/`MainLayout.tsx` → `useStore()` + `useUI()` 전환
