@@ -16,9 +16,9 @@
 | M-1. Sidebar | ✅ | `common/layout.scss` | 1 |
 | M-2. Bookshelf | ✅ | `screens/bookshelf.scss` | 2 |
 | M-3. Project | ✅ | `screens/project.scss` | 2 |
-| M-5. Page | 🔶 (85%) | `screens/page.scss` | 3 |
-| M-6. Cut | 🔶 (85%) | `screens/cut.scss` | 3 |
-| M-4. Episode | ✅ (95%) | `screens/episode.scss` | 3 |
+| M-5. Page | ✅ | `screens/page.scss` | 3 |
+| M-6. Cut | ✅ | `screens/cut.scss` | 3 |
+| M-4. Episode | ✅ | `screens/episode.scss` | 3 |
 
 ---
 
@@ -86,39 +86,17 @@
 
 ## 세션 3: M-5 + M-6 + M-4
 
-### M-5. Page (85% → 100%)
+### M-5. Page ✅ (2026-03-11 완료)
+- [x] page.scss에 pg-view-tgl/pg-zoom/pg-toolbar 모두 구현돼 있었음
 
-#### M-5-1. 뷰 토글 (단면/양면)
-- [ ] `.view-toggle`, `.view-btn` 수치 확인
-- 참조: `proto-page.css` `.pg-view-tgl`
+### M-6. Cut ✅ (2026-03-11 완료)
+- [x] SVG 캔버스 셀렉터 추가: cut-canvas-svg/bg, cut-polygon/border, cut-label, cut-preview-line
+- [x] CutHeader 브레드크럼: ct-ep-link, ct-pg-num, ct-pg-nav
 
-#### M-5-2. 줌 컨트롤
-- [ ] `.zoom-control`, `.zoom-btn`, `.zoom-value` SCSS
-- 참조: `proto-page.css` `.pg-zoom`
-
-#### M-5-3. 리사이즈 핸들
-- [ ] 패널간 핸들 스타일
-- 참조: `proto-page.css`
-
-### M-6. Cut (85% → 100%)
-
-#### M-6-1. 가이드라인 오버레이
-- [ ] `.cut-bleed`, `.cut-inner` 가이드 CSS
-- 참조: `proto-cut.css`
-
-#### M-6-2. 분할 모드 크로스헤어
-- [ ] `.cut-split-guide`: cursor crosshair, preview line
-- 참조: `proto-cut.css`
-
-#### M-6-3. 컷 추가 버튼
-- [ ] 빈 셀 "+" 버튼 스타일
-- 참조: `proto-cut.css`
-
-### M-4. Episode (95% → 100%)
-
-#### M-4-1. 리사이즈 핸들
-- [ ] `.resize-handle` 스타일 확인만
-- 참조: `proto-episode.css`
+### M-4. Episode ✅ (2026-03-11 완료)
+- [x] resize-handle: layout.scss에 이미 정의 (변경 불필요)
+- [x] episode.scss 중복 .badge 제거 → .erow .badge 스코핑
+- [x] episode.scss 중복 .cnt-badge 제거
 
 ---
 

@@ -1,5 +1,11 @@
 # Milestones
 
+## 2026-03-11 (Phase M 세션 3: Page·Cut·Episode SCSS 완성)
+
+- M-5(Page) 완료: page.scss에 이미 pg-view-tgl/pg-zoom/pg-toolbar 등 전부 구현돼 있었음 (변경 불필요)
+- M-6(Cut) 완료: cut.scss에 SVG 캔버스 셀렉터(cut-canvas-svg/bg/polygon/polygon-border/label/preview-line) + CutHeader 브레드크럼(ct-ep-link/ct-pg-num/ct-pg-nav) 추가
+- M-4(Episode) 완료: resize-handle은 layout.scss에 이미 정의; episode.scss 중복 .badge/.cnt-badge 제거 후 .erow .badge로 스코핑 — 빌드 1.75s ✅
+
 ## 2026-03-11 (Phase M 계획 확정 + 문서 정비)
 
 - 3-에이전트 토론(main/design/architect) → 사치 기능 5개 보류(모달·공유·설정탭·검색·Rail팝업), JSX className 정리를 Phase M 범위에 포함, CSS 변수 정합성(헤더 44px·font-size 13px·scrollbar-gutter) 신설

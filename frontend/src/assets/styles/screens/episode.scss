@@ -1098,19 +1098,10 @@
   }
 }
 
-// Status badge (erow right)
-.badge {
+// erow 안 badge는 글로벌 정의보다 약간 크게
+.erow .badge {
   font-size: 10px;
   padding: 1px 6px;
-  border-radius: var(--radius-full);
-  font-family: var(--font-family-mono);
-  border: 1px solid transparent;
-  white-space: nowrap;
-  flex-shrink: 0;
-
-  &--todo { background: var(--bg-tertiary); color: var(--text-tertiary); border-color: var(--border-light); }
-  &--wip  { background: rgba(42,77,136,0.12); color: var(--color-primary); }
-  &--done { background: rgba(82,199,135,0.15); color: #2a7a50; border-color: #b6dfc8; }
 }
 
 // ─── Right detail column ───
@@ -1320,14 +1311,7 @@
   &::placeholder { color: var(--text-tertiary); }
 }
 
-.cnt-badge {
-  font-family: var(--font-family-mono);
-  font-size: 9px;
-  background: var(--bg-tertiary);
-  color: var(--text-tertiary);
-  padding: 1px 5px;
-  border-radius: var(--radius-full);
-}
+// cnt-badge: global.scss 에서 정의 (중복 제거)
 
 // Page memo list
 .pm-list { display: flex; flex-direction: column; gap: 2px; }
