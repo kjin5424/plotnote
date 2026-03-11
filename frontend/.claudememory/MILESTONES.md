@@ -1,5 +1,11 @@
 # Milestones
 
+## 2026-03-11 (Phase N-0: 정리 완료 + 모달 설계 준비)
+
+- Guide.tsx 전체 최신화: DataContext 참조 제거, 훅 data/ui 카테고리 분리, UtilsSection 신규 추가, transform 중복 키 버그 수정
+- sample/ 디렉토리(Vue/Pinia 레퍼런스 60개 파일) 삭제 — 빌드 1.77s ✅
+- todo.md Phase N 섹션 재정리: "서버 없음" 오분류 수정, 공유 모달만 진짜 보류 확정
+
 ## 2026-03-11 (Phase M 세션 3: Page·Cut·Episode SCSS 완성)
 
 - M-5(Page) 완료: page.scss에 이미 pg-view-tgl/pg-zoom/pg-toolbar 등 전부 구현돼 있었음 (변경 불필요)

@@ -1,9 +1,10 @@
 # Progress
 
 ## Current Status
-**단계:** Phase M — React SCSS 디자인 완성 (JSX className 정리 + 프로토타입 시각 동등성)
+**단계:** Phase N — 기능 구현 단계
 **브랜치:** `kyoungjin`
-**마지막 작업:** 3-에이전트 토론 → Phase M 계획 확정, .claudememory 문서 정비 (2026-03-11)
+**마지막 작업:** N-0 정리 완료 (Guide.tsx 최신화 + sample/ 삭제) — 2026-03-11
+**다음 작업:** N-1 새 프로젝트 모달 (`useModal.ts` 구현 + `NewProjectModal.tsx` + SCSS)
 
 > **범위:** JSX className 정리 + SCSS 스타일 완성. 로직(상태관리, 이벤트) 변경 금지.
 > **네이밍:** kebab-case 기본, modifier만 `--` suffix. JSX와 SCSS 1:1 일치.
