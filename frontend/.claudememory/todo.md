@@ -112,10 +112,10 @@
 > **결론:** "서버 없음"으로 보류했던 항목 대부분은 localStorage 기반으로 바로 가능.
 > 진짜 서버가 필요한 건 "공유 모달"과 "검색 엔진" 두 개뿐.
 
-### N-0. 정리 (바로 가능)
+### N-0. 정리 (2026-03-11 완료)
 
-- [ ] `Guide.tsx` — 훅/컨텍스트/유틸 문서 최신화 (DataContext 참조 제거, utils 섹션 추가)
-- [ ] `src/components/screens/sample/` 삭제 (Vue/Pinia 레퍼런스, TS 에러 원인)
+- [x] `Guide.tsx` — 훅/컨텍스트/유틸 문서 최신화 (DataContext 제거, utils 섹션 추가, transform 버그 수정)
+- [x] `src/components/screens/sample/` 삭제 (Vue/Pinia 레퍼런스 60개 파일)
 - [ ] `b4Layout.ts` w/h 역순 버그: `{ w:324, h:238 }` → `{ w:238, h:324 }`
 
 ### N-1. 새 프로젝트 모달 (바로 가능)
