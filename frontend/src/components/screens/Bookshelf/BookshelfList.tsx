@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useStore, useUI } from "contexts/StoreContext";
+import { useStore, useUI, useDispatch } from "contexts/StoreContext";
 import type { Project } from "types/entities";
 
 function sortProjects(projects: Project[]): Project[] {
@@ -12,6 +12,7 @@ function sortProjects(projects: Project[]): Project[] {
 export default function BookshelfList() {
   const store = useStore();
   const { ui } = useUI();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const bookshelf = ui.currentBookshelfId ? store.bookshelves[ui.currentBookshelfId] : null;
@@ -19,9 +20,10 @@ export default function BookshelfList() {
     ? sortProjects(bookshelf.projectOrder.map(id => store.projects[id]).filter(Boolean))
     : [];
 
-  if (projects.length === 0) {
-    return <div className="bookshelf-empty">프로젝트가 없습니다.</div>;
-  }
+  const handleAddProject = () => {
+    if (!ui.currentBookshelfId) return;
+    dispatch({ type: "ADD_PROJECT", payload: { bookshelfId: ui.currentBookshelfId, title: "새 프로젝트" } });
+  };
 
   return (
     <div className="bookshelf-grid">
@@ -41,6 +43,10 @@ export default function BookshelfList() {
           </div>
         </div>
       ))}
+      <div className="bookshelf-card bookshelf-card--add" onClick={handleAddProject}>
+        <div className="bookshelf-card-add-icon">+</div>
+        <span>새 프로젝트</span>
+      </div>
     </div>
   );
 }

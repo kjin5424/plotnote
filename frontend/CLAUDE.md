@@ -4,14 +4,15 @@ Always follow the instructions in this file as your top priority.
 
 ### 0. Role & Context Management
 
-- **0-1. Role:** 이 프로젝트는 특정 분야의 전문성을 갖춘 서브에이전트 시스템을 운용한다. 모든 작업은 `.claude/agents/`에 정의된 에이전트들의 가이드라인을 준수해야 한다.
+- **0-1. Role:** 이 프로젝트는 특정 분야의 전문성을 갖춘 서브에이전트 시스템을 운용한다. 기본 에이전트는 `main-agent`로, 모든 작업은 `.claude/agents/`에 정의된 에이전트들의 가이드라인을 준수해야 한다.
   - **업무 배분**: 복잡한 요청의 경우 `main-agent` 에이전트를 통해 각 전문가 에이전트(`code-reviewer`, `security-expert`, `design-specialist` 등)에게 검토를 요청한다.
   - **최종 승인**: 아키텍처 설계나 에이전트 간 의견 충돌 시 `chief-architect`의 결정을 따른다.
   - **리뷰 필수**: 모든 코드 변경 사항은 `code-reviewer`의 검토를 거쳐야 하며, UI 관련 수정은 `design-specialist`의 CLS(레이아웃 시프트) 방지 가이드라인을 준수해야 한다.
   - **사용자 관점**: 기능의 편의성은 `end-user-cartoonist` 에이전트의 피드백(기계치 만화가 관점)을 최우선으로 고려한다.
 - **0-2. Memory Bank:** 모든 컨텍스트는 `.claudememory/` 폴더 내 파일을 참조한다.
   - 작업을 시작할 때 반드시 `progress.md`를 읽어 맥락을 파악할 것.
-  - 작업 종료 시 반드시 `progress.md`와 `MILESTONES.md`를 최신화할 것.
+  - 세션 종료 시 반드시 todo.md, progress.md, MILESTONES.md를 최신순 정렬로 날짜와 함께 최신화할 것.
+  - todo.md 최신화 작업 시 ### 2. Implementation & Archive Policy 참고할 것.
 - **0-3. Optimization:** 50턴 이상 대화 또는 컨텍스트 경고 시 다음과 같은 절차를 실행한다.
   - 이 프로젝트에서 `/cleanup-context`라고 하면 현재 컨텍스트를 요약하고 불필요한 파일을 메모리에서 내려라.
   - 핵심 성과와 다음 할 일을 `progress.md`에 백업한다.
@@ -39,7 +40,15 @@ Always follow the instructions in this file as your top priority.
 - **3-2. Targeted Diff:** 전체 파일 재작성 금지. `Search and Replace` 블록(diff)만 사용하며, 선택된 작업 범위 외의 코드는 건드리지 않는다.
 - **3-3. No Inline Docs:** 코드는 self-explanatory하게 짜되 로직 주석이나 JSDoc은 작성하지 않는다. (문서화는 `Ollama`에게 담당)
 - **3-4. Verification:** 단계 완료 후 요약 보고 및 진행 승인을 구한다.
-- **3-5. Finishing:** 작업이 완료되거나 세션이 종료되기 전에 내린 핵심 아키텍처 결정 사항과 해결된 난제를 딱 3줄로 요약해서 `MILESTONES.md` 하단에 날짜와 함께 추가한다.
+- **3-5. Finishing:** 작업이 완료되거나 세션이 종료되기 전에 내린 핵심 아키텍처 결정 사항과 해결된 난제를 딱 3줄로 요약해서 MILESTONES.md에 추가한다.
+  - 형식 (필수 준수):
+    ```
+    ## YYYY-MM-DD (Phase N: 작업명)
+    - 결정/성과 1줄
+    - 결정/성과 1줄
+    - 결정/성과 1줄
+    ```
+  - 신규 항목은 파일 최상단(기존 첫 번째 ## 위)에 삽입한다. (최신순 정렬)
 - **3-6. Manual Testing:** 자동 테스트를 끄고, 필요 시 수동으로 `/run npm test`를 실행한다.
 
 ### 4. Git & Code Format

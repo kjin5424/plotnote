@@ -5,6 +5,7 @@ import {
   useState,
   useEffect,
   useRef,
+  useCallback,
   type Dispatch,
   type ReactNode,
 } from 'react';
@@ -463,23 +464,36 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     return () => clearTimeout(saveTimerRef.current);
   }, [store]);
 
+  const setCurrentBookshelfId = useCallback((id: string) => setUi(prev => ({ ...prev, currentBookshelfId: id })), []);
+  const setCurrentProjectId   = useCallback((id: string) => setUi(prev => ({ ...prev, currentProjectId: id })), []);
+  const setCurrentEpisodeId   = useCallback((id: string) => setUi(prev => ({ ...prev, currentEpisodeId: id })), []);
+  const setCurrentPageId      = useCallback((id: string) => setUi(prev => ({ ...prev, currentPageId: id })), []);
+  const setCurrentCutId       = useCallback((id: string) => setUi(prev => ({ ...prev, currentCutId: id })), []);
+  const toggleSidebar         = useCallback(() => setUi(prev => ({ ...prev, isSidebarOpen: !prev.isSidebarOpen })), []);
+  const setSidebarOpen        = useCallback((open: boolean) => setUi(prev => ({ ...prev, isSidebarOpen: open })), []);
+  const navigateToProject     = useCallback((projectId: string) =>
+    setUi(prev => ({ ...prev, currentProjectId: projectId, currentEpisodeId: null, currentPageId: null, currentCutId: null })), []);
+  const navigateToEpisode     = useCallback((episodeId: string) =>
+    setUi(prev => ({ ...prev, currentEpisodeId: episodeId, currentPageId: null, currentCutId: null })), []);
+  const navigateToPage        = useCallback((pageId: string) =>
+    setUi(prev => ({ ...prev, currentPageId: pageId, currentCutId: null })), []);
+
+  const clearDbError = useCallback(() => setDbError(null), []);
+
   const uiValue: UIContextValue = {
     ui,
     dbError,
-    clearDbError: () => setDbError(null),
-    setCurrentBookshelfId: (id) => setUi(prev => ({ ...prev, currentBookshelfId: id })),
-    setCurrentProjectId:   (id) => setUi(prev => ({ ...prev, currentProjectId: id })),
-    setCurrentEpisodeId:   (id) => setUi(prev => ({ ...prev, currentEpisodeId: id })),
-    setCurrentPageId:      (id) => setUi(prev => ({ ...prev, currentPageId: id })),
-    setCurrentCutId:       (id) => setUi(prev => ({ ...prev, currentCutId: id })),
-    toggleSidebar:         ()   => setUi(prev => ({ ...prev, isSidebarOpen: !prev.isSidebarOpen })),
-    setSidebarOpen:        (open) => setUi(prev => ({ ...prev, isSidebarOpen: open })),
-    navigateToProject: (projectId) =>
-      setUi(prev => ({ ...prev, currentProjectId: projectId, currentEpisodeId: null, currentPageId: null, currentCutId: null })),
-    navigateToEpisode: (episodeId) =>
-      setUi(prev => ({ ...prev, currentEpisodeId: episodeId, currentPageId: null, currentCutId: null })),
-    navigateToPage: (pageId) =>
-      setUi(prev => ({ ...prev, currentPageId: pageId, currentCutId: null })),
+    clearDbError,
+    setCurrentBookshelfId,
+    setCurrentProjectId,
+    setCurrentEpisodeId,
+    setCurrentPageId,
+    setCurrentCutId,
+    toggleSidebar,
+    setSidebarOpen,
+    navigateToProject,
+    navigateToEpisode,
+    navigateToPage,
   };
 
   return (
