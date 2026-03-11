@@ -12,8 +12,8 @@
 
 | 항목 | 상태 | 담당 SCSS | 세션 |
 |------|:----:|-----------|:----:|
-| M-0. 공통 기반 정비 | ⬜ | `common/*.scss` | 1 |
-| M-1. Sidebar | ⬜ | `common/layout.scss` | 1 |
+| M-0. 공통 기반 정비 | ✅ | `common/*.scss` | 1 |
+| M-1. Sidebar | ✅ | `common/layout.scss` | 1 |
 | M-2. Bookshelf | ⬜ | `screens/bookshelf.scss` | 2 |
 | M-3. Project | ⬜ | `screens/project.scss` | 2 |
 | M-5. Page | 🔶 (85%) | `screens/page.scss` | 3 |
@@ -26,79 +26,31 @@
 
 ### M-0. 공통 기반 정비 (proto-style.css 대응)
 
-#### M-0-0. CSS 변수 정합성 통일
-- [ ] `--header-height` → `44px` 통일 (proto `--hd-h: 44px`)
-- [ ] `.workspace-header` `min-height` → `44px`
-- [ ] body base `font-size` → `13px` (proto 기준)
-- [ ] `.workspace-body`에 `scrollbar-gutter: stable` 추가
-- 참조: `proto-style.css` `:root`, `.ws-hd-top`
-
-#### M-0-1. Workspace 레이아웃
-- [ ] `.workspace-header`: flex row, gap 12px, justify space-between
-- [ ] `.workspace-body`: padding `0 24px 30px` (proto `.ws-bd`)
-- [ ] `.workspace-title`: serif 19px, weight 600, letter-spacing -0.02em
-- 참조: `proto-style.css` `.ws-hd`, `.ws-ttl`, `.ws-bd`
-
-#### M-0-2. 버튼 체계 미세 조정
-- [ ] `.btn` 기본: padding `5px 12px`, radius `6px`, font-size `11px`
-- [ ] `.btn--primary`: border `1px solid var(--color-primary)` (proto `.abtn.pri`)
-- [ ] `.btn--icon`: 28x28, radius 5px (proto `.ic-btn`)
-- [ ] `.btn--icon-sm` (신규): 24x24, radius 4px (proto `.ic-btn-sm`)
-- [ ] `.btn-header` (신규): opacity 0.55, hover시 배경+opacity 0.9 (proto `.hbtn`)
-- [ ] 카드 hover: translateY 제거 → box-shadow 강화
-- 참조: `proto-style.css` `.abtn`, `.ic-btn`, `.hbtn`
-
-#### M-0-3. 뱃지·태그
-- [ ] `.badge` 기본: font-size 8px, padding 2px 7px, pill radius
-- [ ] `.badge--todo` / `.badge--wip` / `.badge--done`
-- [ ] `.badge--owner` / `.badge--editor` / `.badge--comment` / `.badge--readonly`
-- [ ] `.cnt-badge`: font-size 9px, min-width 16px, height 16px
-- 참조: `proto-style.css` `.badge`, `.cnt-badge`
-
-#### M-0-4. 드래그 핸들·드롭다운
-- [ ] `.drag-handle`: cursor grab, opacity 0 → 부모 hover시 0.4
-- [ ] `.dropdown-menu`: absolute, shadow-md, radius 8px, min-width 140px
-- [ ] `.dropdown-menu-item`: padding 6px 14px, font-size 11px
-- 참조: `proto-style.css` `.drag-h`, `.more-dd`
-
-#### M-0-5. 섹션 헤더 (공통)
-- [ ] `.section-header`: flex, gap 8px, padding 14px 0 10px, cursor pointer
-- [ ] `.section-header-icon`, `.section-header-label`, `.section-header-chevron`
-- [ ] `.section.closed .section-body { display: none }`
-- 참조: `proto-style.css` `.sec-hd`
-
-#### M-0-6. 스테퍼·토글 그룹 (공통 폼 요소)
-- [ ] `.stepper`: inline-flex, border, radius 6px
-- [ ] `.toggle-group`: inline-flex, border, overflow hidden
-- 참조: `proto-style.css` `.stepper`, `.tgl-grp`
+#### M-0. 공통 기반 정비 ✅ (2026-03-11 완료)
+- [x] `--header-height` → `44px`
+- [x] `.workspace-header` min-height 44px, padding `0 20px`, gap 12px
+- [x] `.workspace-body` padding `0 24px 30px`, scrollbar-gutter stable
+- [x] `.workspace-title` serif 19px weight 600
+- [x] `.btn` padding `5px 12px`, radius 6px, font-size 11px
+- [x] `.btn--primary` border 추가
+- [x] `.btn--icon` 28x28 radius 5px, `.btn--icon-sm` 24x24, `.btn-header` opacity 0.55
+- [x] `.badge`, `.badge--todo/wip/done`, `.badge--owner/editor/comment/readonly`, `.cnt-badge`
+- [x] `.drag-handle`, `.drag-parent`, `.dropdown-menu`, `.dropdown-menu-item`
+- [x] `.section-header`, `.section-header-icon/label/chevron`, `.section.closed .section-body`
+- [x] `.stepper`, `.toggle-group`
 
 ---
 
 ### M-1. Sidebar (proto-sidebar.css 대응)
 
-#### M-1-1. 로고 영역
-- [ ] 스마일 아이콘 → SVG 사각형 패턴 로고 교체 (proto `.sb-mk`)
-- [ ] 로고 텍스트 "plotnote" 소문자, DM Mono
-- 참조: `proto-sidebar.css` `.sb-logo`, `.sb-mk`
-
-#### M-1-2. 검색바 (SCSS 껍데기만)
-- [ ] `.sidebar-search`: background paper, radius, 돋보기 아이콘 + placeholder
-- [ ] 클릭 이벤트 미연결 (검색 기능 없음)
-- 참조: `proto-sidebar.css` `.sb-search`
-
-#### M-1-3. 트리 노드 스타일
-- [ ] `.sidebar-tree-row` 수치를 proto `.tn-row`와 맞춤 (padding, gap, font-size)
-- [ ] 활성 노드: 좌측 2px border + 배경 하이라이트
-- 참조: `proto-sidebar.css` `.tn-row`, `.tn-row.on`
-
-#### M-1-4. Rail 모드 (기본 SCSS만)
-- [ ] 56px 너비, 아이콘 세로 배치
-- [ ] ~~호버 팝업~~ → **보류** (JS 로직 필요)
-- [ ] 현재 breadcrumb 방식 유지
-
-#### M-1-5. 하단 푸터
-- [ ] 아바타 원형 + 사용자명 수치 맞춤
-- 참조: `proto-sidebar.css` `.sb-ft`
+#### M-1. Sidebar ✅ (2026-03-11 완료)
+- [x] 로고 텍스트 소문자 "plotnote", sidebar-logo-mark div 박스
+- [x] `.sidebar-search` / `.sidebar-search-bar` SCSS + JSX 추가
+- [x] `.sidebar-tree-row` font-size 11px, padding 3px 6px, min-height 26px, border-radius 4px
+- [x] `.sidebar-tree-page` font-size 10px
+- [x] `.sidebar-tree-section` padding 2px 6px, section-title font-size 11px, border-radius
+- [x] `.sidebar-footer` padding 8px 10px, sidebar-user-row/avatar/name JSX 추가
+- [x] `.sidebar-user-avatar` font-size 9px
 
 ---
 

@@ -195,3 +195,273 @@ a {
 .page-enter {
   animation: fadeUp var(--transition-slow) ease both;
 }
+
+
+// ─────────────────────────────────────────────
+// [8] 상태 뱃지 (M-0-3)
+// ─────────────────────────────────────────────
+
+.badge {
+  font-size: 8px;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-weight: var(--font-medium);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.badge--todo {
+  background: var(--bg-primary);
+  color: var(--text-tertiary);
+  border: 1px solid var(--border-medium);
+}
+
+.badge--wip {
+  background: rgba(124, 148, 184, 0.15);
+  color: var(--color-primary);
+  border: 1px solid rgba(124, 148, 184, 0.3);
+}
+
+.badge--done {
+  background: var(--color-primary);
+  color: #fff;
+  border: 1px solid var(--color-primary);
+}
+
+.badge--owner {
+  background: #eef1f7;
+  color: var(--color-primary);
+  border: 1px solid rgba(42, 77, 136, 0.2);
+}
+
+.badge--editor {
+  background: #f0edf8;
+  color: #6b5fa0;
+  border: 1px solid rgba(107, 95, 160, 0.2);
+}
+
+.badge--comment {
+  background: #fff8e6;
+  color: #8a6200;
+  border: 1px solid rgba(251, 198, 98, 0.3);
+}
+
+.badge--readonly {
+  background: var(--bg-primary);
+  color: var(--text-tertiary);
+  border: 1px solid var(--border-light);
+}
+
+.cnt-badge {
+  font-size: 9px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: var(--radius-full);
+  background: var(--bg-primary);
+  color: var(--text-tertiary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family-mono);
+}
+
+
+// ─────────────────────────────────────────────
+// [9] 드래그 핸들 (M-0-4)
+// ─────────────────────────────────────────────
+
+.drag-handle {
+  cursor: grab;
+  padding: 4px 2px;
+  opacity: 0;
+  flex-shrink: 0;
+  transition: opacity var(--transition-fast);
+
+  img, svg {
+    width: 14px; height: 14px;
+    opacity: 0.4;
+  }
+
+  &:active {
+    cursor: grabbing;
+    opacity: 1 !important;
+  }
+}
+
+.drag-parent:hover .drag-handle {
+  opacity: 0.4;
+}
+
+.drag-parent:hover .drag-handle:hover {
+  opacity: 0.8;
+}
+
+
+// ─────────────────────────────────────────────
+// [10] 드롭다운 메뉴 (M-0-4)
+// ─────────────────────────────────────────────
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 4px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 4px 0;
+  min-width: 140px;
+  z-index: 100;
+  display: none;
+
+  &.open { display: block; }
+}
+
+.dropdown-menu-item {
+  padding: 6px 14px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+
+  &:hover { background: var(--bg-primary); }
+
+  &.danger {
+    color: var(--color-error);
+    &:hover { background: #fdeaea; }
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// [11] 섹션 헤더 (M-0-5)
+// ─────────────────────────────────────────────
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 0 10px;
+  cursor: pointer;
+  user-select: none;
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast);
+
+  &:hover { background: rgba(0, 0, 0, 0.015); }
+}
+
+.section-header-icon {
+  width: 18px; height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  img, svg { width: 18px; height: 18px; }
+}
+
+.section-header-label {
+  font-size: 14px;
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+
+.section-header-chevron {
+  margin-left: auto;
+  width: 16px; height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  img, svg {
+    width: 16px; height: 16px;
+    opacity: 0.35;
+    transition: transform var(--transition-fast);
+  }
+}
+
+.section:not(.closed) .section-header-chevron img,
+.section:not(.closed) .section-header-chevron svg {
+  transform: rotate(90deg);
+}
+
+.section-body {
+  padding-bottom: 8px;
+}
+
+.section.closed .section-body {
+  display: none;
+}
+
+
+// ─────────────────────────────────────────────
+// [12] 스테퍼 · 토글 그룹 (M-0-6)
+// ─────────────────────────────────────────────
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+
+  button {
+    width: 28px; height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--text-secondary);
+    background: var(--bg-primary);
+    transition: background var(--transition-fast);
+
+    &:hover { background: var(--border-light); }
+  }
+
+  input {
+    width: 42px; height: 28px;
+    text-align: center;
+    border: none;
+    border-left: 1px solid var(--border-medium);
+    border-right: 1px solid var(--border-medium);
+    font-size: 12px;
+    font-family: var(--font-family-mono);
+    outline: none;
+    background: var(--bg-secondary);
+  }
+}
+
+.toggle-group {
+  display: inline-flex;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+
+  button {
+    padding: 5px 12px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-medium);
+    transition: background var(--transition-fast), color var(--transition-fast);
+
+    &:last-child { border-right: none; }
+    &:hover { background: var(--bg-primary); }
+
+    &.active {
+      background: var(--color-primary);
+      color: #fff;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+}

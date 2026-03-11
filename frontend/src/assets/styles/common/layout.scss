@@ -176,44 +176,47 @@
   padding: var(--spacing-xs) 0;
 }
 
-// 사이드바 하단 (설정/로그아웃)
+// 사이드바 하단 (유저 + 설정)
 .sidebar-footer {
   flex-shrink: 0;
-  padding: var(--spacing-sm) var(--spacing-sm);
+  padding: 8px 10px;
   border-top: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 
-  // 유저 행
-  .sidebar-user-row {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    transition: background var(--transition-fast);
+// 유저 행
+.sidebar-user-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 6px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition-fast);
 
-    &:hover { background: var(--bg-tertiary); }
-  }
+  &:hover { background: var(--bg-primary); }
+}
 
-  // 유저 아바타
-  .sidebar-user-avatar {
-    width: 24px; height: 24px;
-    border-radius: 50%;
-    background: var(--color-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    color: var(--text-on-primary);
-    font-weight: var(--font-semibold);
-    flex-shrink: 0;
-  }
+// 유저 아바타
+.sidebar-user-avatar {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: var(--text-on-primary);
+  font-weight: var(--font-semibold);
+  flex-shrink: 0;
+}
 
-  .sidebar-user-name {
-    font-size: var(--font-xs);
-    color: var(--text-secondary);
-    @include text-ellipsis;
-  }
+.sidebar-user-name {
+  font-size: 11px;
+  color: var(--text-secondary);
+  @include text-ellipsis;
 }
 
 
@@ -424,6 +427,42 @@
   }
 }
 
+// ── 검색바 껍데기
+.sidebar-search {
+  padding: 8px 10px 4px;
+  flex-shrink: 0;
+}
+
+.sidebar-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 9px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  width: 100%;
+  user-select: none;
+  transition: border-color var(--transition-fast);
+
+  &:hover {
+    border-color: var(--color-primary-light);
+  }
+
+  img {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    opacity: 0.6;
+  }
+
+  span {
+    font-size: 10px;
+    color: var(--text-tertiary);
+  }
+}
+
 // ── 네비게이션 스크롤 영역
 .sidebar-nav {
   flex: 1;
@@ -435,21 +474,23 @@
 // ── 섹션 (즐겨찾기 / 내 책장 / 공유책장)
 .sidebar-tree-section {
   margin-bottom: 2px;
+  padding: 2px 6px;
 }
 
 .sidebar-tree-section-title {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
-  padding: 5px var(--spacing-sm);
-  font-size: var(--font-xs);
+  gap: 6px;
+  padding: 5px 6px;
+  font-size: 11px;
   font-weight: var(--font-medium);
   color: var(--text-secondary);
+  border-radius: var(--radius-sm);
   transition: background var(--transition-fast), color var(--transition-fast);
 
   &:hover {
-    background: var(--bg-tertiary);
+    background: var(--bg-primary);
     color: var(--text-primary);
   }
 }
@@ -459,15 +500,18 @@
   width: 100%;
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
-  padding: 4px var(--spacing-sm);
-  font-size: var(--font-xs);
+  gap: 4px;
+  padding: 3px 6px;
+  font-size: 11px;
   color: var(--text-secondary);
   position: relative;
+  min-height: 26px;
+  border-radius: 4px;
+  user-select: none;
   transition: background var(--transition-fast), color var(--transition-fast);
 
   &:hover {
-    background: var(--bg-tertiary);
+    background: var(--bg-primary);
     color: var(--text-primary);
   }
 
@@ -479,9 +523,10 @@
     &::before {
       content: '';
       position: absolute;
-      left: 0; top: 0; bottom: 0;
+      left: 0; top: 4px; bottom: 4px;
       width: 2px;
       background: var(--color-primary);
+      border-radius: 1px;
     }
   }
 }
@@ -491,15 +536,18 @@
   width: 100%;
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
-  padding: 3px var(--spacing-sm);
-  font-size: 11px;
+  gap: 4px;
+  padding: 3px 6px;
+  font-size: 10px;
   color: var(--text-tertiary);
   position: relative;
+  min-height: 24px;
+  border-radius: 4px;
+  user-select: none;
   transition: background var(--transition-fast), color var(--transition-fast);
 
   &:hover {
-    background: var(--bg-tertiary);
+    background: var(--bg-primary);
     color: var(--text-secondary);
   }
 
@@ -510,9 +558,10 @@
     &::before {
       content: '';
       position: absolute;
-      left: 0; top: 0; bottom: 0;
+      left: 0; top: 4px; bottom: 4px;
       width: 2px;
       background: var(--color-primary);
+      border-radius: 1px;
     }
   }
 }
@@ -648,12 +697,36 @@
   width: 100%;
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-light);
-  padding: var(--spacing-sm) var(--spacing-lg);
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-md);
-  min-height: 52px;
+  gap: 12px;
+  min-height: var(--header-height);
+}
+
+.workspace-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.workspace-header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.workspace-title {
+  font-family: var(--font-family-serif);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  @include text-ellipsis;
 }
 
 // workspace 스크롤 가능 바디
@@ -661,8 +734,9 @@
   flex: 1;
   width: 100%;
   overflow-y: auto;
-  padding: var(--spacing-lg);
+  padding: 0 24px 30px;
   background: var(--bg-primary);
+  scrollbar-gutter: stable;
   @include custom-scrollbar;
 }
 
