@@ -10,15 +10,15 @@
 
 ## 현황 대시보드
 
-| 항목 | 상태 | 담당 SCSS | 세션 |
-|------|:----:|-----------|:----:|
-| M-0. 공통 기반 정비 | ✅ | `common/*.scss` | 1 |
-| M-1. Sidebar | ✅ | `common/layout.scss` | 1 |
-| M-2. Bookshelf | ✅ | `screens/bookshelf.scss` | 2 |
-| M-3. Project | ✅ | `screens/project.scss` | 2 |
-| M-5. Page | ✅ | `screens/page.scss` | 3 |
-| M-6. Cut | ✅ | `screens/cut.scss` | 3 |
-| M-4. Episode | ✅ | `screens/episode.scss` | 3 |
+| 항목                | 상태 | 담당 SCSS                | 세션 |
+| ------------------- | :--: | ------------------------ | :--: |
+| M-0. 공통 기반 정비 |  ✅  | `common/*.scss`          |  1   |
+| M-1. Sidebar        |  ✅  | `common/layout.scss`     |  1   |
+| M-2. Bookshelf      |  ✅  | `screens/bookshelf.scss` |  2   |
+| M-3. Project        |  ✅  | `screens/project.scss`   |  2   |
+| M-5. Page           |  ✅  | `screens/page.scss`      |  3   |
+| M-6. Cut            |  ✅  | `screens/cut.scss`       |  3   |
+| M-4. Episode        |  ✅  | `screens/episode.scss`   |  3   |
 
 ---
 
@@ -27,6 +27,7 @@
 ### M-0. 공통 기반 정비 (proto-style.css 대응)
 
 #### M-0. 공통 기반 정비 ✅ (2026-03-11 완료)
+
 - [x] `--header-height` → `44px`
 - [x] `.workspace-header` min-height 44px, padding `0 20px`, gap 12px
 - [x] `.workspace-body` padding `0 24px 30px`, scrollbar-gutter stable
@@ -44,6 +45,7 @@
 ### M-1. Sidebar (proto-sidebar.css 대응)
 
 #### M-1. Sidebar ✅ (2026-03-11 완료)
+
 - [x] 로고 텍스트 소문자 "plotnote", sidebar-logo-mark div 박스
 - [x] `.sidebar-search` / `.sidebar-search-bar` SCSS + JSX 추가
 - [x] `.sidebar-tree-row` font-size 11px, padding 3px 6px, min-height 26px, border-radius 4px
@@ -59,6 +61,7 @@
 ### M-2. Bookshelf (proto-bookshelf.css 대응)
 
 #### M-2. Bookshelf ✅ (2026-03-11 완료)
+
 - [x] `bookshelf.scss` 완전 재작성 — JSX className 1:1 기준
 - [x] `bookshelf-header-title` serif 19px, `bookshelf-header-actions` flex gap 6px
 - [x] `bookshelf-grid` minmax(190px) gap 14px, padding-top 16px
@@ -73,6 +76,7 @@
 ### M-3. Project (proto-project.css 대응)
 
 #### M-3. Project ✅ (2026-03-11 완료)
+
 - [x] `.project-header-title` serif 19px 추가
 - [x] `.project-header-fav` flex-shrink 0, hover amber
 - [x] `.project-tabs`, `.project-tab`, `.project-tab.active` SCSS
@@ -87,28 +91,74 @@
 ## 세션 3: M-5 + M-6 + M-4
 
 ### M-5. Page ✅ (2026-03-11 완료)
+
 - [x] page.scss에 pg-view-tgl/pg-zoom/pg-toolbar 모두 구현돼 있었음
 
 ### M-6. Cut ✅ (2026-03-11 완료)
+
 - [x] SVG 캔버스 셀렉터 추가: cut-canvas-svg/bg, cut-polygon/border, cut-label, cut-preview-line
 - [x] CutHeader 브레드크럼: ct-ep-link, ct-pg-num, ct-pg-nav
 
 ### M-4. Episode ✅ (2026-03-11 완료)
+
 - [x] resize-handle: layout.scss에 이미 정의 (변경 불필요)
 - [x] episode.scss 중복 .badge 제거 → .erow .badge 스코핑
 - [x] episode.scss 중복 .cnt-badge 제거
 
 ---
 
-## 보류 항목 (Phase N)
+## Phase N — 다음 작업 (2026-03-11 재검토)
 
-| 항목 | 이유 | 선행 조건 |
-|------|------|-----------|
-| 새 프로젝트 모달 | 기능 구현 필요 | 설정 상속 체계 |
-| 공유 모달 | 서버 없음 | Phase 3 서버 |
-| 프로젝트 설정 탭 | JSX/기능 없음 | 설정 UI 구현 |
-| Rail 호버 팝업 | JS 로직 필요 | 팝업 컴포넌트 |
-| 검색 모달 연동 | 검색 기능 없음 | 검색 엔진 |
+> **결론:** "서버 없음"으로 보류했던 항목 대부분은 localStorage 기반으로 바로 가능.
+> 진짜 서버가 필요한 건 "공유 모달"과 "검색 엔진" 두 개뿐.
+
+### N-0. 정리 (바로 가능)
+
+- [ ] `Guide.tsx` — 훅/컨텍스트/유틸 문서 최신화 (DataContext 참조 제거, utils 섹션 추가)
+- [ ] `src/components/screens/sample/` 삭제 (Vue/Pinia 레퍼런스, TS 에러 원인)
+- [ ] `b4Layout.ts` w/h 역순 버그: `{ w:324, h:238 }` → `{ w:238, h:324 }`
+
+### N-1. 새 프로젝트 모달 (바로 가능)
+
+- 트리거: `BookshelfHeader` "+ 새 프로젝트" 버튼
+- `ADD_PROJECT` dispatch 이미 있음 — 모달 JSX + SCSS만 추가
+- 빈 파일인 `hooks/ui/useModal.ts` 구현 필요
+
+### N-2. Rail 호버 팝업 (바로 가능)
+
+- `sidebar-tree-row` hover → 페이지 수·상태 팝업
+- `useTooltip` 훅 이미 있음. 팝업 컴포넌트 JSX + SCSS만 추가
+
+### N-3. 프로젝트 설정 탭 (바로 가능)
+
+- ProjectGrid의 disabled "설정" 탭 활성화
+- `UPDATE_PROJECT` dispatch 이미 있음
+- `settingsHelper.ts`의 상속 체계(Episode > Project > User > Default) 활용
+
+### N-4. 에피소드/페이지 DnD 재정렬 (훅 구현 필요)
+
+- `orderManager.ts`의 `reorder()` 이미 있음
+- `hooks/ui/useDragAndDrop.ts` 빈 파일 → 구현 필요
+- `REORDER_EPISODES`, `REORDER_PAGES` reducer action 이미 있음
+
+### 진짜 보류 (서버 선행 필요)
+
+| 항목      | 이유                                                            |
+| --------- | --------------------------------------------------------------- |
+| 공유 모달 | localStorage에 "공유 링크" 개념 없음 — 서버 필수                |
+| 검색 모달 | 검색 인덱스 없음 — 서버 or 클라이언트 전문 검색 라이브러리 필요 |
+
+👽: 공유 링크 부분은 클릭하면 구현 준비중이에요! 라고 뜰 수 있도록 함.
+
+### 현재 빈 파일 (구현 대기)
+
+| 파일                         | 필요한 시점                    |
+| ---------------------------- | ------------------------------ |
+| `hooks/ui/useModal.ts`       | N-1 모달 구현 시               |
+| `hooks/ui/useZoom.ts`        | 줌 기능 확장 시                |
+| `hooks/ui/useDragAndDrop.ts` | N-4 DnD 구현 시                |
+| `hooks/data/useSetting.ts`   | N-3 설정 탭 구현 시            |
+| `contexts/AuthContext.tsx`   | 서버 도입 시 (현재 fetch 스텁) |
 
 ---
 
